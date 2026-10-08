@@ -1,0 +1,74 @@
+# ---------------------------------------------------------------------------
+# Real data never goes in this repo. Real exports are read from outside it.
+# The only place data files may live is packages/fixtures/, and only the
+# anonymised ones its script writes. See docs/MIGRATION-PLAN.md, section 8.
+# ---------------------------------------------------------------------------
+
+# Local private folder: real-names list, sources.json, scratch copies
+.private/
+
+# The old app's data folder and any other data folder
+data/
+legacy/python/data/
+
+# Databases, spreadsheets, CSVs and PDFs, everywhere except the fixtures
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+*.sqlite
+*.sqlite3
+*.xlsx
+*.xlsm
+*.xls
+*.csv
+*.pdf
+!packages/fixtures/**/*.db
+!packages/fixtures/**/*.xlsx
+!packages/fixtures/**/*.csv
+
+# Secrets and shortcuts
+.env
+.env.*
+*.lnk
+
+# Export and download folders
+exports/
+downloads/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node and build output
+node_modules/
+dist/
+out/
+release/
+coverage/
+
+# Browser test output (can hold screenshots of the practice table)
+test-results/
+playwright-report/
+*.log
+*.tsbuildinfo
+
+# The new core's side of the parity check (the old app's side, expected/, is committed: it is made up)
+scripts/parity/actual/
+
+# Editors and operating system
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+
+# Claude Code local files
+.claude/worktrees/
+.claude/settings.local.json
+
+# Print parity: the old app's reference PDFs and workbooks, and this app's, drawn locally to compare.
+# Only their text form (scripts/parity/print/expected/) is committed.
+scripts/parity/print/python-out/
+scripts/parity/print/ts-out/

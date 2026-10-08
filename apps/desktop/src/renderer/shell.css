@@ -1,0 +1,733 @@
+/*
+  The shell: the left menu, the top bar, the page frame and the parts the pages share.
+  Every colour comes from the design system's tokens (tokens.css), which key off two things on
+  <html> that Settings and the A- / A+ buttons set:
+    data-theme="light" | "dark" | "high-contrast"
+    --font-scale (1 is normal size; tokens.css turns it into the page's text size)
+  Sizes are in rem, so everything grows and shrinks with the text.
+*/
+
+.shell {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+/* ---- Left menu ---- */
+
+.sidebar {
+  flex: 0 0 15rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-3);
+  overflow-y: auto;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2) var(--space-4);
+  font-weight: 700;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-lg);
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.brand-sub {
+  display: block;
+  font-size: 0.857rem;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: 0.55rem var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--text-muted);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.nav-item svg {
+  width: 1.15em;
+  height: 1.15em;
+  flex-shrink: 0;
+}
+
+.nav-item:hover {
+  background: var(--row-hover);
+  color: var(--text);
+}
+
+.nav-item[aria-current='page'] {
+  background: var(--accent-soft);
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+html[data-theme='high-contrast'] .nav-item[aria-current='page'] {
+  outline: 1px solid var(--border-strong);
+}
+
+/* ---- Top bar and page frame ---- */
+
+.main-column {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-4);
+  min-height: 3rem;
+  padding: var(--space-2) var(--space-5);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.update-area {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-right: auto;
+}
+
+.text-size {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.text-size-label {
+  margin-right: var(--space-1);
+  font-size: 0.929rem;
+  color: var(--text-muted);
+}
+
+.demo-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-5);
+  background: var(--info-soft);
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+
+.demo-banner svg {
+  color: var(--info);
+}
+
+.page-frame {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: var(--space-5) var(--space-6);
+}
+
+/* A page that fills the frame edge to edge, such as a table. */
+.page-frame:has(> .page-full) {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+
+.page {
+  max-width: 60rem;
+}
+
+.page h1 {
+  margin: 0 0 var(--space-3);
+  font-size: 1.6rem;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.page h2 {
+  margin: var(--space-5) 0 var(--space-2);
+  font-size: 1.15rem;
+  font-weight: 650;
+}
+
+.page h3 {
+  margin: var(--space-3) 0 var(--space-1);
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.page p {
+  margin: 0 0 var(--space-3);
+}
+
+.page ul,
+.page ol {
+  margin: 0 0 var(--space-3);
+  padding-left: 1.4rem;
+}
+
+.page ul,
+dialog.whats-new ul {
+  list-style: disc;
+}
+
+.page ol {
+  list-style: decimal;
+}
+
+.page .nav-list,
+.page ul.plain {
+  list-style: none;
+  padding-left: 0;
+}
+
+.page li + li {
+  margin-top: var(--space-1);
+}
+
+.page .lede {
+  color: var(--text-muted);
+}
+
+.card {
+  padding: var(--space-4) var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.card > h2:first-child {
+  margin-top: 0;
+}
+
+/* ---- Pieces the pages share ---- */
+
+.home-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  align-items: flex-start;
+}
+
+.home-main {
+  flex: 1 1 22rem;
+}
+
+.home-aside {
+  flex: 0 1 24rem;
+}
+
+.link-button {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.link-button:hover {
+  color: var(--text);
+}
+
+.help-jump {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-4) 0;
+  color: var(--text-muted);
+}
+
+.help-section {
+  margin-top: var(--space-5);
+  scroll-margin-top: var(--space-4);
+}
+
+.help-section details {
+  margin: var(--space-2) 0;
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.help-section summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.help-section details[open] summary {
+  margin-bottom: var(--space-2);
+}
+
+.help-section .card + .card,
+.help-section details + details {
+  margin-top: var(--space-2);
+}
+
+.help-steps > li {
+  margin-bottom: var(--space-2);
+}
+
+.help-chip-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.help-chip-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.help-keys kbd {
+  display: inline-block;
+  min-width: 1.6em;
+  padding: 0 0.4em;
+  border: 1px solid var(--border-strong);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  font: inherit;
+  font-size: 0.929rem;
+  text-align: center;
+}
+
+.help-warning {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--warn);
+  border-radius: var(--radius-md);
+  background: var(--warn-soft);
+  color: var(--text);
+}
+
+/* Pictures of the app (taken in demo mode) and stand-ins for pictures still to come. */
+.help-shot {
+  margin: var(--space-3) 0;
+}
+
+.help-shot img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+}
+
+.help-shot figcaption {
+  margin-top: var(--space-1);
+  color: var(--text-muted);
+  font-size: 0.929rem;
+}
+
+.help-shot-to-come {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 6rem;
+  margin: var(--space-3) 0;
+  padding: var(--space-4);
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  background: repeating-linear-gradient(
+    135deg,
+    var(--surface-sunken) 0 12px,
+    var(--surface) 12px 24px
+  );
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.help-shot-to-come svg {
+  flex-shrink: 0;
+  width: 1.4em;
+  height: 1.4em;
+}
+
+.help-note-steps {
+  margin: 0;
+  padding-left: 1.4rem;
+}
+
+.help-note-steps > li + li {
+  margin-top: var(--space-3);
+}
+
+.help-note-steps p {
+  margin: 0;
+}
+
+/* ---- The first-day checklist on Home ---- */
+
+.checklist h2 {
+  margin: 0 0 var(--space-1);
+}
+
+.checklist .hint {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.checklist-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: var(--space-3) 0;
+  font-weight: 600;
+}
+
+.checklist-bar {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.checklist-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--ok);
+  transition: width 0.3s ease;
+}
+
+.page .checklist-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.page .checklist-steps li + li {
+  margin-top: var(--space-2);
+}
+
+.checklist-step {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+}
+
+.checklist-step.is-current {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.checklist-mark {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-top: 0.1rem;
+  border: 2px solid var(--border-strong);
+  border-radius: 999px;
+  font-size: 0.857rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.checklist-step.is-current .checklist-mark {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.checklist-step.is-done .checklist-mark {
+  border: 0;
+  color: var(--ok);
+}
+
+.checklist-mark svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.checklist-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.checklist-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.checklist-step-title {
+  font-weight: 600;
+}
+
+.checklist-step.is-done .checklist-step-title {
+  color: var(--text-muted);
+}
+
+.checklist-help {
+  display: inline-flex;
+  flex: 0 0 auto;
+  padding: 0.15rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.checklist-help:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.checklist-help svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.page p.checklist-why {
+  margin: 0.15rem 0 var(--space-2);
+  color: var(--text-muted);
+  font-size: 0.929rem;
+}
+
+.checklist-step.is-done .checklist-why {
+  margin-bottom: 0;
+}
+
+.checklist-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+
+.release-card {
+  margin: var(--space-4) 0;
+}
+
+.release-card h2 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: 0;
+}
+
+.settings-group {
+  display: block;
+  margin: 0 0 var(--space-4);
+  min-width: 0;
+}
+
+fieldset.settings-group {
+  padding: var(--space-4) var(--space-5);
+}
+
+.settings-group legend {
+  float: left;
+  width: 100%;
+  margin: 0 0 var(--space-2);
+  padding: 0;
+  font-size: 1.15rem;
+  font-weight: 650;
+}
+
+.settings-group h2 {
+  margin-top: 0;
+}
+
+.settings-group .hint {
+  margin: var(--space-2) 0 0;
+  color: var(--text-muted);
+  font-size: 0.929rem;
+}
+
+.theme-choices {
+  clear: both;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.theme-choice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  cursor: pointer;
+}
+
+.theme-choice:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+.theme-choice:has(input:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+.theme-choice input {
+  accent-color: var(--accent);
+  margin: 0;
+}
+
+.row-of-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* A checkbox drawn as an on/off switch. Still a real checkbox, so labels and keys work. */
+.switch-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+}
+
+.switch {
+  appearance: none;
+  position: relative;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 1.4rem;
+  margin: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--surface-sunken);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.switch::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0.15rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transform: translateY(-50%);
+  transition: left 0.15s;
+}
+
+.switch:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.switch:checked::after {
+  left: calc(100% - 1.15rem);
+  background: var(--accent-text);
+}
+
+.problem {
+  color: var(--bad);
+  font-weight: 600;
+}
+
+/* ---- What's new ---- */
+
+dialog.whats-new {
+  width: min(34rem, calc(100vw - 2rem));
+  padding: var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+  color: var(--text);
+  box-shadow: var(--shadow-popover);
+}
+
+dialog.whats-new::backdrop {
+  background: rgb(0 0 0 / 0.5);
+}
+
+dialog.whats-new h2 {
+  margin: 0 0 var(--space-3);
+  font-size: 1.25rem;
+}
+
+dialog.whats-new h3 {
+  margin: var(--space-3) 0 var(--space-1);
+  font-size: 1rem;
+}
+
+dialog.whats-new ul {
+  margin: 0 0 var(--space-3);
+  padding-left: 1.3rem;
+}
+
+dialog.whats-new form {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-4);
+}
+
+dialog.old-data .dialog-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .switch,
+  .switch::after {
+    transition: none;
+  }
+}

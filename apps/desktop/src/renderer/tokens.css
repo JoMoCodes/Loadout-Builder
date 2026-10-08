@@ -1,0 +1,149 @@
+/*
+ * Colour, spacing and type tokens for every screen.
+ *
+ * The app shell sets two things on <html>, and everything here follows them:
+ *   data-theme="dark" | "light" | "high-contrast"   (dark is the default, as in Route Sheet Distributor)
+ *   style="--font-scale: 1.1"                        (the A+ / A- buttons; 1 is normal)
+ *
+ * Every colour is a plain hex value so the contrast test (tokens.test.ts) can read it. Text
+ * pairs meet WCAG AA (4.5:1) in every theme, and high contrast meets AAA (7:1) for body text.
+ * Tone colours (ok, warn, bad, info, neutral) are always shown with words, never alone.
+ */
+
+:root,
+html[data-theme='dark'] {
+  --bg: #0e1218;
+  --surface: #151a22;
+  --surface-raised: #1b212b;
+  --surface-sunken: #11161d;
+  --border: #29313d;
+  --border-strong: #5d6878;
+  --text: #e7ecf3;
+  --text-muted: #a3aebd;
+  --text-faint: #929dad;
+  --accent: #4ea1ff;
+  --accent-text: #06121f;
+  --accent-soft: #1a2c44;
+  --focus: #7dbbff;
+  --row-stripe: #131820;
+  --row-hover: #1c232d;
+  --row-selected: #1d3150;
+  --ok: #4fd18b;
+  --ok-soft: #12291e;
+  --warn: #f2b33d;
+  --warn-soft: #2e2512;
+  --bad: #ff8078;
+  --bad-soft: #36191a;
+  --info: #7dbbff;
+  --info-soft: #15263b;
+  --neutral: #c0cad6;
+  --neutral-soft: #242b35;
+  --shadow-popover: 0 10px 30px rgb(0 0 0 / 0.45);
+  color-scheme: dark;
+}
+
+html[data-theme='light'] {
+  --bg: #f3f5f8;
+  --surface: #ffffff;
+  --surface-raised: #f7f9fb;
+  --surface-sunken: #eef1f5;
+  --border: #dde2e9;
+  --border-strong: #8792a1;
+  --text: #17202b;
+  --text-muted: #4f5a69;
+  --text-faint: #5b6675;
+  --accent: #1a63cc;
+  --accent-text: #ffffff;
+  --accent-soft: #e3eefc;
+  --focus: #1a63cc;
+  --row-stripe: #f9fafc;
+  --row-hover: #f0f3f7;
+  --row-selected: #dce8fa;
+  --ok: #156b3a;
+  --ok-soft: #e3f4e9;
+  --warn: #855600;
+  --warn-soft: #fff2d4;
+  --bad: #b42318;
+  --bad-soft: #fde5e2;
+  --info: #1a5bb8;
+  --info-soft: #e3eefc;
+  --neutral: #4b5563;
+  --neutral-soft: #eceff3;
+  --shadow-popover: 0 10px 28px rgb(20 30 45 / 0.14);
+  color-scheme: light;
+}
+
+/* High contrast: black and white, bright tones, a yellow focus ring and solid borders. */
+html[data-theme='high-contrast'] {
+  --bg: #000000;
+  --surface: #000000;
+  --surface-raised: #121212;
+  --surface-sunken: #000000;
+  --border: #9a9a9a;
+  --border-strong: #ffffff;
+  --text: #ffffff;
+  --text-muted: #ececec;
+  --text-faint: #d6d6d6;
+  --accent: #8cc8ff;
+  --accent-text: #000000;
+  --accent-soft: #0b2742;
+  --focus: #ffd60a;
+  --row-stripe: #0b0b0b;
+  --row-hover: #1a1a1a;
+  --row-selected: #0b2742;
+  --ok: #7cf5b0;
+  --ok-soft: #00240f;
+  --warn: #ffd166;
+  --warn-soft: #261c00;
+  --bad: #ffaaa4;
+  --bad-soft: #330000;
+  --info: #a8d4ff;
+  --info-soft: #001a33;
+  --neutral: #ffffff;
+  --neutral-soft: #222222;
+  --shadow-popover: 0 0 0 1px #ffffff;
+  color-scheme: dark;
+}
+
+:root {
+  --font-scale: 1;
+  --font-ui: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Mono', Consolas, 'SF Mono', monospace;
+
+  /* Spacing steps, in rem so A+ / A- grows them with the text. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+
+  /* Tables: dense rows that still leave room for a chip. */
+  --row-height: 2rem;
+  --header-height: 2.25rem;
+}
+
+html {
+  /* 14px is the app's normal text size; the A+ / A- buttons scale everything from here. */
+  font-size: calc(14px * var(--font-scale, 1));
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+}
+
+/* A clear focus ring on everything you can reach with Tab, in every theme. */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+html[data-theme='high-contrast'] :focus-visible {
+  outline-width: 3px;
+}

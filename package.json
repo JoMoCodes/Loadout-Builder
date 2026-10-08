@@ -1,0 +1,41 @@
+{
+  "name": "loadout-builder",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Loadout Builder workspace root. The app itself lives in apps/desktop.",
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "postinstall": "node scripts/install-hooks.mjs",
+    "start": "npm run start -w @loadout/desktop",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "dist": "npm run dist -w @loadout/desktop",
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "scan": "node scripts/privacy-scan.mjs",
+    "fixtures": "node packages/fixtures/anonymise.mjs",
+    "parity:python": "python3 -I scripts/parity/python_dump.py",
+    "parity:ts": "tsx scripts/parity/ts/dump.ts",
+    "parity:diff": "node scripts/parity/diff.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "24.19.1",
+    "eslint": "10.12.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "17.13.0",
+    "prettier": "3.9.9",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.1",
+    "vitest": "5.0.3"
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "days": [
+    {
+      "day": "2026-09-01",
+      "dwp": {
+        "days_away": null,
+        "exact": false,
+        "file": "XXXX DWP 9.2.xlsx",
+        "file_day": null,
+        "reason": "named 9.2 with no year, which matches the sheet's file date; the app reads its day as unknown"
+      },
+      "files": {
+        "associates": "AssociateData.csv",
+        "loadout": "2026_09_02_15_27_loadout_sheet.xlsx",
+        "tenure": [
+          "Tenured_Workforce_DA_1756800000.csv",
+          "Tenured_Workforce_DA_1756900000.csv"
+        ],
+        "vehicles": "VehiclesData.xlsx"
+      },
+      "itineraries": {
+        "days_away": 32,
+        "exact": false,
+        "file": "Itineraries_XXX1_2026-10-03_21_36 (CDT).xlsx",
+        "file_day": "2026-10-03",
+        "reason": "the only itineraries file there is, so the nearest"
+      },
+      "main_route_export": "routes",
+      "routes": {
+        "days_away": 0,
+        "exact": true,
+        "file": "Routes_XXX1_2026-09-01_12_20 (CDT).xlsx",
+        "file_day": "2026-09-01",
+        "reason": "dated the same day"
+      },
+      "schedule": {
+        "days_away": 0,
+        "exact": true,
+        "file": "Week-36-Schedule.xlsx",
+        "file_day": "2026-09-01",
+        "reason": "the week that covers the day"
+      },
+      "today": "2026-09-01"
+    },
+    {
+      "day": "2026-09-11",
+      "dwp": {
+        "days_away": 0,
+        "exact": true,
+        "file": "DWP_DSP-XXXX_09-11-2026.xlsx",
+        "file_day": "2026-09-11",
+        "reason": "dated the same day"
+      },
+      "files": {
+        "associates": "AssociateData.csv",
+        "loadout": "2026_09_11_17_37_loadout_sheet.xlsx",
+        "tenure": [
+          "Tenured_Workforce_DA_1756800000.csv",
+          "Tenured_Workforce_DA_1756900000.csv"
+        ],
+        "vehicles": "VehiclesData.xlsx"
+      },
+      "itineraries": {
+        "days_away": 22,
+        "exact": false,
+        "file": "Itineraries_XXX1_2026-10-03_21_36 (CDT).xlsx",
+        "file_day": "2026-10-03",
+        "reason": "the only itineraries file there is, so the nearest"
+      },
+      "main_route_export": "routes",
+      "routes": {
+        "days_away": -10,
+        "exact": false,
+        "file": "Routes_XXX1_2026-09-01_12_20 (CDT).xlsx",
+        "file_day": "2026-09-01",
+        "reason": "nearest: ten days away, against fourteen for the other"
+      },
+      "schedule": {
+        "days_away": null,
+        "exact": false,
+        "file": null,
+        "file_day": null,
+        "reason": "neither weekly schedule covers this day, so there is none"
+      },
+      "today": "2026-09-11"
+    },
+    {
+      "day": "2026-09-14",
+      "dwp": {
+        "days_away": -3,
+        "exact": false,
+        "file": "DWP_DSP-XXXX_09-11-2026.xlsx",
+        "file_day": "2026-09-11",
+        "reason": "nearest: 09-11 and 09-17 are both three days away, so the earlier one; the app calls it the wrong day"
+      },
+      "files": {
+        "associates": "AssociateData.csv",
+        "loadout": "2026_09_14_12_15_loadout_sheet.xlsx",
+        "tenure": [
+          "Tenured_Workforce_DA_1756800000.csv",
+          "Tenured_Workforce_DA_1756900000.csv"
+        ],
+        "vehicles": "VehiclesData.xlsx"
+      },
+      "itineraries": {
+        "days_away": 19,
+        "exact": false,
+        "file": "Itineraries_XXX1_2026-10-03_21_36 (CDT).xlsx",
+        "file_day": "2026-10-03",
+        "reason": "the only itineraries file there is, so the nearest"
+      },
+      "main_route_export": "routes",
+      "routes": {
+        "days_away": 11,
+        "exact": false,
+        "file": "Routes_XXX1_2026-09-25_09_54 (CDT).xlsx",
+        "file_day": "2026-09-25",
+        "reason": "nearest: eleven days away, against thirteen for the other"
+      },
+      "schedule": {
+        "days_away": 0,
+        "exact": true,
+        "file": "Week-38-Schedule.xlsx",
+        "file_day": "2026-09-14",
+        "reason": "the week that covers the day"
+      },
+      "today": "2026-09-14"
+    }
+  ],
+  "notes": [
+    "A day is named for the date its load-out sheet reads as, which is the date the old app calls the load-out date. The harness uses it as 'today'.",
+    "associates, tenure and vehicles are the same files on every day.",
+    "Everything else in the database (links, van affinity, LMR approvals, vehicle priorities and overrides, print layouts, previous roster) is used as it stands.",
+    "Route exports with no file for a day are cleared before the day's run."
+  ]
+}

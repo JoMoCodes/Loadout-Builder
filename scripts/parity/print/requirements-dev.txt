@@ -1,0 +1,7 @@
+# Print parity only (scripts/parity/print/). Not needed by the app or by `npm test`.
+# fpdf2 and openpyxl are the old app's own writers, at the versions the reference sheets in
+# expected/ were drawn with. pdfplumber reads PDFs for crosscheck.py, a second opinion that does
+# not use the app's own reader.
+fpdf2==2.8.9
+openpyxl==3.1.5
+pdfplumber==0.11.4

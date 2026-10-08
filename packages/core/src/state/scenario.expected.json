@@ -1,0 +1,249 @@
+{
+  "matches_before": {
+    "carmen abernathy": ["exact", ["Carmen Abernathy", "A047LNAN5VQIQR"], []],
+    "nadine abernathy": ["exact", ["Nadine Abernathy", "A083QLD1CI9YSZ"], []],
+    "barrett ainsworth": ["name", ["Barrett Hadley Ainsworth", "A08Z3QTIYAI58G"], []],
+    "carmen abernathey": ["fuzzy", ["Carmen Abernathy", "A047LNAN5VQIQR"], ["A047LNAN5VQIQR"]],
+    "beatrice x redmond": ["none", null, ["A0DZDWECHDJ5TO", "A0FU25U7H48VU2"]],
+    "zane applewhite": [
+      "none",
+      null,
+      ["A047LNAN5VQIQR", "A083QLD1CI9YSZ", "", "A08Z3QTIYAI58G", "A0DZDWECHDJ5TO"]
+    ],
+    "colton alderman": ["cleared", null, []],
+    "mabel alderman": ["none", null, ["A0FXMBXTK81V4D"]]
+  },
+  "summary_before": {
+    "exact": 2,
+    "name": 1,
+    "fuzzy": 1,
+    "none": 3,
+    "cleared": 1
+  },
+  "counts_before": [4, 4, ["A047LNAN5VQIQR", "A083QLD1CI9YSZ", "A08Z3QTIYAI58G"]],
+  "readouts_before": [
+    {
+      "driver": "Carmen Abernathy",
+      "check": "Not Step Van qualified, ID expires in 10d",
+      "issues": ["Not Step Van qualified", "ID expires in 10d"],
+      "badges": "EDV"
+    },
+    {
+      "driver": "Nadine Abernathy",
+      "check": "Not EDV qualified, ID expired 3d ago, Inactive associate",
+      "issues": ["Not EDV qualified", "ID expired 3d ago", "Inactive associate"],
+      "badges": "SV"
+    },
+    {
+      "driver": "Barrett Ainsworth",
+      "check": "OK",
+      "issues": [],
+      "badges": "CDV EDV DOT LMR"
+    },
+    {
+      "driver": "Carmen Abernathey",
+      "check": "Verify match, ID expires in 10d",
+      "issues": ["ID expires in 10d"],
+      "badges": "EDV"
+    },
+    {
+      "driver": "Beatrice X Redmond",
+      "check": "Ambiguous - pick one",
+      "issues": ["No associate record"],
+      "badges": ""
+    },
+    {
+      "driver": "Zane Applewhite",
+      "check": "Ambiguous - pick one",
+      "issues": ["No associate record"],
+      "badges": ""
+    },
+    {
+      "driver": "Colton Alderman",
+      "check": "Not an associate",
+      "issues": [],
+      "badges": ""
+    },
+    {
+      "driver": "Mabel Alderman",
+      "check": "No associate found",
+      "issues": ["No associate record"],
+      "badges": ""
+    }
+  ],
+  "previous_vans": {
+    "A047LNAN5VQIQR": "VAN-1",
+    "A08Z3QTIYAI58G": "VAN-2",
+    "A0DZDWECHDJ5TO": "VAN-6"
+  },
+  "loaded": ["routes", "itineraries", "schedule"],
+  "pads": {
+    "10:20am": 1,
+    "10:25am": 2
+  },
+  "adopt": [4, 1, 3],
+  "entry_pads": ["3", "", "2", "", "2", "3", "", ""],
+  "route_result": [
+    5,
+    5,
+    5,
+    5,
+    5,
+    4,
+    2,
+    1,
+    ["Elodie Alderman", "Nolan Abernathy", "Andre Ainsworth"],
+    [
+      "Elodie Alderman - Standard Parcel Step Van needs Step Van",
+      "Beatrice Q Redmond - matches 2 associates, left off"
+    ]
+  ],
+  "rows_after": [
+    ["Carmen Abernathy", "Step Van Route", "CX1", "10:20am", "3", "Standard Parcel Step Van"],
+    ["Nadine Abernathy", "Electric Route", "", "", "", ""],
+    ["Barrett Ainsworth", "", "CX2", "10:25am", "2", "Standard Parcel Electric - Rivian MEDIUM"],
+    ["Carmen Abernathey", "", "CX1", "10:20am", "3", "Standard Parcel Step Van"],
+    ["Beatrice X Redmond", "", "", "", "", ""],
+    ["Zane Applewhite", "", "CX9", "", "", ""],
+    ["Colton Alderman", "", "", "", "", ""],
+    ["Mabel Alderman", "", "", "", "", ""],
+    ["Elodie Alderman", "", "cx 3", "10:20am", "2", "Standard Parcel Step Van"],
+    ["Nolan Abernathy", "ORE", "CX4", "10:25am", "2", "On Road Experience Driver"],
+    ["Andre Ainsworth", "", "", "", "", "Standard Parcel Electric"]
+  ],
+  "associates_after": [
+    ["Carmen Abernathy", "A047LNAN5VQIQR", "", ["EDV"], "ACTIVE", null],
+    ["Nadine Abernathy", "A083QLD1CI9YSZ", "", ["Step Van"], "INACTIVE", null],
+    ["Nolan Abernathy", "A0TRKAKN2V09HH", "", ["EDV"], "", null],
+    ["Barrett Hadley Ainsworth", "A08Z3QTIYAI58G", "", ["EDV", "CDV", "DOT"], "ACTIVE", null],
+    ["Beatrice Redmond", "A0DZDWECHDJ5TO", "", ["EDV"], "", null],
+    ["Beatrice Esme Redmond", "A0FU25U7H48VU2", "", ["EDV"], "", null],
+    ["Colton Alderman", "A0FXMBXTK81V4D", "", ["EDV"], "", null],
+    ["Elodie Alderman", "A0G8EUL2VJ2V9F", "Standard Parcel Step Van", ["EDV"], "", null],
+    ["Andre Ainsworth", "A0R9UJ713V4B0X", "Standard Parcel Electric", ["EDV"], "", null]
+  ],
+  "links_after": {
+    "colton alderman": null,
+    "elodie alderman": "A0G8EUL2VJ2V9F",
+    "nolan abernathy": "A0TRKAKN2V09HH",
+    "andre ainsworth": "A0R9UJ713V4B0X"
+  },
+  "matches_after": {
+    "carmen abernathy": ["exact", ["Carmen Abernathy", "A047LNAN5VQIQR"], []],
+    "nadine abernathy": ["exact", ["Nadine Abernathy", "A083QLD1CI9YSZ"], []],
+    "barrett ainsworth": ["name", ["Barrett Hadley Ainsworth", "A08Z3QTIYAI58G"], []],
+    "carmen abernathey": ["fuzzy", ["Carmen Abernathy", "A047LNAN5VQIQR"], ["A047LNAN5VQIQR"]],
+    "beatrice x redmond": ["none", null, ["A0DZDWECHDJ5TO", "A0FU25U7H48VU2"]],
+    "zane applewhite": [
+      "none",
+      null,
+      ["A047LNAN5VQIQR", "A083QLD1CI9YSZ", "A0TRKAKN2V09HH", "A08Z3QTIYAI58G", "A0DZDWECHDJ5TO"]
+    ],
+    "colton alderman": ["cleared", null, []],
+    "mabel alderman": ["none", null, ["A0FXMBXTK81V4D", "A0G8EUL2VJ2V9F"]],
+    "elodie alderman": ["manual", ["Elodie Alderman", "A0G8EUL2VJ2V9F"], []],
+    "nolan abernathy": ["manual", ["Nolan Abernathy", "A0TRKAKN2V09HH"], []],
+    "andre ainsworth": ["manual", ["Andre Ainsworth", "A0R9UJ713V4B0X"], []]
+  },
+  "previous_vans_after": {
+    "A047LNAN5VQIQR": "VAN-1",
+    "A08Z3QTIYAI58G": "VAN-2",
+    "A0TRKAKN2V09HH": "VAN-3",
+    "A0DZDWECHDJ5TO": "VAN-6"
+  },
+  "dwp_before": ["mismatch", 4],
+  "dwp_result": [4, 3, 3, 3, 5, 2, 1],
+  "dwp_rows": [
+    ["Carmen Abernathy", "STG.A01", "5", "2"],
+    ["Nadine Abernathy", "", "", ""],
+    ["Barrett Ainsworth", "", "", "1"],
+    ["Carmen Abernathey", "STG.A01", "5", "2"],
+    ["Beatrice X Redmond", "", "", ""],
+    ["Zane Applewhite", "", "", ""],
+    ["Colton Alderman", "", "", ""],
+    ["Mabel Alderman", "", "", ""],
+    ["Elodie Alderman", "STG.B02", "7", ""],
+    ["Nolan Abernathy", "", "", ""],
+    ["Andre Ainsworth", "", "", ""]
+  ],
+  "readouts_after": [
+    {
+      "driver": "Carmen Abernathy",
+      "check": "Not Step Van qualified, ID expires in 10d",
+      "issues": ["Not Step Van qualified", "ID expires in 10d"],
+      "badges": "EDV"
+    },
+    {
+      "driver": "Nadine Abernathy",
+      "check": "Not EDV qualified, ID expired 3d ago, Inactive associate",
+      "issues": ["Not EDV qualified", "ID expired 3d ago", "Inactive associate"],
+      "badges": "SV"
+    },
+    {
+      "driver": "Barrett Ainsworth",
+      "check": "OK",
+      "issues": [],
+      "badges": "CDV EDV DOT LMR"
+    },
+    {
+      "driver": "Carmen Abernathey",
+      "check": "Verify match, ID expires in 10d",
+      "issues": ["ID expires in 10d"],
+      "badges": "EDV"
+    },
+    {
+      "driver": "Beatrice X Redmond",
+      "check": "Ambiguous - pick one",
+      "issues": ["No associate record"],
+      "badges": ""
+    },
+    {
+      "driver": "Zane Applewhite",
+      "check": "Ambiguous - pick one",
+      "issues": ["No associate record"],
+      "badges": ""
+    },
+    {
+      "driver": "Colton Alderman",
+      "check": "Not an associate",
+      "issues": [],
+      "badges": ""
+    },
+    {
+      "driver": "Mabel Alderman",
+      "check": "Ambiguous - pick one",
+      "issues": ["No associate record"],
+      "badges": ""
+    },
+    {
+      "driver": "Elodie Alderman",
+      "check": "OK",
+      "issues": [],
+      "badges": "EDV"
+    },
+    {
+      "driver": "Nolan Abernathy",
+      "check": "OK",
+      "issues": [],
+      "badges": "EDV"
+    },
+    {
+      "driver": "Andre Ainsworth",
+      "check": "OK",
+      "issues": [],
+      "badges": "EDV"
+    }
+  ],
+  "linked": ["manual", ["Colton Alderman", "A0FXMBXTK81V4D"], []],
+  "unlinked": [
+    "none",
+    null,
+    ["A047LNAN5VQIQR", "A083QLD1CI9YSZ", "A0TRKAKN2V09HH", "A08Z3QTIYAI58G", "A0DZDWECHDJ5TO"]
+  ],
+  "moved": 11,
+  "previous_vans_moved": {
+    "A08Z3QTIYAI58G": "VAN-7"
+  },
+  "previous_vans_cleared": {},
+  "loaded_after_clear": ["itineraries", "schedule"]
+}

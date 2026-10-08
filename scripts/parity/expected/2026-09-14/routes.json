@@ -1,0 +1,2899 @@
+{
+  "scenarios": {
+    "itineraries/adopted": {
+      "adopt_result": [
+        6,
+        0,
+        19
+      ],
+      "associates_added": [],
+      "associates_changed": [],
+      "entry_pads_after_adopt": [
+        "",
+        "",
+        "",
+        "",
+        "1",
+        "",
+        "",
+        "1",
+        "",
+        "2",
+        "",
+        "",
+        "1",
+        "1",
+        "",
+        "2",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "kind": "itineraries",
+      "links_added": {
+        "beatrice sutherland": "A1QVVPYVZD6R9F",
+        "cleo vandermeer": "AC32BQGN2MON3",
+        "colton cleo alderman": "A1E4CRQE9TMGKN",
+        "darcy isidro gresham": "A9CW8HB7Y0K8F4",
+        "dominic cleo prescott": "A5MNMU9DG0IGKN",
+        "elodie ashdown": "AW9CKWGLCCLMU",
+        "elodie micah hawthorne": "A503VSKH6DU6TJ",
+        "elodie vandermeer": "AKA0HPH6GU9DK",
+        "greta esme vance": "A7O9MN0YIUZXN",
+        "harlan vera penrose": "A2051ICVODZP9E",
+        "isidro ariana ingram": "A55NZ7WTBR2RXC",
+        "micah tobias kingsley": "AO2I4MJ59WDHS",
+        "miriam nathaniel huxley": "AU9G43K0RMQVQ",
+        "nadine olive abernathy": "A486QRCQCVMTG1",
+        "nolan abernathy": "A3QVN63ZJEGQYP",
+        "nolan anika wakefield": "A5JGA6O3VGJC9D",
+        "nolan phoebe rainsford": "A8KSSZB6LALEOL",
+        "rhea ravenscroft": "AFRYVFGBLTBTV",
+        "sabrina tristan gresham": "A9LE0ZXWQH9RYQ",
+        "sloane winston winslow": "AWJ5XN1FMHXXV",
+        "yara julian halloran": "A3FM1CRWW54MMO",
+        "zane quentin applewhite": "A4OQGIPQ6DAKF4"
+      },
+      "mode": "adopted",
+      "pads_set": {},
+      "result": {
+        "added_drivers": [
+          "Paloma Marcus Selwyn",
+          "Elodie Micah Hawthorne",
+          "Rhea Ravenscroft",
+          "Isidro Ariana Ingram",
+          "Elodie Vandermeer",
+          "Yara Julian Halloran",
+          "Nadine Olive Abernathy",
+          "Greta Esme Vance",
+          "Beatrice Sutherland",
+          "Nolan Anika Wakefield",
+          "Darcy Isidro Gresham",
+          "Cleo Vandermeer",
+          "Micah Tobias Kingsley",
+          "Elodie Ashdown",
+          "Miriam Nathaniel Huxley",
+          "Dominic Cleo Prescott",
+          "Ariana Nethercott",
+          "Sabrina Tristan Gresham",
+          "Colton Cleo Alderman",
+          "Zane Quentin Applewhite",
+          "Harlan Vera Penrose",
+          "Nolan Phoebe Rainsford",
+          "Nolan Abernathy",
+          "Sloane Winston Winslow"
+        ],
+        "dispatch_times": 25,
+        "duplicates": 0,
+        "filled": 25,
+        "kind": "itineraries",
+        "needs_review": [],
+        "no_associate": 0,
+        "not_in_export": 36,
+        "pads": 6,
+        "route_codes": 25,
+        "service_types": 25,
+        "skipped": 36
+      },
+      "roster_route_source": "itineraries",
+      "roster_rows_after": 61,
+      "roster_rows_before": 37,
+      "rows_after": [
+        {
+          "driver": "Sabrina Woodbridge",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Operations Manager",
+          "wave_time": ""
+        },
+        {
+          "driver": "Jasper Holloway",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Elodie Hargrove",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Cecil Lovell",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Paloma Lindqvist",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Jasper Ormsby",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Elias Calloway",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "TIME OFF",
+          "wave_time": ""
+        },
+        {
+          "driver": "Sawyer Lovell",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Stella Upton",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Lead Driver",
+          "wave_time": ""
+        },
+        {
+          "driver": "Nell Bellamy",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Caleb Eldridge",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Marcus Clemmons",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Rhea Lockhart",
+          "pad": "2",
+          "routes": "CX191",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Step Van Route",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Caleb Wadsworth",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Lead Driver",
+          "wave_time": ""
+        },
+        {
+          "driver": "Darcy Lindqvist",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Carmen Hawthorne",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Blaine Dewitt",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Odette Granger",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Desmond Fitzroy",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Hector Underhill",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Zelda Hartwell",
+          "pad": "2",
+          "routes": "CX187",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Darcy Danforth",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Edith Hawthorne",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Yara Beaumont",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Everett Bellamy",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Kendra Rainsford",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Leopold Caldwell",
+          "pad": "1",
+          "routes": "CX169",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Nolan Ingram",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Mason Winslow",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Greta Eastwood",
+          "pad": "1",
+          "routes": "CX181",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Caleb Blackwell",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Phoebe Holloway",
+          "pad": "1",
+          "routes": "CX186",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Step Van Route",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Sawyer Dunmore",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Mason Clemmons",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Carmen Abernathy",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Mabel Kensington",
+          "pad": "1",
+          "routes": "CX176",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Greta Underhill",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Paloma Marcus Selwyn",
+          "pad": "2",
+          "routes": "CX182",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Elodie Micah Hawthorne",
+          "pad": "1",
+          "routes": "CX172",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Rhea Ravenscroft",
+          "pad": "2",
+          "routes": "CX177",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Isidro Ariana Ingram",
+          "pad": "1",
+          "routes": "CX178",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Elodie Vandermeer",
+          "pad": "2",
+          "routes": "CX176",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Yara Julian Halloran",
+          "pad": "2",
+          "routes": "CX168|CX188",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Nadine Olive Abernathy",
+          "pad": "1",
+          "routes": "AX41|CX172",
+          "service_type": "DSP Initiated Work (Standard Vehicle)",
+          "shift_type": "",
+          "wave_time": "2:30pm"
+        },
+        {
+          "driver": "Greta Esme Vance",
+          "pad": "1",
+          "routes": "CX174",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Beatrice Sutherland",
+          "pad": "2",
+          "routes": "CX180",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Nolan Anika Wakefield",
+          "pad": "2",
+          "routes": "CX183",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Darcy Isidro Gresham",
+          "pad": "2",
+          "routes": "CX188",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Cleo Vandermeer",
+          "pad": "2",
+          "routes": "CX171",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Micah Tobias Kingsley",
+          "pad": "2",
+          "routes": "CX170",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Elodie Ashdown",
+          "pad": "1",
+          "routes": "CX196",
+          "service_type": "Nursery Route Level 2 - Electric Vehicle",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Miriam Nathaniel Huxley",
+          "pad": "2",
+          "routes": "CX198",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Dominic Cleo Prescott",
+          "pad": "1",
+          "routes": "CX199",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Ariana Nethercott",
+          "pad": "1",
+          "routes": "CX188",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Sabrina Tristan Gresham",
+          "pad": "1",
+          "routes": "CX189",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Colton Cleo Alderman",
+          "pad": "",
+          "routes": "CX181|CX171|CX187",
+          "service_type": "DSP Initiated Work (Standard Vehicle)",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Zane Quentin Applewhite",
+          "pad": "",
+          "routes": "CX184|AX41",
+          "service_type": "DSP Initiated Work (Standard Vehicle)",
+          "shift_type": "",
+          "wave_time": "2:30pm"
+        },
+        {
+          "driver": "Harlan Vera Penrose",
+          "pad": "",
+          "routes": "CX190",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Nolan Phoebe Rainsford",
+          "pad": "",
+          "routes": "CX185",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Nolan Abernathy",
+          "pad": "",
+          "routes": "CX184|CX177",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Sloane Winston Winslow",
+          "pad": "",
+          "routes": "CX179",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        }
+      ]
+    },
+    "itineraries/by_time": {
+      "adopt_result": null,
+      "associates_added": [],
+      "associates_changed": [],
+      "entry_pads_after_adopt": null,
+      "kind": "itineraries",
+      "links_added": {
+        "beatrice sutherland": "A1QVVPYVZD6R9F",
+        "cleo vandermeer": "AC32BQGN2MON3",
+        "colton cleo alderman": "A1E4CRQE9TMGKN",
+        "darcy isidro gresham": "A9CW8HB7Y0K8F4",
+        "dominic cleo prescott": "A5MNMU9DG0IGKN",
+        "elodie ashdown": "AW9CKWGLCCLMU",
+        "elodie micah hawthorne": "A503VSKH6DU6TJ",
+        "elodie vandermeer": "AKA0HPH6GU9DK",
+        "greta esme vance": "A7O9MN0YIUZXN",
+        "harlan vera penrose": "A2051ICVODZP9E",
+        "isidro ariana ingram": "A55NZ7WTBR2RXC",
+        "micah tobias kingsley": "AO2I4MJ59WDHS",
+        "miriam nathaniel huxley": "AU9G43K0RMQVQ",
+        "nadine olive abernathy": "A486QRCQCVMTG1",
+        "nolan abernathy": "A3QVN63ZJEGQYP",
+        "nolan anika wakefield": "A5JGA6O3VGJC9D",
+        "nolan phoebe rainsford": "A8KSSZB6LALEOL",
+        "rhea ravenscroft": "AFRYVFGBLTBTV",
+        "sabrina tristan gresham": "A9LE0ZXWQH9RYQ",
+        "sloane winston winslow": "AWJ5XN1FMHXXV",
+        "yara julian halloran": "A3FM1CRWW54MMO",
+        "zane quentin applewhite": "A4OQGIPQ6DAKF4"
+      },
+      "mode": "by_time",
+      "pads_set": {
+        "10:20am": 1,
+        "10:25am": 2,
+        "2:30pm": 3
+      },
+      "result": {
+        "added_drivers": [
+          "Paloma Marcus Selwyn",
+          "Elodie Micah Hawthorne",
+          "Rhea Ravenscroft",
+          "Isidro Ariana Ingram",
+          "Elodie Vandermeer",
+          "Yara Julian Halloran",
+          "Nadine Olive Abernathy",
+          "Greta Esme Vance",
+          "Beatrice Sutherland",
+          "Nolan Anika Wakefield",
+          "Darcy Isidro Gresham",
+          "Cleo Vandermeer",
+          "Micah Tobias Kingsley",
+          "Elodie Ashdown",
+          "Miriam Nathaniel Huxley",
+          "Dominic Cleo Prescott",
+          "Ariana Nethercott",
+          "Sabrina Tristan Gresham",
+          "Colton Cleo Alderman",
+          "Zane Quentin Applewhite",
+          "Harlan Vera Penrose",
+          "Nolan Phoebe Rainsford",
+          "Nolan Abernathy",
+          "Sloane Winston Winslow"
+        ],
+        "dispatch_times": 25,
+        "duplicates": 0,
+        "filled": 25,
+        "kind": "itineraries",
+        "needs_review": [],
+        "no_associate": 0,
+        "not_in_export": 36,
+        "pads": 25,
+        "route_codes": 25,
+        "service_types": 25,
+        "skipped": 36
+      },
+      "roster_route_source": "itineraries",
+      "roster_rows_after": 61,
+      "roster_rows_before": 37,
+      "rows_after": [
+        {
+          "driver": "Sabrina Woodbridge",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Operations Manager",
+          "wave_time": ""
+        },
+        {
+          "driver": "Jasper Holloway",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Elodie Hargrove",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Cecil Lovell",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Paloma Lindqvist",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Jasper Ormsby",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Elias Calloway",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "TIME OFF",
+          "wave_time": ""
+        },
+        {
+          "driver": "Sawyer Lovell",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Stella Upton",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Lead Driver",
+          "wave_time": ""
+        },
+        {
+          "driver": "Nell Bellamy",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Caleb Eldridge",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Marcus Clemmons",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Rhea Lockhart",
+          "pad": "2",
+          "routes": "CX191",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Step Van Route",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Caleb Wadsworth",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Lead Driver",
+          "wave_time": ""
+        },
+        {
+          "driver": "Darcy Lindqvist",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Carmen Hawthorne",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Blaine Dewitt",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Odette Granger",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Desmond Fitzroy",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Hector Underhill",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Zelda Hartwell",
+          "pad": "2",
+          "routes": "CX187",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Darcy Danforth",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Edith Hawthorne",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Yara Beaumont",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Everett Bellamy",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Kendra Rainsford",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Leopold Caldwell",
+          "pad": "1",
+          "routes": "CX169",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Nolan Ingram",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Mason Winslow",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Greta Eastwood",
+          "pad": "1",
+          "routes": "CX181",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Caleb Blackwell",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Phoebe Holloway",
+          "pad": "1",
+          "routes": "CX186",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Step Van Route",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Sawyer Dunmore",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Mason Clemmons",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Carmen Abernathy",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Mabel Kensington",
+          "pad": "1",
+          "routes": "CX176",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Greta Underhill",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Paloma Marcus Selwyn",
+          "pad": "1",
+          "routes": "CX182",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Elodie Micah Hawthorne",
+          "pad": "1",
+          "routes": "CX172",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Rhea Ravenscroft",
+          "pad": "2",
+          "routes": "CX177",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Isidro Ariana Ingram",
+          "pad": "1",
+          "routes": "CX178",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Elodie Vandermeer",
+          "pad": "2",
+          "routes": "CX176",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Yara Julian Halloran",
+          "pad": "2",
+          "routes": "CX168|CX188",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Nadine Olive Abernathy",
+          "pad": "3",
+          "routes": "AX41|CX172",
+          "service_type": "DSP Initiated Work (Standard Vehicle)",
+          "shift_type": "",
+          "wave_time": "2:30pm"
+        },
+        {
+          "driver": "Greta Esme Vance",
+          "pad": "2",
+          "routes": "CX174",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Beatrice Sutherland",
+          "pad": "2",
+          "routes": "CX180",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Nolan Anika Wakefield",
+          "pad": "1",
+          "routes": "CX183",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Darcy Isidro Gresham",
+          "pad": "2",
+          "routes": "CX188",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Cleo Vandermeer",
+          "pad": "1",
+          "routes": "CX171",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Micah Tobias Kingsley",
+          "pad": "2",
+          "routes": "CX170",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Elodie Ashdown",
+          "pad": "1",
+          "routes": "CX196",
+          "service_type": "Nursery Route Level 2 - Electric Vehicle",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Miriam Nathaniel Huxley",
+          "pad": "2",
+          "routes": "CX198",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Dominic Cleo Prescott",
+          "pad": "1",
+          "routes": "CX199",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Ariana Nethercott",
+          "pad": "1",
+          "routes": "CX188",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Sabrina Tristan Gresham",
+          "pad": "2",
+          "routes": "CX189",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Colton Cleo Alderman",
+          "pad": "2",
+          "routes": "CX181|CX171|CX187",
+          "service_type": "DSP Initiated Work (Standard Vehicle)",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Zane Quentin Applewhite",
+          "pad": "3",
+          "routes": "CX184|AX41",
+          "service_type": "DSP Initiated Work (Standard Vehicle)",
+          "shift_type": "",
+          "wave_time": "2:30pm"
+        },
+        {
+          "driver": "Harlan Vera Penrose",
+          "pad": "1",
+          "routes": "CX190",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Nolan Phoebe Rainsford",
+          "pad": "1",
+          "routes": "CX185",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Nolan Abernathy",
+          "pad": "2",
+          "routes": "CX184|CX177",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Sloane Winston Winslow",
+          "pad": "2",
+          "routes": "CX179",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        }
+      ]
+    },
+    "routes/adopted": {
+      "adopt_result": [
+        7,
+        0,
+        18
+      ],
+      "associates_added": [],
+      "associates_changed": [],
+      "entry_pads_after_adopt": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "1",
+        "1",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "2",
+        "1",
+        "2",
+        "",
+        "1",
+        "",
+        "",
+        "1",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "kind": "routes",
+      "links_added": {
+        "beatrice sutherland": "A1QVVPYVZD6R9F",
+        "cleo vandermeer": "AC32BQGN2MON3",
+        "colton cleo alderman": "A1E4CRQE9TMGKN",
+        "darcy isidro gresham": "A9CW8HB7Y0K8F4",
+        "dominic cleo prescott": "A5MNMU9DG0IGKN",
+        "elodie ashdown": "AW9CKWGLCCLMU",
+        "elodie micah hawthorne": "A503VSKH6DU6TJ",
+        "elodie vandermeer": "AKA0HPH6GU9DK",
+        "greta esme vance": "A7O9MN0YIUZXN",
+        "harlan vera penrose": "A2051ICVODZP9E",
+        "isidro ariana ingram": "A55NZ7WTBR2RXC",
+        "micah tobias kingsley": "AO2I4MJ59WDHS",
+        "miriam nathaniel huxley": "AU9G43K0RMQVQ",
+        "nadine olive abernathy": "A486QRCQCVMTG1",
+        "nolan abernathy": "A3QVN63ZJEGQYP",
+        "nolan anika wakefield": "A5JGA6O3VGJC9D",
+        "nolan phoebe rainsford": "A8KSSZB6LALEOL",
+        "rhea ravenscroft": "AFRYVFGBLTBTV",
+        "sabrina tristan gresham": "A9LE0ZXWQH9RYQ",
+        "sloane winston winslow": "AWJ5XN1FMHXXV",
+        "yara julian halloran": "A3FM1CRWW54MMO",
+        "zane quentin applewhite": "A4OQGIPQ6DAKF4"
+      },
+      "mode": "adopted",
+      "pads_set": {},
+      "result": {
+        "added_drivers": [
+          "Paloma Marcus Selwyn",
+          "Elodie Micah Hawthorne",
+          "Rhea Ravenscroft",
+          "Isidro Ariana Ingram",
+          "Elodie Vandermeer",
+          "Yara Julian Halloran",
+          "Nadine Olive Abernathy",
+          "Greta Esme Vance",
+          "Beatrice Sutherland",
+          "Nolan Anika Wakefield",
+          "Darcy Isidro Gresham",
+          "Cleo Vandermeer",
+          "Micah Tobias Kingsley",
+          "Elodie Ashdown",
+          "Miriam Nathaniel Huxley",
+          "Dominic Cleo Prescott",
+          "Ariana Nethercott",
+          "Sabrina Tristan Gresham",
+          "Colton Cleo Alderman",
+          "Zane Quentin Applewhite",
+          "Harlan Vera Penrose",
+          "Nolan Phoebe Rainsford",
+          "Nolan Abernathy",
+          "Sloane Winston Winslow"
+        ],
+        "dispatch_times": 25,
+        "duplicates": 0,
+        "filled": 25,
+        "kind": "routes",
+        "needs_review": [],
+        "no_associate": 0,
+        "not_in_export": 36,
+        "pads": 7,
+        "route_codes": 25,
+        "service_types": 25,
+        "skipped": 36
+      },
+      "roster_route_source": "routes",
+      "roster_rows_after": 61,
+      "roster_rows_before": 37,
+      "rows_after": [
+        {
+          "driver": "Sabrina Woodbridge",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Operations Manager",
+          "wave_time": ""
+        },
+        {
+          "driver": "Jasper Holloway",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Elodie Hargrove",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Cecil Lovell",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Paloma Lindqvist",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Jasper Ormsby",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Elias Calloway",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "TIME OFF",
+          "wave_time": ""
+        },
+        {
+          "driver": "Sawyer Lovell",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Stella Upton",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Lead Driver",
+          "wave_time": ""
+        },
+        {
+          "driver": "Nell Bellamy",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Caleb Eldridge",
+          "pad": "2",
+          "routes": "CX189",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Step Van Route",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Marcus Clemmons",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Rhea Lockhart",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Caleb Wadsworth",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Lead Driver",
+          "wave_time": ""
+        },
+        {
+          "driver": "Darcy Lindqvist",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Carmen Hawthorne",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Blaine Dewitt",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Odette Granger",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Desmond Fitzroy",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Hector Underhill",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Zelda Hartwell",
+          "pad": "2",
+          "routes": "CX191",
+          "service_type": "Standard Parcel Electric - Rivian SMALL",
+          "shift_type": "Electric Route",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Darcy Danforth",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Edith Hawthorne",
+          "pad": "1",
+          "routes": "CX194",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Yara Beaumont",
+          "pad": "1",
+          "routes": "CX197",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Everett Bellamy",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Kendra Rainsford",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Leopold Caldwell",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Nolan Ingram",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Mason Winslow",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Greta Eastwood",
+          "pad": "1",
+          "routes": "CX174",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Caleb Blackwell",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Phoebe Holloway",
+          "pad": "1",
+          "routes": "CX190",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Step Van Route",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Sawyer Dunmore",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Mason Clemmons",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Carmen Abernathy",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Mabel Kensington",
+          "pad": "1",
+          "routes": "CX180",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Greta Underhill",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Paloma Marcus Selwyn",
+          "pad": "",
+          "routes": "CX171",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Elodie Micah Hawthorne",
+          "pad": "",
+          "routes": "CX178",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Rhea Ravenscroft",
+          "pad": "",
+          "routes": "CX179",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Isidro Ariana Ingram",
+          "pad": "",
+          "routes": "CX193",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Elodie Vandermeer",
+          "pad": "",
+          "routes": "CX176",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Yara Julian Halloran",
+          "pad": "",
+          "routes": "CX173",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Nadine Olive Abernathy",
+          "pad": "",
+          "routes": "CX183",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Greta Esme Vance",
+          "pad": "",
+          "routes": "CX184",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Beatrice Sutherland",
+          "pad": "",
+          "routes": "CX186",
+          "service_type": "Standard Parcel Electric - Rivian SMALL",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Nolan Anika Wakefield",
+          "pad": "",
+          "routes": "CX187",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Darcy Isidro Gresham",
+          "pad": "",
+          "routes": "CX188",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Cleo Vandermeer",
+          "pad": "",
+          "routes": "CX192",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Micah Tobias Kingsley",
+          "pad": "",
+          "routes": "CX195",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Elodie Ashdown",
+          "pad": "",
+          "routes": "CX196",
+          "service_type": "Nursery Route Level 2 - Electric Vehicle",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Miriam Nathaniel Huxley",
+          "pad": "",
+          "routes": "CX198",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Dominic Cleo Prescott",
+          "pad": "",
+          "routes": "CX199",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Ariana Nethercott",
+          "pad": "",
+          "routes": "CX200",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Sabrina Tristan Gresham",
+          "pad": "",
+          "routes": "CX182",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Colton Cleo Alderman",
+          "pad": "2",
+          "routes": "CX181|CX171|CX187",
+          "service_type": "DSP Initiated Work (Standard Vehicle)",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Zane Quentin Applewhite",
+          "pad": "3",
+          "routes": "CX184|AX41",
+          "service_type": "DSP Initiated Work (Standard Vehicle)",
+          "shift_type": "",
+          "wave_time": "2:30pm"
+        },
+        {
+          "driver": "Harlan Vera Penrose",
+          "pad": "1",
+          "routes": "CX190",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Nolan Phoebe Rainsford",
+          "pad": "1",
+          "routes": "CX185",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Nolan Abernathy",
+          "pad": "2",
+          "routes": "CX184|CX177",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Sloane Winston Winslow",
+          "pad": "2",
+          "routes": "CX179",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        }
+      ]
+    },
+    "routes/by_time": {
+      "adopt_result": null,
+      "associates_added": [],
+      "associates_changed": [],
+      "entry_pads_after_adopt": null,
+      "kind": "routes",
+      "links_added": {
+        "beatrice sutherland": "A1QVVPYVZD6R9F",
+        "cleo vandermeer": "AC32BQGN2MON3",
+        "colton cleo alderman": "A1E4CRQE9TMGKN",
+        "darcy isidro gresham": "A9CW8HB7Y0K8F4",
+        "dominic cleo prescott": "A5MNMU9DG0IGKN",
+        "elodie ashdown": "AW9CKWGLCCLMU",
+        "elodie micah hawthorne": "A503VSKH6DU6TJ",
+        "elodie vandermeer": "AKA0HPH6GU9DK",
+        "greta esme vance": "A7O9MN0YIUZXN",
+        "harlan vera penrose": "A2051ICVODZP9E",
+        "isidro ariana ingram": "A55NZ7WTBR2RXC",
+        "micah tobias kingsley": "AO2I4MJ59WDHS",
+        "miriam nathaniel huxley": "AU9G43K0RMQVQ",
+        "nadine olive abernathy": "A486QRCQCVMTG1",
+        "nolan abernathy": "A3QVN63ZJEGQYP",
+        "nolan anika wakefield": "A5JGA6O3VGJC9D",
+        "nolan phoebe rainsford": "A8KSSZB6LALEOL",
+        "rhea ravenscroft": "AFRYVFGBLTBTV",
+        "sabrina tristan gresham": "A9LE0ZXWQH9RYQ",
+        "sloane winston winslow": "AWJ5XN1FMHXXV",
+        "yara julian halloran": "A3FM1CRWW54MMO",
+        "zane quentin applewhite": "A4OQGIPQ6DAKF4"
+      },
+      "mode": "by_time",
+      "pads_set": {
+        "10:20am": 1,
+        "10:25am": 2
+      },
+      "result": {
+        "added_drivers": [
+          "Paloma Marcus Selwyn",
+          "Elodie Micah Hawthorne",
+          "Rhea Ravenscroft",
+          "Isidro Ariana Ingram",
+          "Elodie Vandermeer",
+          "Yara Julian Halloran",
+          "Nadine Olive Abernathy",
+          "Greta Esme Vance",
+          "Beatrice Sutherland",
+          "Nolan Anika Wakefield",
+          "Darcy Isidro Gresham",
+          "Cleo Vandermeer",
+          "Micah Tobias Kingsley",
+          "Elodie Ashdown",
+          "Miriam Nathaniel Huxley",
+          "Dominic Cleo Prescott",
+          "Ariana Nethercott",
+          "Sabrina Tristan Gresham",
+          "Colton Cleo Alderman",
+          "Zane Quentin Applewhite",
+          "Harlan Vera Penrose",
+          "Nolan Phoebe Rainsford",
+          "Nolan Abernathy",
+          "Sloane Winston Winslow"
+        ],
+        "dispatch_times": 25,
+        "duplicates": 0,
+        "filled": 25,
+        "kind": "routes",
+        "needs_review": [],
+        "no_associate": 0,
+        "not_in_export": 36,
+        "pads": 25,
+        "route_codes": 25,
+        "service_types": 25,
+        "skipped": 36
+      },
+      "roster_route_source": "routes",
+      "roster_rows_after": 61,
+      "roster_rows_before": 37,
+      "rows_after": [
+        {
+          "driver": "Sabrina Woodbridge",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Operations Manager",
+          "wave_time": ""
+        },
+        {
+          "driver": "Jasper Holloway",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Elodie Hargrove",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Cecil Lovell",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Paloma Lindqvist",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Jasper Ormsby",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Elias Calloway",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "TIME OFF",
+          "wave_time": ""
+        },
+        {
+          "driver": "Sawyer Lovell",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Stella Upton",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Lead Driver",
+          "wave_time": ""
+        },
+        {
+          "driver": "Nell Bellamy",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Caleb Eldridge",
+          "pad": "1",
+          "routes": "CX189",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Step Van Route",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Marcus Clemmons",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Rhea Lockhart",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Caleb Wadsworth",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Lead Driver",
+          "wave_time": ""
+        },
+        {
+          "driver": "Darcy Lindqvist",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Carmen Hawthorne",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Blaine Dewitt",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Odette Granger",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Desmond Fitzroy",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Hector Underhill",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Zelda Hartwell",
+          "pad": "2",
+          "routes": "CX191",
+          "service_type": "Standard Parcel Electric - Rivian SMALL",
+          "shift_type": "Electric Route",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Darcy Danforth",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Edith Hawthorne",
+          "pad": "2",
+          "routes": "CX194",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Yara Beaumont",
+          "pad": "1",
+          "routes": "CX197",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Everett Bellamy",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Kendra Rainsford",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Leopold Caldwell",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Nolan Ingram",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Mason Winslow",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Greta Eastwood",
+          "pad": "1",
+          "routes": "CX174",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Caleb Blackwell",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Phoebe Holloway",
+          "pad": "1",
+          "routes": "CX190",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Step Van Route",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Sawyer Dunmore",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Mason Clemmons",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Carmen Abernathy",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Mabel Kensington",
+          "pad": "2",
+          "routes": "CX180",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Greta Underhill",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Paloma Marcus Selwyn",
+          "pad": "2",
+          "routes": "CX171",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Elodie Micah Hawthorne",
+          "pad": "1",
+          "routes": "CX178",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Rhea Ravenscroft",
+          "pad": "2",
+          "routes": "CX179",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Isidro Ariana Ingram",
+          "pad": "1",
+          "routes": "CX193",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Elodie Vandermeer",
+          "pad": "2",
+          "routes": "CX176",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Yara Julian Halloran",
+          "pad": "2",
+          "routes": "CX173",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Nadine Olive Abernathy",
+          "pad": "1",
+          "routes": "CX183",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Greta Esme Vance",
+          "pad": "1",
+          "routes": "CX184",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Beatrice Sutherland",
+          "pad": "2",
+          "routes": "CX186",
+          "service_type": "Standard Parcel Electric - Rivian SMALL",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Nolan Anika Wakefield",
+          "pad": "2",
+          "routes": "CX187",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Darcy Isidro Gresham",
+          "pad": "2",
+          "routes": "CX188",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Cleo Vandermeer",
+          "pad": "2",
+          "routes": "CX192",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Micah Tobias Kingsley",
+          "pad": "2",
+          "routes": "CX195",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Elodie Ashdown",
+          "pad": "1",
+          "routes": "CX196",
+          "service_type": "Nursery Route Level 2 - Electric Vehicle",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Miriam Nathaniel Huxley",
+          "pad": "2",
+          "routes": "CX198",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Dominic Cleo Prescott",
+          "pad": "1",
+          "routes": "CX199",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Ariana Nethercott",
+          "pad": "1",
+          "routes": "CX200",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Sabrina Tristan Gresham",
+          "pad": "1",
+          "routes": "CX182",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Colton Cleo Alderman",
+          "pad": "2",
+          "routes": "CX181|CX171|CX187",
+          "service_type": "DSP Initiated Work (Standard Vehicle)",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Zane Quentin Applewhite",
+          "pad": "3",
+          "routes": "CX184|AX41",
+          "service_type": "DSP Initiated Work (Standard Vehicle)",
+          "shift_type": "",
+          "wave_time": "2:30pm"
+        },
+        {
+          "driver": "Harlan Vera Penrose",
+          "pad": "1",
+          "routes": "CX190",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Nolan Phoebe Rainsford",
+          "pad": "1",
+          "routes": "CX185",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Nolan Abernathy",
+          "pad": "2",
+          "routes": "CX184|CX177",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Sloane Winston Winslow",
+          "pad": "2",
+          "routes": "CX179",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        }
+      ]
+    },
+    "schedule/by_time": {
+      "adopt_result": null,
+      "associates_added": [],
+      "associates_changed": [],
+      "entry_pads_after_adopt": null,
+      "kind": "schedule",
+      "links_added": {
+        "beatrice sutherland": "A1QVVPYVZD6R9F",
+        "cleo vandermeer": "AC32BQGN2MON3",
+        "colton cleo alderman": "A1E4CRQE9TMGKN",
+        "darcy isidro gresham": "A9CW8HB7Y0K8F4",
+        "dominic cleo prescott": "A5MNMU9DG0IGKN",
+        "elodie ashdown": "AW9CKWGLCCLMU",
+        "elodie micah hawthorne": "A503VSKH6DU6TJ",
+        "elodie vandermeer": "AKA0HPH6GU9DK",
+        "greta esme vance": "A7O9MN0YIUZXN",
+        "harlan vera penrose": "A2051ICVODZP9E",
+        "isidro ariana ingram": "A55NZ7WTBR2RXC",
+        "micah tobias kingsley": "AO2I4MJ59WDHS",
+        "miriam nathaniel huxley": "AU9G43K0RMQVQ",
+        "nadine olive abernathy": "A486QRCQCVMTG1",
+        "nolan abernathy": "A3QVN63ZJEGQYP",
+        "nolan anika wakefield": "A5JGA6O3VGJC9D",
+        "nolan phoebe rainsford": "A8KSSZB6LALEOL",
+        "rhea ravenscroft": "AFRYVFGBLTBTV",
+        "sabrina tristan gresham": "A9LE0ZXWQH9RYQ",
+        "sloane winston winslow": "AWJ5XN1FMHXXV",
+        "yara julian halloran": "A3FM1CRWW54MMO",
+        "zane quentin applewhite": "A4OQGIPQ6DAKF4"
+      },
+      "mode": "by_time",
+      "pads_set": {
+        "9:50am": 1,
+        "9:55am": 2
+      },
+      "result": {
+        "added_drivers": [
+          "Paloma Marcus Selwyn",
+          "Elodie Micah Hawthorne",
+          "Rhea Ravenscroft",
+          "Isidro Ariana Ingram",
+          "Elodie Vandermeer",
+          "Yara Julian Halloran",
+          "Nadine Olive Abernathy",
+          "Greta Esme Vance",
+          "Beatrice Sutherland",
+          "Nolan Anika Wakefield",
+          "Darcy Isidro Gresham",
+          "Cleo Vandermeer",
+          "Micah Tobias Kingsley",
+          "Elodie Ashdown",
+          "Miriam Nathaniel Huxley",
+          "Dominic Cleo Prescott",
+          "Ariana Nethercott",
+          "Sabrina Tristan Gresham",
+          "Colton Cleo Alderman",
+          "Zane Quentin Applewhite",
+          "Harlan Vera Penrose",
+          "Nolan Phoebe Rainsford",
+          "Nolan Abernathy",
+          "Sloane Winston Winslow"
+        ],
+        "dispatch_times": 28,
+        "duplicates": 0,
+        "filled": 28,
+        "kind": "schedule",
+        "needs_review": [],
+        "no_associate": 0,
+        "not_in_export": 33,
+        "pads": 28,
+        "route_codes": 0,
+        "service_types": 28,
+        "skipped": 33
+      },
+      "roster_route_source": "schedule",
+      "roster_rows_after": 61,
+      "roster_rows_before": 37,
+      "rows_after": [
+        {
+          "driver": "Sabrina Woodbridge",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Operations Manager",
+          "wave_time": ""
+        },
+        {
+          "driver": "Jasper Holloway",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Elodie Hargrove",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Cecil Lovell",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Paloma Lindqvist",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Jasper Ormsby",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Step Van Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Elias Calloway",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "TIME OFF",
+          "wave_time": ""
+        },
+        {
+          "driver": "Sawyer Lovell",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Electric Route",
+          "wave_time": ""
+        },
+        {
+          "driver": "Stella Upton",
+          "pad": "",
+          "routes": "",
+          "service_type": "",
+          "shift_type": "Lead Driver",
+          "wave_time": ""
+        },
+        {
+          "driver": "Nell Bellamy",
+          "pad": "2",
+          "routes": "",
+          "service_type": "Standard Parcel Step Van - US",
+          "shift_type": "Step Van Route",
+          "wave_time": "9:55am"
+        },
+        {
+          "driver": "Caleb Eldridge",
+          "pad": "2",
+          "routes": "",
+          "service_type": "Standard Parcel Step Van - US",
+          "shift_type": "Step Van Route",
+          "wave_time": "9:55am"
+        },
+        {
+          "driver": "Marcus Clemmons",
+          "pad": "2",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian SMALL",
+          "shift_type": "Step Van Route",
+          "wave_time": "9:55am"
+        },
+        {
+          "driver": "Rhea Lockhart",
+          "pad": "2",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian SMALL",
+          "shift_type": "Step Van Route",
+          "wave_time": "9:55am"
+        },
+        {
+          "driver": "Caleb Wadsworth",
+          "pad": "2",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Lead Driver",
+          "wave_time": "9:55am"
+        },
+        {
+          "driver": "Darcy Lindqvist",
+          "pad": "1",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:50am"
+        },
+        {
+          "driver": "Carmen Hawthorne",
+          "pad": "1",
+          "routes": "",
+          "service_type": "Nursery Route Level 1 - Electric Vehicle",
+          "shift_type": "Electric Route",
+          "wave_time": "9:50am"
+        },
+        {
+          "driver": "Blaine Dewitt",
+          "pad": "1",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:50am"
+        },
+        {
+          "driver": "Odette Granger",
+          "pad": "1",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:50am"
+        },
+        {
+          "driver": "Desmond Fitzroy",
+          "pad": "2",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:55am"
+        },
+        {
+          "driver": "Hector Underhill",
+          "pad": "1",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Step Van Route",
+          "wave_time": "9:50am"
+        },
+        {
+          "driver": "Zelda Hartwell",
+          "pad": "2",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:55am"
+        },
+        {
+          "driver": "Darcy Danforth",
+          "pad": "1",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:50am"
+        },
+        {
+          "driver": "Edith Hawthorne",
+          "pad": "1",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:50am"
+        },
+        {
+          "driver": "Yara Beaumont",
+          "pad": "1",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:50am"
+        },
+        {
+          "driver": "Everett Bellamy",
+          "pad": "2",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:55am"
+        },
+        {
+          "driver": "Kendra Rainsford",
+          "pad": "1",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:50am"
+        },
+        {
+          "driver": "Leopold Caldwell",
+          "pad": "1",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:50am"
+        },
+        {
+          "driver": "Nolan Ingram",
+          "pad": "1",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:50am"
+        },
+        {
+          "driver": "Mason Winslow",
+          "pad": "2",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:55am"
+        },
+        {
+          "driver": "Greta Eastwood",
+          "pad": "1",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:50am"
+        },
+        {
+          "driver": "Caleb Blackwell",
+          "pad": "1",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:50am"
+        },
+        {
+          "driver": "Phoebe Holloway",
+          "pad": "1",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Step Van Route",
+          "wave_time": "9:50am"
+        },
+        {
+          "driver": "Sawyer Dunmore",
+          "pad": "2",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Step Van Route",
+          "wave_time": "9:55am"
+        },
+        {
+          "driver": "Mason Clemmons",
+          "pad": "2",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:55am"
+        },
+        {
+          "driver": "Carmen Abernathy",
+          "pad": "1",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Step Van Route",
+          "wave_time": "9:50am"
+        },
+        {
+          "driver": "Mabel Kensington",
+          "pad": "1",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Electric Route",
+          "wave_time": "9:50am"
+        },
+        {
+          "driver": "Greta Underhill",
+          "pad": "2",
+          "routes": "",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "Step Van Route",
+          "wave_time": "9:55am"
+        },
+        {
+          "driver": "Paloma Marcus Selwyn",
+          "pad": "2",
+          "routes": "CX171",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Elodie Micah Hawthorne",
+          "pad": "1",
+          "routes": "CX178",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Rhea Ravenscroft",
+          "pad": "2",
+          "routes": "CX179",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Isidro Ariana Ingram",
+          "pad": "1",
+          "routes": "CX193",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Elodie Vandermeer",
+          "pad": "2",
+          "routes": "CX176",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Yara Julian Halloran",
+          "pad": "2",
+          "routes": "CX173",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Nadine Olive Abernathy",
+          "pad": "1",
+          "routes": "CX183",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Greta Esme Vance",
+          "pad": "1",
+          "routes": "CX184",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Beatrice Sutherland",
+          "pad": "2",
+          "routes": "CX186",
+          "service_type": "Standard Parcel Electric - Rivian SMALL",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Nolan Anika Wakefield",
+          "pad": "2",
+          "routes": "CX187",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Darcy Isidro Gresham",
+          "pad": "2",
+          "routes": "CX188",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Cleo Vandermeer",
+          "pad": "2",
+          "routes": "CX192",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Micah Tobias Kingsley",
+          "pad": "2",
+          "routes": "CX195",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Elodie Ashdown",
+          "pad": "1",
+          "routes": "CX196",
+          "service_type": "Nursery Route Level 2 - Electric Vehicle",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Miriam Nathaniel Huxley",
+          "pad": "2",
+          "routes": "CX198",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Dominic Cleo Prescott",
+          "pad": "1",
+          "routes": "CX199",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Ariana Nethercott",
+          "pad": "1",
+          "routes": "CX200",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Sabrina Tristan Gresham",
+          "pad": "1",
+          "routes": "CX182",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Colton Cleo Alderman",
+          "pad": "2",
+          "routes": "CX181|CX171|CX187",
+          "service_type": "DSP Initiated Work (Standard Vehicle)",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Zane Quentin Applewhite",
+          "pad": "3",
+          "routes": "CX184|AX41",
+          "service_type": "DSP Initiated Work (Standard Vehicle)",
+          "shift_type": "",
+          "wave_time": "2:30pm"
+        },
+        {
+          "driver": "Harlan Vera Penrose",
+          "pad": "1",
+          "routes": "CX190",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Nolan Phoebe Rainsford",
+          "pad": "1",
+          "routes": "CX185",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:20am"
+        },
+        {
+          "driver": "Nolan Abernathy",
+          "pad": "2",
+          "routes": "CX184|CX177",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        },
+        {
+          "driver": "Sloane Winston Winslow",
+          "pad": "2",
+          "routes": "CX179",
+          "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+          "shift_type": "",
+          "wave_time": "10:25am"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "@loadout/fixtures",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Made-up export files shaped like the real ones, and the script that makes them.",
+  "type": "module",
+  "scripts": {
+    "anonymise": "node anonymise.mjs"
+  },
+  "dependencies": {
+    "exceljs": "4.4.0",
+    "papaparse": "5.7.0"
+  }
+}

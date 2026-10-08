@@ -1,0 +1,47 @@
+/*
+ * The design system's entry: Tailwind plus the app's tokens.
+ * Import this once, before any other style sheet (main.tsx does).
+ *
+ * Tailwind class names map onto the tokens, so `bg-surface text-fg border-line` follows the
+ * theme the shell picked. Raw tokens (var(--surface)) work in plain CSS too.
+ */
+
+@import 'tailwindcss';
+@import './tokens.css';
+
+@theme inline {
+  --font-sans: var(--font-ui);
+  --font-mono: var(--font-mono);
+
+  --color-app: var(--bg);
+  --color-surface: var(--surface);
+  --color-raised: var(--surface-raised);
+  --color-sunken: var(--surface-sunken);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-fg: var(--text);
+  --color-muted: var(--text-muted);
+  --color-faint: var(--text-faint);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-text);
+  --color-accent-soft: var(--accent-soft);
+  --color-focus: var(--focus);
+  --color-row-stripe: var(--row-stripe);
+  --color-row-hover: var(--row-hover);
+  --color-row-selected: var(--row-selected);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-neutral: var(--neutral);
+  --color-neutral-soft: var(--neutral-soft);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --shadow-popover: var(--shadow-popover);
+}

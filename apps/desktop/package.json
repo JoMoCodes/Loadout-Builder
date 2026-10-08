@@ -1,0 +1,105 @@
+{
+  "name": "@loadout/desktop",
+  "productName": "Loadout Builder",
+  "version": "2.0.0",
+  "description": "Builds the daily load-out roster and van assignments for a delivery station.",
+  "main": "dist/main/main.js",
+  "private": true,
+  "author": "JoMoCodes",
+  "scripts": {
+    "start": "node scripts/dev.mjs",
+    "build": "node scripts/build-main.mjs && vite build",
+    "dist": "npm run build && electron-builder --win nsis portable --publish never",
+    "dist:dir": "npm run build && electron-builder --win dir --publish never",
+    "typecheck": "tsc -p tsconfig.main.json --noEmit && tsc -p tsconfig.json --noEmit",
+    "smoke": "node scripts/smoke.mjs",
+    "help-shots": "node scripts/help-screenshots.mjs",
+    "test:ui": "playwright test",
+    "demo-data": "tsx scripts/make-grid-demo.ts",
+    "postinstall": "node scripts/check-native.mjs",
+    "rebuild": "electron-rebuild -f -w better-sqlite3"
+  },
+  "build": {
+    "appId": "com.jomocodes.loadoutbuilder",
+    "productName": "Loadout Builder",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Loadout Builder",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "artifactName": "Loadout-Builder-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "Loadout-Builder-${version}-portable.${ext}"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "JoMoCodes",
+        "repo": "Loadout-Builder",
+        "releaseType": "release"
+      }
+    ],
+    "extraResources": [
+      {
+        "from": "build/icon.png",
+        "to": "icon.png"
+      },
+      {
+        "from": "../../packages/fixtures/v1/loadout.db",
+        "to": "fixtures/v1/loadout.db"
+      }
+    ]
+  },
+  "dependencies": {
+    "better-sqlite3": "13.0.3",
+    "electron-updater": "6.8.9",
+    "exceljs": "4.4.0",
+    "papaparse": "5.7.0",
+    "pdf-lib": "1.17.1"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "4.2.1",
+    "@loadout/core": "*",
+    "@loadout/storage": "*",
+    "@playwright/test": "1.56.1",
+    "@radix-ui/react-context-menu": "2.3.8",
+    "@radix-ui/react-dropdown-menu": "2.1.25",
+    "@radix-ui/react-slot": "1.4.0",
+    "@tailwindcss/vite": "4.3.3",
+    "@tanstack/react-table": "8.21.3",
+    "@tanstack/react-virtual": "3.14.13",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "driver.js": "1.8.0",
+    "electron": "44.7.0",
+    "electron-builder": "26.15.3",
+    "lucide-react": "1.53.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "tailwind-merge": "3.7.0",
+    "tailwindcss": "4.3.3",
+    "vite": "8.3.3"
+  }
+}

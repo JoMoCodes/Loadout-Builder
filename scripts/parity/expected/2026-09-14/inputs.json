@@ -1,0 +1,76 @@
+{
+  "affinity_slots_held": 42,
+  "associates": {
+    "count": 78,
+    "file": "AssociateData.csv",
+    "with_tenure": 68
+  },
+  "driver_links": 13,
+  "dwp": {
+    "day": "2026-09-11",
+    "file": "DWP_DSP-XXXX_09-11-2026.xlsx",
+    "row_count": 26
+  },
+  "lmr_approved": 14,
+  "loadout": {
+    "date": "2026-09-14",
+    "date_label": "Monday, September 14 2026",
+    "file": "2026_09_14_12_15_loadout_sheet.xlsx",
+    "row_count": 37
+  },
+  "previous_roster": {
+    "date": "2026-08-30",
+    "row_count": 41
+  },
+  "print_layouts_saved": [
+    "Morning crew"
+  ],
+  "route_sources": {
+    "itineraries": {
+      "day": "2026-10-03",
+      "file": "Itineraries_XXX1_2026-10-03_21_36 (CDT).xlsx",
+      "pads": {
+        "10:20am": 1,
+        "10:25am": 2,
+        "2:30pm": 3
+      },
+      "row_count": 25,
+      "source_total": null
+    },
+    "routes": {
+      "day": "2026-09-25",
+      "file": "Routes_XXX1_2026-09-25_09_54 (CDT).xlsx",
+      "pads": {
+        "10:20am": 1,
+        "10:25am": 2
+      },
+      "row_count": 25,
+      "source_total": null
+    },
+    "schedule": {
+      "day": "2026-09-14",
+      "file": "Week-38-Schedule.xlsx",
+      "pads": {
+        "9:50am": 1,
+        "9:55am": 2
+      },
+      "row_count": 28,
+      "source_total": 28
+    }
+  },
+  "tenure": {
+    "files": [
+      "Tenured_Workforce_DA_1756800000.csv",
+      "Tenured_Workforce_DA_1756900000.csv"
+    ],
+    "record_count": 167
+  },
+  "today": "2026-09-14",
+  "vehicle_overrides": 6,
+  "vehicle_priorities": 25,
+  "vehicles": {
+    "count": 41,
+    "file": "VehiclesData.xlsx",
+    "operational": 26
+  }
+}

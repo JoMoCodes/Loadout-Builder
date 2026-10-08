@@ -1,0 +1,1420 @@
+{
+  "date_label": "Monday, September 14 2026",
+  "export": {
+    "export-dwp": {
+      "drivers": 61,
+      "file": "export-dwp",
+      "with_dwp": true
+    },
+    "export-plain": {
+      "drivers": 61,
+      "file": "export-plain",
+      "with_dwp": false
+    }
+  },
+  "print": {
+    "default": {
+      "drivers": 61,
+      "file": "default",
+      "pages": 2,
+      "spec": {
+        "center_h": true,
+        "center_v": false,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [],
+        "excluded_shifts": [],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "",
+        "note": "",
+        "orientation": "portrait",
+        "paper": "letter",
+        "repeat_header": true,
+        "scale": 100,
+        "show_page_numbers": true,
+        "show_title": true,
+        "sort_by": "driver",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": false,
+        "title": "",
+        "vans_only": false
+      }
+    },
+    "draw:long-title-by-pad": {
+      "drivers": 61,
+      "file": "draw_long-title-by-pad",
+      "pages": 5,
+      "spec": {
+        "center_h": true,
+        "center_v": false,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "Keys",
+            "kind": "checkbox",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [],
+        "excluded_shifts": [],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "pad",
+        "note": "Ask at the desk if your van is not on this sheet — do not take another",
+        "orientation": "portrait",
+        "paper": "letter",
+        "repeat_header": true,
+        "scale": 150,
+        "show_page_numbers": true,
+        "show_title": true,
+        "sort_by": "driver",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": false,
+        "title": "Morning hand-out for the yard – the driver’s copy, with every single route on it and a good deal more besides",
+        "vans_only": false
+      }
+    },
+    "draw:no-boxes-centred-down": {
+      "drivers": 61,
+      "file": "draw_no-boxes-centred-down",
+      "pages": 5,
+      "spec": {
+        "center_h": true,
+        "center_v": true,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [],
+        "excluded_shifts": [],
+        "fit_one_page": true,
+        "grid": false,
+        "group_break": "wave_time",
+        "note": "Keys back by 9",
+        "orientation": "landscape",
+        "paper": "letter",
+        "repeat_header": false,
+        "scale": 100,
+        "show_page_numbers": true,
+        "show_title": true,
+        "sort_by": "driver",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": true,
+        "title": "Yard Sheet",
+        "vans_only": false
+      }
+    },
+    "draw:no-head": {
+      "drivers": 61,
+      "file": "draw_no-head",
+      "pages": 2,
+      "spec": {
+        "center_h": true,
+        "center_v": false,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [],
+        "excluded_shifts": [],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "",
+        "note": "",
+        "orientation": "portrait",
+        "paper": "tabloid",
+        "repeat_header": true,
+        "scale": 100,
+        "show_page_numbers": false,
+        "show_title": false,
+        "sort_by": "driver",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": false,
+        "title": "",
+        "vans_only": false
+      }
+    },
+    "draw:numbers-only-spill": {
+      "drivers": 61,
+      "file": "draw_numbers-only-spill",
+      "pages": 18,
+      "spec": {
+        "center_h": true,
+        "center_v": false,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "transporter_id",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "tenure",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vans",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "check",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "wave_time",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "service_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vin",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "assign_method",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "device",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "staging_location",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "bags",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "ovs",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "bag",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [],
+        "excluded_shifts": [],
+        "fit_one_page": false,
+        "grid": true,
+        "group_break": "",
+        "note": "",
+        "orientation": "portrait",
+        "paper": "letter",
+        "repeat_header": false,
+        "scale": 120,
+        "show_page_numbers": true,
+        "show_title": false,
+        "sort_by": "driver",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": false,
+        "title": "",
+        "vans_only": false
+      }
+    },
+    "draw:tiny-columns": {
+      "drivers": 61,
+      "file": "draw_tiny-columns",
+      "pages": 1,
+      "spec": {
+        "center_h": false,
+        "center_v": false,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "transporter_id",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "tenure",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "vans",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "check",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "wave_time",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "service_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "vin",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "assign_method",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "device",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "staging_location",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "bags",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "ovs",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          },
+          {
+            "align_override": "",
+            "field": "bag",
+            "heading": "",
+            "kind": "field",
+            "weight": 1
+          }
+        ],
+        "excluded_drivers": [],
+        "excluded_shifts": [],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "",
+        "note": "",
+        "orientation": "portrait",
+        "paper": "letter",
+        "repeat_header": true,
+        "scale": 40,
+        "show_page_numbers": true,
+        "show_title": true,
+        "sort_by": "driver",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": false,
+        "title": "",
+        "vans_only": false
+      }
+    },
+    "preset:Morning crew": {
+      "drivers": 57,
+      "file": "preset_Morning_crew",
+      "pages": 2,
+      "spec": {
+        "center_h": true,
+        "center_v": true,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "Here",
+            "kind": "checkbox",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "staging_location",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "bags",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "ovs",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [
+          "id:A44G2UFEKI28R8",
+          "id:A8LKEVUMZ2502T",
+          "id:A6DWJ3LP97G2SD",
+          "stella upton"
+        ],
+        "excluded_shifts": [
+          "Call Out",
+          "Helper",
+          "Light Duty",
+          "Operations Manager",
+          "TIME OFF"
+        ],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "",
+        "note": "",
+        "orientation": "portrait",
+        "paper": "letter",
+        "repeat_header": true,
+        "scale": 75,
+        "show_page_numbers": true,
+        "show_title": true,
+        "sort_by": "driver",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": true,
+        "title": "",
+        "vans_only": false
+      }
+    },
+    "synthetic:everything-landscape-no-fit": {
+      "drivers": 61,
+      "file": "synthetic_everything-landscape-no-fit",
+      "pages": 4,
+      "spec": {
+        "center_h": true,
+        "center_v": false,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "transporter_id",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "tenure",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vans",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "check",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "wave_time",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "service_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vin",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "assign_method",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "device",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "staging_location",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "bags",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "ovs",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "bag",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [],
+        "excluded_shifts": [],
+        "fit_one_page": false,
+        "grid": true,
+        "group_break": "",
+        "note": "",
+        "orientation": "landscape",
+        "paper": "tabloid",
+        "repeat_header": true,
+        "scale": 100,
+        "show_page_numbers": true,
+        "show_title": true,
+        "sort_by": "driver",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": false,
+        "title": "Everything",
+        "vans_only": false
+      }
+    },
+    "synthetic:everything-squeezed-big": {
+      "drivers": 61,
+      "file": "synthetic_everything-squeezed-big",
+      "pages": 5,
+      "spec": {
+        "center_h": true,
+        "center_v": false,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "transporter_id",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "tenure",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vans",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "check",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "wave_time",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "service_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vin",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "assign_method",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "device",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "staging_location",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "bags",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "ovs",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "bag",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [],
+        "excluded_shifts": [],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "",
+        "note": "",
+        "orientation": "portrait",
+        "paper": "letter",
+        "repeat_header": true,
+        "scale": 200,
+        "show_page_numbers": true,
+        "show_title": true,
+        "sort_by": "wave_time",
+        "sort_reverse": true,
+        "stretch": false,
+        "stripes": false,
+        "title": "",
+        "vans_only": false
+      }
+    },
+    "synthetic:grouped-by-pad-vans-only": {
+      "drivers": 24,
+      "file": "synthetic_grouped-by-pad-vans-only",
+      "pages": 3,
+      "spec": {
+        "center_h": true,
+        "center_v": false,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [],
+        "excluded_shifts": [],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "pad",
+        "note": "A line of my own",
+        "orientation": "portrait",
+        "paper": "letter",
+        "repeat_header": true,
+        "scale": 100,
+        "show_page_numbers": true,
+        "show_title": false,
+        "sort_by": "wave_time",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": true,
+        "title": "",
+        "vans_only": true
+      }
+    },
+    "synthetic:narrow-stretched-a4": {
+      "drivers": 61,
+      "file": "synthetic_narrow-stretched-a4",
+      "pages": 2,
+      "spec": {
+        "center_h": false,
+        "center_v": false,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "C",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [],
+        "excluded_shifts": [],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "",
+        "note": "",
+        "orientation": "portrait",
+        "paper": "a4",
+        "repeat_header": true,
+        "scale": 100,
+        "show_page_numbers": false,
+        "show_title": true,
+        "sort_by": "vehicle",
+        "sort_reverse": false,
+        "stretch": true,
+        "stripes": false,
+        "title": "",
+        "vans_only": false
+      }
+    },
+    "synthetic:tick-boxes-leave-offs": {
+      "drivers": 35,
+      "file": "synthetic_tick-boxes-leave-offs",
+      "pages": 4,
+      "spec": {
+        "center_h": true,
+        "center_v": false,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "Checked In",
+            "kind": "checkbox",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 140
+          },
+          {
+            "align_override": "C",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 90
+          },
+          {
+            "align_override": "",
+            "field": "staging_location",
+            "heading": "Where",
+            "kind": "field",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [
+          "id:AM1LFFMLPUMPM",
+          "id:A2C74O0LD4D9HD"
+        ],
+        "excluded_shifts": [
+          "(none)"
+        ],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "shift_type",
+        "note": "",
+        "orientation": "portrait",
+        "paper": "legal",
+        "repeat_header": true,
+        "scale": 60,
+        "show_page_numbers": true,
+        "show_title": true,
+        "sort_by": "staging_location",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": false,
+        "title": "",
+        "vans_only": false
+      }
+    },
+    "vans": {
+      "drivers": 24,
+      "file": "vans",
+      "pages": 1,
+      "spec": {
+        "center_h": true,
+        "center_v": true,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "C",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [
+          "id:A44G2UFEKI28R8",
+          "id:A8LKEVUMZ2502T",
+          "id:A6DWJ3LP97G2SD",
+          "stella upton"
+        ],
+        "excluded_shifts": [
+          "Call Out",
+          "Helper",
+          "Light Duty",
+          "Operations Manager",
+          "TIME OFF"
+        ],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "",
+        "note": "",
+        "orientation": "portrait",
+        "paper": "letter",
+        "repeat_header": true,
+        "scale": 75,
+        "show_page_numbers": true,
+        "show_title": true,
+        "sort_by": "vehicle",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": true,
+        "title": "Vans",
+        "vans_only": true
+      }
+    },
+    "working": {
+      "drivers": 57,
+      "file": "working",
+      "pages": 2,
+      "spec": {
+        "center_h": true,
+        "center_v": true,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "Here",
+            "kind": "checkbox",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "staging_location",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "bags",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "ovs",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [
+          "id:A44G2UFEKI28R8",
+          "id:A8LKEVUMZ2502T",
+          "id:A6DWJ3LP97G2SD",
+          "stella upton"
+        ],
+        "excluded_shifts": [
+          "Call Out",
+          "Helper",
+          "Light Duty",
+          "Operations Manager",
+          "TIME OFF"
+        ],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "",
+        "note": "",
+        "orientation": "portrait",
+        "paper": "letter",
+        "repeat_header": true,
+        "scale": 75,
+        "show_page_numbers": true,
+        "show_title": true,
+        "sort_by": "driver",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": true,
+        "title": "",
+        "vans_only": false
+      }
+    }
+  }
+}

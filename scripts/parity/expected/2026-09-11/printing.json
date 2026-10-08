@@ -1,0 +1,4333 @@
+{
+  "date_label": "Friday, September 11 2026",
+  "print_rows": [
+    {
+      "key": "id:AM1LFFMLPUMPM",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "",
+        "check": "Inactive associate, No qualifications on file",
+        "device": "",
+        "driver": "Sabrina Woodbridge",
+        "ovs": "",
+        "pad": "",
+        "routes": "",
+        "service_type": "",
+        "shift_type": "Operations Manager",
+        "staging_location": "",
+        "tenure": "96",
+        "transporter_id": "AM1LFFMLPUMPM",
+        "vans": "",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A9KLW1P144EJA8",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "",
+        "check": "OK",
+        "device": "",
+        "driver": "Xavier Bannister",
+        "ovs": "",
+        "pad": "",
+        "routes": "",
+        "service_type": "",
+        "shift_type": "Backup Driver",
+        "staging_location": "",
+        "tenure": "1234",
+        "transporter_id": "A9KLW1P144EJA8",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A9D25MDVZ2T1ON",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "17",
+        "check": "OK",
+        "device": "",
+        "driver": "Harlan Clemmons",
+        "ovs": "21",
+        "pad": "2",
+        "routes": "CX9",
+        "service_type": "Standard Parcel Electric - Rivian SMALL",
+        "shift_type": "Backup Driver",
+        "staging_location": "STG.G15",
+        "tenure": "14",
+        "transporter_id": "A9D25MDVZ2T1ON",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": "10:25am"
+      }
+    },
+    {
+      "key": "id:A47PHJICWDVAB9",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "",
+        "check": "OK",
+        "device": "",
+        "driver": "Hector Underhill",
+        "ovs": "",
+        "pad": "",
+        "routes": "",
+        "service_type": "",
+        "shift_type": "Backup Driver",
+        "staging_location": "",
+        "tenure": "346",
+        "transporter_id": "A47PHJICWDVAB9",
+        "vans": "CDV EDV SV DOT",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A4OQGIPQ6DAKF4",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "",
+        "check": "OK",
+        "device": "604",
+        "driver": "Zane Applewhite",
+        "ovs": "",
+        "pad": "",
+        "routes": "",
+        "service_type": "",
+        "shift_type": "Lead Driver",
+        "staging_location": "",
+        "tenure": "614",
+        "transporter_id": "A4OQGIPQ6DAKF4",
+        "vans": "CDV EDV SV LMR",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A3MJ5TH3ODPWW",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "",
+        "check": "OK",
+        "device": "",
+        "driver": "Odette Granger",
+        "ovs": "",
+        "pad": "",
+        "routes": "",
+        "service_type": "",
+        "shift_type": "Backup Driver",
+        "staging_location": "",
+        "tenure": "26",
+        "transporter_id": "A3MJ5TH3ODPWW",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A30BLJHHQILDNC",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "",
+        "check": "ID expired 215d ago, Inactive associate",
+        "device": "",
+        "driver": "Jenna Rainsford",
+        "ovs": "",
+        "pad": "",
+        "routes": "",
+        "service_type": "",
+        "shift_type": "Lead Driver",
+        "staging_location": "",
+        "tenure": "",
+        "transporter_id": "A30BLJHHQILDNC",
+        "vans": "CDV SV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A5OSRXGF947IEY",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "",
+        "check": "OK",
+        "device": "",
+        "driver": "Marcus Clemmons",
+        "ovs": "",
+        "pad": "",
+        "routes": "",
+        "service_type": "",
+        "shift_type": "Backup Driver",
+        "staging_location": "",
+        "tenure": "306",
+        "transporter_id": "A5OSRXGF947IEY",
+        "vans": "CDV EDV SV DOT",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A9ZG8P8IMK2LUL",
+      "values": {
+        "assign_method": "vehicle type",
+        "bag": "No",
+        "bags": "",
+        "check": "OK",
+        "device": "706",
+        "driver": "Caleb Eldridge",
+        "ovs": "",
+        "pad": "3",
+        "routes": "AX13",
+        "service_type": "Standard Parcel - Large Van - Recycle",
+        "shift_type": "Sweeper",
+        "staging_location": "",
+        "tenure": "705",
+        "transporter_id": "A9ZG8P8IMK2LUL",
+        "vans": "CDV EDV SV DOT LMR",
+        "vehicle": "R1 (BUDGET)",
+        "vin": "3C6CATTE1RE360490",
+        "wave_time": "2:30pm"
+      }
+    },
+    {
+      "key": "id:A2A1CI9GH4T37",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "15",
+        "check": "OK",
+        "device": "713",
+        "driver": "Olive Marlowe",
+        "ovs": "37",
+        "pad": "1",
+        "routes": "CX20",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "Recycle ADHOC",
+        "staging_location": "STG.H13",
+        "tenure": "16",
+        "transporter_id": "A2A1CI9GH4T37",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": "10:20am"
+      }
+    },
+    {
+      "key": "id:A5S9FXHBWJRB9D",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "",
+        "check": "OK",
+        "device": "",
+        "driver": "Beatrice Redmond",
+        "ovs": "",
+        "pad": "",
+        "routes": "",
+        "service_type": "",
+        "shift_type": "Backup Driver",
+        "staging_location": "",
+        "tenure": "98",
+        "transporter_id": "A5S9FXHBWJRB9D",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A3QVN63ZJEGQYP",
+      "values": {
+        "assign_method": "primary affinity",
+        "bag": "No",
+        "bags": "14",
+        "check": "OK",
+        "device": "",
+        "driver": "Nolan Abernathy",
+        "ovs": "26",
+        "pad": "1",
+        "routes": "CX2",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "Backup Driver",
+        "staging_location": "STG.G2",
+        "tenure": "101",
+        "transporter_id": "A3QVN63ZJEGQYP",
+        "vans": "CDV EDV",
+        "vehicle": "620270",
+        "vin": "7FCMYYD82PN207991",
+        "wave_time": "10:20am"
+      }
+    },
+    {
+      "key": "id:AWJ5XN1FMHXXV",
+      "values": {
+        "assign_method": "primary affinity",
+        "bag": "No",
+        "bags": "16",
+        "check": "OK",
+        "device": "",
+        "driver": "Sloane Winslow",
+        "ovs": "29",
+        "pad": "1",
+        "routes": "CX10",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "TIME OFF",
+        "staging_location": "STG.G19",
+        "tenure": "17",
+        "transporter_id": "AWJ5XN1FMHXXV",
+        "vans": "CDV EDV",
+        "vehicle": "618835",
+        "vin": "7FCBMBV93PN085598",
+        "wave_time": "10:20am"
+      }
+    },
+    {
+      "key": "id:A1LSR7SEOTKE3I",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "",
+        "check": "Inactive associate",
+        "device": "",
+        "driver": "Flora Orson Huxley",
+        "ovs": "",
+        "pad": "",
+        "routes": "",
+        "service_type": "",
+        "shift_type": "Backup Driver",
+        "staging_location": "",
+        "tenure": "24",
+        "transporter_id": "A1LSR7SEOTKE3I",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A8KSSZB6LALEOL",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "15",
+        "check": "OK",
+        "device": "",
+        "driver": "Nolan Rainsford",
+        "ovs": "33",
+        "pad": "1",
+        "routes": "CX14",
+        "service_type": "Standard Parcel - On-Road Experience: Driver",
+        "shift_type": "ORE",
+        "staging_location": "STG.H11",
+        "tenure": "363",
+        "transporter_id": "A8KSSZB6LALEOL",
+        "vans": "CDV EDV SV DOT",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": "10:20am"
+      }
+    },
+    {
+      "key": "id:A2ET6O3NEIF12O",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "14",
+        "check": "OK",
+        "device": "724",
+        "driver": "Paloma Lindqvist",
+        "ovs": "26",
+        "pad": "",
+        "routes": "CX2",
+        "service_type": "",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.G2",
+        "tenure": "265",
+        "transporter_id": "A2ET6O3NEIF12O",
+        "vans": "CDV EDV SV DOT LMR",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A9JB97ABCU8C81",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "11",
+        "check": "ID expires in 8d",
+        "device": "721",
+        "driver": "Blaine Dewitt",
+        "ovs": "30",
+        "pad": "",
+        "routes": "CX3",
+        "service_type": "",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.H15",
+        "tenure": "1",
+        "transporter_id": "A9JB97ABCU8C81",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:AU9G43K0RMQVQ",
+      "values": {
+        "assign_method": "primary affinity",
+        "bag": "No",
+        "bags": "14",
+        "check": "OK",
+        "device": "715",
+        "driver": "Miriam Huxley",
+        "ovs": "34",
+        "pad": "1",
+        "routes": "CX4",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.G9",
+        "tenure": "74",
+        "transporter_id": "AU9G43K0RMQVQ",
+        "vans": "CDV EDV",
+        "vehicle": "619452",
+        "vin": "7FCVJNX67PN899313",
+        "wave_time": "10:20am"
+      }
+    },
+    {
+      "key": "id:A5WB9Y629G3A95",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "13",
+        "check": "OK",
+        "device": "719",
+        "driver": "Kendra Rainsford",
+        "ovs": "34",
+        "pad": "",
+        "routes": "CX5",
+        "service_type": "",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.G10",
+        "tenure": "0",
+        "transporter_id": "A5WB9Y629G3A95",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A2051ICVODZP9E",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "12",
+        "check": "OK",
+        "device": "726",
+        "driver": "Harlan Penrose",
+        "ovs": "37",
+        "pad": "2",
+        "routes": "CX7",
+        "service_type": "Standard Parcel - Large Van",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.H12",
+        "tenure": "150",
+        "transporter_id": "A2051ICVODZP9E",
+        "vans": "CDV EDV SV DOT",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": "10:25am"
+      }
+    },
+    {
+      "key": "id:A5C89KIOHQ4K4J",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "12",
+        "check": "OK",
+        "device": "",
+        "driver": "Darcy Lindqvist",
+        "ovs": "37",
+        "pad": "",
+        "routes": "CX7",
+        "service_type": "",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.H12",
+        "tenure": "293",
+        "transporter_id": "A5C89KIOHQ4K4J",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A2C74O0LD4D9HD",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "13",
+        "check": "OK",
+        "device": "722",
+        "driver": "Jasper Holloway",
+        "ovs": "35",
+        "pad": "",
+        "routes": "CX8",
+        "service_type": "",
+        "shift_type": "Large Van Route",
+        "staging_location": "STG.G17",
+        "tenure": "731",
+        "transporter_id": "A2C74O0LD4D9HD",
+        "vans": "CDV EDV SV DOT LMR",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A1E4CRQE9TMGKN",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "17",
+        "check": "OK",
+        "device": "716",
+        "driver": "Colton Alderman",
+        "ovs": "21",
+        "pad": "",
+        "routes": "CX9",
+        "service_type": "",
+        "shift_type": "Large Van Route",
+        "staging_location": "STG.G15",
+        "tenure": "58",
+        "transporter_id": "A1E4CRQE9TMGKN",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A1QVVPYVZD6R9F",
+      "values": {
+        "assign_method": "primary affinity",
+        "bag": "No",
+        "bags": "15",
+        "check": "OK",
+        "device": "711",
+        "driver": "Beatrice Sutherland",
+        "ovs": "36",
+        "pad": "2",
+        "routes": "CX11",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.G6",
+        "tenure": "287",
+        "transporter_id": "A1QVVPYVZD6R9F",
+        "vans": "CDV EDV",
+        "vehicle": "618915",
+        "vin": "7FCYRFJ30PN317983",
+        "wave_time": "10:25am"
+      }
+    },
+    {
+      "key": "id:A0DZDWECHDJ5TO",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "15",
+        "check": "OK",
+        "device": "707",
+        "driver": "Kieran Zimmerman",
+        "ovs": "36",
+        "pad": "",
+        "routes": "CX11",
+        "service_type": "",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.G6",
+        "tenure": "715",
+        "transporter_id": "A0DZDWECHDJ5TO",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A3FM1CRWW54MMO",
+      "values": {
+        "assign_method": "service type",
+        "bag": "No",
+        "bags": "15",
+        "check": "OK",
+        "device": "718",
+        "driver": "Yara Halloran",
+        "ovs": "33",
+        "pad": "1",
+        "routes": "CX13",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.G4",
+        "tenure": "111",
+        "transporter_id": "A3FM1CRWW54MMO",
+        "vans": "CDV EDV SV DOT",
+        "vehicle": "615797",
+        "vin": "7FCYZAP63PN575306",
+        "wave_time": "10:20am"
+      }
+    },
+    {
+      "key": "id:A55NZ7WTBR2RXC",
+      "values": {
+        "assign_method": "primary affinity",
+        "bag": "No",
+        "bags": "13",
+        "check": "OK",
+        "device": "717",
+        "driver": "Isidro Ingram",
+        "ovs": "31",
+        "pad": "1",
+        "routes": "CX15",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.G14",
+        "tenure": "315",
+        "transporter_id": "A55NZ7WTBR2RXC",
+        "vans": "CDV EDV",
+        "vehicle": "619438",
+        "vin": "7FCJXKZ45PN843457",
+        "wave_time": "10:20am"
+      }
+    },
+    {
+      "key": "id:A486QRCQCVMTG1",
+      "values": {
+        "assign_method": "primary affinity",
+        "bag": "No",
+        "bags": "15",
+        "check": "OK",
+        "device": "720",
+        "driver": "Nadine Abernathy",
+        "ovs": "23",
+        "pad": "1",
+        "routes": "CX16",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.H14",
+        "tenure": "209",
+        "transporter_id": "A486QRCQCVMTG1",
+        "vans": "CDV EDV",
+        "vehicle": "619447",
+        "vin": "7FCASBK08PN878676",
+        "wave_time": "10:20am"
+      }
+    },
+    {
+      "key": "id:AKA0HPH6GU9DK",
+      "values": {
+        "assign_method": "service type",
+        "bag": "No",
+        "bags": "13",
+        "check": "OK",
+        "device": "702",
+        "driver": "Elodie Vandermeer",
+        "ovs": "31",
+        "pad": "1",
+        "routes": "CX17",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.G7",
+        "tenure": "804",
+        "transporter_id": "AKA0HPH6GU9DK",
+        "vans": "CDV EDV SV LMR",
+        "vehicle": "619514",
+        "vin": "7FCTAKU41PN942777",
+        "wave_time": "10:20am"
+      }
+    },
+    {
+      "key": "id:A9Z8T0H4AP33R4",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "15",
+        "check": "OK",
+        "device": "714",
+        "driver": "Yara Beaumont",
+        "ovs": "23",
+        "pad": "",
+        "routes": "CX16",
+        "service_type": "",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.H14",
+        "tenure": "5",
+        "transporter_id": "A9Z8T0H4AP33R4",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:AC32BQGN2MON3",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "13",
+        "check": "OK",
+        "device": "705",
+        "driver": "Cleo Vandermeer",
+        "ovs": "31",
+        "pad": "",
+        "routes": "CX17",
+        "service_type": "",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.G7",
+        "tenure": "143",
+        "transporter_id": "AC32BQGN2MON3",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A7SJ8FE0PNIK0B",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "15",
+        "check": "OK",
+        "device": "728",
+        "driver": "Desmond Fitzroy",
+        "ovs": "31",
+        "pad": "",
+        "routes": "CX18",
+        "service_type": "",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.H10",
+        "tenure": "582",
+        "transporter_id": "A7SJ8FE0PNIK0B",
+        "vans": "CDV EDV LMR",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A2ZUDELA4UHN2U",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "15",
+        "check": "OK",
+        "device": "729",
+        "driver": "Caleb Blackwell",
+        "ovs": "32",
+        "pad": "",
+        "routes": "CX19",
+        "service_type": "",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.G3",
+        "tenure": "236",
+        "transporter_id": "A2ZUDELA4UHN2U",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A54O2F1DYNOEKN",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "15",
+        "check": "OK",
+        "device": "",
+        "driver": "Mason Clemmons",
+        "ovs": "37",
+        "pad": "",
+        "routes": "CX20",
+        "service_type": "",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.H13",
+        "tenure": "153",
+        "transporter_id": "A54O2F1DYNOEKN",
+        "vans": "CDV EDV LMR",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A7O9MN0YIUZXN",
+      "values": {
+        "assign_method": "service type",
+        "bag": "No",
+        "bags": "",
+        "check": "OK",
+        "device": "712",
+        "driver": "Greta Vance",
+        "ovs": "",
+        "pad": "1",
+        "routes": "CX26",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "Electric Route",
+        "staging_location": "",
+        "tenure": "110",
+        "transporter_id": "A7O9MN0YIUZXN",
+        "vans": "CDV EDV",
+        "vehicle": "615708",
+        "vin": "7FCNVFD54PN989041",
+        "wave_time": "10:20am"
+      }
+    },
+    {
+      "key": "id:A7OFM0ZTRYMOYG",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "11",
+        "check": "OK",
+        "device": "703",
+        "driver": "Greta Underhill",
+        "ovs": "30",
+        "pad": "",
+        "routes": "CX23",
+        "service_type": "",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.G23",
+        "tenure": "119",
+        "transporter_id": "A7OFM0ZTRYMOYG",
+        "vans": "CDV EDV SV DOT LMR",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:ANC8ZRCZP4NFS",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "15",
+        "check": "OK",
+        "device": "602",
+        "driver": "Nell Bellamy",
+        "ovs": "33",
+        "pad": "",
+        "routes": "CX24",
+        "service_type": "",
+        "shift_type": "Large Van Route",
+        "staging_location": "STG.G20",
+        "tenure": "44",
+        "transporter_id": "ANC8ZRCZP4NFS",
+        "vans": "CDV EDV SV DOT",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A1QHNFOZ7DGJTJ",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "13",
+        "check": "ID expired 20d ago",
+        "device": "727",
+        "driver": "Everett Bellamy",
+        "ovs": "45",
+        "pad": "",
+        "routes": "CX25",
+        "service_type": "",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.G8",
+        "tenure": "18",
+        "transporter_id": "A1QHNFOZ7DGJTJ",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A503VSKH6DU6TJ",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "10",
+        "check": "OK",
+        "device": "723",
+        "driver": "Elodie Hawthorne",
+        "ovs": "41",
+        "pad": "",
+        "routes": "CX27",
+        "service_type": "",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.G24",
+        "tenure": "905",
+        "transporter_id": "A503VSKH6DU6TJ",
+        "vans": "CDV EDV LMR",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:A7XH9404B428LL",
+      "values": {
+        "assign_method": "",
+        "bag": "No",
+        "bags": "13",
+        "check": "OK",
+        "device": "701",
+        "driver": "Elias Calloway",
+        "ovs": "36",
+        "pad": "",
+        "routes": "CX28",
+        "service_type": "",
+        "shift_type": "Electric Route",
+        "staging_location": "STG.G5",
+        "tenure": "52",
+        "transporter_id": "A7XH9404B428LL",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": ""
+      }
+    },
+    {
+      "key": "id:AFRYVFGBLTBTV",
+      "values": {
+        "assign_method": "primary affinity",
+        "bag": "",
+        "bags": "13",
+        "check": "OK",
+        "device": "",
+        "driver": "Rhea Ravenscroft",
+        "ovs": "42",
+        "pad": "2",
+        "routes": "CX1",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "",
+        "staging_location": "STG.G16",
+        "tenure": "993",
+        "transporter_id": "AFRYVFGBLTBTV",
+        "vans": "CDV EDV LMR",
+        "vehicle": "655071 (LMR)",
+        "vin": "7FCVPPS24TN420354",
+        "wave_time": "10:25am"
+      }
+    },
+    {
+      "key": "id:A63AK2RYZDOMF0",
+      "values": {
+        "assign_method": "",
+        "bag": "",
+        "bags": "11",
+        "check": "OK",
+        "device": "",
+        "driver": "Greta Bennett Eastwood",
+        "ovs": "30",
+        "pad": "2",
+        "routes": "CX3",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "",
+        "staging_location": "STG.H15",
+        "tenure": "38",
+        "transporter_id": "A63AK2RYZDOMF0",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": "10:25am"
+      }
+    },
+    {
+      "key": "id:A8LKEVUMZ2502T",
+      "values": {
+        "assign_method": "service type",
+        "bag": "",
+        "bags": "13",
+        "check": "OK",
+        "device": "",
+        "driver": "Mason Felicia Winslow",
+        "ovs": "34",
+        "pad": "1",
+        "routes": "CX5",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "",
+        "staging_location": "STG.G10",
+        "tenure": "93",
+        "transporter_id": "A8LKEVUMZ2502T",
+        "vans": "CDV EDV",
+        "vehicle": "615977",
+        "vin": "7FCLGUT07PN118145",
+        "wave_time": "10:20am"
+      }
+    },
+    {
+      "key": "id:A9LE0ZXWQH9RYQ",
+      "values": {
+        "assign_method": "primary affinity",
+        "bag": "",
+        "bags": "14",
+        "check": "OK",
+        "device": "",
+        "driver": "Sabrina Tristan Gresham",
+        "ovs": "25",
+        "pad": "1",
+        "routes": "CX6",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "",
+        "staging_location": "STG.G22",
+        "tenure": "901",
+        "transporter_id": "A9LE0ZXWQH9RYQ",
+        "vans": "CDV EDV SV",
+        "vehicle": "615850",
+        "vin": "7FCBEHV84PN489498",
+        "wave_time": "10:20am"
+      }
+    },
+    {
+      "key": "id:AK92X3BJNUBTF",
+      "values": {
+        "assign_method": "qualification only",
+        "bag": "",
+        "bags": "13",
+        "check": "OK",
+        "device": "",
+        "driver": "Carmen Abernathy",
+        "ovs": "35",
+        "pad": "2",
+        "routes": "CX8",
+        "service_type": "Standard Parcel - Large Van",
+        "shift_type": "",
+        "staging_location": "STG.G17",
+        "tenure": "420",
+        "transporter_id": "AK92X3BJNUBTF",
+        "vans": "CDV EDV SV DOT LMR",
+        "vehicle": "55",
+        "vin": "1F69F2MV9L0F55866",
+        "wave_time": "10:25am"
+      }
+    },
+    {
+      "key": "id:APC3N0EIX2VK4",
+      "values": {
+        "assign_method": "service type",
+        "bag": "",
+        "bags": "14",
+        "check": "OK",
+        "device": "",
+        "driver": "Barrett Hadley Ainsworth",
+        "ovs": "39",
+        "pad": "1",
+        "routes": "CX12",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "",
+        "staging_location": "STG.G18",
+        "tenure": "100",
+        "transporter_id": "APC3N0EIX2VK4",
+        "vans": "CDV EDV",
+        "vehicle": "614110",
+        "vin": "7FCMFNL76NN728464",
+        "wave_time": "10:20am"
+      }
+    },
+    {
+      "key": "id:AC7RVVCLB4P7H",
+      "values": {
+        "assign_method": "primary affinity",
+        "bag": "",
+        "bags": "15",
+        "check": "OK",
+        "device": "",
+        "driver": "Rhea Lockhart",
+        "ovs": "31",
+        "pad": "1",
+        "routes": "CX18",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "",
+        "staging_location": "STG.H10",
+        "tenure": "949",
+        "transporter_id": "AC7RVVCLB4P7H",
+        "vans": "CDV EDV SV DOT",
+        "vehicle": "551897",
+        "vin": "7FCZWUB30PN690473",
+        "wave_time": "10:20am"
+      }
+    },
+    {
+      "key": "id:A4S6I3ZV10EUC4",
+      "values": {
+        "assign_method": "service type",
+        "bag": "",
+        "bags": "15",
+        "check": "OK",
+        "device": "",
+        "driver": "Phoebe Gemma Holloway",
+        "ovs": "32",
+        "pad": "2",
+        "routes": "CX19",
+        "service_type": "Standard Parcel Step Van - US",
+        "shift_type": "",
+        "staging_location": "STG.G3",
+        "tenure": "195",
+        "transporter_id": "A4S6I3ZV10EUC4",
+        "vans": "CDV EDV SV DOT",
+        "vehicle": "56",
+        "vin": "4UZJF1GUXLCFU6114",
+        "wave_time": "10:25am"
+      }
+    },
+    {
+      "key": "id:A1I13S2WRY55FH",
+      "values": {
+        "assign_method": "service type",
+        "bag": "",
+        "bags": "",
+        "check": "OK",
+        "device": "",
+        "driver": "Ariana Nethercott",
+        "ovs": "",
+        "pad": "2",
+        "routes": "CX21",
+        "service_type": "Standard Parcel Electric - Rivian SMALL",
+        "shift_type": "",
+        "staging_location": "",
+        "tenure": "28",
+        "transporter_id": "A1I13S2WRY55FH",
+        "vans": "CDV EDV",
+        "vehicle": "551894",
+        "vin": "7FCYLRZ20PN196581",
+        "wave_time": "10:25am"
+      }
+    },
+    {
+      "key": "id:A5JGA6O3VGJC9D",
+      "values": {
+        "assign_method": "primary affinity",
+        "bag": "",
+        "bags": "16",
+        "check": "OK",
+        "device": "",
+        "driver": "Nolan Anika Wakefield",
+        "ovs": "28",
+        "pad": "2",
+        "routes": "CX22",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "",
+        "staging_location": "STG.G21",
+        "tenure": "43",
+        "transporter_id": "A5JGA6O3VGJC9D",
+        "vans": "CDV EDV",
+        "vehicle": "615820",
+        "vin": "7FCAKFT93PN885796",
+        "wave_time": "10:25am"
+      }
+    },
+    {
+      "key": "id:AO2I4MJ59WDHS",
+      "values": {
+        "assign_method": "primary affinity",
+        "bag": "",
+        "bags": "11",
+        "check": "OK",
+        "device": "",
+        "driver": "Micah Tobias Kingsley",
+        "ovs": "30",
+        "pad": "2",
+        "routes": "CX23",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "",
+        "staging_location": "STG.G23",
+        "tenure": "203",
+        "transporter_id": "AO2I4MJ59WDHS",
+        "vans": "CDV EDV",
+        "vehicle": "615845",
+        "vin": "7FCMLBX10PN131522",
+        "wave_time": "10:25am"
+      }
+    },
+    {
+      "key": "id:A6URN0K4YHEUUX",
+      "values": {
+        "assign_method": "",
+        "bag": "",
+        "bags": "13",
+        "check": "OK",
+        "device": "",
+        "driver": "Elodie Hadley Hargrove",
+        "ovs": "45",
+        "pad": "2",
+        "routes": "CX25",
+        "service_type": "Standard Parcel - Large Van",
+        "shift_type": "",
+        "staging_location": "STG.G8",
+        "tenure": "47",
+        "transporter_id": "A6URN0K4YHEUUX",
+        "vans": "CDV EDV",
+        "vehicle": "",
+        "vin": "",
+        "wave_time": "10:25am"
+      }
+    },
+    {
+      "key": "id:A9C6T83A3QX1LH",
+      "values": {
+        "assign_method": "same van as last time",
+        "bag": "",
+        "bags": "10",
+        "check": "OK",
+        "device": "",
+        "driver": "Edith Dalia Hawthorne",
+        "ovs": "41",
+        "pad": "1",
+        "routes": "CX27",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "",
+        "staging_location": "STG.G24",
+        "tenure": "43",
+        "transporter_id": "A9C6T83A3QX1LH",
+        "vans": "CDV EDV",
+        "vehicle": "615609",
+        "vin": "7FCNTZV6XPN473149",
+        "wave_time": "10:20am"
+      }
+    },
+    {
+      "key": "id:A6LA5Y7P3AGUTC",
+      "values": {
+        "assign_method": "service type",
+        "bag": "",
+        "bags": "13",
+        "check": "OK",
+        "device": "",
+        "driver": "Leopold Sawyer Caldwell",
+        "ovs": "36",
+        "pad": "1",
+        "routes": "CX28",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "",
+        "staging_location": "STG.G5",
+        "tenure": "518",
+        "transporter_id": "A6LA5Y7P3AGUTC",
+        "vans": "CDV EDV",
+        "vehicle": "615837",
+        "vin": "7FCWETH43PN377188",
+        "wave_time": "10:20am"
+      }
+    },
+    {
+      "key": "id:A5QUM4XU1H9HQS",
+      "values": {
+        "assign_method": "primary affinity",
+        "bag": "",
+        "bags": "",
+        "check": "OK",
+        "device": "",
+        "driver": "Mabel Vera Kensington",
+        "ovs": "",
+        "pad": "2",
+        "routes": "CX29",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "",
+        "staging_location": "",
+        "tenure": "551",
+        "transporter_id": "A5QUM4XU1H9HQS",
+        "vans": "CDV EDV LMR",
+        "vehicle": "655103 (LMR)",
+        "vin": "7FCEKEH37TN621085",
+        "wave_time": "10:25am"
+      }
+    },
+    {
+      "key": "id:A1XKE42LNWTCBT",
+      "values": {
+        "assign_method": "primary affinity",
+        "bag": "",
+        "bags": "",
+        "check": "OK",
+        "device": "",
+        "driver": "Zelda Miriam Hartwell",
+        "ovs": "",
+        "pad": "2",
+        "routes": "CX187",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "shift_type": "",
+        "staging_location": "",
+        "tenure": "35",
+        "transporter_id": "A1XKE42LNWTCBT",
+        "vans": "CDV EDV",
+        "vehicle": "615230",
+        "vin": "7FCJLRK79PN811619",
+        "wave_time": "10:25am"
+      }
+    }
+  ],
+  "specs": {
+    "default": {
+      "band_count": 1,
+      "band_count_no_rows": 1,
+      "bands": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      ],
+      "column_widths": [
+        61,
+        130.15,
+        77.91,
+        105.15,
+        47.89,
+        35.11,
+        61
+      ],
+      "column_widths_no_rows": [
+        61,
+        113,
+        78,
+        90,
+        47.89,
+        35.11,
+        61
+      ],
+      "columns": [
+        {
+          "align": "C",
+          "kind_label": "Write-in",
+          "label": "",
+          "width": 61
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Driver",
+          "width": 113
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Vehicle",
+          "width": 78
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Shift Type",
+          "width": 90
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Routes",
+          "width": 46
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "PAD",
+          "width": 32
+        },
+        {
+          "align": "C",
+          "kind_label": "Write-in",
+          "label": "",
+          "width": 61
+        }
+      ],
+      "default_filename": "Load Out - Friday, September 11 2026",
+      "geometry": {
+        "font_size": 10,
+        "header_h": 22,
+        "margin": 36,
+        "page_h": 792,
+        "page_w": 612,
+        "row_h": 20,
+        "scale": 1,
+        "title_h": 27,
+        "usable_h": 720,
+        "usable_w": 540
+      },
+      "page_count": 2,
+      "pages": [
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "first_of_band": true,
+          "group": "",
+          "row_keys": [
+            "id:A1I13S2WRY55FH",
+            "id:APC3N0EIX2VK4",
+            "id:A5S9FXHBWJRB9D",
+            "id:A1QVVPYVZD6R9F",
+            "id:A9JB97ABCU8C81",
+            "id:A2ZUDELA4UHN2U",
+            "id:A9ZG8P8IMK2LUL",
+            "id:AK92X3BJNUBTF",
+            "id:AC32BQGN2MON3",
+            "id:A1E4CRQE9TMGKN",
+            "id:A5C89KIOHQ4K4J",
+            "id:A7SJ8FE0PNIK0B",
+            "id:A9C6T83A3QX1LH",
+            "id:A7XH9404B428LL",
+            "id:A6URN0K4YHEUUX",
+            "id:A503VSKH6DU6TJ",
+            "id:AKA0HPH6GU9DK",
+            "id:A1QHNFOZ7DGJTJ",
+            "id:A1LSR7SEOTKE3I",
+            "id:A63AK2RYZDOMF0",
+            "id:A7OFM0ZTRYMOYG",
+            "id:A7O9MN0YIUZXN",
+            "id:A9D25MDVZ2T1ON",
+            "id:A2051ICVODZP9E",
+            "id:A47PHJICWDVAB9",
+            "id:A55NZ7WTBR2RXC",
+            "id:A2C74O0LD4D9HD",
+            "id:A30BLJHHQILDNC",
+            "id:A5WB9Y629G3A95",
+            "id:A0DZDWECHDJ5TO",
+            "id:A6LA5Y7P3AGUTC",
+            "id:A5QUM4XU1H9HQS",
+            "id:A5OSRXGF947IEY"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "first_of_band": false,
+          "group": "",
+          "row_keys": [
+            "id:A54O2F1DYNOEKN",
+            "id:A8LKEVUMZ2502T",
+            "id:AO2I4MJ59WDHS",
+            "id:AU9G43K0RMQVQ",
+            "id:A486QRCQCVMTG1",
+            "id:ANC8ZRCZP4NFS",
+            "id:A3QVN63ZJEGQYP",
+            "id:A5JGA6O3VGJC9D",
+            "id:A8KSSZB6LALEOL",
+            "id:A3MJ5TH3ODPWW",
+            "id:A2A1CI9GH4T37",
+            "id:A2ET6O3NEIF12O",
+            "id:A4S6I3ZV10EUC4",
+            "id:AC7RVVCLB4P7H",
+            "id:AFRYVFGBLTBTV",
+            "id:A9LE0ZXWQH9RYQ",
+            "id:AM1LFFMLPUMPM",
+            "id:AWJ5XN1FMHXXV",
+            "id:A9KLW1P144EJA8",
+            "id:A9Z8T0H4AP33R4",
+            "id:A3FM1CRWW54MMO",
+            "id:A4OQGIPQ6DAKF4",
+            "id:A1XKE42LNWTCBT"
+          ]
+        }
+      ],
+      "printing_keys": [
+        "id:A1I13S2WRY55FH",
+        "id:APC3N0EIX2VK4",
+        "id:A5S9FXHBWJRB9D",
+        "id:A1QVVPYVZD6R9F",
+        "id:A9JB97ABCU8C81",
+        "id:A2ZUDELA4UHN2U",
+        "id:A9ZG8P8IMK2LUL",
+        "id:AK92X3BJNUBTF",
+        "id:AC32BQGN2MON3",
+        "id:A1E4CRQE9TMGKN",
+        "id:A5C89KIOHQ4K4J",
+        "id:A7SJ8FE0PNIK0B",
+        "id:A9C6T83A3QX1LH",
+        "id:A7XH9404B428LL",
+        "id:A6URN0K4YHEUUX",
+        "id:A503VSKH6DU6TJ",
+        "id:AKA0HPH6GU9DK",
+        "id:A1QHNFOZ7DGJTJ",
+        "id:A1LSR7SEOTKE3I",
+        "id:A63AK2RYZDOMF0",
+        "id:A7OFM0ZTRYMOYG",
+        "id:A7O9MN0YIUZXN",
+        "id:A9D25MDVZ2T1ON",
+        "id:A2051ICVODZP9E",
+        "id:A47PHJICWDVAB9",
+        "id:A55NZ7WTBR2RXC",
+        "id:A2C74O0LD4D9HD",
+        "id:A30BLJHHQILDNC",
+        "id:A5WB9Y629G3A95",
+        "id:A0DZDWECHDJ5TO",
+        "id:A6LA5Y7P3AGUTC",
+        "id:A5QUM4XU1H9HQS",
+        "id:A5OSRXGF947IEY",
+        "id:A54O2F1DYNOEKN",
+        "id:A8LKEVUMZ2502T",
+        "id:AO2I4MJ59WDHS",
+        "id:AU9G43K0RMQVQ",
+        "id:A486QRCQCVMTG1",
+        "id:ANC8ZRCZP4NFS",
+        "id:A3QVN63ZJEGQYP",
+        "id:A5JGA6O3VGJC9D",
+        "id:A8KSSZB6LALEOL",
+        "id:A3MJ5TH3ODPWW",
+        "id:A2A1CI9GH4T37",
+        "id:A2ET6O3NEIF12O",
+        "id:A4S6I3ZV10EUC4",
+        "id:AC7RVVCLB4P7H",
+        "id:AFRYVFGBLTBTV",
+        "id:A9LE0ZXWQH9RYQ",
+        "id:AM1LFFMLPUMPM",
+        "id:AWJ5XN1FMHXXV",
+        "id:A9KLW1P144EJA8",
+        "id:A9Z8T0H4AP33R4",
+        "id:A3FM1CRWW54MMO",
+        "id:A4OQGIPQ6DAKF4",
+        "id:A1XKE42LNWTCBT"
+      ],
+      "source": "default_spec()",
+      "spec": {
+        "center_h": true,
+        "center_v": false,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [],
+        "excluded_shifts": [],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "",
+        "note": "",
+        "orientation": "portrait",
+        "paper": "letter",
+        "repeat_header": true,
+        "scale": 100,
+        "show_page_numbers": true,
+        "show_title": true,
+        "sort_by": "driver",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": false,
+        "title": "",
+        "vans_only": false
+      },
+      "title_for": "Load Out  -  Friday, September 11 2026"
+    },
+    "preset:Morning crew": {
+      "band_count": 1,
+      "band_count_no_rows": 1,
+      "bands": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      ],
+      "column_widths": [
+        33,
+        101.1125,
+        61.9325,
+        29.8325,
+        70.7,
+        39.4175,
+        45.68,
+        32.3375,
+        29.84,
+        45.75
+      ],
+      "column_widths_no_rows": [
+        33,
+        84.75,
+        58.5,
+        29.8325,
+        67.5,
+        39.4175,
+        41.5025,
+        32.3375,
+        29.84,
+        45.75
+      ],
+      "columns": [
+        {
+          "align": "C",
+          "kind_label": "Tick box",
+          "label": "Here",
+          "width": 44
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Driver",
+          "width": 113
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Vehicle",
+          "width": 78
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "PAD",
+          "width": 32
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Shift Type",
+          "width": 90
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Routes",
+          "width": 46
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Staging",
+          "width": 55
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "Bags",
+          "width": 36
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "OVS",
+          "width": 36
+        },
+        {
+          "align": "C",
+          "kind_label": "Write-in",
+          "label": "",
+          "width": 61
+        }
+      ],
+      "default_filename": "Load Out - Friday, September 11 2026",
+      "geometry": {
+        "font_size": 7.5,
+        "header_h": 16.5,
+        "margin": 36,
+        "page_h": 792,
+        "page_w": 612,
+        "row_h": 15,
+        "scale": 0.75,
+        "title_h": 22.25,
+        "usable_h": 720,
+        "usable_w": 540
+      },
+      "page_count": 2,
+      "pages": [
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "first_of_band": true,
+          "group": "",
+          "row_keys": [
+            "id:A1I13S2WRY55FH",
+            "id:APC3N0EIX2VK4",
+            "id:A5S9FXHBWJRB9D",
+            "id:A1QVVPYVZD6R9F",
+            "id:A9JB97ABCU8C81",
+            "id:A2ZUDELA4UHN2U",
+            "id:A9ZG8P8IMK2LUL",
+            "id:AK92X3BJNUBTF",
+            "id:AC32BQGN2MON3",
+            "id:A1E4CRQE9TMGKN",
+            "id:A5C89KIOHQ4K4J",
+            "id:A7SJ8FE0PNIK0B",
+            "id:A9C6T83A3QX1LH",
+            "id:A7XH9404B428LL",
+            "id:A6URN0K4YHEUUX",
+            "id:A503VSKH6DU6TJ",
+            "id:AKA0HPH6GU9DK",
+            "id:A1QHNFOZ7DGJTJ",
+            "id:A1LSR7SEOTKE3I",
+            "id:A63AK2RYZDOMF0",
+            "id:A7OFM0ZTRYMOYG",
+            "id:A7O9MN0YIUZXN",
+            "id:A9D25MDVZ2T1ON",
+            "id:A2051ICVODZP9E",
+            "id:A47PHJICWDVAB9",
+            "id:A55NZ7WTBR2RXC",
+            "id:A2C74O0LD4D9HD",
+            "id:A30BLJHHQILDNC",
+            "id:A5WB9Y629G3A95",
+            "id:A0DZDWECHDJ5TO",
+            "id:A6LA5Y7P3AGUTC",
+            "id:A5QUM4XU1H9HQS",
+            "id:A5OSRXGF947IEY",
+            "id:A54O2F1DYNOEKN",
+            "id:AO2I4MJ59WDHS",
+            "id:AU9G43K0RMQVQ",
+            "id:A486QRCQCVMTG1",
+            "id:ANC8ZRCZP4NFS",
+            "id:A3QVN63ZJEGQYP",
+            "id:A5JGA6O3VGJC9D",
+            "id:A8KSSZB6LALEOL",
+            "id:A3MJ5TH3ODPWW",
+            "id:A2A1CI9GH4T37",
+            "id:A2ET6O3NEIF12O",
+            "id:A4S6I3ZV10EUC4"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "first_of_band": false,
+          "group": "",
+          "row_keys": [
+            "id:AC7RVVCLB4P7H",
+            "id:AFRYVFGBLTBTV",
+            "id:A9LE0ZXWQH9RYQ",
+            "id:A9KLW1P144EJA8",
+            "id:A9Z8T0H4AP33R4",
+            "id:A3FM1CRWW54MMO",
+            "id:A4OQGIPQ6DAKF4",
+            "id:A1XKE42LNWTCBT"
+          ]
+        }
+      ],
+      "printing_keys": [
+        "id:A1I13S2WRY55FH",
+        "id:APC3N0EIX2VK4",
+        "id:A5S9FXHBWJRB9D",
+        "id:A1QVVPYVZD6R9F",
+        "id:A9JB97ABCU8C81",
+        "id:A2ZUDELA4UHN2U",
+        "id:A9ZG8P8IMK2LUL",
+        "id:AK92X3BJNUBTF",
+        "id:AC32BQGN2MON3",
+        "id:A1E4CRQE9TMGKN",
+        "id:A5C89KIOHQ4K4J",
+        "id:A7SJ8FE0PNIK0B",
+        "id:A9C6T83A3QX1LH",
+        "id:A7XH9404B428LL",
+        "id:A6URN0K4YHEUUX",
+        "id:A503VSKH6DU6TJ",
+        "id:AKA0HPH6GU9DK",
+        "id:A1QHNFOZ7DGJTJ",
+        "id:A1LSR7SEOTKE3I",
+        "id:A63AK2RYZDOMF0",
+        "id:A7OFM0ZTRYMOYG",
+        "id:A7O9MN0YIUZXN",
+        "id:A9D25MDVZ2T1ON",
+        "id:A2051ICVODZP9E",
+        "id:A47PHJICWDVAB9",
+        "id:A55NZ7WTBR2RXC",
+        "id:A2C74O0LD4D9HD",
+        "id:A30BLJHHQILDNC",
+        "id:A5WB9Y629G3A95",
+        "id:A0DZDWECHDJ5TO",
+        "id:A6LA5Y7P3AGUTC",
+        "id:A5QUM4XU1H9HQS",
+        "id:A5OSRXGF947IEY",
+        "id:A54O2F1DYNOEKN",
+        "id:AO2I4MJ59WDHS",
+        "id:AU9G43K0RMQVQ",
+        "id:A486QRCQCVMTG1",
+        "id:ANC8ZRCZP4NFS",
+        "id:A3QVN63ZJEGQYP",
+        "id:A5JGA6O3VGJC9D",
+        "id:A8KSSZB6LALEOL",
+        "id:A3MJ5TH3ODPWW",
+        "id:A2A1CI9GH4T37",
+        "id:A2ET6O3NEIF12O",
+        "id:A4S6I3ZV10EUC4",
+        "id:AC7RVVCLB4P7H",
+        "id:AFRYVFGBLTBTV",
+        "id:A9LE0ZXWQH9RYQ",
+        "id:A9KLW1P144EJA8",
+        "id:A9Z8T0H4AP33R4",
+        "id:A3FM1CRWW54MMO",
+        "id:A4OQGIPQ6DAKF4",
+        "id:A1XKE42LNWTCBT"
+      ],
+      "source": "a layout saved under a name in the database",
+      "spec": {
+        "center_h": true,
+        "center_v": true,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "Here",
+            "kind": "checkbox",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "staging_location",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "bags",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "ovs",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [
+          "id:A44G2UFEKI28R8",
+          "id:A8LKEVUMZ2502T",
+          "id:A6DWJ3LP97G2SD",
+          "stella upton"
+        ],
+        "excluded_shifts": [
+          "Call Out",
+          "Helper",
+          "Light Duty",
+          "Operations Manager",
+          "TIME OFF"
+        ],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "",
+        "note": "",
+        "orientation": "portrait",
+        "paper": "letter",
+        "repeat_header": true,
+        "scale": 75,
+        "show_page_numbers": true,
+        "show_title": true,
+        "sort_by": "driver",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": true,
+        "title": "",
+        "vans_only": false
+      },
+      "title_for": "Load Out  -  Friday, September 11 2026"
+    },
+    "synthetic:everything-landscape-no-fit": {
+      "band_count": 2,
+      "band_count_no_rows": 2,
+      "bands": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        [
+          0,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ]
+      ],
+      "column_widths": [
+        130.15,
+        105.15,
+        115.11,
+        89.01,
+        122.35,
+        201.86,
+        47.89,
+        66.24,
+        35.11,
+        220.18,
+        77.91,
+        120.7,
+        110.7,
+        46.24,
+        56.24,
+        38.45,
+        35.12,
+        32.89
+      ],
+      "column_widths_no_rows": [
+        113,
+        90,
+        88,
+        89.01,
+        72,
+        118,
+        47.89,
+        74,
+        35.11,
+        130,
+        78,
+        112,
+        92,
+        60,
+        55,
+        38.45,
+        36,
+        36
+      ],
+      "columns": [
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Driver",
+          "width": 113
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Shift Type",
+          "width": 90
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Transporter ID",
+          "width": 88
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "Lifetime Routes",
+          "width": 44
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Vans",
+          "width": 72
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Check",
+          "width": 118
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Routes",
+          "width": 46
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Wave Time",
+          "width": 74
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "PAD",
+          "width": 32
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Service Type",
+          "width": 130
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Vehicle",
+          "width": 78
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "VIN",
+          "width": 112
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Matched On",
+          "width": 92
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Device",
+          "width": 60
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Staging",
+          "width": 55
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "Bags",
+          "width": 36
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "OVS",
+          "width": 36
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "Bag",
+          "width": 36
+        }
+      ],
+      "default_filename": "Everything - Friday, September 11 2026",
+      "geometry": {
+        "font_size": 10,
+        "header_h": 22,
+        "margin": 36,
+        "page_h": 792,
+        "page_w": 1224,
+        "row_h": 20,
+        "scale": 1,
+        "title_h": 27,
+        "usable_h": 720,
+        "usable_w": 1152
+      },
+      "page_count": 4,
+      "pages": [
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "first_of_band": true,
+          "group": "",
+          "row_keys": [
+            "id:A1I13S2WRY55FH",
+            "id:APC3N0EIX2VK4",
+            "id:A5S9FXHBWJRB9D",
+            "id:A1QVVPYVZD6R9F",
+            "id:A9JB97ABCU8C81",
+            "id:A2ZUDELA4UHN2U",
+            "id:A9ZG8P8IMK2LUL",
+            "id:AK92X3BJNUBTF",
+            "id:AC32BQGN2MON3",
+            "id:A1E4CRQE9TMGKN",
+            "id:A5C89KIOHQ4K4J",
+            "id:A7SJ8FE0PNIK0B",
+            "id:A9C6T83A3QX1LH",
+            "id:A7XH9404B428LL",
+            "id:A6URN0K4YHEUUX",
+            "id:A503VSKH6DU6TJ",
+            "id:AKA0HPH6GU9DK",
+            "id:A1QHNFOZ7DGJTJ",
+            "id:A1LSR7SEOTKE3I",
+            "id:A63AK2RYZDOMF0",
+            "id:A7OFM0ZTRYMOYG",
+            "id:A7O9MN0YIUZXN",
+            "id:A9D25MDVZ2T1ON",
+            "id:A2051ICVODZP9E",
+            "id:A47PHJICWDVAB9",
+            "id:A55NZ7WTBR2RXC",
+            "id:A2C74O0LD4D9HD",
+            "id:A30BLJHHQILDNC",
+            "id:A5WB9Y629G3A95",
+            "id:A0DZDWECHDJ5TO",
+            "id:A6LA5Y7P3AGUTC",
+            "id:A5QUM4XU1H9HQS",
+            "id:A5OSRXGF947IEY"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "first_of_band": false,
+          "group": "",
+          "row_keys": [
+            "id:A54O2F1DYNOEKN",
+            "id:A8LKEVUMZ2502T",
+            "id:AO2I4MJ59WDHS",
+            "id:AU9G43K0RMQVQ",
+            "id:A486QRCQCVMTG1",
+            "id:ANC8ZRCZP4NFS",
+            "id:A3QVN63ZJEGQYP",
+            "id:A5JGA6O3VGJC9D",
+            "id:A8KSSZB6LALEOL",
+            "id:A3MJ5TH3ODPWW",
+            "id:A2A1CI9GH4T37",
+            "id:A2ET6O3NEIF12O",
+            "id:A4S6I3ZV10EUC4",
+            "id:AC7RVVCLB4P7H",
+            "id:AFRYVFGBLTBTV",
+            "id:A9LE0ZXWQH9RYQ",
+            "id:AM1LFFMLPUMPM",
+            "id:AWJ5XN1FMHXXV",
+            "id:A9KLW1P144EJA8",
+            "id:A9Z8T0H4AP33R4",
+            "id:A3FM1CRWW54MMO",
+            "id:A4OQGIPQ6DAKF4",
+            "id:A1XKE42LNWTCBT"
+          ]
+        },
+        {
+          "band": 1,
+          "columns": [
+            0,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "first_of_band": true,
+          "group": "",
+          "row_keys": [
+            "id:A1I13S2WRY55FH",
+            "id:APC3N0EIX2VK4",
+            "id:A5S9FXHBWJRB9D",
+            "id:A1QVVPYVZD6R9F",
+            "id:A9JB97ABCU8C81",
+            "id:A2ZUDELA4UHN2U",
+            "id:A9ZG8P8IMK2LUL",
+            "id:AK92X3BJNUBTF",
+            "id:AC32BQGN2MON3",
+            "id:A1E4CRQE9TMGKN",
+            "id:A5C89KIOHQ4K4J",
+            "id:A7SJ8FE0PNIK0B",
+            "id:A9C6T83A3QX1LH",
+            "id:A7XH9404B428LL",
+            "id:A6URN0K4YHEUUX",
+            "id:A503VSKH6DU6TJ",
+            "id:AKA0HPH6GU9DK",
+            "id:A1QHNFOZ7DGJTJ",
+            "id:A1LSR7SEOTKE3I",
+            "id:A63AK2RYZDOMF0",
+            "id:A7OFM0ZTRYMOYG",
+            "id:A7O9MN0YIUZXN",
+            "id:A9D25MDVZ2T1ON",
+            "id:A2051ICVODZP9E",
+            "id:A47PHJICWDVAB9",
+            "id:A55NZ7WTBR2RXC",
+            "id:A2C74O0LD4D9HD",
+            "id:A30BLJHHQILDNC",
+            "id:A5WB9Y629G3A95",
+            "id:A0DZDWECHDJ5TO",
+            "id:A6LA5Y7P3AGUTC",
+            "id:A5QUM4XU1H9HQS",
+            "id:A5OSRXGF947IEY"
+          ]
+        },
+        {
+          "band": 1,
+          "columns": [
+            0,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "first_of_band": false,
+          "group": "",
+          "row_keys": [
+            "id:A54O2F1DYNOEKN",
+            "id:A8LKEVUMZ2502T",
+            "id:AO2I4MJ59WDHS",
+            "id:AU9G43K0RMQVQ",
+            "id:A486QRCQCVMTG1",
+            "id:ANC8ZRCZP4NFS",
+            "id:A3QVN63ZJEGQYP",
+            "id:A5JGA6O3VGJC9D",
+            "id:A8KSSZB6LALEOL",
+            "id:A3MJ5TH3ODPWW",
+            "id:A2A1CI9GH4T37",
+            "id:A2ET6O3NEIF12O",
+            "id:A4S6I3ZV10EUC4",
+            "id:AC7RVVCLB4P7H",
+            "id:AFRYVFGBLTBTV",
+            "id:A9LE0ZXWQH9RYQ",
+            "id:AM1LFFMLPUMPM",
+            "id:AWJ5XN1FMHXXV",
+            "id:A9KLW1P144EJA8",
+            "id:A9Z8T0H4AP33R4",
+            "id:A3FM1CRWW54MMO",
+            "id:A4OQGIPQ6DAKF4",
+            "id:A1XKE42LNWTCBT"
+          ]
+        }
+      ],
+      "printing_keys": [
+        "id:A1I13S2WRY55FH",
+        "id:APC3N0EIX2VK4",
+        "id:A5S9FXHBWJRB9D",
+        "id:A1QVVPYVZD6R9F",
+        "id:A9JB97ABCU8C81",
+        "id:A2ZUDELA4UHN2U",
+        "id:A9ZG8P8IMK2LUL",
+        "id:AK92X3BJNUBTF",
+        "id:AC32BQGN2MON3",
+        "id:A1E4CRQE9TMGKN",
+        "id:A5C89KIOHQ4K4J",
+        "id:A7SJ8FE0PNIK0B",
+        "id:A9C6T83A3QX1LH",
+        "id:A7XH9404B428LL",
+        "id:A6URN0K4YHEUUX",
+        "id:A503VSKH6DU6TJ",
+        "id:AKA0HPH6GU9DK",
+        "id:A1QHNFOZ7DGJTJ",
+        "id:A1LSR7SEOTKE3I",
+        "id:A63AK2RYZDOMF0",
+        "id:A7OFM0ZTRYMOYG",
+        "id:A7O9MN0YIUZXN",
+        "id:A9D25MDVZ2T1ON",
+        "id:A2051ICVODZP9E",
+        "id:A47PHJICWDVAB9",
+        "id:A55NZ7WTBR2RXC",
+        "id:A2C74O0LD4D9HD",
+        "id:A30BLJHHQILDNC",
+        "id:A5WB9Y629G3A95",
+        "id:A0DZDWECHDJ5TO",
+        "id:A6LA5Y7P3AGUTC",
+        "id:A5QUM4XU1H9HQS",
+        "id:A5OSRXGF947IEY",
+        "id:A54O2F1DYNOEKN",
+        "id:A8LKEVUMZ2502T",
+        "id:AO2I4MJ59WDHS",
+        "id:AU9G43K0RMQVQ",
+        "id:A486QRCQCVMTG1",
+        "id:ANC8ZRCZP4NFS",
+        "id:A3QVN63ZJEGQYP",
+        "id:A5JGA6O3VGJC9D",
+        "id:A8KSSZB6LALEOL",
+        "id:A3MJ5TH3ODPWW",
+        "id:A2A1CI9GH4T37",
+        "id:A2ET6O3NEIF12O",
+        "id:A4S6I3ZV10EUC4",
+        "id:AC7RVVCLB4P7H",
+        "id:AFRYVFGBLTBTV",
+        "id:A9LE0ZXWQH9RYQ",
+        "id:AM1LFFMLPUMPM",
+        "id:AWJ5XN1FMHXXV",
+        "id:A9KLW1P144EJA8",
+        "id:A9Z8T0H4AP33R4",
+        "id:A3FM1CRWW54MMO",
+        "id:A4OQGIPQ6DAKF4",
+        "id:A1XKE42LNWTCBT"
+      ],
+      "source": "built by the harness to push the page math",
+      "spec": {
+        "center_h": true,
+        "center_v": false,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "transporter_id",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "tenure",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vans",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "check",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "wave_time",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "service_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vin",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "assign_method",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "device",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "staging_location",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "bags",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "ovs",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "bag",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [],
+        "excluded_shifts": [],
+        "fit_one_page": false,
+        "grid": true,
+        "group_break": "",
+        "note": "",
+        "orientation": "landscape",
+        "paper": "tabloid",
+        "repeat_header": true,
+        "scale": 100,
+        "show_page_numbers": true,
+        "show_title": true,
+        "sort_by": "driver",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": false,
+        "title": "Everything",
+        "vans_only": false
+      },
+      "title_for": "Everything  -  Friday, September 11 2026"
+    },
+    "synthetic:everything-squeezed-big": {
+      "band_count": 1,
+      "band_count_no_rows": 1,
+      "bands": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ]
+      ],
+      "column_widths": [
+        44.691367,
+        40.615349,
+        44.691367,
+        33.936473,
+        44.691367,
+        44.691367,
+        16.920648,
+        24.514043,
+        11.63217,
+        44.691367,
+        29.343193,
+        44.691367,
+        42.911989,
+        16.237864,
+        20.375953,
+        13.014292,
+        11.636308,
+        10.713514
+      ],
+      "column_widths_no_rows": [
+        44.552754,
+        37.127295,
+        36.302244,
+        33.831216,
+        29.701836,
+        44.552754,
+        18.976173,
+        30.526887,
+        13.200816,
+        44.552754,
+        32.176989,
+        44.552754,
+        37.952346,
+        24.75153,
+        22.688902,
+        14.850918,
+        14.850918,
+        14.850918
+      ],
+      "columns": [
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Driver",
+          "width": 113
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Shift Type",
+          "width": 90
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Transporter ID",
+          "width": 88
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "Lifetime Routes",
+          "width": 44
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Vans",
+          "width": 72
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Check",
+          "width": 118
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Routes",
+          "width": 46
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Wave Time",
+          "width": 74
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "PAD",
+          "width": 32
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Service Type",
+          "width": 130
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Vehicle",
+          "width": 78
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "VIN",
+          "width": 112
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Matched On",
+          "width": 92
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Device",
+          "width": 60
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Staging",
+          "width": 55
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "Bags",
+          "width": 36
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "OVS",
+          "width": 36
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "Bag",
+          "width": 36
+        }
+      ],
+      "default_filename": "Load Out - Friday, September 11 2026",
+      "geometry": {
+        "font_size": 20,
+        "header_h": 44,
+        "margin": 36,
+        "page_h": 792,
+        "page_w": 612,
+        "row_h": 40,
+        "scale": 2,
+        "title_h": 46,
+        "usable_h": 720,
+        "usable_w": 540
+      },
+      "page_count": 4,
+      "pages": [
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "first_of_band": true,
+          "group": "",
+          "row_keys": [
+            "id:A4OQGIPQ6DAKF4",
+            "id:A9Z8T0H4AP33R4",
+            "id:A9KLW1P144EJA8",
+            "id:AM1LFFMLPUMPM",
+            "id:A2ET6O3NEIF12O",
+            "id:A3MJ5TH3ODPWW",
+            "id:ANC8ZRCZP4NFS",
+            "id:A54O2F1DYNOEKN",
+            "id:A5OSRXGF947IEY",
+            "id:A0DZDWECHDJ5TO",
+            "id:A5WB9Y629G3A95",
+            "id:A30BLJHHQILDNC",
+            "id:A2C74O0LD4D9HD",
+            "id:A47PHJICWDVAB9",
+            "id:A7OFM0ZTRYMOYG"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "first_of_band": false,
+          "group": "",
+          "row_keys": [
+            "id:A1LSR7SEOTKE3I",
+            "id:A1QHNFOZ7DGJTJ",
+            "id:A503VSKH6DU6TJ",
+            "id:A7XH9404B428LL",
+            "id:A7SJ8FE0PNIK0B",
+            "id:A5C89KIOHQ4K4J",
+            "id:A1E4CRQE9TMGKN",
+            "id:AC32BQGN2MON3",
+            "id:A2ZUDELA4UHN2U",
+            "id:A9JB97ABCU8C81",
+            "id:A5S9FXHBWJRB9D",
+            "id:A9ZG8P8IMK2LUL",
+            "id:A1XKE42LNWTCBT",
+            "id:AFRYVFGBLTBTV",
+            "id:A4S6I3ZV10EUC4"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "first_of_band": false,
+          "group": "",
+          "row_keys": [
+            "id:A5JGA6O3VGJC9D",
+            "id:AO2I4MJ59WDHS",
+            "id:A5QUM4XU1H9HQS",
+            "id:A2051ICVODZP9E",
+            "id:A9D25MDVZ2T1ON",
+            "id:A63AK2RYZDOMF0",
+            "id:A6URN0K4YHEUUX",
+            "id:AK92X3BJNUBTF",
+            "id:A1QVVPYVZD6R9F",
+            "id:A1I13S2WRY55FH",
+            "id:A3FM1CRWW54MMO",
+            "id:AWJ5XN1FMHXXV",
+            "id:A9LE0ZXWQH9RYQ",
+            "id:AC7RVVCLB4P7H",
+            "id:A2A1CI9GH4T37"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ],
+          "first_of_band": false,
+          "group": "",
+          "row_keys": [
+            "id:A8KSSZB6LALEOL",
+            "id:A3QVN63ZJEGQYP",
+            "id:A486QRCQCVMTG1",
+            "id:AU9G43K0RMQVQ",
+            "id:A8LKEVUMZ2502T",
+            "id:A6LA5Y7P3AGUTC",
+            "id:A55NZ7WTBR2RXC",
+            "id:A7O9MN0YIUZXN",
+            "id:AKA0HPH6GU9DK",
+            "id:A9C6T83A3QX1LH",
+            "id:APC3N0EIX2VK4"
+          ]
+        }
+      ],
+      "printing_keys": [
+        "id:A4OQGIPQ6DAKF4",
+        "id:A9Z8T0H4AP33R4",
+        "id:A9KLW1P144EJA8",
+        "id:AM1LFFMLPUMPM",
+        "id:A2ET6O3NEIF12O",
+        "id:A3MJ5TH3ODPWW",
+        "id:ANC8ZRCZP4NFS",
+        "id:A54O2F1DYNOEKN",
+        "id:A5OSRXGF947IEY",
+        "id:A0DZDWECHDJ5TO",
+        "id:A5WB9Y629G3A95",
+        "id:A30BLJHHQILDNC",
+        "id:A2C74O0LD4D9HD",
+        "id:A47PHJICWDVAB9",
+        "id:A7OFM0ZTRYMOYG",
+        "id:A1LSR7SEOTKE3I",
+        "id:A1QHNFOZ7DGJTJ",
+        "id:A503VSKH6DU6TJ",
+        "id:A7XH9404B428LL",
+        "id:A7SJ8FE0PNIK0B",
+        "id:A5C89KIOHQ4K4J",
+        "id:A1E4CRQE9TMGKN",
+        "id:AC32BQGN2MON3",
+        "id:A2ZUDELA4UHN2U",
+        "id:A9JB97ABCU8C81",
+        "id:A5S9FXHBWJRB9D",
+        "id:A9ZG8P8IMK2LUL",
+        "id:A1XKE42LNWTCBT",
+        "id:AFRYVFGBLTBTV",
+        "id:A4S6I3ZV10EUC4",
+        "id:A5JGA6O3VGJC9D",
+        "id:AO2I4MJ59WDHS",
+        "id:A5QUM4XU1H9HQS",
+        "id:A2051ICVODZP9E",
+        "id:A9D25MDVZ2T1ON",
+        "id:A63AK2RYZDOMF0",
+        "id:A6URN0K4YHEUUX",
+        "id:AK92X3BJNUBTF",
+        "id:A1QVVPYVZD6R9F",
+        "id:A1I13S2WRY55FH",
+        "id:A3FM1CRWW54MMO",
+        "id:AWJ5XN1FMHXXV",
+        "id:A9LE0ZXWQH9RYQ",
+        "id:AC7RVVCLB4P7H",
+        "id:A2A1CI9GH4T37",
+        "id:A8KSSZB6LALEOL",
+        "id:A3QVN63ZJEGQYP",
+        "id:A486QRCQCVMTG1",
+        "id:AU9G43K0RMQVQ",
+        "id:A8LKEVUMZ2502T",
+        "id:A6LA5Y7P3AGUTC",
+        "id:A55NZ7WTBR2RXC",
+        "id:A7O9MN0YIUZXN",
+        "id:AKA0HPH6GU9DK",
+        "id:A9C6T83A3QX1LH",
+        "id:APC3N0EIX2VK4"
+      ],
+      "source": "built by the harness to push the page math",
+      "spec": {
+        "center_h": true,
+        "center_v": false,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "transporter_id",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "tenure",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vans",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "check",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "wave_time",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "service_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vin",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "assign_method",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "device",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "staging_location",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "bags",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "ovs",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "bag",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [],
+        "excluded_shifts": [],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "",
+        "note": "",
+        "orientation": "portrait",
+        "paper": "letter",
+        "repeat_header": true,
+        "scale": 200,
+        "show_page_numbers": true,
+        "show_title": true,
+        "sort_by": "wave_time",
+        "sort_reverse": true,
+        "stretch": false,
+        "stripes": false,
+        "title": "",
+        "vans_only": false
+      },
+      "title_for": "Load Out  -  Friday, September 11 2026"
+    },
+    "synthetic:grouped-by-pad-vans-only": {
+      "band_count": 1,
+      "band_count_no_rows": 1,
+      "bands": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      ],
+      "column_widths": [
+        61,
+        130.15,
+        77.91,
+        76.79,
+        47.89,
+        35.11,
+        61
+      ],
+      "column_widths_no_rows": [
+        61,
+        113,
+        78,
+        90,
+        47.89,
+        35.11,
+        61
+      ],
+      "columns": [
+        {
+          "align": "C",
+          "kind_label": "Write-in",
+          "label": "",
+          "width": 61
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Driver",
+          "width": 113
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Vehicle",
+          "width": 78
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Shift Type",
+          "width": 90
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Routes",
+          "width": 46
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "PAD",
+          "width": 32
+        },
+        {
+          "align": "C",
+          "kind_label": "Write-in",
+          "label": "",
+          "width": 61
+        }
+      ],
+      "default_filename": "Load Out - Friday, September 11 2026",
+      "geometry": {
+        "font_size": 10,
+        "header_h": 22,
+        "margin": 36,
+        "page_h": 792,
+        "page_w": 612,
+        "row_h": 20,
+        "scale": 1,
+        "title_h": 42,
+        "usable_h": 720,
+        "usable_w": 540
+      },
+      "page_count": 3,
+      "pages": [
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "first_of_band": true,
+          "group": "1",
+          "row_keys": [
+            "id:APC3N0EIX2VK4",
+            "id:A9C6T83A3QX1LH",
+            "id:AKA0HPH6GU9DK",
+            "id:A7O9MN0YIUZXN",
+            "id:A55NZ7WTBR2RXC",
+            "id:A6LA5Y7P3AGUTC",
+            "id:A8LKEVUMZ2502T",
+            "id:AU9G43K0RMQVQ",
+            "id:A486QRCQCVMTG1",
+            "id:A3QVN63ZJEGQYP",
+            "id:AC7RVVCLB4P7H",
+            "id:A9LE0ZXWQH9RYQ",
+            "id:AWJ5XN1FMHXXV",
+            "id:A3FM1CRWW54MMO"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "first_of_band": false,
+          "group": "2",
+          "row_keys": [
+            "id:A1I13S2WRY55FH",
+            "id:A1QVVPYVZD6R9F",
+            "id:AK92X3BJNUBTF",
+            "id:A5QUM4XU1H9HQS",
+            "id:AO2I4MJ59WDHS",
+            "id:A5JGA6O3VGJC9D",
+            "id:A4S6I3ZV10EUC4",
+            "id:AFRYVFGBLTBTV",
+            "id:A1XKE42LNWTCBT"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "first_of_band": false,
+          "group": "3",
+          "row_keys": [
+            "id:A9ZG8P8IMK2LUL"
+          ]
+        }
+      ],
+      "printing_keys": [
+        "id:APC3N0EIX2VK4",
+        "id:A9C6T83A3QX1LH",
+        "id:AKA0HPH6GU9DK",
+        "id:A7O9MN0YIUZXN",
+        "id:A55NZ7WTBR2RXC",
+        "id:A6LA5Y7P3AGUTC",
+        "id:A8LKEVUMZ2502T",
+        "id:AU9G43K0RMQVQ",
+        "id:A486QRCQCVMTG1",
+        "id:A3QVN63ZJEGQYP",
+        "id:AC7RVVCLB4P7H",
+        "id:A9LE0ZXWQH9RYQ",
+        "id:AWJ5XN1FMHXXV",
+        "id:A3FM1CRWW54MMO",
+        "id:A1I13S2WRY55FH",
+        "id:A1QVVPYVZD6R9F",
+        "id:AK92X3BJNUBTF",
+        "id:A5QUM4XU1H9HQS",
+        "id:AO2I4MJ59WDHS",
+        "id:A5JGA6O3VGJC9D",
+        "id:A4S6I3ZV10EUC4",
+        "id:AFRYVFGBLTBTV",
+        "id:A1XKE42LNWTCBT",
+        "id:A9ZG8P8IMK2LUL"
+      ],
+      "source": "built by the harness to push the page math",
+      "spec": {
+        "center_h": true,
+        "center_v": false,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [],
+        "excluded_shifts": [],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "pad",
+        "note": "A line of my own",
+        "orientation": "portrait",
+        "paper": "letter",
+        "repeat_header": true,
+        "scale": 100,
+        "show_page_numbers": true,
+        "show_title": false,
+        "sort_by": "wave_time",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": true,
+        "title": "",
+        "vans_only": true
+      },
+      "title_for": "Load Out  -  Friday, September 11 2026"
+    },
+    "synthetic:narrow-stretched-a4": {
+      "band_count": 1,
+      "band_count_no_rows": 1,
+      "bands": [
+        [
+          0,
+          1
+        ]
+      ],
+      "column_widths": [
+        327.332942,
+        195.947058
+      ],
+      "column_widths_no_rows": [
+        309.584503,
+        213.695497
+      ],
+      "columns": [
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Driver",
+          "width": 113
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "Vehicle",
+          "width": 78
+        }
+      ],
+      "default_filename": "Load Out - Friday, September 11 2026",
+      "geometry": {
+        "font_size": 10,
+        "header_h": 22,
+        "margin": 36,
+        "page_h": 841.89,
+        "page_w": 595.28,
+        "row_h": 20,
+        "scale": 1,
+        "title_h": 27,
+        "usable_h": 769.89,
+        "usable_w": 523.28
+      },
+      "page_count": 2,
+      "pages": [
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1
+          ],
+          "first_of_band": true,
+          "group": "",
+          "row_keys": [
+            "id:AK92X3BJNUBTF",
+            "id:A4S6I3ZV10EUC4",
+            "id:A1I13S2WRY55FH",
+            "id:AC7RVVCLB4P7H",
+            "id:APC3N0EIX2VK4",
+            "id:A1XKE42LNWTCBT",
+            "id:A9C6T83A3QX1LH",
+            "id:A7O9MN0YIUZXN",
+            "id:A3FM1CRWW54MMO",
+            "id:A5JGA6O3VGJC9D",
+            "id:A6LA5Y7P3AGUTC",
+            "id:AO2I4MJ59WDHS",
+            "id:A9LE0ZXWQH9RYQ",
+            "id:A8LKEVUMZ2502T",
+            "id:AWJ5XN1FMHXXV",
+            "id:A1QVVPYVZD6R9F",
+            "id:A55NZ7WTBR2RXC",
+            "id:A486QRCQCVMTG1",
+            "id:AU9G43K0RMQVQ",
+            "id:AKA0HPH6GU9DK",
+            "id:A3QVN63ZJEGQYP",
+            "id:AFRYVFGBLTBTV",
+            "id:A5QUM4XU1H9HQS",
+            "id:A9ZG8P8IMK2LUL",
+            "id:A5S9FXHBWJRB9D",
+            "id:A9JB97ABCU8C81",
+            "id:A2ZUDELA4UHN2U",
+            "id:AC32BQGN2MON3",
+            "id:A1E4CRQE9TMGKN",
+            "id:A5C89KIOHQ4K4J",
+            "id:A7SJ8FE0PNIK0B",
+            "id:A7XH9404B428LL",
+            "id:A6URN0K4YHEUUX",
+            "id:A503VSKH6DU6TJ",
+            "id:A1QHNFOZ7DGJTJ",
+            "id:A1LSR7SEOTKE3I"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1
+          ],
+          "first_of_band": false,
+          "group": "",
+          "row_keys": [
+            "id:A63AK2RYZDOMF0",
+            "id:A7OFM0ZTRYMOYG",
+            "id:A9D25MDVZ2T1ON",
+            "id:A2051ICVODZP9E",
+            "id:A47PHJICWDVAB9",
+            "id:A2C74O0LD4D9HD",
+            "id:A30BLJHHQILDNC",
+            "id:A5WB9Y629G3A95",
+            "id:A0DZDWECHDJ5TO",
+            "id:A5OSRXGF947IEY",
+            "id:A54O2F1DYNOEKN",
+            "id:ANC8ZRCZP4NFS",
+            "id:A8KSSZB6LALEOL",
+            "id:A3MJ5TH3ODPWW",
+            "id:A2A1CI9GH4T37",
+            "id:A2ET6O3NEIF12O",
+            "id:AM1LFFMLPUMPM",
+            "id:A9KLW1P144EJA8",
+            "id:A9Z8T0H4AP33R4",
+            "id:A4OQGIPQ6DAKF4"
+          ]
+        }
+      ],
+      "printing_keys": [
+        "id:AK92X3BJNUBTF",
+        "id:A4S6I3ZV10EUC4",
+        "id:A1I13S2WRY55FH",
+        "id:AC7RVVCLB4P7H",
+        "id:APC3N0EIX2VK4",
+        "id:A1XKE42LNWTCBT",
+        "id:A9C6T83A3QX1LH",
+        "id:A7O9MN0YIUZXN",
+        "id:A3FM1CRWW54MMO",
+        "id:A5JGA6O3VGJC9D",
+        "id:A6LA5Y7P3AGUTC",
+        "id:AO2I4MJ59WDHS",
+        "id:A9LE0ZXWQH9RYQ",
+        "id:A8LKEVUMZ2502T",
+        "id:AWJ5XN1FMHXXV",
+        "id:A1QVVPYVZD6R9F",
+        "id:A55NZ7WTBR2RXC",
+        "id:A486QRCQCVMTG1",
+        "id:AU9G43K0RMQVQ",
+        "id:AKA0HPH6GU9DK",
+        "id:A3QVN63ZJEGQYP",
+        "id:AFRYVFGBLTBTV",
+        "id:A5QUM4XU1H9HQS",
+        "id:A9ZG8P8IMK2LUL",
+        "id:A5S9FXHBWJRB9D",
+        "id:A9JB97ABCU8C81",
+        "id:A2ZUDELA4UHN2U",
+        "id:AC32BQGN2MON3",
+        "id:A1E4CRQE9TMGKN",
+        "id:A5C89KIOHQ4K4J",
+        "id:A7SJ8FE0PNIK0B",
+        "id:A7XH9404B428LL",
+        "id:A6URN0K4YHEUUX",
+        "id:A503VSKH6DU6TJ",
+        "id:A1QHNFOZ7DGJTJ",
+        "id:A1LSR7SEOTKE3I",
+        "id:A63AK2RYZDOMF0",
+        "id:A7OFM0ZTRYMOYG",
+        "id:A9D25MDVZ2T1ON",
+        "id:A2051ICVODZP9E",
+        "id:A47PHJICWDVAB9",
+        "id:A2C74O0LD4D9HD",
+        "id:A30BLJHHQILDNC",
+        "id:A5WB9Y629G3A95",
+        "id:A0DZDWECHDJ5TO",
+        "id:A5OSRXGF947IEY",
+        "id:A54O2F1DYNOEKN",
+        "id:ANC8ZRCZP4NFS",
+        "id:A8KSSZB6LALEOL",
+        "id:A3MJ5TH3ODPWW",
+        "id:A2A1CI9GH4T37",
+        "id:A2ET6O3NEIF12O",
+        "id:AM1LFFMLPUMPM",
+        "id:A9KLW1P144EJA8",
+        "id:A9Z8T0H4AP33R4",
+        "id:A4OQGIPQ6DAKF4"
+      ],
+      "source": "built by the harness to push the page math",
+      "spec": {
+        "center_h": false,
+        "center_v": false,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "C",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [],
+        "excluded_shifts": [],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "",
+        "note": "",
+        "orientation": "portrait",
+        "paper": "a4",
+        "repeat_header": true,
+        "scale": 100,
+        "show_page_numbers": false,
+        "show_title": true,
+        "sort_by": "vehicle",
+        "sort_reverse": false,
+        "stretch": true,
+        "stripes": false,
+        "title": "",
+        "vans_only": false
+      },
+      "title_for": "Load Out  -  Friday, September 11 2026"
+    },
+    "synthetic:tick-boxes-leave-offs": {
+      "band_count": 1,
+      "band_count_no_rows": 1,
+      "bands": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      ],
+      "column_widths": [
+        46.01,
+        84,
+        34.334,
+        54,
+        39.344
+      ],
+      "column_widths_no_rows": [
+        46.01,
+        84,
+        34.334,
+        54,
+        33
+      ],
+      "columns": [
+        {
+          "align": "C",
+          "kind_label": "Tick box",
+          "label": "Checked In",
+          "width": 72
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Driver",
+          "width": 140
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "Routes",
+          "width": 46
+        },
+        {
+          "align": "C",
+          "kind_label": "Write-in",
+          "label": "",
+          "width": 90
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Where",
+          "width": 55
+        }
+      ],
+      "default_filename": "Load Out - Friday, September 11 2026",
+      "geometry": {
+        "font_size": 6,
+        "header_h": 13.2,
+        "margin": 36,
+        "page_h": 1008,
+        "page_w": 612,
+        "row_h": 12,
+        "scale": 0.6,
+        "title_h": 19.4,
+        "usable_h": 936,
+        "usable_w": 540
+      },
+      "page_count": 8,
+      "pages": [
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "first_of_band": true,
+          "group": "Backup Driver",
+          "row_keys": [
+            "id:A3QVN63ZJEGQYP",
+            "id:A9D25MDVZ2T1ON",
+            "id:A5S9FXHBWJRB9D",
+            "id:A1LSR7SEOTKE3I",
+            "id:A47PHJICWDVAB9",
+            "id:A5OSRXGF947IEY",
+            "id:A3MJ5TH3ODPWW"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "first_of_band": false,
+          "group": "Electric Route",
+          "row_keys": [
+            "id:A2ET6O3NEIF12O",
+            "id:A2ZUDELA4UHN2U",
+            "id:A3FM1CRWW54MMO",
+            "id:A7XH9404B428LL",
+            "id:A1QVVPYVZD6R9F",
+            "id:A0DZDWECHDJ5TO",
+            "id:AC32BQGN2MON3",
+            "id:AKA0HPH6GU9DK",
+            "id:A1QHNFOZ7DGJTJ",
+            "id:AU9G43K0RMQVQ",
+            "id:A5WB9Y629G3A95",
+            "id:A55NZ7WTBR2RXC",
+            "id:A7OFM0ZTRYMOYG",
+            "id:A503VSKH6DU6TJ",
+            "id:A7SJ8FE0PNIK0B",
+            "id:A5C89KIOHQ4K4J",
+            "id:A2051ICVODZP9E",
+            "id:A54O2F1DYNOEKN",
+            "id:A486QRCQCVMTG1",
+            "id:A9Z8T0H4AP33R4",
+            "id:A9JB97ABCU8C81",
+            "id:A7O9MN0YIUZXN"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "first_of_band": false,
+          "group": "Large Van Route",
+          "row_keys": [
+            "id:A1E4CRQE9TMGKN",
+            "id:A2C74O0LD4D9HD",
+            "id:ANC8ZRCZP4NFS"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "first_of_band": false,
+          "group": "Lead Driver",
+          "row_keys": [
+            "id:A30BLJHHQILDNC",
+            "id:A4OQGIPQ6DAKF4"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "first_of_band": false,
+          "group": "ORE",
+          "row_keys": [
+            "id:A8KSSZB6LALEOL"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "first_of_band": false,
+          "group": "Recycle ADHOC",
+          "row_keys": [
+            "id:A2A1CI9GH4T37"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "first_of_band": false,
+          "group": "Sweeper",
+          "row_keys": [
+            "id:A9ZG8P8IMK2LUL"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "first_of_band": false,
+          "group": "TIME OFF",
+          "row_keys": [
+            "id:AWJ5XN1FMHXXV"
+          ]
+        }
+      ],
+      "printing_keys": [
+        "id:A3QVN63ZJEGQYP",
+        "id:A9D25MDVZ2T1ON",
+        "id:A5S9FXHBWJRB9D",
+        "id:A1LSR7SEOTKE3I",
+        "id:A47PHJICWDVAB9",
+        "id:A5OSRXGF947IEY",
+        "id:A3MJ5TH3ODPWW",
+        "id:A2ET6O3NEIF12O",
+        "id:A2ZUDELA4UHN2U",
+        "id:A3FM1CRWW54MMO",
+        "id:A7XH9404B428LL",
+        "id:A1QVVPYVZD6R9F",
+        "id:A0DZDWECHDJ5TO",
+        "id:AC32BQGN2MON3",
+        "id:AKA0HPH6GU9DK",
+        "id:A1QHNFOZ7DGJTJ",
+        "id:AU9G43K0RMQVQ",
+        "id:A5WB9Y629G3A95",
+        "id:A55NZ7WTBR2RXC",
+        "id:A7OFM0ZTRYMOYG",
+        "id:A503VSKH6DU6TJ",
+        "id:A7SJ8FE0PNIK0B",
+        "id:A5C89KIOHQ4K4J",
+        "id:A2051ICVODZP9E",
+        "id:A54O2F1DYNOEKN",
+        "id:A486QRCQCVMTG1",
+        "id:A9Z8T0H4AP33R4",
+        "id:A9JB97ABCU8C81",
+        "id:A7O9MN0YIUZXN",
+        "id:A1E4CRQE9TMGKN",
+        "id:A2C74O0LD4D9HD",
+        "id:ANC8ZRCZP4NFS",
+        "id:A30BLJHHQILDNC",
+        "id:A4OQGIPQ6DAKF4",
+        "id:A8KSSZB6LALEOL",
+        "id:A2A1CI9GH4T37",
+        "id:A9ZG8P8IMK2LUL",
+        "id:AWJ5XN1FMHXXV"
+      ],
+      "source": "built by the harness to push the page math",
+      "spec": {
+        "center_h": true,
+        "center_v": false,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "Checked In",
+            "kind": "checkbox",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 140
+          },
+          {
+            "align_override": "C",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 90
+          },
+          {
+            "align_override": "",
+            "field": "staging_location",
+            "heading": "Where",
+            "kind": "field",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [
+          "id:AM1LFFMLPUMPM",
+          "id:A9KLW1P144EJA8"
+        ],
+        "excluded_shifts": [
+          "(none)"
+        ],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "shift_type",
+        "note": "",
+        "orientation": "portrait",
+        "paper": "legal",
+        "repeat_header": true,
+        "scale": 60,
+        "show_page_numbers": true,
+        "show_title": true,
+        "sort_by": "staging_location",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": false,
+        "title": "",
+        "vans_only": false
+      },
+      "title_for": "Load Out  -  Friday, September 11 2026"
+    },
+    "working": {
+      "band_count": 1,
+      "band_count_no_rows": 1,
+      "bands": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      ],
+      "column_widths": [
+        33,
+        101.1125,
+        61.9325,
+        29.8325,
+        70.7,
+        39.4175,
+        45.68,
+        32.3375,
+        29.84,
+        45.75
+      ],
+      "column_widths_no_rows": [
+        33,
+        84.75,
+        58.5,
+        29.8325,
+        67.5,
+        39.4175,
+        41.5025,
+        32.3375,
+        29.84,
+        45.75
+      ],
+      "columns": [
+        {
+          "align": "C",
+          "kind_label": "Tick box",
+          "label": "Here",
+          "width": 44
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Driver",
+          "width": 113
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Vehicle",
+          "width": 78
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "PAD",
+          "width": 32
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Shift Type",
+          "width": 90
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Routes",
+          "width": 46
+        },
+        {
+          "align": "L",
+          "kind_label": "Column",
+          "label": "Staging",
+          "width": 55
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "Bags",
+          "width": 36
+        },
+        {
+          "align": "C",
+          "kind_label": "Column",
+          "label": "OVS",
+          "width": 36
+        },
+        {
+          "align": "C",
+          "kind_label": "Write-in",
+          "label": "",
+          "width": 61
+        }
+      ],
+      "default_filename": "Load Out - Friday, September 11 2026",
+      "geometry": {
+        "font_size": 7.5,
+        "header_h": 16.5,
+        "margin": 36,
+        "page_h": 792,
+        "page_w": 612,
+        "row_h": 15,
+        "scale": 0.75,
+        "title_h": 22.25,
+        "usable_h": 720,
+        "usable_w": 540
+      },
+      "page_count": 2,
+      "pages": [
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "first_of_band": true,
+          "group": "",
+          "row_keys": [
+            "id:A1I13S2WRY55FH",
+            "id:APC3N0EIX2VK4",
+            "id:A5S9FXHBWJRB9D",
+            "id:A1QVVPYVZD6R9F",
+            "id:A9JB97ABCU8C81",
+            "id:A2ZUDELA4UHN2U",
+            "id:A9ZG8P8IMK2LUL",
+            "id:AK92X3BJNUBTF",
+            "id:AC32BQGN2MON3",
+            "id:A1E4CRQE9TMGKN",
+            "id:A5C89KIOHQ4K4J",
+            "id:A7SJ8FE0PNIK0B",
+            "id:A9C6T83A3QX1LH",
+            "id:A7XH9404B428LL",
+            "id:A6URN0K4YHEUUX",
+            "id:A503VSKH6DU6TJ",
+            "id:AKA0HPH6GU9DK",
+            "id:A1QHNFOZ7DGJTJ",
+            "id:A1LSR7SEOTKE3I",
+            "id:A63AK2RYZDOMF0",
+            "id:A7OFM0ZTRYMOYG",
+            "id:A7O9MN0YIUZXN",
+            "id:A9D25MDVZ2T1ON",
+            "id:A2051ICVODZP9E",
+            "id:A47PHJICWDVAB9",
+            "id:A55NZ7WTBR2RXC",
+            "id:A2C74O0LD4D9HD",
+            "id:A30BLJHHQILDNC",
+            "id:A5WB9Y629G3A95",
+            "id:A0DZDWECHDJ5TO",
+            "id:A6LA5Y7P3AGUTC",
+            "id:A5QUM4XU1H9HQS",
+            "id:A5OSRXGF947IEY",
+            "id:A54O2F1DYNOEKN",
+            "id:AO2I4MJ59WDHS",
+            "id:AU9G43K0RMQVQ",
+            "id:A486QRCQCVMTG1",
+            "id:ANC8ZRCZP4NFS",
+            "id:A3QVN63ZJEGQYP",
+            "id:A5JGA6O3VGJC9D",
+            "id:A8KSSZB6LALEOL",
+            "id:A3MJ5TH3ODPWW",
+            "id:A2A1CI9GH4T37",
+            "id:A2ET6O3NEIF12O",
+            "id:A4S6I3ZV10EUC4"
+          ]
+        },
+        {
+          "band": 0,
+          "columns": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "first_of_band": false,
+          "group": "",
+          "row_keys": [
+            "id:AC7RVVCLB4P7H",
+            "id:AFRYVFGBLTBTV",
+            "id:A9LE0ZXWQH9RYQ",
+            "id:A9KLW1P144EJA8",
+            "id:A9Z8T0H4AP33R4",
+            "id:A3FM1CRWW54MMO",
+            "id:A4OQGIPQ6DAKF4",
+            "id:A1XKE42LNWTCBT"
+          ]
+        }
+      ],
+      "printing_keys": [
+        "id:A1I13S2WRY55FH",
+        "id:APC3N0EIX2VK4",
+        "id:A5S9FXHBWJRB9D",
+        "id:A1QVVPYVZD6R9F",
+        "id:A9JB97ABCU8C81",
+        "id:A2ZUDELA4UHN2U",
+        "id:A9ZG8P8IMK2LUL",
+        "id:AK92X3BJNUBTF",
+        "id:AC32BQGN2MON3",
+        "id:A1E4CRQE9TMGKN",
+        "id:A5C89KIOHQ4K4J",
+        "id:A7SJ8FE0PNIK0B",
+        "id:A9C6T83A3QX1LH",
+        "id:A7XH9404B428LL",
+        "id:A6URN0K4YHEUUX",
+        "id:A503VSKH6DU6TJ",
+        "id:AKA0HPH6GU9DK",
+        "id:A1QHNFOZ7DGJTJ",
+        "id:A1LSR7SEOTKE3I",
+        "id:A63AK2RYZDOMF0",
+        "id:A7OFM0ZTRYMOYG",
+        "id:A7O9MN0YIUZXN",
+        "id:A9D25MDVZ2T1ON",
+        "id:A2051ICVODZP9E",
+        "id:A47PHJICWDVAB9",
+        "id:A55NZ7WTBR2RXC",
+        "id:A2C74O0LD4D9HD",
+        "id:A30BLJHHQILDNC",
+        "id:A5WB9Y629G3A95",
+        "id:A0DZDWECHDJ5TO",
+        "id:A6LA5Y7P3AGUTC",
+        "id:A5QUM4XU1H9HQS",
+        "id:A5OSRXGF947IEY",
+        "id:A54O2F1DYNOEKN",
+        "id:AO2I4MJ59WDHS",
+        "id:AU9G43K0RMQVQ",
+        "id:A486QRCQCVMTG1",
+        "id:ANC8ZRCZP4NFS",
+        "id:A3QVN63ZJEGQYP",
+        "id:A5JGA6O3VGJC9D",
+        "id:A8KSSZB6LALEOL",
+        "id:A3MJ5TH3ODPWW",
+        "id:A2A1CI9GH4T37",
+        "id:A2ET6O3NEIF12O",
+        "id:A4S6I3ZV10EUC4",
+        "id:AC7RVVCLB4P7H",
+        "id:AFRYVFGBLTBTV",
+        "id:A9LE0ZXWQH9RYQ",
+        "id:A9KLW1P144EJA8",
+        "id:A9Z8T0H4AP33R4",
+        "id:A3FM1CRWW54MMO",
+        "id:A4OQGIPQ6DAKF4",
+        "id:A1XKE42LNWTCBT"
+      ],
+      "source": "the working layout in the database, else the default",
+      "spec": {
+        "center_h": true,
+        "center_v": true,
+        "columns": [
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "Here",
+            "kind": "checkbox",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "driver",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "vehicle",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "pad",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "shift_type",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "routes",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "staging_location",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "bags",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "ovs",
+            "heading": "",
+            "kind": "field",
+            "weight": 0
+          },
+          {
+            "align_override": "",
+            "field": "",
+            "heading": "",
+            "kind": "blank",
+            "weight": 0
+          }
+        ],
+        "excluded_drivers": [
+          "id:A44G2UFEKI28R8",
+          "id:A8LKEVUMZ2502T",
+          "id:A6DWJ3LP97G2SD",
+          "stella upton"
+        ],
+        "excluded_shifts": [
+          "Call Out",
+          "Helper",
+          "Light Duty",
+          "Operations Manager",
+          "TIME OFF"
+        ],
+        "fit_one_page": true,
+        "grid": true,
+        "group_break": "",
+        "note": "",
+        "orientation": "portrait",
+        "paper": "letter",
+        "repeat_header": true,
+        "scale": 75,
+        "show_page_numbers": true,
+        "show_title": true,
+        "sort_by": "driver",
+        "sort_reverse": false,
+        "stretch": false,
+        "stripes": true,
+        "title": "",
+        "vans_only": false
+      },
+      "title_for": "Load Out  -  Friday, September 11 2026"
+    }
+  }
+}

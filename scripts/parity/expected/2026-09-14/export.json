@@ -1,0 +1,1320 @@
+{
+  "carrying_dwp": 0,
+  "date_label": "Monday, September 14 2026",
+  "default_filename": {
+    "plain": "Load Out - Monday, September 14 2026",
+    "with_dwp": "Load Out with DWP - Monday, September 14 2026"
+  },
+  "layout": {
+    "plain": [
+      {
+        "field": null,
+        "heading": "",
+        "weight": 61
+      },
+      {
+        "field": "driver",
+        "heading": "Driver",
+        "weight": 113
+      },
+      {
+        "field": "vehicle",
+        "heading": "Vehicle",
+        "weight": 78
+      },
+      {
+        "field": "shift_type",
+        "heading": "Shift Type",
+        "weight": 90
+      },
+      {
+        "field": "routes",
+        "heading": "Routes",
+        "weight": 46
+      },
+      {
+        "field": "pad",
+        "heading": "PAD",
+        "weight": 32
+      },
+      {
+        "field": null,
+        "heading": "",
+        "weight": 61
+      }
+    ],
+    "with_dwp": [
+      {
+        "field": "driver",
+        "heading": "Driver",
+        "weight": 113
+      },
+      {
+        "field": "vehicle",
+        "heading": "Vehicle",
+        "weight": 78
+      },
+      {
+        "field": "shift_type",
+        "heading": "Shift Type",
+        "weight": 90
+      },
+      {
+        "field": "routes",
+        "heading": "Routes",
+        "weight": 46
+      },
+      {
+        "field": "bags",
+        "heading": "Bags",
+        "weight": 36
+      },
+      {
+        "field": "ovs",
+        "heading": "OVS",
+        "weight": 36
+      },
+      {
+        "field": "staging_location",
+        "heading": "Staging",
+        "weight": 55
+      },
+      {
+        "field": "pad",
+        "heading": "PAD",
+        "weight": 32
+      },
+      {
+        "field": null,
+        "heading": "",
+        "weight": 61
+      }
+    ]
+  },
+  "rows": {
+    "plain": [
+      [
+        "",
+        "Ariana Nethercott",
+        "",
+        "",
+        "CX200",
+        "1",
+        ""
+      ],
+      [
+        "",
+        "Beatrice Sutherland",
+        "618915",
+        "",
+        "CX186",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "Blaine Dewitt",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Caleb Blackwell",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Caleb Eldridge",
+        "614110",
+        "Step Van Route",
+        "CX189",
+        "1",
+        ""
+      ],
+      [
+        "",
+        "Caleb Wadsworth",
+        "",
+        "Lead Driver",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Carmen Abernathy",
+        "",
+        "Step Van Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Carmen Hawthorne",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Cecil Lovell",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Cleo Vandermeer",
+        "",
+        "",
+        "CX192",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "Colton Cleo Alderman",
+        "",
+        "",
+        "CX181|CX171|CX187",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "Darcy Danforth",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Darcy Isidro Gresham",
+        "R1 (BUDGET)",
+        "",
+        "CX188",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "Darcy Lindqvist",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Desmond Fitzroy",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Dominic Cleo Prescott",
+        "551897",
+        "",
+        "CX199",
+        "1",
+        ""
+      ],
+      [
+        "",
+        "Edith Hawthorne",
+        "615609",
+        "Electric Route",
+        "CX194",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "Elias Calloway",
+        "",
+        "TIME OFF",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Elodie Ashdown",
+        "",
+        "",
+        "CX196",
+        "1",
+        ""
+      ],
+      [
+        "",
+        "Elodie Hargrove",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Elodie Micah Hawthorne",
+        "619514",
+        "",
+        "CX178",
+        "1",
+        ""
+      ],
+      [
+        "",
+        "Elodie Vandermeer",
+        "615797",
+        "",
+        "CX176",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "Everett Bellamy",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Greta Eastwood",
+        "",
+        "Electric Route",
+        "CX174",
+        "1",
+        ""
+      ],
+      [
+        "",
+        "Greta Esme Vance",
+        "",
+        "",
+        "CX184",
+        "1",
+        ""
+      ],
+      [
+        "",
+        "Greta Underhill",
+        "",
+        "Step Van Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Harlan Vera Penrose",
+        "55",
+        "",
+        "CX190",
+        "1",
+        ""
+      ],
+      [
+        "",
+        "Hector Underhill",
+        "",
+        "Step Van Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Isidro Ariana Ingram",
+        "619438",
+        "",
+        "CX193",
+        "1",
+        ""
+      ],
+      [
+        "",
+        "Jasper Holloway",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Jasper Ormsby",
+        "",
+        "Step Van Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Kendra Rainsford",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Leopold Caldwell",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Mabel Kensington",
+        "655103 (LMR)",
+        "Electric Route",
+        "CX180",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "Marcus Clemmons",
+        "",
+        "Step Van Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Mason Clemmons",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Mason Winslow",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Micah Tobias Kingsley",
+        "615845",
+        "",
+        "CX195",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "Miriam Nathaniel Huxley",
+        "619452",
+        "",
+        "CX198",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "Nadine Olive Abernathy",
+        "619447",
+        "",
+        "CX183",
+        "1",
+        ""
+      ],
+      [
+        "",
+        "Nell Bellamy",
+        "",
+        "Step Van Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Nolan Abernathy",
+        "620270",
+        "",
+        "CX184|CX177",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "Nolan Anika Wakefield",
+        "615820",
+        "",
+        "CX187",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "Nolan Ingram",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Nolan Phoebe Rainsford",
+        "551894",
+        "",
+        "CX185",
+        "1",
+        ""
+      ],
+      [
+        "",
+        "Odette Granger",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Paloma Lindqvist",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Paloma Marcus Selwyn",
+        "615708",
+        "",
+        "CX171",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "Phoebe Holloway",
+        "615977",
+        "Step Van Route",
+        "CX190",
+        "1",
+        ""
+      ],
+      [
+        "",
+        "Rhea Lockhart",
+        "",
+        "Step Van Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Rhea Ravenscroft",
+        "655071 (LMR)",
+        "",
+        "CX179",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "Sabrina Tristan Gresham",
+        "615850",
+        "",
+        "CX182",
+        "1",
+        ""
+      ],
+      [
+        "",
+        "Sabrina Woodbridge",
+        "",
+        "Operations Manager",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Sawyer Dunmore",
+        "",
+        "Step Van Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Sawyer Lovell",
+        "",
+        "Electric Route",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Sloane Winston Winslow",
+        "618835",
+        "",
+        "CX179",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "Stella Upton",
+        "",
+        "Lead Driver",
+        "",
+        "",
+        ""
+      ],
+      [
+        "",
+        "Yara Beaumont",
+        "615837",
+        "Electric Route",
+        "CX197",
+        "1",
+        ""
+      ],
+      [
+        "",
+        "Yara Julian Halloran",
+        "",
+        "",
+        "CX173",
+        "2",
+        ""
+      ],
+      [
+        "",
+        "Zane Quentin Applewhite",
+        "56",
+        "",
+        "CX184|AX41",
+        "3",
+        ""
+      ],
+      [
+        "",
+        "Zelda Hartwell",
+        "615230",
+        "Electric Route",
+        "CX191",
+        "2",
+        ""
+      ]
+    ],
+    "with_dwp": [
+      [
+        "Ariana Nethercott",
+        "",
+        "",
+        "CX200",
+        "",
+        "",
+        "",
+        "1",
+        ""
+      ],
+      [
+        "Beatrice Sutherland",
+        "618915",
+        "",
+        "CX186",
+        "",
+        "",
+        "",
+        "2",
+        ""
+      ],
+      [
+        "Blaine Dewitt",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Caleb Blackwell",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Caleb Eldridge",
+        "614110",
+        "Step Van Route",
+        "CX189",
+        "",
+        "",
+        "",
+        "1",
+        ""
+      ],
+      [
+        "Caleb Wadsworth",
+        "",
+        "Lead Driver",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Carmen Abernathy",
+        "",
+        "Step Van Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Carmen Hawthorne",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Cecil Lovell",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Cleo Vandermeer",
+        "",
+        "",
+        "CX192",
+        "",
+        "",
+        "",
+        "2",
+        ""
+      ],
+      [
+        "Colton Cleo Alderman",
+        "",
+        "",
+        "CX181|CX171|CX187",
+        "",
+        "",
+        "",
+        "2",
+        ""
+      ],
+      [
+        "Darcy Danforth",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Darcy Isidro Gresham",
+        "R1 (BUDGET)",
+        "",
+        "CX188",
+        "",
+        "",
+        "",
+        "2",
+        ""
+      ],
+      [
+        "Darcy Lindqvist",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Desmond Fitzroy",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Dominic Cleo Prescott",
+        "551897",
+        "",
+        "CX199",
+        "",
+        "",
+        "",
+        "1",
+        ""
+      ],
+      [
+        "Edith Hawthorne",
+        "615609",
+        "Electric Route",
+        "CX194",
+        "",
+        "",
+        "",
+        "2",
+        ""
+      ],
+      [
+        "Elias Calloway",
+        "",
+        "TIME OFF",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Elodie Ashdown",
+        "",
+        "",
+        "CX196",
+        "",
+        "",
+        "",
+        "1",
+        ""
+      ],
+      [
+        "Elodie Hargrove",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Elodie Micah Hawthorne",
+        "619514",
+        "",
+        "CX178",
+        "",
+        "",
+        "",
+        "1",
+        ""
+      ],
+      [
+        "Elodie Vandermeer",
+        "615797",
+        "",
+        "CX176",
+        "",
+        "",
+        "",
+        "2",
+        ""
+      ],
+      [
+        "Everett Bellamy",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Greta Eastwood",
+        "",
+        "Electric Route",
+        "CX174",
+        "",
+        "",
+        "",
+        "1",
+        ""
+      ],
+      [
+        "Greta Esme Vance",
+        "",
+        "",
+        "CX184",
+        "",
+        "",
+        "",
+        "1",
+        ""
+      ],
+      [
+        "Greta Underhill",
+        "",
+        "Step Van Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Harlan Vera Penrose",
+        "55",
+        "",
+        "CX190",
+        "",
+        "",
+        "",
+        "1",
+        ""
+      ],
+      [
+        "Hector Underhill",
+        "",
+        "Step Van Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Isidro Ariana Ingram",
+        "619438",
+        "",
+        "CX193",
+        "",
+        "",
+        "",
+        "1",
+        ""
+      ],
+      [
+        "Jasper Holloway",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Jasper Ormsby",
+        "",
+        "Step Van Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Kendra Rainsford",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Leopold Caldwell",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Mabel Kensington",
+        "655103 (LMR)",
+        "Electric Route",
+        "CX180",
+        "",
+        "",
+        "",
+        "2",
+        ""
+      ],
+      [
+        "Marcus Clemmons",
+        "",
+        "Step Van Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Mason Clemmons",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Mason Winslow",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Micah Tobias Kingsley",
+        "615845",
+        "",
+        "CX195",
+        "",
+        "",
+        "",
+        "2",
+        ""
+      ],
+      [
+        "Miriam Nathaniel Huxley",
+        "619452",
+        "",
+        "CX198",
+        "",
+        "",
+        "",
+        "2",
+        ""
+      ],
+      [
+        "Nadine Olive Abernathy",
+        "619447",
+        "",
+        "CX183",
+        "",
+        "",
+        "",
+        "1",
+        ""
+      ],
+      [
+        "Nell Bellamy",
+        "",
+        "Step Van Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Nolan Abernathy",
+        "620270",
+        "",
+        "CX184|CX177",
+        "",
+        "",
+        "",
+        "2",
+        ""
+      ],
+      [
+        "Nolan Anika Wakefield",
+        "615820",
+        "",
+        "CX187",
+        "",
+        "",
+        "",
+        "2",
+        ""
+      ],
+      [
+        "Nolan Ingram",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Nolan Phoebe Rainsford",
+        "551894",
+        "",
+        "CX185",
+        "",
+        "",
+        "",
+        "1",
+        ""
+      ],
+      [
+        "Odette Granger",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Paloma Lindqvist",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Paloma Marcus Selwyn",
+        "615708",
+        "",
+        "CX171",
+        "",
+        "",
+        "",
+        "2",
+        ""
+      ],
+      [
+        "Phoebe Holloway",
+        "615977",
+        "Step Van Route",
+        "CX190",
+        "",
+        "",
+        "",
+        "1",
+        ""
+      ],
+      [
+        "Rhea Lockhart",
+        "",
+        "Step Van Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Rhea Ravenscroft",
+        "655071 (LMR)",
+        "",
+        "CX179",
+        "",
+        "",
+        "",
+        "2",
+        ""
+      ],
+      [
+        "Sabrina Tristan Gresham",
+        "615850",
+        "",
+        "CX182",
+        "",
+        "",
+        "",
+        "1",
+        ""
+      ],
+      [
+        "Sabrina Woodbridge",
+        "",
+        "Operations Manager",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Sawyer Dunmore",
+        "",
+        "Step Van Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Sawyer Lovell",
+        "",
+        "Electric Route",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Sloane Winston Winslow",
+        "618835",
+        "",
+        "CX179",
+        "",
+        "",
+        "",
+        "2",
+        ""
+      ],
+      [
+        "Stella Upton",
+        "",
+        "Lead Driver",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "Yara Beaumont",
+        "615837",
+        "Electric Route",
+        "CX197",
+        "",
+        "",
+        "",
+        "1",
+        ""
+      ],
+      [
+        "Yara Julian Halloran",
+        "",
+        "",
+        "CX173",
+        "",
+        "",
+        "",
+        "2",
+        ""
+      ],
+      [
+        "Zane Quentin Applewhite",
+        "56",
+        "",
+        "CX184|AX41",
+        "",
+        "",
+        "",
+        "3",
+        ""
+      ],
+      [
+        "Zelda Hartwell",
+        "615230",
+        "Electric Route",
+        "CX191",
+        "",
+        "",
+        "",
+        "2",
+        ""
+      ]
+    ]
+  }
+}

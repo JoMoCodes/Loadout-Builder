@@ -1,0 +1,2837 @@
+{
+  "assignable_vehicles": [
+    "7FCMYYD82PN207991",
+    "7FCNVFD54PN989041",
+    "7FCASBK08PN878676",
+    "1F69F2MV9L0F55866",
+    "7FCMFNL76NN728464",
+    "7FCYZAP63PN575306",
+    "7FCYLRZ20PN196581",
+    "7FCBEHV84PN489498",
+    "7FCTAKU41PN942777",
+    "4UZJF1GUXLCFU6114",
+    "7FCYRFJ30PN317983",
+    "7FCJLRK79PN811619",
+    "7FCWETH43PN377188",
+    "7FCNTZV6XPN473149",
+    "7FCAKFT93PN885796",
+    "7FCBMBV93PN085598",
+    "7FCEKEH37TN621085",
+    "3C6CATTE1RE360490",
+    "7FCVPPS24TN420354",
+    "7FCVJNX67PN899313",
+    "7FCZWUB30PN690473",
+    "7FCJXKZ45PN843457",
+    "7FCMLBX10PN131522",
+    "7FCLGUT07PN118145"
+  ],
+  "assignments": [
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Caleb Eldridge",
+        "method": "service-type",
+        "method_label": "service type",
+        "reason": "",
+        "vehicle": {
+          "name": "614110",
+          "vin": "7FCMFNL76NN728464"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Caleb Tabitha Eldridge",
+          "transporter_id": "A9ZG8P8IMK2LUL"
+        },
+        "clock_key": [
+          0,
+          "1020"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 705,
+        "wave_time": "10:20am"
+      },
+      "driver": "Caleb Eldridge",
+      "eligible_vins": [
+        "1F69F2MV9L0F55866",
+        "3C6CATTE1RE360490",
+        "4UZJF1GUXLCFU6114",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCEKEH37TN621085",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCVPPS24TN420354",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 10
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Zelda Hartwell",
+        "method": "affinity-primary",
+        "method_label": "primary affinity",
+        "reason": "",
+        "vehicle": {
+          "name": "615230",
+          "vin": "7FCJLRK79PN811619"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Zelda Miriam Hartwell",
+          "transporter_id": "A1XKE42LNWTCBT"
+        },
+        "clock_key": [
+          0,
+          "1025"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian SMALL",
+        "tenure": 35,
+        "wave_time": "10:25am"
+      },
+      "driver": "Zelda Hartwell",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 20
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Edith Hawthorne",
+        "method": "previous-day",
+        "method_label": "same van as last time",
+        "reason": "",
+        "vehicle": {
+          "name": "615609",
+          "vin": "7FCNTZV6XPN473149"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Edith Dalia Hawthorne",
+          "transporter_id": "A9C6T83A3QX1LH"
+        },
+        "clock_key": [
+          0,
+          "1025"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 43,
+        "wave_time": "10:25am"
+      },
+      "driver": "Edith Hawthorne",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 22
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Yara Beaumont",
+        "method": "previous-day",
+        "method_label": "same van as last time",
+        "reason": "",
+        "vehicle": {
+          "name": "615837",
+          "vin": "7FCWETH43PN377188"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Yara Elodie Beaumont",
+          "transporter_id": "A9Z8T0H4AP33R4"
+        },
+        "clock_key": [
+          0,
+          "1020"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 5,
+        "wave_time": "10:20am"
+      },
+      "driver": "Yara Beaumont",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 23
+    },
+    {
+      "assignment": {
+        "assigned": false,
+        "driver": "Greta Eastwood",
+        "method": "none",
+        "method_label": "none",
+        "reason": "No van left in the fleet",
+        "vehicle": null
+      },
+      "candidate": {
+        "associate": {
+          "name": "Greta Bennett Eastwood",
+          "transporter_id": "A63AK2RYZDOMF0"
+        },
+        "clock_key": [
+          0,
+          "1020"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 38,
+        "wave_time": "10:20am"
+      },
+      "driver": "Greta Eastwood",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 29
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Phoebe Holloway",
+        "method": "previous-day",
+        "method_label": "same van as last time",
+        "reason": "",
+        "vehicle": {
+          "name": "615977",
+          "vin": "7FCLGUT07PN118145"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Phoebe Gemma Holloway",
+          "transporter_id": "A4S6I3ZV10EUC4"
+        },
+        "clock_key": [
+          0,
+          "1020"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 195,
+        "wave_time": "10:20am"
+      },
+      "driver": "Phoebe Holloway",
+      "eligible_vins": [
+        "1F69F2MV9L0F55866",
+        "3C6CATTE1RE360490",
+        "4UZJF1GUXLCFU6114",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 31
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Mabel Kensington",
+        "method": "affinity-primary",
+        "method_label": "primary affinity",
+        "reason": "",
+        "vehicle": {
+          "name": "655103 (LMR)",
+          "vin": "7FCEKEH37TN621085"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Mabel Vera Kensington",
+          "transporter_id": "A5QUM4XU1H9HQS"
+        },
+        "clock_key": [
+          0,
+          "1025"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 551,
+        "wave_time": "10:25am"
+      },
+      "driver": "Mabel Kensington",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCEKEH37TN621085",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCVPPS24TN420354",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 35
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Paloma Marcus Selwyn",
+        "method": "service-type",
+        "method_label": "service type",
+        "reason": "",
+        "vehicle": {
+          "name": "615708",
+          "vin": "7FCNVFD54PN989041"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Paloma Marcus Selwyn",
+          "transporter_id": "A0DZDWECHDJ5TO"
+        },
+        "clock_key": [
+          0,
+          "1025"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 715,
+        "wave_time": "10:25am"
+      },
+      "driver": "Paloma Marcus Selwyn",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 37
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Elodie Micah Hawthorne",
+        "method": "service-type",
+        "method_label": "service type",
+        "reason": "",
+        "vehicle": {
+          "name": "619514",
+          "vin": "7FCTAKU41PN942777"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Elodie Micah Hawthorne",
+          "transporter_id": "A503VSKH6DU6TJ"
+        },
+        "clock_key": [
+          0,
+          "1020"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 905,
+        "wave_time": "10:20am"
+      },
+      "driver": "Elodie Micah Hawthorne",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCEKEH37TN621085",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCVPPS24TN420354",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 38
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Rhea Ravenscroft",
+        "method": "affinity-primary",
+        "method_label": "primary affinity",
+        "reason": "",
+        "vehicle": {
+          "name": "655071 (LMR)",
+          "vin": "7FCVPPS24TN420354"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Rhea Ravenscroft",
+          "transporter_id": "AFRYVFGBLTBTV"
+        },
+        "clock_key": [
+          0,
+          "1025"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 993,
+        "wave_time": "10:25am"
+      },
+      "driver": "Rhea Ravenscroft",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCEKEH37TN621085",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCVPPS24TN420354",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 39
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Isidro Ariana Ingram",
+        "method": "affinity-primary",
+        "method_label": "primary affinity",
+        "reason": "",
+        "vehicle": {
+          "name": "619438",
+          "vin": "7FCJXKZ45PN843457"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Isidro Ariana Ingram",
+          "transporter_id": "A55NZ7WTBR2RXC"
+        },
+        "clock_key": [
+          0,
+          "1020"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 315,
+        "wave_time": "10:20am"
+      },
+      "driver": "Isidro Ariana Ingram",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 40
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Elodie Vandermeer",
+        "method": "service-type",
+        "method_label": "service type",
+        "reason": "",
+        "vehicle": {
+          "name": "615797",
+          "vin": "7FCYZAP63PN575306"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Elodie Vandermeer",
+          "transporter_id": "AKA0HPH6GU9DK"
+        },
+        "clock_key": [
+          0,
+          "1025"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 804,
+        "wave_time": "10:25am"
+      },
+      "driver": "Elodie Vandermeer",
+      "eligible_vins": [
+        "1F69F2MV9L0F55866",
+        "3C6CATTE1RE360490",
+        "4UZJF1GUXLCFU6114",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCEKEH37TN621085",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCVPPS24TN420354",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 41
+    },
+    {
+      "assignment": {
+        "assigned": false,
+        "driver": "Yara Julian Halloran",
+        "method": "none",
+        "method_label": "none",
+        "reason": "No van left in the fleet",
+        "vehicle": null
+      },
+      "candidate": {
+        "associate": {
+          "name": "Yara Julian Halloran",
+          "transporter_id": "A3FM1CRWW54MMO"
+        },
+        "clock_key": [
+          0,
+          "1025"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 111,
+        "wave_time": "10:25am"
+      },
+      "driver": "Yara Julian Halloran",
+      "eligible_vins": [
+        "1F69F2MV9L0F55866",
+        "3C6CATTE1RE360490",
+        "4UZJF1GUXLCFU6114",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 42
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Nadine Olive Abernathy",
+        "method": "affinity-primary",
+        "method_label": "primary affinity",
+        "reason": "",
+        "vehicle": {
+          "name": "619447",
+          "vin": "7FCASBK08PN878676"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Nadine Olive Abernathy",
+          "transporter_id": "A486QRCQCVMTG1"
+        },
+        "clock_key": [
+          0,
+          "1020"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 209,
+        "wave_time": "10:20am"
+      },
+      "driver": "Nadine Olive Abernathy",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 43
+    },
+    {
+      "assignment": {
+        "assigned": false,
+        "driver": "Greta Esme Vance",
+        "method": "none",
+        "method_label": "none",
+        "reason": "No van left in the fleet",
+        "vehicle": null
+      },
+      "candidate": {
+        "associate": {
+          "name": "Greta Esme Vance",
+          "transporter_id": "A7O9MN0YIUZXN"
+        },
+        "clock_key": [
+          0,
+          "1020"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 110,
+        "wave_time": "10:20am"
+      },
+      "driver": "Greta Esme Vance",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 44
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Beatrice Sutherland",
+        "method": "affinity-primary",
+        "method_label": "primary affinity",
+        "reason": "",
+        "vehicle": {
+          "name": "618915",
+          "vin": "7FCYRFJ30PN317983"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Beatrice Sutherland",
+          "transporter_id": "A1QVVPYVZD6R9F"
+        },
+        "clock_key": [
+          0,
+          "1025"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian SMALL",
+        "tenure": 287,
+        "wave_time": "10:25am"
+      },
+      "driver": "Beatrice Sutherland",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 45
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Nolan Anika Wakefield",
+        "method": "affinity-primary",
+        "method_label": "primary affinity",
+        "reason": "",
+        "vehicle": {
+          "name": "615820",
+          "vin": "7FCAKFT93PN885796"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Nolan Anika Wakefield",
+          "transporter_id": "A5JGA6O3VGJC9D"
+        },
+        "clock_key": [
+          0,
+          "1025"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 43,
+        "wave_time": "10:25am"
+      },
+      "driver": "Nolan Anika Wakefield",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 46
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Darcy Isidro Gresham",
+        "method": "qualified-only",
+        "method_label": "qualification only",
+        "reason": "",
+        "vehicle": {
+          "name": "R1 (BUDGET)",
+          "vin": "3C6CATTE1RE360490"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Darcy Isidro Gresham",
+          "transporter_id": "A9CW8HB7Y0K8F4"
+        },
+        "clock_key": [
+          0,
+          "1025"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 158,
+        "wave_time": "10:25am"
+      },
+      "driver": "Darcy Isidro Gresham",
+      "eligible_vins": [
+        "1F69F2MV9L0F55866",
+        "3C6CATTE1RE360490",
+        "4UZJF1GUXLCFU6114",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 47
+    },
+    {
+      "assignment": {
+        "assigned": false,
+        "driver": "Cleo Vandermeer",
+        "method": "none",
+        "method_label": "none",
+        "reason": "No van left in the fleet",
+        "vehicle": null
+      },
+      "candidate": {
+        "associate": {
+          "name": "Cleo Vandermeer",
+          "transporter_id": "AC32BQGN2MON3"
+        },
+        "clock_key": [
+          0,
+          "1025"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 143,
+        "wave_time": "10:25am"
+      },
+      "driver": "Cleo Vandermeer",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 48
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Micah Tobias Kingsley",
+        "method": "affinity-primary",
+        "method_label": "primary affinity",
+        "reason": "",
+        "vehicle": {
+          "name": "615845",
+          "vin": "7FCMLBX10PN131522"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Micah Tobias Kingsley",
+          "transporter_id": "AO2I4MJ59WDHS"
+        },
+        "clock_key": [
+          0,
+          "1025"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 203,
+        "wave_time": "10:25am"
+      },
+      "driver": "Micah Tobias Kingsley",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 49
+    },
+    {
+      "assignment": {
+        "assigned": false,
+        "driver": "Elodie Ashdown",
+        "method": "none",
+        "method_label": "none",
+        "reason": "No van left in the fleet",
+        "vehicle": null
+      },
+      "candidate": {
+        "associate": {
+          "name": "Elodie Ashdown",
+          "transporter_id": "AW9CKWGLCCLMU"
+        },
+        "clock_key": [
+          0,
+          "1020"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Nursery Route Level 2 - Electric Vehicle",
+        "tenure": 0,
+        "wave_time": "10:20am"
+      },
+      "driver": "Elodie Ashdown",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 50
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Miriam Nathaniel Huxley",
+        "method": "affinity-primary",
+        "method_label": "primary affinity",
+        "reason": "",
+        "vehicle": {
+          "name": "619452",
+          "vin": "7FCVJNX67PN899313"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Miriam Nathaniel Huxley",
+          "transporter_id": "AU9G43K0RMQVQ"
+        },
+        "clock_key": [
+          0,
+          "1025"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 74,
+        "wave_time": "10:25am"
+      },
+      "driver": "Miriam Nathaniel Huxley",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 51
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Dominic Cleo Prescott",
+        "method": "vehicle-family",
+        "method_label": "vehicle type",
+        "reason": "",
+        "vehicle": {
+          "name": "551897",
+          "vin": "7FCZWUB30PN690473"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Dominic Cleo Prescott",
+          "transporter_id": "A5MNMU9DG0IGKN"
+        },
+        "clock_key": [
+          0,
+          "1020"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 240,
+        "wave_time": "10:20am"
+      },
+      "driver": "Dominic Cleo Prescott",
+      "eligible_vins": [
+        "1F69F2MV9L0F55866",
+        "3C6CATTE1RE360490",
+        "4UZJF1GUXLCFU6114",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 52
+    },
+    {
+      "assignment": {
+        "assigned": false,
+        "driver": "Ariana Nethercott",
+        "method": "none",
+        "method_label": "none",
+        "reason": "No van left in the fleet",
+        "vehicle": null
+      },
+      "candidate": {
+        "associate": {
+          "name": "Ariana Nethercott",
+          "transporter_id": "A1I13S2WRY55FH"
+        },
+        "clock_key": [
+          0,
+          "1020"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 28,
+        "wave_time": "10:20am"
+      },
+      "driver": "Ariana Nethercott",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 53
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Sabrina Tristan Gresham",
+        "method": "affinity-primary",
+        "method_label": "primary affinity",
+        "reason": "",
+        "vehicle": {
+          "name": "615850",
+          "vin": "7FCBEHV84PN489498"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Sabrina Tristan Gresham",
+          "transporter_id": "A9LE0ZXWQH9RYQ"
+        },
+        "clock_key": [
+          0,
+          "1020"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 901,
+        "wave_time": "10:20am"
+      },
+      "driver": "Sabrina Tristan Gresham",
+      "eligible_vins": [
+        "1F69F2MV9L0F55866",
+        "3C6CATTE1RE360490",
+        "4UZJF1GUXLCFU6114",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 54
+    },
+    {
+      "assignment": {
+        "assigned": false,
+        "driver": "Colton Cleo Alderman",
+        "method": "none",
+        "method_label": "none",
+        "reason": "No van left in the fleet",
+        "vehicle": null
+      },
+      "candidate": {
+        "associate": {
+          "name": "Colton Cleo Alderman",
+          "transporter_id": "A1E4CRQE9TMGKN"
+        },
+        "clock_key": [
+          0,
+          "1025"
+        ],
+        "family": "",
+        "needed_qualification": "",
+        "service_type": "DSP Initiated Work (Standard Vehicle)",
+        "tenure": 58,
+        "wave_time": "10:25am"
+      },
+      "driver": "Colton Cleo Alderman",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 55
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Zane Quentin Applewhite",
+        "method": "qualified-only",
+        "method_label": "qualification only",
+        "reason": "",
+        "vehicle": {
+          "name": "56",
+          "vin": "4UZJF1GUXLCFU6114"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Zane Quentin Applewhite",
+          "transporter_id": "A4OQGIPQ6DAKF4"
+        },
+        "clock_key": [
+          0,
+          "1430"
+        ],
+        "family": "",
+        "needed_qualification": "",
+        "service_type": "DSP Initiated Work (Standard Vehicle)",
+        "tenure": 614,
+        "wave_time": "2:30pm"
+      },
+      "driver": "Zane Quentin Applewhite",
+      "eligible_vins": [
+        "1F69F2MV9L0F55866",
+        "3C6CATTE1RE360490",
+        "4UZJF1GUXLCFU6114",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCEKEH37TN621085",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCVPPS24TN420354",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 56
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Harlan Vera Penrose",
+        "method": "qualified-only",
+        "method_label": "qualification only",
+        "reason": "",
+        "vehicle": {
+          "name": "55",
+          "vin": "1F69F2MV9L0F55866"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Harlan Vera Penrose",
+          "transporter_id": "A2051ICVODZP9E"
+        },
+        "clock_key": [
+          0,
+          "1020"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 150,
+        "wave_time": "10:20am"
+      },
+      "driver": "Harlan Vera Penrose",
+      "eligible_vins": [
+        "1F69F2MV9L0F55866",
+        "3C6CATTE1RE360490",
+        "4UZJF1GUXLCFU6114",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 57
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Nolan Phoebe Rainsford",
+        "method": "vehicle-family",
+        "method_label": "vehicle type",
+        "reason": "",
+        "vehicle": {
+          "name": "551894",
+          "vin": "7FCYLRZ20PN196581"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Nolan Phoebe Rainsford",
+          "transporter_id": "A8KSSZB6LALEOL"
+        },
+        "clock_key": [
+          0,
+          "1020"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 363,
+        "wave_time": "10:20am"
+      },
+      "driver": "Nolan Phoebe Rainsford",
+      "eligible_vins": [
+        "1F69F2MV9L0F55866",
+        "3C6CATTE1RE360490",
+        "4UZJF1GUXLCFU6114",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 58
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Nolan Abernathy",
+        "method": "affinity-primary",
+        "method_label": "primary affinity",
+        "reason": "",
+        "vehicle": {
+          "name": "620270",
+          "vin": "7FCMYYD82PN207991"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Nolan Abernathy",
+          "transporter_id": "A3QVN63ZJEGQYP"
+        },
+        "clock_key": [
+          0,
+          "1025"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 101,
+        "wave_time": "10:25am"
+      },
+      "driver": "Nolan Abernathy",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 59
+    },
+    {
+      "assignment": {
+        "assigned": true,
+        "driver": "Sloane Winston Winslow",
+        "method": "affinity-primary",
+        "method_label": "primary affinity",
+        "reason": "",
+        "vehicle": {
+          "name": "618835",
+          "vin": "7FCBMBV93PN085598"
+        }
+      },
+      "candidate": {
+        "associate": {
+          "name": "Sloane Winston Winslow",
+          "transporter_id": "AWJ5XN1FMHXXV"
+        },
+        "clock_key": [
+          0,
+          "1025"
+        ],
+        "family": "electric",
+        "needed_qualification": "EDV",
+        "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+        "tenure": 17,
+        "wave_time": "10:25am"
+      },
+      "driver": "Sloane Winston Winslow",
+      "eligible_vins": [
+        "3C6CATTE1RE360490",
+        "7FCAKFT93PN885796",
+        "7FCASBK08PN878676",
+        "7FCBEHV84PN489498",
+        "7FCBMBV93PN085598",
+        "7FCJLRK79PN811619",
+        "7FCJXKZ45PN843457",
+        "7FCLGUT07PN118145",
+        "7FCMFNL76NN728464",
+        "7FCMLBX10PN131522",
+        "7FCMYYD82PN207991",
+        "7FCNTZV6XPN473149",
+        "7FCNVFD54PN989041",
+        "7FCTAKU41PN942777",
+        "7FCVJNX67PN899313",
+        "7FCWETH43PN377188",
+        "7FCYLRZ20PN196581",
+        "7FCYRFJ30PN317983",
+        "7FCYZAP63PN575306",
+        "7FCZWUB30PN690473"
+      ],
+      "row_index": 60
+    }
+  ],
+  "available_vehicles_after": [
+    "1FTCD6J34RKF48095",
+    "1FTRX7S01RKK24773"
+  ],
+  "available_vehicles_before": [
+    "7FCMYYD82PN207991",
+    "1FTCD6J34RKF48095",
+    "4UZJF1GUXLCFU6114",
+    "7FCYRFJ30PN317983",
+    "3C6CATTE1RE360490",
+    "1FTRX7S01RKK24773"
+  ],
+  "fleet": [
+    {
+      "category": "Branded Van",
+      "effective_operational": false,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "619454",
+      "operational": false,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "20",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCDJRA89PN141888"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "620270",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "24",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCMYYD82PN207991"
+    },
+    {
+      "category": "Rental Van",
+      "effective_operational": false,
+      "family": "electric",
+      "is_rental": true,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "655114 (LMR)",
+      "operational": false,
+      "order_rank": 2,
+      "overridden": false,
+      "ownership": "AMAZON_RENTAL",
+      "priority": "",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCTSDS66TN049477"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "615708",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "4",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCNVFD54PN989041"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "large van",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": true,
+      "name": "ET5720",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "SELF_OWNED",
+      "priority": "",
+      "required_qualification": "CDV",
+      "service_tier": "LARGE_CARGO_VAN",
+      "service_type": "Standard Parcel - Large Van",
+      "vin": "1FTCD6J34RKF48095"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": false,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "615761",
+      "operational": false,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "5",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCJKAP46PN336367"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "619447",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "18",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCASBK08PN878676"
+    },
+    {
+      "category": "Step Van",
+      "effective_operational": true,
+      "family": "step van",
+      "is_rental": false,
+      "is_step_van": true,
+      "manual_only": false,
+      "name": "55",
+      "operational": true,
+      "order_rank": 0,
+      "overridden": false,
+      "ownership": "AMAZON_LEASED",
+      "priority": "",
+      "required_qualification": "Step Van",
+      "service_tier": "STEP_VAN_MEDIUM",
+      "service_type": "Standard Parcel Step Van - US",
+      "vin": "1F69F2MV9L0F55866"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "614110",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "1",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCMFNL76NN728464"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "615797",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "6",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCYZAP63PN575306"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "551894",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_SMALL",
+      "service_type": "Standard Parcel Electric - Rivian SMALL",
+      "vin": "7FCYLRZ20PN196581"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": false,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "619444",
+      "operational": false,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "17",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCYHKX57PN534127"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "615850",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "11",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCBEHV84PN489498"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "619514",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "23",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCTAKU41PN942777"
+    },
+    {
+      "category": "Step Van",
+      "effective_operational": true,
+      "family": "step van",
+      "is_rental": false,
+      "is_step_van": true,
+      "manual_only": false,
+      "name": "56",
+      "operational": true,
+      "order_rank": 0,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "",
+      "required_qualification": "Step Van",
+      "service_tier": "STEP_VAN_MEDIUM",
+      "service_type": "Standard Parcel Step Van - US",
+      "vin": "4UZJF1GUXLCFU6114"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": false,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "615807",
+      "operational": false,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "7",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCTXUW62PN892853"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "618915",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "15",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCYRFJ30PN317983"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": false,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "620563",
+      "operational": false,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "25",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCWCNM21PN747284"
+    },
+    {
+      "category": "Step Van",
+      "effective_operational": false,
+      "family": "step van",
+      "is_rental": false,
+      "is_step_van": true,
+      "manual_only": false,
+      "name": "58",
+      "operational": true,
+      "order_rank": 0,
+      "overridden": true,
+      "ownership": "AMAZON_OWNED",
+      "priority": "",
+      "required_qualification": "Step Van",
+      "service_tier": "STEP_VAN_MEDIUM",
+      "service_type": "Standard Parcel Step Van - US",
+      "vin": "4UZWS9VH9LCTG4886"
+    },
+    {
+      "category": "Step Van",
+      "effective_operational": false,
+      "family": "step van",
+      "is_rental": false,
+      "is_step_van": true,
+      "manual_only": false,
+      "name": "51",
+      "operational": false,
+      "order_rank": 0,
+      "overridden": false,
+      "ownership": "AMAZON_LEASED",
+      "priority": "",
+      "required_qualification": "Step Van",
+      "service_tier": "STEP_VAN_MEDIUM",
+      "service_type": "Standard Parcel Step Van - US",
+      "vin": "1F61D2KP0L0W91839"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "615230",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "2",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCJLRK79PN811619"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "615837",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "9",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCWETH43PN377188"
+    },
+    {
+      "category": "Step Van",
+      "effective_operational": false,
+      "family": "step van",
+      "is_rental": false,
+      "is_step_van": true,
+      "manual_only": false,
+      "name": "54",
+      "operational": false,
+      "order_rank": 0,
+      "overridden": false,
+      "ownership": "AMAZON_LEASED",
+      "priority": "",
+      "required_qualification": "Step Van",
+      "service_tier": "STEP_VAN_MEDIUM",
+      "service_type": "Standard Parcel Step Van - US",
+      "vin": "1F69K4XU1L0J31668"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "615609",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "3",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCNTZV6XPN473149"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": false,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "618836",
+      "operational": false,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "14",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCGYYY13PN205662"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "615820",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "8",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCAKFT93PN885796"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "618835",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "13",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCBMBV93PN085598"
+    },
+    {
+      "category": "Rental Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": true,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "655103 (LMR)",
+      "operational": true,
+      "order_rank": 2,
+      "overridden": false,
+      "ownership": "AMAZON_RENTAL",
+      "priority": "",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCEKEH37TN621085"
+    },
+    {
+      "category": "Step Van",
+      "effective_operational": false,
+      "family": "step van",
+      "is_rental": false,
+      "is_step_van": true,
+      "manual_only": false,
+      "name": "60",
+      "operational": true,
+      "order_rank": 0,
+      "overridden": true,
+      "ownership": "AMAZON_OWNED",
+      "priority": "",
+      "required_qualification": "Step Van",
+      "service_tier": "STEP_VAN_MEDIUM",
+      "service_type": "Standard Parcel Step Van - US",
+      "vin": "4UZPB7LNXLCMF8180"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "large van",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "R1 (BUDGET)",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "RENTAL",
+      "priority": "",
+      "required_qualification": "CDV",
+      "service_tier": "EXTRA_LARGE_CARGO_VAN",
+      "service_type": "Standard Parcel - Extra Large Van - US",
+      "vin": "3C6CATTE1RE360490"
+    },
+    {
+      "category": "Step Van",
+      "effective_operational": false,
+      "family": "step van",
+      "is_rental": false,
+      "is_step_van": true,
+      "manual_only": false,
+      "name": "53",
+      "operational": false,
+      "order_rank": 0,
+      "overridden": false,
+      "ownership": "AMAZON_LEASED",
+      "priority": "",
+      "required_qualification": "Step Van",
+      "service_tier": "STEP_VAN_MEDIUM",
+      "service_type": "Standard Parcel Step Van - US",
+      "vin": "1F69L7CU2L0L97091"
+    },
+    {
+      "category": "Rental Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": true,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "655071 (LMR)",
+      "operational": true,
+      "order_rank": 2,
+      "overridden": false,
+      "ownership": "AMAZON_RENTAL",
+      "priority": "",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCVPPS24TN420354"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "619452",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "19",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCVJNX67PN899313"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "551897",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_SMALL",
+      "service_type": "Standard Parcel Electric - Rivian SMALL",
+      "vin": "7FCZWUB30PN690473"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "large van",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": true,
+      "name": "ET5213",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "SELF_OWNED",
+      "priority": "",
+      "required_qualification": "CDV",
+      "service_tier": "LARGE_CARGO_VAN",
+      "service_type": "Standard Parcel - Large Van",
+      "vin": "1FTRX7S01RKK24773"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "619438",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "16",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCJXKZ45PN843457"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": false,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "619465",
+      "operational": false,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "21",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCDKSN72PN008931"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": false,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "619472",
+      "operational": false,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "22",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCACUD43PN789624"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "615845",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "10",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCMLBX10PN131522"
+    },
+    {
+      "category": "Branded Van",
+      "effective_operational": true,
+      "family": "electric",
+      "is_rental": false,
+      "is_step_van": false,
+      "manual_only": false,
+      "name": "615977",
+      "operational": true,
+      "order_rank": 1,
+      "overridden": false,
+      "ownership": "AMAZON_OWNED",
+      "priority": "12",
+      "required_qualification": "EDV",
+      "service_tier": "ELECTRIC_RPV_MEDIUM",
+      "service_type": "Standard Parcel Electric - Rivian MEDIUM",
+      "vin": "7FCLGUT07PN118145"
+    },
+    {
+      "category": "Step Van",
+      "effective_operational": false,
+      "family": "step van",
+      "is_rental": false,
+      "is_step_van": true,
+      "manual_only": false,
+      "name": "52",
+      "operational": false,
+      "order_rank": 0,
+      "overridden": false,
+      "ownership": "AMAZON_LEASED",
+      "priority": "",
+      "required_qualification": "Step Van",
+      "service_tier": "STEP_VAN_MEDIUM",
+      "service_type": "Standard Parcel Step Van - US",
+      "vin": "1F66B2RY9L0Y83576"
+    }
+  ],
+  "lmr_approved": [
+    "A2C74O0LD4D9HD",
+    "A2ET6O3NEIF12O",
+    "A34KITC8D730CW",
+    "A4OQGIPQ6DAKF4",
+    "A503VSKH6DU6TJ",
+    "A54O2F1DYNOEKN",
+    "A5QUM4XU1H9HQS",
+    "A5SS582O3QKIFM",
+    "A7OFM0ZTRYMOYG",
+    "A7SJ8FE0PNIK0B",
+    "A9ZG8P8IMK2LUL",
+    "AFRYVFGBLTBTV",
+    "AK92X3BJNUBTF",
+    "AKA0HPH6GU9DK"
+  ],
+  "lmr_vehicles": [
+    "7FCTSDS66TN049477",
+    "7FCEKEH37TN621085",
+    "7FCVPPS24TN420354"
+  ],
+  "operational_vehicles": [
+    "7FCMYYD82PN207991",
+    "7FCNVFD54PN989041",
+    "1FTCD6J34RKF48095",
+    "7FCASBK08PN878676",
+    "1F69F2MV9L0F55866",
+    "7FCMFNL76NN728464",
+    "7FCYZAP63PN575306",
+    "7FCYLRZ20PN196581",
+    "7FCBEHV84PN489498",
+    "7FCTAKU41PN942777",
+    "4UZJF1GUXLCFU6114",
+    "7FCYRFJ30PN317983",
+    "7FCJLRK79PN811619",
+    "7FCWETH43PN377188",
+    "7FCNTZV6XPN473149",
+    "7FCAKFT93PN885796",
+    "7FCBMBV93PN085598",
+    "7FCEKEH37TN621085",
+    "3C6CATTE1RE360490",
+    "7FCVPPS24TN420354",
+    "7FCVJNX67PN899313",
+    "7FCZWUB30PN690473",
+    "1FTRX7S01RKK24773",
+    "7FCJXKZ45PN843457",
+    "7FCMLBX10PN131522",
+    "7FCLGUT07PN118145"
+  ],
+  "overridden_count": 2,
+  "result": {
+    "assigned": 24,
+    "by_method": {
+      "affinity-primary": 12,
+      "previous-day": 3,
+      "qualified-only": 3,
+      "service-type": 4,
+      "vehicle-family": 2
+    },
+    "considered": 31,
+    "loose": 3,
+    "unassigned": 7,
+    "vans_available": 24
+  },
+  "roster_after": [
+    {
+      "assign_method": "",
+      "driver": "Sabrina Woodbridge",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Jasper Holloway",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Elodie Hargrove",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Cecil Lovell",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Paloma Lindqvist",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Jasper Ormsby",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Elias Calloway",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Sawyer Lovell",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Stella Upton",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Nell Bellamy",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "service-type",
+      "driver": "Caleb Eldridge",
+      "vehicle": "614110",
+      "vin": "7FCMFNL76NN728464"
+    },
+    {
+      "assign_method": "",
+      "driver": "Marcus Clemmons",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Rhea Lockhart",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Caleb Wadsworth",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Darcy Lindqvist",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Carmen Hawthorne",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Blaine Dewitt",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Odette Granger",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Desmond Fitzroy",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Hector Underhill",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "affinity-primary",
+      "driver": "Zelda Hartwell",
+      "vehicle": "615230",
+      "vin": "7FCJLRK79PN811619"
+    },
+    {
+      "assign_method": "",
+      "driver": "Darcy Danforth",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "previous-day",
+      "driver": "Edith Hawthorne",
+      "vehicle": "615609",
+      "vin": "7FCNTZV6XPN473149"
+    },
+    {
+      "assign_method": "previous-day",
+      "driver": "Yara Beaumont",
+      "vehicle": "615837",
+      "vin": "7FCWETH43PN377188"
+    },
+    {
+      "assign_method": "",
+      "driver": "Everett Bellamy",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Kendra Rainsford",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Leopold Caldwell",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Nolan Ingram",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Mason Winslow",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Greta Eastwood",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Caleb Blackwell",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "previous-day",
+      "driver": "Phoebe Holloway",
+      "vehicle": "615977",
+      "vin": "7FCLGUT07PN118145"
+    },
+    {
+      "assign_method": "",
+      "driver": "Sawyer Dunmore",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Mason Clemmons",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "",
+      "driver": "Carmen Abernathy",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "affinity-primary",
+      "driver": "Mabel Kensington",
+      "vehicle": "655103 (LMR)",
+      "vin": "7FCEKEH37TN621085"
+    },
+    {
+      "assign_method": "",
+      "driver": "Greta Underhill",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "service-type",
+      "driver": "Paloma Marcus Selwyn",
+      "vehicle": "615708",
+      "vin": "7FCNVFD54PN989041"
+    },
+    {
+      "assign_method": "service-type",
+      "driver": "Elodie Micah Hawthorne",
+      "vehicle": "619514",
+      "vin": "7FCTAKU41PN942777"
+    },
+    {
+      "assign_method": "affinity-primary",
+      "driver": "Rhea Ravenscroft",
+      "vehicle": "655071 (LMR)",
+      "vin": "7FCVPPS24TN420354"
+    },
+    {
+      "assign_method": "affinity-primary",
+      "driver": "Isidro Ariana Ingram",
+      "vehicle": "619438",
+      "vin": "7FCJXKZ45PN843457"
+    },
+    {
+      "assign_method": "service-type",
+      "driver": "Elodie Vandermeer",
+      "vehicle": "615797",
+      "vin": "7FCYZAP63PN575306"
+    },
+    {
+      "assign_method": "",
+      "driver": "Yara Julian Halloran",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "affinity-primary",
+      "driver": "Nadine Olive Abernathy",
+      "vehicle": "619447",
+      "vin": "7FCASBK08PN878676"
+    },
+    {
+      "assign_method": "",
+      "driver": "Greta Esme Vance",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "affinity-primary",
+      "driver": "Beatrice Sutherland",
+      "vehicle": "618915",
+      "vin": "7FCYRFJ30PN317983"
+    },
+    {
+      "assign_method": "affinity-primary",
+      "driver": "Nolan Anika Wakefield",
+      "vehicle": "615820",
+      "vin": "7FCAKFT93PN885796"
+    },
+    {
+      "assign_method": "qualified-only",
+      "driver": "Darcy Isidro Gresham",
+      "vehicle": "R1 (BUDGET)",
+      "vin": "3C6CATTE1RE360490"
+    },
+    {
+      "assign_method": "",
+      "driver": "Cleo Vandermeer",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "affinity-primary",
+      "driver": "Micah Tobias Kingsley",
+      "vehicle": "615845",
+      "vin": "7FCMLBX10PN131522"
+    },
+    {
+      "assign_method": "",
+      "driver": "Elodie Ashdown",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "affinity-primary",
+      "driver": "Miriam Nathaniel Huxley",
+      "vehicle": "619452",
+      "vin": "7FCVJNX67PN899313"
+    },
+    {
+      "assign_method": "vehicle-family",
+      "driver": "Dominic Cleo Prescott",
+      "vehicle": "551897",
+      "vin": "7FCZWUB30PN690473"
+    },
+    {
+      "assign_method": "",
+      "driver": "Ariana Nethercott",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "affinity-primary",
+      "driver": "Sabrina Tristan Gresham",
+      "vehicle": "615850",
+      "vin": "7FCBEHV84PN489498"
+    },
+    {
+      "assign_method": "",
+      "driver": "Colton Cleo Alderman",
+      "vehicle": "",
+      "vin": ""
+    },
+    {
+      "assign_method": "qualified-only",
+      "driver": "Zane Quentin Applewhite",
+      "vehicle": "56",
+      "vin": "4UZJF1GUXLCFU6114"
+    },
+    {
+      "assign_method": "qualified-only",
+      "driver": "Harlan Vera Penrose",
+      "vehicle": "55",
+      "vin": "1F69F2MV9L0F55866"
+    },
+    {
+      "assign_method": "vehicle-family",
+      "driver": "Nolan Phoebe Rainsford",
+      "vehicle": "551894",
+      "vin": "7FCYLRZ20PN196581"
+    },
+    {
+      "assign_method": "affinity-primary",
+      "driver": "Nolan Abernathy",
+      "vehicle": "620270",
+      "vin": "7FCMYYD82PN207991"
+    },
+    {
+      "assign_method": "affinity-primary",
+      "driver": "Sloane Winston Winslow",
+      "vehicle": "618835",
+      "vin": "7FCBMBV93PN085598"
+    }
+  ]
+}

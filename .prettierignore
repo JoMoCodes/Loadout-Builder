@@ -1,0 +1,23 @@
+# Not ours to format, or generated
+node_modules
+dist
+release
+coverage
+package-lock.json
+legacy
+.private
+.claude
+
+# Made-up test files and their manifest are written by the script, not by hand
+packages/fixtures/**/*.json
+packages/fixtures/**/*.csv
+
+# The parity harness's output, written by a script
+scripts/parity/expected
+scripts/parity/actual
+scripts/parity/print/expected
+scripts/parity/print/python-out
+scripts/parity/print/ts-out
+
+# Plan and checklist documents are written for people and kept as written
+*.md
