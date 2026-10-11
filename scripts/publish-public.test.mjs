@@ -54,8 +54,8 @@ describe("scrubbing the owner's first name from names and keys", () => {
 });
 
 describe('what stays out of the public repository', () => {
-  it('leaves out the old app, the private folder and the going-public steps', () => {
-    expect(LEAVE_OUT).toEqual(expect.arrayContaining(['legacy/python', '.private']));
+  it('leaves out the old apps, the private folder and the going-public steps', () => {
+    expect(LEAVE_OUT).toEqual(expect.arrayContaining(['legacy', '.private']));
     expect(NOT_PUBLIC).toContain('docs/GOING-PUBLIC.md');
   });
 

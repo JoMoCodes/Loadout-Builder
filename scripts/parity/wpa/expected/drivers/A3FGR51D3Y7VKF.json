@@ -1,0 +1,169 @@
+{
+  "cdf": [
+    {
+      "didNotFollowInstructions": 1,
+      "mishandled": 0,
+      "name": "Adrian Danforth",
+      "neverReceived": 0,
+      "sourceFile": "DSP_Customer_Delivery_Feedback_negative_XXX1_2026-W32.csv",
+      "transporterId": "A3FGR51D3Y7VKF",
+      "unprofessional": 0,
+      "week": "2026-W32",
+      "wrongAddress": 0,
+      "wrongItem": 0
+    }
+  ],
+  "dcrEvents": [],
+  "dcrTotals": [
+    {
+      "dcr": 0,
+      "name": "Adrian Danforth",
+      "packagesDelivered": 238,
+      "packagesDispatched": 238,
+      "packagesReturnedToStation": 0,
+      "packagesReturnedToStationDaControllable": 0,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 0,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W32.csv",
+      "transporterId": "A3FGR51D3Y7VKF",
+      "week": "2026-W32"
+    }
+  ],
+  "dsb": [],
+  "fromWeek": "2026-W31",
+  "name": "Adrian Danforth",
+  "pod": [
+    {
+      "acceptanceRate": 100,
+      "blurryPhoto": 0,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Adrian Danforth",
+      "noPackageDetected": 0,
+      "opportunities": 167,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 0,
+      "sourceFile": "US-XXXX-XXX1-Week32-2026NA-DA-POD-Details.pdf",
+      "success": 167,
+      "transporterId": "A3FGR51D3Y7VKF",
+      "week": "2026-W32"
+    }
+  ],
+  "psb": [],
+  "ranks": {
+    "2026-W32": {
+      "rank": 45,
+      "total": 65
+    }
+  },
+  "scorecards": [
+    {
+      "id": 75,
+      "metrics": [
+        {
+          "id": 750,
+          "metricName": "CDF DPMO",
+          "metricValue": "4202",
+          "score": 0,
+          "scorecardId": 75,
+          "tier": "Bronze",
+          "weightApplied": 7.4
+        },
+        {
+          "id": 751,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 75,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 752,
+          "metricName": "DCR",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 75,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 753,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 75,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 747,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 75,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 749,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 75,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 754,
+          "metricName": "POD",
+          "metricValue": "100.0%",
+          "score": 100,
+          "scorecardId": 75,
+          "tier": "Platinum",
+          "weightApplied": 3.2
+        },
+        {
+          "id": 746,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 75,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 748,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 75,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 745,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 75,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        }
+      ],
+      "overallScore": 92.63,
+      "overallStanding": "Gold",
+      "packagesDelivered": 238,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W32.csv",
+      "transporterId": "A3FGR51D3Y7VKF",
+      "week": "2026-W32"
+    }
+  ],
+  "toWeek": "2026-W40",
+  "transporterId": "A3FGR51D3Y7VKF"
+}

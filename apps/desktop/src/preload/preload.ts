@@ -44,6 +44,12 @@ export function droppedFileInput(input: unknown): { page: unknown; kind: unknown
   return { page: given.page, kind: given.kind, path };
 }
 
+/** A file or folder dropped on the Imports tab of the Performance page: the same, with its kind. */
+export function droppedPerfInput(input: unknown): { kind: unknown; path: string } {
+  const { kind, path } = droppedFileInput(input);
+  return { kind, path };
+}
+
 for (const def of Object.values(CHANNELS)) {
   const { name } = def;
   switch (def.kind) {
@@ -52,7 +58,9 @@ for (const def of Object.values(CHANNELS)) {
       calls[name] = (
         name === 'files:dropped'
           ? (input?: unknown) => send(name, droppedFileInput(input))
-          : (input?: unknown) => send(name, input)
+          : name === 'performance:dropped'
+            ? (input?: unknown) => send(name, droppedPerfInput(input))
+            : (input?: unknown) => send(name, input)
       ) as Anything;
       break;
     case 'signal':

@@ -1,9 +1,11 @@
 import type { ComponentType } from 'react';
 import { AssociatesPage } from './AssociatesPage';
+import { DashboardPage } from './DashboardPage';
 import { FeaturesLogPage } from './FeaturesLogPage';
 import { HomePage } from './HomePage';
 import { HowToUsePage } from './HowToUsePage';
 import { LoadOutPage } from './LoadOutPage';
+import { PerformancePage } from './PerformancePage';
 import { PreviousRosterPage } from './PreviousRosterPage';
 import { RouteDataPage } from './RouteDataPage';
 import { SettingsPage } from './SettingsPage';
@@ -20,10 +22,12 @@ export interface PageEntry {
 /** The pages, in the order the left menu shows them. */
 export const PAGES: readonly PageEntry[] = [
   { id: 'home', label: 'Home', component: HomePage },
+  { id: 'dashboard', label: 'Dashboard', component: DashboardPage },
   { id: 'load-out', label: 'Load Out', component: LoadOutPage },
   { id: 'route-data', label: 'Route Data', component: RouteDataPage },
   { id: 'vehicle-data', label: 'Vehicle Data', component: VehicleDataPage },
   { id: 'associates', label: 'Associates', component: AssociatesPage },
+  { id: 'performance', label: 'Performance', component: PerformancePage },
   { id: 'previous-roster', label: 'Previous Roster', component: PreviousRosterPage },
   { id: 'how-to-use', label: 'How to use', component: HowToUsePage },
   { id: 'features-log', label: 'Features log', component: FeaturesLogPage },

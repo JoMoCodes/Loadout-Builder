@@ -1,0 +1,1555 @@
+{
+  "cdf": [
+    {
+      "didNotFollowInstructions": 0,
+      "mishandled": 0,
+      "name": "Miriam Blaine Ormsby",
+      "neverReceived": 0,
+      "sourceFile": "DSP_Customer_Delivery_Feedback_negative_XXX1_2026-W31.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "unprofessional": 0,
+      "week": "2026-W31",
+      "wrongAddress": 1,
+      "wrongItem": 0
+    },
+    {
+      "didNotFollowInstructions": 0,
+      "mishandled": 1,
+      "name": "Miriam Blaine Ormsby",
+      "neverReceived": 0,
+      "sourceFile": "DSP_Customer_Delivery_Feedback_negative_XXX1_2026-W32.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "unprofessional": 0,
+      "week": "2026-W32",
+      "wrongAddress": 1,
+      "wrongItem": 1
+    },
+    {
+      "didNotFollowInstructions": 0,
+      "mishandled": 0,
+      "name": "Miriam Blaine Ormsby",
+      "neverReceived": 0,
+      "sourceFile": "DSP_Customer_Delivery_Feedback_negative_XXX1_2026-W35.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "unprofessional": 0,
+      "week": "2026-W35",
+      "wrongAddress": 1,
+      "wrongItem": 1
+    },
+    {
+      "didNotFollowInstructions": 0,
+      "mishandled": 1,
+      "name": "Miriam Blaine Ormsby",
+      "neverReceived": 0,
+      "sourceFile": "DSP_Customer_Delivery_Feedback_negative_XXX1_2026-W36.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "unprofessional": 0,
+      "week": "2026-W36",
+      "wrongAddress": 0,
+      "wrongItem": 0
+    },
+    {
+      "didNotFollowInstructions": 0,
+      "mishandled": 0,
+      "name": "Miriam Blaine Ormsby",
+      "neverReceived": 0,
+      "sourceFile": "DSP_Customer_Delivery_Feedback_negative_XXX1_2026-W37.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "unprofessional": 0,
+      "week": "2026-W37",
+      "wrongAddress": 2,
+      "wrongItem": 0
+    },
+    {
+      "didNotFollowInstructions": 1,
+      "mishandled": 0,
+      "name": "Miriam Blaine Ormsby",
+      "neverReceived": 0,
+      "sourceFile": "DSP_Customer_Delivery_Feedback_negative_XXX1_2026-W38.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "unprofessional": 0,
+      "week": "2026-W38",
+      "wrongAddress": 3,
+      "wrongItem": 0
+    }
+  ],
+  "dcrEvents": [
+    {
+      "additionalInformation": "Made-up note for testing.",
+      "exemptionReason": "No Exemption Applied",
+      "id": 21,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Miriam Blaine Ormsby",
+      "plannedDeliveryDate": "8/2/2026",
+      "rtsCode": "CUSTOMER UNAVAILABLE",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W32.csv",
+      "trackingId": "TBA623638834699",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W32"
+    },
+    {
+      "additionalInformation": "Made-up note for testing.",
+      "exemptionReason": "No Exemption Applied",
+      "id": 107,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Miriam Blaine Ormsby",
+      "plannedDeliveryDate": "2026-09-04",
+      "rtsCode": "ADDRESS NOT FOUND",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W36.csv",
+      "trackingId": "TBA169183151603",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W36"
+    },
+    {
+      "additionalInformation": "",
+      "exemptionReason": "No Exemption Applied",
+      "id": 104,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Miriam Blaine Ormsby",
+      "plannedDeliveryDate": "2026-09-04",
+      "rtsCode": "BUSINESS CLOSED",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W36.csv",
+      "trackingId": "TBA695306324672",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W36"
+    },
+    {
+      "additionalInformation": "",
+      "exemptionReason": "No Exemption Applied",
+      "id": 98,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Miriam Blaine Ormsby",
+      "plannedDeliveryDate": "2026-09-04",
+      "rtsCode": "BUSINESS CLOSED",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W36.csv",
+      "trackingId": "TBA822584006176",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W36"
+    },
+    {
+      "additionalInformation": "Made-up note for testing.",
+      "exemptionReason": "No Exemption Applied",
+      "id": 312,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Miriam Blaine Ormsby",
+      "plannedDeliveryDate": "2026-10-03",
+      "rtsCode": "BAD WEATHER",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W40.csv",
+      "trackingId": "TBA941146897528",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W40"
+    }
+  ],
+  "dcrTotals": [
+    {
+      "dcr": 0,
+      "name": "Miriam Blaine Ormsby",
+      "packagesDelivered": 537,
+      "packagesDispatched": 540,
+      "packagesReturnedToStation": 3,
+      "packagesReturnedToStationDaControllable": 0,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 3,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W31.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W31"
+    },
+    {
+      "dcr": 0,
+      "name": "Miriam Blaine Ormsby",
+      "packagesDelivered": 1052,
+      "packagesDispatched": 1064,
+      "packagesReturnedToStation": 12,
+      "packagesReturnedToStationDaControllable": 0,
+      "rescuedPackages": 1,
+      "rtsAllExempted": 12,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W32.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W32"
+    },
+    {
+      "dcr": 0,
+      "name": "Miriam Blaine Ormsby",
+      "packagesDelivered": 1061,
+      "packagesDispatched": 1069,
+      "packagesReturnedToStation": 6,
+      "packagesReturnedToStationDaControllable": 0,
+      "rescuedPackages": 1,
+      "rtsAllExempted": 6,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W33.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W33"
+    },
+    {
+      "dcr": 0,
+      "name": "Miriam Blaine Ormsby",
+      "packagesDelivered": 425,
+      "packagesDispatched": 427,
+      "packagesReturnedToStation": 2,
+      "packagesReturnedToStationDaControllable": 0,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 2,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W34.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W34"
+    },
+    {
+      "dcr": 0,
+      "name": "Miriam Blaine Ormsby",
+      "packagesDelivered": 767,
+      "packagesDispatched": 768,
+      "packagesReturnedToStation": 1,
+      "packagesReturnedToStationDaControllable": 0,
+      "rescuedPackages": 1,
+      "rtsAllExempted": 1,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W35.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W35"
+    },
+    {
+      "dcr": 4538.5,
+      "name": "Miriam Blaine Ormsby",
+      "packagesDelivered": 657,
+      "packagesDispatched": 661,
+      "packagesReturnedToStation": 3,
+      "packagesReturnedToStationDaControllable": 3,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 0,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W36.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W36"
+    },
+    {
+      "dcr": 0,
+      "name": "Miriam Blaine Ormsby",
+      "packagesDelivered": 853,
+      "packagesDispatched": 862,
+      "packagesReturnedToStation": 9,
+      "packagesReturnedToStationDaControllable": 0,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 9,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W37.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W37"
+    },
+    {
+      "dcr": 0,
+      "name": "Miriam Blaine Ormsby",
+      "packagesDelivered": 287,
+      "packagesDispatched": 288,
+      "packagesReturnedToStation": 1,
+      "packagesReturnedToStationDaControllable": 0,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 1,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W38.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W38"
+    },
+    {
+      "dcr": 0,
+      "name": "Miriam Blaine Ormsby",
+      "packagesDelivered": 197,
+      "packagesDispatched": 197,
+      "packagesReturnedToStation": 0,
+      "packagesReturnedToStationDaControllable": 0,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 0,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W39.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W39"
+    },
+    {
+      "dcr": 1677.8,
+      "name": "Miriam Blaine Ormsby",
+      "packagesDelivered": 591,
+      "packagesDispatched": 596,
+      "packagesReturnedToStation": 5,
+      "packagesReturnedToStationDaControllable": 1,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 4,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W40.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W40"
+    }
+  ],
+  "dsb": [
+    {
+      "deliveredOver50m": 0,
+      "incorrectScanAttended": 0,
+      "incorrectScanUnattended": 0,
+      "name": "Miriam Blaine Ormsby",
+      "noPodOnDelivery": 0,
+      "scannedNotDeliveredNotReturned": 0,
+      "simultaneousDeliveries": 1,
+      "sourceFile": "DSP_Delivery_Concessions_XXX1_2026-W38.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W38"
+    }
+  ],
+  "fromWeek": "2026-W31",
+  "name": "Miriam Blaine Ormsby",
+  "pod": [
+    {
+      "acceptanceRate": 98.69109947643979,
+      "blurryPhoto": 0,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Miriam Blaine Ormsby",
+      "noPackageDetected": 2,
+      "opportunities": 382,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 2,
+      "packageTooClose": 1,
+      "photoTooDark": 0,
+      "rejects": 5,
+      "sourceFile": "US-XXXX-XXX1-Week31-2026NA-DA-POD-Details.pdf",
+      "success": 377,
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W31"
+    },
+    {
+      "acceptanceRate": 99.73226238286479,
+      "blurryPhoto": 2,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Miriam Blaine Ormsby",
+      "noPackageDetected": 0,
+      "opportunities": 747,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 2,
+      "sourceFile": "US-XXXX-XXX1-Week32-2026NA-DA-POD-Details.pdf",
+      "success": 745,
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W32"
+    },
+    {
+      "acceptanceRate": 99.5945945945946,
+      "blurryPhoto": 1,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Miriam Blaine Ormsby",
+      "noPackageDetected": 2,
+      "opportunities": 740,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 3,
+      "sourceFile": "US-XXXX-XXX1-Week33-2026NA-DA-POD-Details.pdf",
+      "success": 737,
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W33"
+    },
+    {
+      "acceptanceRate": 99.38650306748467,
+      "blurryPhoto": 0,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Miriam Blaine Ormsby",
+      "noPackageDetected": 1,
+      "opportunities": 326,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 0,
+      "photoTooDark": 1,
+      "rejects": 2,
+      "sourceFile": "US-XXXX-XXX1-Week34-2026NA-DA-POD-Details.pdf",
+      "success": 324,
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W34"
+    },
+    {
+      "acceptanceRate": 99.82964224872232,
+      "blurryPhoto": 1,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Miriam Blaine Ormsby",
+      "noPackageDetected": 0,
+      "opportunities": 587,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 1,
+      "sourceFile": "US-XXXX-XXX1-Week35-2026NA-DA-POD-Details.pdf",
+      "success": 586,
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W35"
+    },
+    {
+      "acceptanceRate": 100,
+      "blurryPhoto": 0,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Miriam Blaine Ormsby",
+      "noPackageDetected": 0,
+      "opportunities": 476,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 0,
+      "sourceFile": "US-XXXX-XXX1-Week36-2026NA-DA-POD-Details.pdf",
+      "success": 476,
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W36"
+    },
+    {
+      "acceptanceRate": 99.53416149068323,
+      "blurryPhoto": 0,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Miriam Blaine Ormsby",
+      "noPackageDetected": 0,
+      "opportunities": 644,
+      "other": 2,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 1,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 3,
+      "sourceFile": "US-XXXX-XXX1-Week37-2026NA-DA-POD-Details.pdf",
+      "success": 641,
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W37"
+    },
+    {
+      "acceptanceRate": 99.09909909909909,
+      "blurryPhoto": 0,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Miriam Blaine Ormsby",
+      "noPackageDetected": 1,
+      "opportunities": 222,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 1,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 2,
+      "sourceFile": "US-XXXX-XXX1-Week38-2026NA-DA-POD-Details.pdf",
+      "success": 220,
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W38"
+    },
+    {
+      "acceptanceRate": 99.11504424778761,
+      "blurryPhoto": 1,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Miriam Blaine Ormsby",
+      "noPackageDetected": 0,
+      "opportunities": 113,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 1,
+      "sourceFile": "US-XXXX-XXX1-Week39-2026NA-DA-POD-Details.pdf",
+      "success": 112,
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W39"
+    },
+    {
+      "acceptanceRate": 99.76744186046511,
+      "blurryPhoto": 0,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Miriam Blaine Ormsby",
+      "noPackageDetected": 1,
+      "opportunities": 430,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 1,
+      "sourceFile": "US-XXXX-XXX1-Week40-2026NA-DA-POD-Details.pdf",
+      "success": 429,
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W40"
+    }
+  ],
+  "psb": [],
+  "ranks": {
+    "2026-W31": {
+      "rank": 51,
+      "total": 65
+    },
+    "2026-W32": {
+      "rank": 51,
+      "total": 65
+    },
+    "2026-W33": {
+      "rank": 20,
+      "total": 65
+    },
+    "2026-W34": {
+      "rank": 25,
+      "total": 69
+    },
+    "2026-W35": {
+      "rank": 50,
+      "total": 64
+    },
+    "2026-W36": {
+      "rank": 54,
+      "total": 66
+    },
+    "2026-W37": {
+      "rank": 38,
+      "total": 67
+    },
+    "2026-W38": {
+      "rank": 60,
+      "total": 64
+    },
+    "2026-W39": {
+      "rank": 15,
+      "total": 61
+    },
+    "2026-W40": {
+      "rank": 49,
+      "total": 61
+    }
+  },
+  "scorecards": [
+    {
+      "id": 26,
+      "metrics": [
+        {
+          "id": 254,
+          "metricName": "CDF DPMO",
+          "metricValue": "1869",
+          "score": 31.55,
+          "scorecardId": 26,
+          "tier": "Silver",
+          "weightApplied": 7.4
+        },
+        {
+          "id": 255,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 26,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 256,
+          "metricName": "DCR",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 26,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 257,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 26,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 251,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 26,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 253,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 26,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 258,
+          "metricName": "POD",
+          "metricValue": "98.7%",
+          "score": 0,
+          "scorecardId": 26,
+          "tier": "Bronze",
+          "weightApplied": 3.2
+        },
+        {
+          "id": 250,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 26,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 252,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 26,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 249,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 26,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        }
+      ],
+      "overallScore": 91.8,
+      "overallStanding": "Gold",
+      "packagesDelivered": 537,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W31.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W31"
+    },
+    {
+      "id": 90,
+      "metrics": [
+        {
+          "id": 898,
+          "metricName": "CDF DPMO",
+          "metricValue": "2854",
+          "score": 0,
+          "scorecardId": 90,
+          "tier": "Bronze",
+          "weightApplied": 7.4
+        },
+        {
+          "id": 899,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 90,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 900,
+          "metricName": "DCR",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 90,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 901,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 90,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 895,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 90,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 897,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 90,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 902,
+          "metricName": "POD",
+          "metricValue": "99.7%",
+          "score": 77.69,
+          "scorecardId": 90,
+          "tier": "Platinum",
+          "weightApplied": 3.2
+        },
+        {
+          "id": 894,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 90,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 896,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 90,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 893,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 90,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        }
+      ],
+      "overallScore": 91.93,
+      "overallStanding": "Gold",
+      "packagesDelivered": 1052,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W32.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W32"
+    },
+    {
+      "id": 154,
+      "metrics": [
+        {
+          "id": 1541,
+          "metricName": "CDF DPMO",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 154,
+          "tier": "Platinum",
+          "weightApplied": 7.4
+        },
+        {
+          "id": 1542,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 154,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 1543,
+          "metricName": "DCR",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 154,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 1544,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 154,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 1538,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 154,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 1540,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 154,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 1545,
+          "metricName": "POD",
+          "metricValue": "99.6%",
+          "score": 68.41,
+          "scorecardId": 154,
+          "tier": "Gold",
+          "weightApplied": 3.2
+        },
+        {
+          "id": 1537,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 154,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 1539,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 154,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 1536,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 154,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        }
+      ],
+      "overallScore": 99,
+      "overallStanding": "Platinum",
+      "packagesDelivered": 1061,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W33.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W33"
+    },
+    {
+      "id": 221,
+      "metrics": [
+        {
+          "id": 2211,
+          "metricName": "CDF DPMO",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 221,
+          "tier": "Platinum",
+          "weightApplied": 7.4
+        },
+        {
+          "id": 2212,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 221,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 2213,
+          "metricName": "DCR",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 221,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 2214,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 221,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 2208,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 221,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 2210,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 221,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 2215,
+          "metricName": "POD",
+          "metricValue": "99.4%",
+          "score": 55.41,
+          "scorecardId": 221,
+          "tier": "Gold",
+          "weightApplied": 3.2
+        },
+        {
+          "id": 2207,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 221,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 2209,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 221,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 2206,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 221,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        }
+      ],
+      "overallScore": 98.59,
+      "overallStanding": "Platinum",
+      "packagesDelivered": 425,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W34.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W34"
+    },
+    {
+      "id": 287,
+      "metrics": [
+        {
+          "id": 2873,
+          "metricName": "CDF DPMO",
+          "metricValue": "2614",
+          "score": 0,
+          "scorecardId": 287,
+          "tier": "Bronze",
+          "weightApplied": 7.4
+        },
+        {
+          "id": 2874,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 287,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 2875,
+          "metricName": "DCR",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 287,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 2876,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 287,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 2870,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 287,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 2872,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 287,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 2877,
+          "metricName": "POD",
+          "metricValue": "99.8%",
+          "score": 85.8,
+          "scorecardId": 287,
+          "tier": "Platinum",
+          "weightApplied": 3.2
+        },
+        {
+          "id": 2869,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 287,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 2871,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 287,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 2868,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 287,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        }
+      ],
+      "overallScore": 92.18,
+      "overallStanding": "Gold",
+      "packagesDelivered": 767,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W35.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W35"
+    },
+    {
+      "id": 354,
+      "metrics": [
+        {
+          "id": 3544,
+          "metricName": "CDF DPMO",
+          "metricValue": "1522",
+          "score": 48.9,
+          "scorecardId": 354,
+          "tier": "Silver",
+          "weightApplied": 7.4
+        },
+        {
+          "id": 3545,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 354,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 3546,
+          "metricName": "DCR",
+          "metricValue": "4538.5",
+          "score": 0,
+          "scorecardId": 354,
+          "tier": "Bronze",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 3547,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 354,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 3541,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 354,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 3543,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 354,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 3548,
+          "metricName": "POD",
+          "metricValue": "100.0%",
+          "score": 100,
+          "scorecardId": 354,
+          "tier": "Platinum",
+          "weightApplied": 3.2
+        },
+        {
+          "id": 3540,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 354,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 3542,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 354,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 3539,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 354,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        }
+      ],
+      "overallScore": 85.71,
+      "overallStanding": "Silver",
+      "packagesDelivered": 657,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W36.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W36"
+    },
+    {
+      "id": 420,
+      "metrics": [
+        {
+          "id": 4205,
+          "metricName": "CDF DPMO",
+          "metricValue": "2350",
+          "score": 0,
+          "scorecardId": 420,
+          "tier": "Bronze",
+          "weightApplied": 7.4
+        },
+        {
+          "id": 4206,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 420,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 4207,
+          "metricName": "DCR",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 420,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 4208,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 420,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 4202,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 420,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4204,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 420,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4209,
+          "metricName": "POD",
+          "metricValue": "99.5%",
+          "score": 64.68,
+          "scorecardId": 420,
+          "tier": "Gold",
+          "weightApplied": 3.2
+        },
+        {
+          "id": 4201,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 420,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4203,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 420,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4200,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 420,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        }
+      ],
+      "overallScore": 91.52,
+      "overallStanding": "Gold",
+      "packagesDelivered": 853,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W37.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W37"
+    },
+    {
+      "id": 487,
+      "metrics": [
+        {
+          "id": 4865,
+          "metricName": "CDF DPMO",
+          "metricValue": "6969",
+          "score": 0,
+          "scorecardId": 487,
+          "tier": "Bronze",
+          "weightApplied": 7.4
+        },
+        {
+          "id": 4866,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 487,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 4867,
+          "metricName": "DCR",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 487,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 4868,
+          "metricName": "DSB",
+          "metricValue": "3484",
+          "score": 0,
+          "scorecardId": 487,
+          "tier": "Bronze",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 4862,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 487,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4864,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 487,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4869,
+          "metricName": "POD",
+          "metricValue": "99.1%",
+          "score": 33.26,
+          "scorecardId": 487,
+          "tier": "Silver",
+          "weightApplied": 3.2
+        },
+        {
+          "id": 4861,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 487,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4863,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 487,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4860,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 487,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        }
+      ],
+      "overallScore": 80,
+      "overallStanding": "Silver",
+      "packagesDelivered": 287,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W38.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W38"
+    },
+    {
+      "id": 547,
+      "metrics": [
+        {
+          "id": 5466,
+          "metricName": "CDF DPMO",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 547,
+          "tier": "Platinum",
+          "weightApplied": 7.4
+        },
+        {
+          "id": 5467,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 547,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 5468,
+          "metricName": "DCR",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 547,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 5469,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 547,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 5463,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 547,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 5465,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 547,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 5470,
+          "metricName": "POD",
+          "metricValue": "99.1%",
+          "score": 34.59,
+          "scorecardId": 547,
+          "tier": "Silver",
+          "weightApplied": 3.2
+        },
+        {
+          "id": 5462,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 547,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 5464,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 547,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 5461,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 547,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        }
+      ],
+      "overallScore": 97.93,
+      "overallStanding": "Platinum",
+      "packagesDelivered": 197,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W39.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W39"
+    },
+    {
+      "id": 607,
+      "metrics": [
+        {
+          "id": 6077,
+          "metricName": "CDF DPMO",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 607,
+          "tier": "Platinum",
+          "weightApplied": 7.4
+        },
+        {
+          "id": 6078,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 607,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 6079,
+          "metricName": "DCR",
+          "metricValue": "1677.8",
+          "score": 58.05,
+          "scorecardId": 607,
+          "tier": "Gold",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 6080,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 607,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 6074,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 607,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 6076,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 607,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 6081,
+          "metricName": "POD",
+          "metricValue": "99.8%",
+          "score": 80.62,
+          "scorecardId": 607,
+          "tier": "Platinum",
+          "weightApplied": 3.2
+        },
+        {
+          "id": 6073,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 607,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 6075,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 607,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 6072,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.5",
+          "score": 0,
+          "scorecardId": 607,
+          "tier": "Bronze",
+          "weightApplied": 11.6
+        }
+      ],
+      "overallScore": 83.39,
+      "overallStanding": "Silver",
+      "packagesDelivered": 591,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W40.csv",
+      "transporterId": "A8ZXXQV6MFYBMG",
+      "week": "2026-W40"
+    }
+  ],
+  "toWeek": "2026-W40",
+  "transporterId": "A8ZXXQV6MFYBMG"
+}

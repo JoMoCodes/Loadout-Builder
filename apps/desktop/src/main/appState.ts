@@ -10,10 +10,26 @@ import { ChannelRefusal } from './channels';
 import { buildSnapshot } from './snapshot';
 import type { AppSnapshot } from '../shared/snapshot';
 import type { GridLayoutRecord } from '../shared/channels/layout';
+import { loadDemoPerformance } from './performance/demo';
+import { NO_PERF_STATUS, PerfHost, type PerfStatus } from './performance/perfHost';
+
+export interface StateHostOptions {
+  /** The made-up weekly performance exports, brought into the demo copy when demo mode opens. */
+  demoPerformanceFolder?: string;
+  /** Called when the data changed by itself (the demo weekly data finished loading). */
+  onAsyncChange?: () => void;
+  /** Counts only, for the log. */
+  log?: (message: string) => void;
+}
 
 export class StateHost {
   private current: AppState | null = null;
   private currentStore: Store | null = null;
+  private currentPerf: PerfHost | null = null;
+  /** What the snapshot says about weekly performance that the database does not know. */
+  perfStatus: () => PerfStatus = () => NO_PERF_STATUS;
+  /** Settles when the demo weekly data has been brought in (at once when there is none to load). */
+  perfLoading: Promise<void> = Promise.resolve();
   /** Goes up by one after every command and whenever the data is swapped. */
   revision = 0;
 
@@ -21,11 +37,15 @@ export class StateHost {
     private readonly dataSource: DataSource,
     /** The day to count as today. Only the clock reads it; tests give a fixed day. */
     readonly today: () => IsoDate = () => todayDate(),
+    private readonly options: StateHostOptions = {},
   ) {}
 
   /** Builds the state on whatever the data source has open now. Call after `dataSource.open()`. */
   rebuild(): void {
     this.revision += 1;
+    if (this.currentPerf) this.currentPerf.closed = true;
+    this.currentPerf = null;
+    this.perfLoading = Promise.resolve();
     const store = this.dataSource.getStore();
     if (store === null) {
       this.current = null;
@@ -36,6 +56,32 @@ export class StateHost {
     state.loadAll();
     this.current = state;
     this.currentStore = store;
+    const perf = new PerfHost(store);
+    this.currentPerf = perf;
+    const folder = this.options.demoPerformanceFolder;
+    if (this.dataSource.getInfo().mode === 'demo' && folder) {
+      perf.ready = false;
+      this.perfLoading = loadDemoPerformance(perf, folder)
+        .then((rows) => {
+          if (perf.closed) return;
+          this.options.log?.(`demo weekly performance data loaded: ${rows} rows`);
+        })
+        .catch(() => {
+          if (!perf.closed) this.options.log?.('could not load the demo weekly performance data');
+        })
+        .finally(() => {
+          perf.ready = true;
+          perf.invalidate();
+          if (!perf.closed) this.options.onAsyncChange?.();
+        });
+    }
+  }
+
+  /** The weekly performance data on the open saved data, or a "no-data" refusal. */
+  get perf(): PerfHost {
+    void this.state;
+    if (this.currentPerf === null) throw new ChannelRefusal('no-data');
+    return this.currentPerf;
   }
 
   /** The state, or a "no-data" refusal when the saved data could not be opened. */
@@ -55,6 +101,7 @@ export class StateHost {
       today: this.today(),
       revision: this.revision,
       mode: this.dataSource.getInfo().mode,
+      performance: this.perf.snapshot(this.perfStatus()),
     });
   }
 

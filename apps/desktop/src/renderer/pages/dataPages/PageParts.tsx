@@ -135,20 +135,39 @@ export function FilterCheck({
   );
 }
 
+/** A button that goes with what the status line says ("Show in folder"). */
+export interface StatusAction {
+  label: string;
+  onClick(): void;
+  testId: string;
+}
+
 /** What the pages say at the bottom after something is done, like the old status bar. */
-export function StatusLine({ text, name }: { text: string; name: string }) {
+export function StatusLine({
+  text,
+  name,
+  action = null,
+}: {
+  text: string;
+  name: string;
+  action?: StatusAction | null;
+}) {
   return (
-    <p
-      role="status"
-      aria-live="polite"
-      data-testid={`${name}-status`}
-      className={cn(
-        'm-0 min-h-[2rem] border-t border-line bg-surface px-6 py-1.5 text-sm',
-        text ? 'text-fg' : 'text-faint',
-      )}
-    >
-      {text || 'Ready.'}
-    </p>
+    <div className="flex min-h-[2rem] flex-wrap items-center gap-x-3 border-t border-line bg-surface px-6 py-1">
+      <p
+        role="status"
+        aria-live="polite"
+        data-testid={`${name}-status`}
+        className={cn('m-0 py-0.5 text-sm', text ? 'text-fg' : 'text-faint')}
+      >
+        {text || 'Ready.'}
+      </p>
+      {text && action ? (
+        <Button size="sm" onClick={action.onClick} data-testid={action.testId}>
+          {action.label}
+        </Button>
+      ) : null}
+    </div>
   );
 }
 
@@ -187,9 +206,15 @@ export function ProblemBanner({
 
 /** The page's status line and problem banner together. */
 export function useMessages() {
-  const [status, setStatus] = useState('');
+  const [status, setStatusText] = useState('');
+  const [statusAction, setStatusAction] = useState<StatusAction | null>(null);
   const [problem, setProblem] = useState<Problem | null>(null);
   const clearProblem = useCallback(() => setProblem(null), []);
-  return { status, setStatus, problem, setProblem, clearProblem };
+  /** Says something on the status line; a button can go with it until the next thing is said. */
+  const setStatus = useCallback((text: string, action: StatusAction | null = null) => {
+    setStatusText(text);
+    setStatusAction(action);
+  }, []);
+  return { status, setStatus, statusAction, problem, setProblem, clearProblem };
 }
 export type Messages = ReturnType<typeof useMessages>;

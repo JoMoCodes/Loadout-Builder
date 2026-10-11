@@ -3,13 +3,15 @@ import { PAGES, pageIdFrom } from '../pages';
 import { updatePillText } from './TopBar';
 
 describe('pages', () => {
-  it('are the nine pages, in menu order', () => {
+  it('are the eleven pages, in menu order', () => {
     expect(PAGES.map((page) => page.id)).toEqual([
       'home',
+      'dashboard',
       'load-out',
       'route-data',
       'vehicle-data',
       'associates',
+      'performance',
       'previous-roster',
       'how-to-use',
       'features-log',

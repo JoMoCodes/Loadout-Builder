@@ -14,6 +14,7 @@ packages/fixtures/**/*.csv
 
 # The parity harness's output, written by a script
 scripts/parity/expected
+scripts/parity/wpa/expected
 scripts/parity/actual
 scripts/parity/print/expected
 scripts/parity/print/python-out

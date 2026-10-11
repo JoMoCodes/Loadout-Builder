@@ -60,3 +60,37 @@ UPDATE roster_meta SET source_file = '%USERPROFILE%\Downloads\'
   || replace(source_file, rtrim(source_file, replace(source_file, '\', '')), '');
 -- (the same line for associates_meta, route_meta, vehicles_meta, previous_roster_meta, tenure_meta)
 ```
+
+## The Weekly Performance files
+
+`performance/` holds made-up copies of the weekly exports the old Weekly Performance App read:
+the driver roster, the scorecard thresholds, and ten weeks each of scorecards, CDF, DSB, PSB,
+DCR, DCR totals and Safety files, plus the POD reports. The weeks are the newest ten that have a
+scorecard; a kind with no file in those weeks (the PSB exports stop earlier) gets its own newest
+ten weeks instead, and the script says so when it runs. The station code in the file names is
+`XXX1`, and the files line up with each other: the same made-up driver has the same name and ID
+in every one of them (but not the same as in the other fixture folders, which were made with a
+different seed).
+
+| Folder | What it holds |
+| --- | --- |
+| `performance/roster/`, `performance/thresholds/` | The driver list and the scorecard thresholds |
+| `performance/scorecards/` | One weekly scorecard per week |
+| `performance/cdf/`, `performance/dsb/`, `performance/psb/` | Customer feedback, delivery-scan and pickup exports |
+| `performance/dcr/`, `performance/dcr-totals/` | Returned-package rows and the weekly totals |
+| `performance/safety/` | Safety events (made-up VINs, links to example.com) |
+| `performance/pod/` | POD reports, drawn from scratch as PDFs with the same layout as the real ones |
+
+To remake them, list the real files in `.private/sources-performance.json` (ignored by git), have
+the POD rows written to `.private/pod-rows.json`, then run from the repo root:
+
+```bash
+npm run fixtures:performance
+```
+
+It writes the made-up copies, merges the new files, people, IDs and VINs into `manifest.json`
+without touching what is already there, and checks its own work (same headers and row counts as
+the real files, no real value left, privacy scan passed). It prints counts only. Its seed lives in
+`.private/seed-performance.txt`, separate from the one the other fixtures used. Tracking numbers,
+event, stop and group IDs become made-up values of the same shape; free-text notes become one
+generic sentence; the real POD PDFs are never copied, only their row layout is reused.

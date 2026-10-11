@@ -1,0 +1,891 @@
+{
+  "cdf": [
+    {
+      "didNotFollowInstructions": 0,
+      "mishandled": 0,
+      "name": "Abigail Damian Gresham",
+      "neverReceived": 0,
+      "sourceFile": "DSP_Customer_Delivery_Feedback_negative_XXX1_2026-W38.csv",
+      "transporterId": "A4BAES7NSZGO8A",
+      "unprofessional": 0,
+      "week": "2026-W38",
+      "wrongAddress": 0,
+      "wrongItem": 1
+    },
+    {
+      "didNotFollowInstructions": 0,
+      "mishandled": 0,
+      "name": "Abigail Damian Gresham",
+      "neverReceived": 0,
+      "sourceFile": "DSP_Customer_Delivery_Feedback_negative_XXX1_2026-W39.csv",
+      "transporterId": "A4BAES7NSZGO8A",
+      "unprofessional": 0,
+      "week": "2026-W39",
+      "wrongAddress": 5,
+      "wrongItem": 0
+    },
+    {
+      "didNotFollowInstructions": 1,
+      "mishandled": 0,
+      "name": "Abigail Damian Gresham",
+      "neverReceived": 0,
+      "sourceFile": "DSP_Customer_Delivery_Feedback_negative_XXX1_2026-W40.csv",
+      "transporterId": "A4BAES7NSZGO8A",
+      "unprofessional": 0,
+      "week": "2026-W40",
+      "wrongAddress": 0,
+      "wrongItem": 0
+    }
+  ],
+  "dcrEvents": [
+    {
+      "additionalInformation": "",
+      "exemptionReason": "No Exemption Applied",
+      "id": 136,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-08",
+      "rtsCode": "TR CANCELLED",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W37.csv",
+      "trackingId": "TBA206033213335",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W37"
+    },
+    {
+      "additionalInformation": "",
+      "exemptionReason": "No Exemption Applied",
+      "id": 237,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-18",
+      "rtsCode": "BUSINESS CLOSED",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W38.csv",
+      "trackingId": "TBA160900303413",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W38"
+    },
+    {
+      "additionalInformation": "",
+      "exemptionReason": "No Exemption Applied",
+      "id": 216,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-18",
+      "rtsCode": "BUSINESS CLOSED",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W38.csv",
+      "trackingId": "TBA275312509673",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W38"
+    },
+    {
+      "additionalInformation": "",
+      "exemptionReason": "No Exemption Applied",
+      "id": 201,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-18",
+      "rtsCode": "BUSINESS CLOSED",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W38.csv",
+      "trackingId": "TBA673442358468",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W38"
+    },
+    {
+      "additionalInformation": "",
+      "exemptionReason": "No Exemption Applied",
+      "id": 188,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-18",
+      "rtsCode": "BUSINESS CLOSED",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W38.csv",
+      "trackingId": "TBA686667778261",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W38"
+    },
+    {
+      "additionalInformation": "",
+      "exemptionReason": "No Exemption Applied",
+      "id": 212,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-18",
+      "rtsCode": "BUSINESS CLOSED",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W38.csv",
+      "trackingId": "TBA733600283887",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W38"
+    },
+    {
+      "additionalInformation": "",
+      "exemptionReason": "No Exemption Applied",
+      "id": 243,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-18",
+      "rtsCode": "BUSINESS CLOSED",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W38.csv",
+      "trackingId": "TBA772143120491",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W38"
+    },
+    {
+      "additionalInformation": "",
+      "exemptionReason": "No Exemption Applied",
+      "id": 220,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-18",
+      "rtsCode": "BUSINESS CLOSED",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W38.csv",
+      "trackingId": "TBA798417697634",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W38"
+    },
+    {
+      "additionalInformation": "",
+      "exemptionReason": "No Exemption Applied",
+      "id": 234,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-18",
+      "rtsCode": "BUSINESS CLOSED",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W38.csv",
+      "trackingId": "TBA835811587567",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W38"
+    },
+    {
+      "additionalInformation": "",
+      "exemptionReason": "No Exemption Applied",
+      "id": 210,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-18",
+      "rtsCode": "BUSINESS CLOSED",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W38.csv",
+      "trackingId": "TBA887607435933",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W38"
+    },
+    {
+      "additionalInformation": "",
+      "exemptionReason": "No Exemption Applied",
+      "id": 274,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-21",
+      "rtsCode": "OBJECT MISSING",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W39.csv",
+      "trackingId": "TBA882608505012",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W39"
+    },
+    {
+      "additionalInformation": "Made-up note for testing.",
+      "exemptionReason": "No Exemption Applied",
+      "id": 290,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-28",
+      "rtsCode": "INACCESSIBLE DELIVERY LOCATION",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W40.csv",
+      "trackingId": "TBA361519469942",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W40"
+    },
+    {
+      "additionalInformation": "Made-up note for testing.",
+      "exemptionReason": "No Exemption Applied",
+      "id": 305,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-28",
+      "rtsCode": "INACCESSIBLE DELIVERY LOCATION",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W40.csv",
+      "trackingId": "TBA365968473157",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W40"
+    },
+    {
+      "additionalInformation": "Made-up note for testing.",
+      "exemptionReason": "No Exemption Applied",
+      "id": 345,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-28",
+      "rtsCode": "INACCESSIBLE DELIVERY LOCATION",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W40.csv",
+      "trackingId": "TBA511680238867",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W40"
+    },
+    {
+      "additionalInformation": "Made-up note for testing.",
+      "exemptionReason": "No Exemption Applied",
+      "id": 294,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-28",
+      "rtsCode": "INACCESSIBLE DELIVERY LOCATION",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W40.csv",
+      "trackingId": "TBA603936779933",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W40"
+    },
+    {
+      "additionalInformation": "Made-up note for testing.",
+      "exemptionReason": "No Exemption Applied",
+      "id": 311,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-28",
+      "rtsCode": "INACCESSIBLE DELIVERY LOCATION",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W40.csv",
+      "trackingId": "TBA723586845248",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W40"
+    },
+    {
+      "additionalInformation": "Made-up note for testing.",
+      "exemptionReason": "No Exemption Applied",
+      "id": 293,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-29",
+      "rtsCode": "BAD WEATHER",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W40.csv",
+      "trackingId": "TBA754615839449",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W40"
+    },
+    {
+      "additionalInformation": "Made-up note for testing.",
+      "exemptionReason": "No Exemption Applied",
+      "id": 320,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Abigail Damian Gresham",
+      "plannedDeliveryDate": "2026-09-28",
+      "rtsCode": "INACCESSIBLE DELIVERY LOCATION",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W40.csv",
+      "trackingId": "TBA761667971073",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W40"
+    }
+  ],
+  "dcrTotals": [
+    {
+      "dcr": 4016,
+      "name": "Abigail Damian Gresham",
+      "packagesDelivered": 246,
+      "packagesDispatched": 249,
+      "packagesReturnedToStation": 3,
+      "packagesReturnedToStationDaControllable": 1,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 2,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W37.csv",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W37"
+    },
+    {
+      "dcr": 50561.7,
+      "name": "Abigail Damian Gresham",
+      "packagesDelivered": 167,
+      "packagesDispatched": 178,
+      "packagesReturnedToStation": 10,
+      "packagesReturnedToStationDaControllable": 9,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 1,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W38.csv",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W38"
+    },
+    {
+      "dcr": 1652.8,
+      "name": "Abigail Damian Gresham",
+      "packagesDelivered": 603,
+      "packagesDispatched": 605,
+      "packagesReturnedToStation": 2,
+      "packagesReturnedToStationDaControllable": 1,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 1,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W39.csv",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W39"
+    },
+    {
+      "dcr": 15695,
+      "name": "Abigail Damian Gresham",
+      "packagesDelivered": 439,
+      "packagesDispatched": 446,
+      "packagesReturnedToStation": 7,
+      "packagesReturnedToStationDaControllable": 7,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 0,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W40.csv",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W40"
+    }
+  ],
+  "dsb": [
+    {
+      "deliveredOver50m": 0,
+      "incorrectScanAttended": 1,
+      "incorrectScanUnattended": 0,
+      "name": "Abigail Damian Gresham",
+      "noPodOnDelivery": 0,
+      "scannedNotDeliveredNotReturned": 0,
+      "simultaneousDeliveries": 0,
+      "sourceFile": "DSP_Delivery_Concessions_XXX1_2026-W39.csv",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W39"
+    }
+  ],
+  "fromWeek": "2026-W31",
+  "name": "Abigail Damian Gresham",
+  "pod": [
+    {
+      "acceptanceRate": 99.48186528497409,
+      "blurryPhoto": 0,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Abigail Damian Gresham",
+      "noPackageDetected": 1,
+      "opportunities": 193,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 1,
+      "sourceFile": "US-XXXX-XXX1-Week37-2026NA-DA-POD-Details.pdf",
+      "success": 192,
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W37"
+    },
+    {
+      "acceptanceRate": 98.05825242718447,
+      "blurryPhoto": 2,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Abigail Damian Gresham",
+      "noPackageDetected": 0,
+      "opportunities": 103,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 2,
+      "sourceFile": "US-XXXX-XXX1-Week38-2026NA-DA-POD-Details.pdf",
+      "success": 101,
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W38"
+    },
+    {
+      "acceptanceRate": 100,
+      "blurryPhoto": 0,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Abigail Damian Gresham",
+      "noPackageDetected": 0,
+      "opportunities": 421,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 0,
+      "sourceFile": "US-XXXX-XXX1-Week39-2026NA-DA-POD-Details.pdf",
+      "success": 421,
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W39"
+    },
+    {
+      "acceptanceRate": 100,
+      "blurryPhoto": 0,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Abigail Damian Gresham",
+      "noPackageDetected": 0,
+      "opportunities": 302,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 0,
+      "sourceFile": "US-XXXX-XXX1-Week40-2026NA-DA-POD-Details.pdf",
+      "success": 302,
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W40"
+    }
+  ],
+  "psb": [],
+  "ranks": {
+    "2026-W37": {
+      "rank": 50,
+      "total": 67
+    },
+    "2026-W38": {
+      "rank": 62,
+      "total": 64
+    },
+    "2026-W39": {
+      "rank": 61,
+      "total": 61
+    },
+    "2026-W40": {
+      "rank": 59,
+      "total": 61
+    }
+  },
+  "scorecards": [
+    {
+      "id": 432,
+      "metrics": [
+        {
+          "id": 4325,
+          "metricName": "CDF DPMO",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 432,
+          "tier": "Platinum",
+          "weightApplied": 7.4
+        },
+        {
+          "id": 4326,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 432,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 4327,
+          "metricName": "DCR",
+          "metricValue": "4016",
+          "score": 0,
+          "scorecardId": 432,
+          "tier": "Bronze",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 4328,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 432,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 4322,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 432,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4324,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 432,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4329,
+          "metricName": "POD",
+          "metricValue": "99.5%",
+          "score": 61.37,
+          "scorecardId": 432,
+          "tier": "Gold",
+          "weightApplied": 3.2
+        },
+        {
+          "id": 4321,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 432,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4323,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 432,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4320,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 432,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        }
+      ],
+      "overallScore": 88.25,
+      "overallStanding": "Gold",
+      "packagesDelivered": 246,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W37.csv",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W37"
+    },
+    {
+      "id": 497,
+      "metrics": [
+        {
+          "id": 4966,
+          "metricName": "CDF DPMO",
+          "metricValue": "6024",
+          "score": 0,
+          "scorecardId": 497,
+          "tier": "Bronze",
+          "weightApplied": 7.4
+        },
+        {
+          "id": 4967,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 497,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 4968,
+          "metricName": "DCR",
+          "metricValue": "50561.7",
+          "score": 0,
+          "scorecardId": 497,
+          "tier": "Bronze",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 4969,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 497,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 4963,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 497,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4965,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 497,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4970,
+          "metricName": "POD",
+          "metricValue": "98.1%",
+          "score": 0,
+          "scorecardId": 497,
+          "tier": "Bronze",
+          "weightApplied": 3.2
+        },
+        {
+          "id": 4962,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 497,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4964,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 497,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4961,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 497,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        }
+      ],
+      "overallScore": 78.95,
+      "overallStanding": "Silver",
+      "packagesDelivered": 167,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W38.csv",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W38"
+    },
+    {
+      "id": 556,
+      "metrics": [
+        {
+          "id": 5556,
+          "metricName": "CDF DPMO",
+          "metricValue": "6645",
+          "score": 0,
+          "scorecardId": 556,
+          "tier": "Bronze",
+          "weightApplied": 7
+        },
+        {
+          "id": 5557,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 556,
+          "tier": "Platinum",
+          "weightApplied": 10
+        },
+        {
+          "id": 5558,
+          "metricName": "DCR",
+          "metricValue": "1652.8",
+          "score": 58.68,
+          "scorecardId": 556,
+          "tier": "Gold",
+          "weightApplied": 10
+        },
+        {
+          "id": 5559,
+          "metricName": "DSB",
+          "metricValue": "1658",
+          "score": 0,
+          "scorecardId": 556,
+          "tier": "Bronze",
+          "weightApplied": 10
+        },
+        {
+          "id": 5553,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 556,
+          "tier": "Platinum",
+          "weightApplied": 11
+        },
+        {
+          "id": 5555,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 556,
+          "tier": "Platinum",
+          "weightApplied": 11
+        },
+        {
+          "id": 5560,
+          "metricName": "POD",
+          "metricValue": "100.0%",
+          "score": 100,
+          "scorecardId": 556,
+          "tier": "Platinum",
+          "weightApplied": 3
+        },
+        {
+          "id": 5561,
+          "metricName": "PSB",
+          "metricValue": "0.00",
+          "score": 100,
+          "scorecardId": 556,
+          "tier": "Platinum",
+          "weightApplied": 5
+        },
+        {
+          "id": 5552,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 556,
+          "tier": "Platinum",
+          "weightApplied": 11
+        },
+        {
+          "id": 5554,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.7",
+          "score": 0,
+          "scorecardId": 556,
+          "tier": "Bronze",
+          "weightApplied": 11
+        },
+        {
+          "id": 5551,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 556,
+          "tier": "Platinum",
+          "weightApplied": 11
+        }
+      ],
+      "overallScore": 67.87,
+      "overallStanding": "Bronze",
+      "packagesDelivered": 603,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W39.csv",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W39"
+    },
+    {
+      "id": 615,
+      "metrics": [
+        {
+          "id": 6157,
+          "metricName": "CDF DPMO",
+          "metricValue": "2336",
+          "score": 0,
+          "scorecardId": 615,
+          "tier": "Bronze",
+          "weightApplied": 7
+        },
+        {
+          "id": 6158,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 615,
+          "tier": "Platinum",
+          "weightApplied": 10
+        },
+        {
+          "id": 6159,
+          "metricName": "DCR",
+          "metricValue": "15695",
+          "score": 0,
+          "scorecardId": 615,
+          "tier": "Bronze",
+          "weightApplied": 10
+        },
+        {
+          "id": 6160,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 615,
+          "tier": "Platinum",
+          "weightApplied": 10
+        },
+        {
+          "id": 6154,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.5",
+          "score": 0,
+          "scorecardId": 615,
+          "tier": "Bronze",
+          "weightApplied": 11
+        },
+        {
+          "id": 6156,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 615,
+          "tier": "Platinum",
+          "weightApplied": 11
+        },
+        {
+          "id": 6161,
+          "metricName": "POD",
+          "metricValue": "100.0%",
+          "score": 100,
+          "scorecardId": 615,
+          "tier": "Platinum",
+          "weightApplied": 3
+        },
+        {
+          "id": 6162,
+          "metricName": "PSB",
+          "metricValue": "0.00",
+          "score": 100,
+          "scorecardId": 615,
+          "tier": "Platinum",
+          "weightApplied": 5
+        },
+        {
+          "id": 6153,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 615,
+          "tier": "Platinum",
+          "weightApplied": 11
+        },
+        {
+          "id": 6155,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 615,
+          "tier": "Platinum",
+          "weightApplied": 11
+        },
+        {
+          "id": 6152,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 615,
+          "tier": "Platinum",
+          "weightApplied": 11
+        }
+      ],
+      "overallScore": 72,
+      "overallStanding": "Bronze",
+      "packagesDelivered": 439,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W40.csv",
+      "transporterId": "A4BAES7NSZGO8A",
+      "week": "2026-W40"
+    }
+  ],
+  "toWeek": "2026-W40",
+  "transporterId": "A4BAES7NSZGO8A"
+}

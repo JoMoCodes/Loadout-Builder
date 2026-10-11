@@ -1,0 +1,217 @@
+{
+  "activeDrivers": 61,
+  "avgTrend": [
+    {
+      "avg": 95.15369230769231,
+      "week": "2026-W31"
+    },
+    {
+      "avg": 95.19676923076923,
+      "week": "2026-W32"
+    },
+    {
+      "avg": 93.77015384615385,
+      "week": "2026-W33"
+    },
+    {
+      "avg": 94.65304347826086,
+      "week": "2026-W34"
+    },
+    {
+      "avg": 95.31921875,
+      "week": "2026-W35"
+    },
+    {
+      "avg": 91.71757575757576,
+      "week": "2026-W36"
+    },
+    {
+      "avg": 91.19328358208955,
+      "week": "2026-W37"
+    },
+    {
+      "avg": 91.895625,
+      "week": "2026-W38"
+    },
+    {
+      "avg": 91.40590163934426,
+      "week": "2026-W39"
+    },
+    {
+      "avg": 90.2811475409836,
+      "week": "2026-W40"
+    }
+  ],
+  "decliningCount": 37,
+  "fromWeek": "2026-W31",
+  "hasData": true,
+  "improvingCount": 8,
+  "latestFleetAvg": 90.2811475409836,
+  "latestTierDistribution": [
+    {
+      "count": 28,
+      "tier": "Platinum"
+    },
+    {
+      "count": 14,
+      "tier": "Gold"
+    },
+    {
+      "count": 11,
+      "tier": "Silver"
+    },
+    {
+      "count": 8,
+      "tier": "Bronze"
+    }
+  ],
+  "latestWeek": "2026-W40",
+  "toWeek": "2026-W40",
+  "topDeclined": [
+    {
+      "delta": -47.69,
+      "deltaDisplay": "-47.7",
+      "firstScore": 100,
+      "firstWeek": "2026-W34",
+      "lastScore": 52.31,
+      "lastWeek": "2026-W40",
+      "moveDisplay": "100.0 -> 52.3",
+      "name": "Emmett Ines Huxley",
+      "transporterId": "A8M3J46P8HG6FK"
+    },
+    {
+      "delta": -46.24,
+      "deltaDisplay": "-46.2",
+      "firstScore": 78.95,
+      "firstWeek": "2026-W36",
+      "lastScore": 32.71,
+      "lastWeek": "2026-W40",
+      "moveDisplay": "79.0 -> 32.7",
+      "name": "Amelia Aaron Blackwell",
+      "transporterId": "A1E3ZUFIX1EXA5"
+    },
+    {
+      "delta": -23.310000000000002,
+      "deltaDisplay": "-23.3",
+      "firstScore": 96.25,
+      "firstWeek": "2026-W31",
+      "lastScore": 72.94,
+      "lastWeek": "2026-W40",
+      "moveDisplay": "96.3 -> 72.9",
+      "name": "Barrett Kendra Chesterfield",
+      "transporterId": "A7CUH5Y0VWYL2V"
+    },
+    {
+      "delta": -21.14,
+      "deltaDisplay": "-21.1",
+      "firstScore": 98.66,
+      "firstWeek": "2026-W31",
+      "lastScore": 77.52,
+      "lastWeek": "2026-W40",
+      "moveDisplay": "98.7 -> 77.5",
+      "name": "Emmett Lucinda Oswald",
+      "transporterId": "A9INK8J4CTEVZJ"
+    },
+    {
+      "delta": -20.689999999999998,
+      "deltaDisplay": "-20.7",
+      "firstScore": 97.81,
+      "firstWeek": "2026-W31",
+      "lastScore": 77.12,
+      "lastWeek": "2026-W40",
+      "moveDisplay": "97.8 -> 77.1",
+      "name": "Vance Amelia Whitaker",
+      "transporterId": "A2XX9DS9WCNFP"
+    }
+  ],
+  "topImproved": [
+    {
+      "delta": 20.629999999999995,
+      "deltaDisplay": "+20.6",
+      "firstScore": 67.37,
+      "firstWeek": "2026-W31",
+      "lastScore": 88,
+      "lastWeek": "2026-W32",
+      "moveDisplay": "67.4 -> 88.0",
+      "name": "Luther Flora Vance",
+      "transporterId": "A7BE7C3Y1TNPJS"
+    },
+    {
+      "delta": 18.950000000000003,
+      "deltaDisplay": "+19.0",
+      "firstScore": 81.05,
+      "firstWeek": "2026-W31",
+      "lastScore": 100,
+      "lastWeek": "2026-W38",
+      "moveDisplay": "81.1 -> 100.0",
+      "name": "Fabian Delia Colbrook",
+      "transporterId": "A2868K9OBI67DE"
+    },
+    {
+      "delta": 18.330000000000005,
+      "deltaDisplay": "+18.3",
+      "firstScore": 60.62,
+      "firstWeek": "2026-W33",
+      "lastScore": 78.95,
+      "lastWeek": "2026-W39",
+      "moveDisplay": "60.6 -> 79.0",
+      "name": "Hadley Amelia Abernathy",
+      "transporterId": "A9WAEP6HQ8GUBB"
+    },
+    {
+      "delta": 17.489999999999995,
+      "deltaDisplay": "+17.5",
+      "firstScore": 82.11,
+      "firstWeek": "2026-W31",
+      "lastScore": 99.6,
+      "lastWeek": "2026-W39",
+      "moveDisplay": "82.1 -> 99.6",
+      "name": "Hector Paloma Islington",
+      "transporterId": "A1ZP7FE2I8J7M7"
+    },
+    {
+      "delta": 11.579999999999998,
+      "deltaDisplay": "+11.6",
+      "firstScore": 77.89,
+      "firstWeek": "2026-W31",
+      "lastScore": 89.47,
+      "lastWeek": "2026-W40",
+      "moveDisplay": "77.9 -> 89.5",
+      "name": "Lachlan Vance Thorne",
+      "transporterId": "A4VV6P366J3B25"
+    }
+  ],
+  "topN": 5,
+  "worstCategories": [
+    {
+      "category": "Delivered to Wrong Address",
+      "count": 298,
+      "source": "CDF",
+      "sourceCategory": "CDF: Delivered to Wrong Address"
+    },
+    {
+      "category": "No Package Detected",
+      "count": 270,
+      "source": "POD",
+      "sourceCategory": "POD: No Package Detected"
+    },
+    {
+      "category": "Photo Too Dark",
+      "count": 270,
+      "source": "POD",
+      "sourceCategory": "POD: Photo Too Dark"
+    },
+    {
+      "category": "Package Too Close",
+      "count": 265,
+      "source": "POD",
+      "sourceCategory": "POD: Package Too Close"
+    },
+    {
+      "category": "DA did not follow my delivery instructions",
+      "count": 183,
+      "source": "CDF",
+      "sourceCategory": "CDF: DA did not follow my delivery instructions"
+    }
+  ]
+}

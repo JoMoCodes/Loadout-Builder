@@ -5,7 +5,7 @@
 //
 // What it does, in order:
 //   1. Takes the files of the current main (or --from <branch or commit>) as they were committed.
-//   2. Leaves out legacy/python/ (the old Python app stays in the private repo's history), .private/,
+//   2. Leaves out legacy/ (the old Python app and the old Weekly Performance App stay in the private repo's history), .private/,
 //      the step list for going public, and any file the privacy scan flags.
 //   3. Scrubs the docs: Windows user paths (C:\Users\<name>\..., OneDrive - <name>\...) become
 //      %USERPROFILE%\..., and the owner's first name is taken out of file names and JSON keys.
@@ -41,7 +41,7 @@ const repoRoot = resolve(here, '..');
 export const BRANCH = 'public-release';
 export const PUBLIC_REPO = 'JoMoCodes/Loadout-Builder';
 /** Folders (and files) that never go in the public repo. */
-export const LEAVE_OUT = ['legacy/python', '.private'];
+export const LEAVE_OUT = ['legacy', '.private'];
 /** The step list for going public is for the owner of the private repo, not for the public one. */
 export const NOT_PUBLIC = ['docs/GOING-PUBLIC.md'];
 const CHECKERS = new Set(['scripts/publish-public.mjs', 'scripts/publish-public.test.mjs']);
@@ -307,10 +307,18 @@ function scanTree(tree, extraArgs = []) {
 
 function buildPublicTree(ref, tree, summary) {
   // 1. The committed files of that ref, nothing from the working folder.
-  const archive = git(repoRoot, ['archive', '--format=tar', ref], { buffer: true });
+  // The archive goes through a file, not a pipe: the repository is now tens of megabytes and a
+  // pipe held in memory cuts it off part way.
+  // Paths are given to tar relative to the temporary folder: a Windows path with a drive letter
+  // reads as a remote computer to some versions of tar.
   mkdirSync(tree, { recursive: true });
-  const unpack = run('tar', ['-x', '-C', tree], { input: archive.stdout, buffer: true });
+  const tarPath = join(dirname(tree), 'tree.tar');
+  git(repoRoot, ['archive', '--format=tar', '-o', tarPath, ref]);
+  const unpack = run('tar', ['-x', '-f', basename(tarPath), '-C', basename(tree)], {
+    cwd: dirname(tree),
+  });
   if (unpack.status !== 0) stop('Could not unpack the files (is tar installed?).');
+  rmSync(tarPath, { force: true });
   summary.sourceFiles = walk(tree).length;
 
   // 2. What never goes in.
@@ -364,7 +372,8 @@ function scrubTree(tree, summary) {
         const before = out;
         out = scrubJsonText(out);
         if (out !== before) jsonScrubbed += 1;
-      } else if (countOwnerName(out) > 0) {
+      } else if (countOwnerName(out) > 0 && basename(file) !== 'LICENSE') {
+        // The licence names its owner on purpose; it is the one file allowed to.
         findings.push(`${where}: the owner's first name`);
       }
     }
@@ -520,7 +529,7 @@ function main(argv) {
     // Nothing from the private lists may have been committed.
     const staged = git(tree, ['ls-files']).stdout.split(/\r?\n/).filter(Boolean);
     summary.finalFiles = staged.length;
-    if (staged.some((f) => f.startsWith('.private/') || f.startsWith('legacy/python/'))) {
+    if (staged.some((f) => f.startsWith('.private/') || f.startsWith('legacy/'))) {
       stop('A private or old-app file is in the commit. No branch was made.');
     }
 

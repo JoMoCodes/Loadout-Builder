@@ -1,0 +1,156 @@
+{
+  "cdf": [],
+  "dcrEvents": [],
+  "dcrTotals": [
+    {
+      "dcr": 0,
+      "name": "Nathaniel Greta Whitaker",
+      "packagesDelivered": 235,
+      "packagesDispatched": 238,
+      "packagesReturnedToStation": 3,
+      "packagesReturnedToStationDaControllable": 0,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 3,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W34.csv",
+      "transporterId": "A76WVAI7JL6OFD",
+      "week": "2026-W34"
+    }
+  ],
+  "dsb": [],
+  "fromWeek": "2026-W31",
+  "name": "Nathaniel Greta Whitaker",
+  "pod": [
+    {
+      "acceptanceRate": 100,
+      "blurryPhoto": 0,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Nathaniel Greta Whitaker",
+      "noPackageDetected": 0,
+      "opportunities": 171,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 0,
+      "sourceFile": "US-XXXX-XXX1-Week34-2026NA-DA-POD-Details.pdf",
+      "success": 171,
+      "transporterId": "A76WVAI7JL6OFD",
+      "week": "2026-W34"
+    }
+  ],
+  "psb": [],
+  "ranks": {
+    "2026-W34": {
+      "rank": 13,
+      "total": 69
+    }
+  },
+  "scorecards": [
+    {
+      "id": 210,
+      "metrics": [
+        {
+          "id": 2100,
+          "metricName": "CDF DPMO",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 210,
+          "tier": "Platinum",
+          "weightApplied": 7.4
+        },
+        {
+          "id": 2101,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 210,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 2102,
+          "metricName": "DCR",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 210,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 2103,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 210,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 2097,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 210,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 2099,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 210,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 2104,
+          "metricName": "POD",
+          "metricValue": "100.0%",
+          "score": 100,
+          "scorecardId": 210,
+          "tier": "Platinum",
+          "weightApplied": 3.2
+        },
+        {
+          "id": 2096,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 210,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 2098,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 210,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 2095,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 210,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        }
+      ],
+      "overallScore": 100,
+      "overallStanding": "Platinum",
+      "packagesDelivered": 235,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W34.csv",
+      "transporterId": "A76WVAI7JL6OFD",
+      "week": "2026-W34"
+    }
+  ],
+  "toWeek": "2026-W40",
+  "transporterId": "A76WVAI7JL6OFD"
+}

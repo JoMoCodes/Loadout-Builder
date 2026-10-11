@@ -1,7 +1,7 @@
 {
   "name": "@loadout/desktop",
   "productName": "Loadout Builder",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Builds the daily load-out roster and van assignments for a delivery station.",
   "main": "dist/main/main.js",
   "private": true,
@@ -66,6 +66,10 @@
       {
         "from": "../../packages/fixtures/v1/loadout.db",
         "to": "fixtures/v1/loadout.db"
+      },
+      {
+        "from": "../../packages/fixtures/performance",
+        "to": "fixtures/performance"
       }
     ]
   },
@@ -73,12 +77,15 @@
     "better-sqlite3": "13.0.3",
     "electron-updater": "6.8.9",
     "exceljs": "4.4.0",
+    "nodemailer": "10.1.0",
     "papaparse": "5.7.0",
-    "pdf-lib": "1.17.1"
+    "pdf-lib": "1.17.1",
+    "pdfjs-dist": "6.4.299"
   },
   "devDependencies": {
     "@electron/rebuild": "4.2.1",
     "@loadout/core": "*",
+    "@loadout/performance": "*",
     "@loadout/storage": "*",
     "@playwright/test": "1.56.1",
     "@radix-ui/react-context-menu": "2.3.8",
@@ -87,6 +94,7 @@
     "@tailwindcss/vite": "4.3.3",
     "@tanstack/react-table": "8.21.3",
     "@tanstack/react-virtual": "3.14.13",
+    "@types/nodemailer": "8.0.2",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.2",
