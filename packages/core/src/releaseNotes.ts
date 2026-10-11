@@ -11,6 +11,36 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.1.0',
+    items: [
+      'The Weekly Performance App is now part of Loadout Builder. You only need one app for the roster and for the weekly scorecards.',
+      'There is a new Dashboard page. It shows how the drivers did this week, who needs a word, and whose ID runs out soon.',
+      'Click How is this worked out? next to a number on the Dashboard to see where it comes from.',
+      'There is a new Performance page with four tabs: Drivers, Reports, Directory and Imports.',
+      'Drivers lists every driver with their scores. Double-click a driver to open their report.',
+      'Tick drivers and click Generate for selected to save a PDF report for each one.',
+      'Click Email selected to email each driver their report. The app shows who gets what before it sends anything.',
+      'Emails go out from your Gmail address. Set it up once in Settings, under Weekly performance. Your Gmail app password is kept locked away on this computer.',
+      "Reports lets you change the report colours and preview a driver's report before you send it.",
+      "Directory shows every driver's email and phone numbers. Click a driver, then copy what you need.",
+      'Imports has a card for each of the ten weekly files. Choose the folder for each one once.',
+      'After that, click Sync now and the app brings in every new file. It also does this by itself each time it opens. You can turn that off.',
+      'You can also drop the weekly files, or a whole folder, on the Imports tab.',
+      'Used the old Weekly Performance App? The first time you open this version, it offers to bring its data over. Say Not now to do it later from Settings.',
+      'Demo mode now has made-up weekly scorecards too, so you can practise the weekly reports safely.',
+      'Home has a second checklist for the weekly routine. It ticks each step off by itself, like the first-day one.',
+      'The Dashboard and each Performance tab have a short tour the first time you open them.',
+      'How to use has a new Weekly performance part. It walks you through the week and says where to get each file.',
+      'After you make reports or save the check file, click Show in folder to see where they went.',
+      'While the app makes or emails reports, it counts up, like "Emailing 3 of 12", with a bar that fills up.',
+      'The sample report on the Reports tab has Fit width, 100% and zoom buttons.',
+      'Hid the weekly checklist? Click Help, then Show the weekly checklist again.',
+      'Explain this score now shows every week. Pick a week, or look at the chart of points lost each week.',
+      'Click a number in What changed since last week to see who moved tier or had new safety events. Click a name to jump to that driver.',
+      'Email everyone shown emails every driver in the list. It shows who gets what first, like Email selected.',
+    ],
+  },
+  {
     version: '2.0.0',
     items: [
       'This is the first version of the new Loadout Builder. It builds your daily roster, gives each driver a van, and prints the sheets you hand out.',

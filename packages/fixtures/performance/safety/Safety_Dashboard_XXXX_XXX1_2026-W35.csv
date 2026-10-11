@@ -1,0 +1,5 @@
+﻿Date,"Delivery Associate ",Transporter ID,Event ID,Date (Station Local Time),VIN,Program Impact,Metric Type,Metric Subtype,Source,Video Link,Review Details
+2026-08-23,Lachlan Nadine Gresham,A3BZ6NSPPU3UOM,0340304041,2026-08-23 16:11:05,1FTLM8X46RKT68237,"Scorecard, ORCAS",Seatbelt,Driver Not Wearing Seatbelt,Netradyne,https://example.com/video/000029,Made-up note for testing.
+2026-08-24,Dominic Elias Marlowe,AFR9AV1XMUQIX,0843998283,2026-08-24 18:35:33,7FCBKGH96PN847188,"Scorecard, ORCAS",Speeding,Above Posted Speed Limit,Netradyne on Fleet Edge,https://example.com/video/000030,Made-up note for testing.
+2026-08-27,Nolan Montrose,AIJ5WFU9WQ3CQ,0098542168,2026-08-27 10:05:25,7FCMZTJ30TN785087,"Scorecard, ORCAS",Sign Signal,Stop Sign Moderate,Netradyne on Fleet Edge,https://example.com/video/000031,Made-up note for testing.
+2026-08-28,Orson Ines Applewhite,A5YJ9TF0YNUP8N,0531203557,2026-08-28 13:43:01,7FCTZCT89TN912990,"Scorecard, ORCAS",Sign Signal,Stop Sign Moderate,Netradyne on Fleet Edge,https://example.com/video/000032,Made-up note for testing.

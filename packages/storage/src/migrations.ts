@@ -233,8 +233,222 @@ CREATE TABLE associate_tenure (
 );
 `;
 
+/**
+ * Step 2: the weekly performance data, from the old Weekly Performance app (its Database.cs).
+ *
+ * Its 13 tables, renamed with a `perf_` prefix and snake_case columns, otherwise the same:
+ * same columns in the same order, same keys, unique rules, indexes and ON DELETE CASCADE. The
+ * columns the old app added on open (the contact columns of Drivers, SourceFile of
+ * WeeklyScorecards) are simply part of the tables here.
+ */
+const SCHEMA_V2_PERFORMANCE = `
+CREATE TABLE perf_drivers (
+    transporter_id TEXT PRIMARY KEY,
+    name           TEXT NOT NULL,
+    status         TEXT,
+    position       TEXT,
+    qualifications TEXT,
+    id_expiration  TEXT,
+    personal_phone TEXT,
+    work_phone     TEXT,
+    email          TEXT
+);
+
+CREATE TABLE perf_weekly_scorecards (
+    id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+    transporter_id     TEXT NOT NULL,
+    week               TEXT NOT NULL,
+    overall_standing   TEXT,
+    overall_score      REAL,
+    packages_delivered INTEGER,
+    source_file        TEXT,
+    UNIQUE (transporter_id, week),
+    FOREIGN KEY (transporter_id) REFERENCES perf_drivers(transporter_id)
+);
+
+CREATE TABLE perf_metric_entries (
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    scorecard_id   INTEGER NOT NULL,
+    metric_name    TEXT NOT NULL,
+    metric_value   TEXT,
+    tier           TEXT,
+    score          REAL,
+    weight_applied REAL,
+    FOREIGN KEY (scorecard_id) REFERENCES perf_weekly_scorecards(id) ON DELETE CASCADE
+);
+
+CREATE INDEX idx_perf_scorecard_week ON perf_weekly_scorecards(week);
+CREATE INDEX idx_perf_scorecard_driver ON perf_weekly_scorecards(transporter_id);
+CREATE INDEX idx_perf_metric_scorecard ON perf_metric_entries(scorecard_id);
+
+CREATE TABLE perf_metric_thresholds (
+    metric_name           TEXT PRIMARY KEY,
+    indicator             TEXT,
+    platinum_threshold    REAL,
+    gold_threshold        REAL,
+    silver_threshold      REAL,
+    bronze_threshold      REAL,
+    overall_metric_weight REAL,
+    source_week           TEXT,
+    imported_at           TEXT
+);
+
+CREATE TABLE perf_pod_week_entries (
+    transporter_id              TEXT NOT NULL,
+    week                        TEXT NOT NULL,
+    name                        TEXT,
+    opportunities               INTEGER NOT NULL DEFAULT 0,
+    success                     INTEGER NOT NULL DEFAULT 0,
+    bypass                      INTEGER NOT NULL DEFAULT 0,
+    rejects                     INTEGER NOT NULL DEFAULT 0,
+    blurry_photo                INTEGER NOT NULL DEFAULT 0,
+    human_in_the_picture        INTEGER NOT NULL DEFAULT 0,
+    no_package_detected         INTEGER NOT NULL DEFAULT 0,
+    package_in_car              INTEGER NOT NULL DEFAULT 0,
+    package_in_hand             INTEGER NOT NULL DEFAULT 0,
+    package_not_clearly_visible INTEGER NOT NULL DEFAULT 0,
+    package_too_close           INTEGER NOT NULL DEFAULT 0,
+    photo_too_dark              INTEGER NOT NULL DEFAULT 0,
+    other                       INTEGER NOT NULL DEFAULT 0,
+    source_file                 TEXT,
+    PRIMARY KEY (transporter_id, week)
+);
+
+CREATE INDEX idx_perf_pod_week ON perf_pod_week_entries(week);
+CREATE INDEX idx_perf_pod_driver ON perf_pod_week_entries(transporter_id);
+
+CREATE TABLE perf_cdf_week_entries (
+    transporter_id              TEXT NOT NULL,
+    week                        TEXT NOT NULL,
+    name                        TEXT,
+    mishandled                  INTEGER NOT NULL DEFAULT 0,
+    unprofessional              INTEGER NOT NULL DEFAULT 0,
+    did_not_follow_instructions INTEGER NOT NULL DEFAULT 0,
+    wrong_address               INTEGER NOT NULL DEFAULT 0,
+    never_received              INTEGER NOT NULL DEFAULT 0,
+    wrong_item                  INTEGER NOT NULL DEFAULT 0,
+    source_file                 TEXT,
+    PRIMARY KEY (transporter_id, week)
+);
+
+CREATE INDEX idx_perf_cdf_week ON perf_cdf_week_entries(week);
+CREATE INDEX idx_perf_cdf_driver ON perf_cdf_week_entries(transporter_id);
+
+CREATE TABLE perf_dsb_week_entries (
+    transporter_id                    TEXT NOT NULL,
+    week                              TEXT NOT NULL,
+    name                              TEXT,
+    simultaneous_deliveries           INTEGER NOT NULL DEFAULT 0,
+    delivered_over_50m                INTEGER NOT NULL DEFAULT 0,
+    incorrect_scan_attended           INTEGER NOT NULL DEFAULT 0,
+    incorrect_scan_unattended         INTEGER NOT NULL DEFAULT 0,
+    no_pod_on_delivery                INTEGER NOT NULL DEFAULT 0,
+    scanned_not_delivered_not_returned INTEGER NOT NULL DEFAULT 0,
+    source_file                       TEXT,
+    PRIMARY KEY (transporter_id, week)
+);
+
+CREATE INDEX idx_perf_dsb_week ON perf_dsb_week_entries(week);
+CREATE INDEX idx_perf_dsb_driver ON perf_dsb_week_entries(transporter_id);
+
+CREATE TABLE perf_psb_week_entries (
+    transporter_id         TEXT NOT NULL,
+    week                   TEXT NOT NULL,
+    name                   TEXT,
+    early_arrivals         INTEGER NOT NULL DEFAULT 0,
+    late_arrivals          INTEGER NOT NULL DEFAULT 0,
+    geo_location           INTEGER NOT NULL DEFAULT 0,
+    not_attempted          INTEGER NOT NULL DEFAULT 0,
+    contact_compliance     INTEGER NOT NULL DEFAULT 0,
+    out_of_return_label    INTEGER NOT NULL DEFAULT 0,
+    picked_up_not_returned INTEGER NOT NULL DEFAULT 0,
+    source_file            TEXT,
+    PRIMARY KEY (transporter_id, week)
+);
+
+CREATE INDEX idx_perf_psb_week ON perf_psb_week_entries(week);
+CREATE INDEX idx_perf_psb_driver ON perf_psb_week_entries(transporter_id);
+
+-- Which weeks had a PSB file read at all, even one with no failures in it, so a report can
+-- tell "no file for this week" from "file read, no failures for this driver".
+CREATE TABLE perf_psb_imported_weeks (
+    week        TEXT PRIMARY KEY,
+    source_file TEXT,
+    imported_at TEXT
+);
+
+-- One row per returned package (not added up), so a report can list each one.
+CREATE TABLE perf_dcr_events (
+    id                     INTEGER PRIMARY KEY AUTOINCREMENT,
+    transporter_id         TEXT NOT NULL,
+    week                   TEXT NOT NULL,
+    name                   TEXT,
+    tracking_id            TEXT,
+    impact_dcr             TEXT,
+    rts_code               TEXT,
+    additional_information TEXT,
+    exemption_reason       TEXT,
+    planned_delivery_date  TEXT,
+    source_file            TEXT
+);
+
+CREATE INDEX idx_perf_dcr_week ON perf_dcr_events(week);
+CREATE INDEX idx_perf_dcr_driver_week ON perf_dcr_events(transporter_id, week);
+
+CREATE TABLE perf_dcr_week_totals (
+    transporter_id                               TEXT NOT NULL,
+    week                                         TEXT NOT NULL,
+    name                                         TEXT,
+    dcr                                          REAL,
+    packages_dispatched                          INTEGER,
+    packages_delivered                           INTEGER,
+    packages_returned_to_station                 INTEGER,
+    packages_returned_to_station_da_controllable INTEGER,
+    rescued_packages                             INTEGER,
+    rts_all_exempted                             INTEGER,
+    source_file                                  TEXT,
+    PRIMARY KEY (transporter_id, week)
+);
+
+CREATE INDEX idx_perf_dcr_totals_week ON perf_dcr_week_totals(week);
+CREATE INDEX idx_perf_dcr_totals_driver ON perf_dcr_week_totals(transporter_id);
+
+-- One row per safety event, including those whose program impact is "None" (the counts leave
+-- those out; the details list keeps them).
+CREATE TABLE perf_safety_events (
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    transporter_id TEXT NOT NULL,
+    week           TEXT NOT NULL,
+    name           TEXT,
+    event_date     TEXT,
+    program_impact TEXT,
+    metric_type    TEXT,
+    metric_subtype TEXT,
+    source         TEXT,
+    video_link     TEXT,
+    review_details TEXT,
+    source_file    TEXT
+);
+
+CREATE INDEX idx_perf_safety_week ON perf_safety_events(week);
+CREATE INDEX idx_perf_safety_driver_week ON perf_safety_events(transporter_id, week);
+
+-- Files already brought in by auto-import, so it only reads files that are new or changed
+-- (same size and last-change time = already done). The time is kept the old app's way:
+-- 100-nanosecond steps since 1 January of year 1, UTC.
+CREATE TABLE perf_imported_files (
+    source               TEXT NOT NULL,
+    file_name            TEXT NOT NULL,
+    file_size            INTEGER NOT NULL,
+    last_write_utc_ticks INTEGER NOT NULL,
+    imported_at_utc      TEXT NOT NULL,
+    PRIMARY KEY (source, file_name)
+);
+`;
+
 export const MIGRATIONS: readonly Migration[] = [
   { version: 1, name: 'v1 schema from the old version', sql: SCHEMA_V1 },
+  { version: 2, name: 'weekly performance tables', sql: SCHEMA_V2_PERFORMANCE },
 ];
 
 /** Every table a migration creates for saved data (not the bookkeeping table). */
@@ -266,6 +480,28 @@ export const DATA_TABLES = [
 ] as const;
 
 export type DataTable = (typeof DATA_TABLES)[number];
+
+/**
+ * The weekly performance tables (step 2). Kept apart from DATA_TABLES on purpose: those decide
+ * whether the load-out side is empty and whether the old version's data can be brought over.
+ */
+export const PERF_TABLES = [
+  'perf_drivers',
+  'perf_weekly_scorecards',
+  'perf_metric_entries',
+  'perf_metric_thresholds',
+  'perf_pod_week_entries',
+  'perf_cdf_week_entries',
+  'perf_dsb_week_entries',
+  'perf_psb_week_entries',
+  'perf_psb_imported_weeks',
+  'perf_dcr_events',
+  'perf_dcr_week_totals',
+  'perf_safety_events',
+  'perf_imported_files',
+] as const;
+
+export type PerfTable = (typeof PERF_TABLES)[number];
 
 /**
  * Bring a database up to date. Each step not yet recorded in `schema_version` is applied, in

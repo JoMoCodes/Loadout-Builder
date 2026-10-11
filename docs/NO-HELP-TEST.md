@@ -1,8 +1,15 @@
 # The "no help" test
 
-One page. Print it and take it to the test. It checks one thing: **can someone who has never
-seen Loadout Builder bring in a load-out sheet and print a roster, using only what the app
-shows them?**
+Print it and take it to the test. There are two tests. Each one checks one thing:
+
+- **The daily test:** can someone who has never seen Loadout Builder bring in a load-out sheet
+  and print a roster, using only what the app shows them?
+- **The weekly test** (further down): can a lead who has never seen the app bring in a week of
+  scorecards and email the driver reports, using only what the app shows them?
+
+Run them on different days, with different people.
+
+# The daily test
 
 ## Who does it
 
@@ -69,3 +76,87 @@ The test **fails** if you had to help, or if they gave up.
 |      |      |                                                           |
 
 Time to printed roster: ________ minutes. Passed with no help: **Yes / No**
+
+---
+
+# The weekly test
+
+It checks one thing: **can a lead who has never seen Loadout Builder bring in a week of
+scorecards and email the driver reports, using only what the app shows them?**
+
+## Who does it
+
+- **The tester:** a lead who has never used Loadout Builder or the old Weekly Performance App.
+  Not Jonathan.
+- **The watcher:** you. You watch and write. You do not help.
+
+## Before the test (about 15 minutes, without the tester)
+
+1. Install the app on the test computer from the latest release page. Open it once. If it offers
+   to bring over old data, click **Not now**. Close it. Do not click around.
+2. Make a folder on the computer's desktop called **Weekly files**. Copy into it the made-up
+   weekly exports from the `packages/fixtures/performance` folder of the app's code (Jonathan has
+   them). Keep the ten folders as they are (`roster`, `thresholds`, `scorecards`, `pod`, `cdf`,
+   `dsb`, `psb`, `dcr`, `dcr-totals`, `safety`). They have no real drivers in them, and every
+   email address in them is made up (at example.com), so no real person gets an email.
+3. Make a practice Gmail address for the test, with 2-Step Verification turned on. Write its
+   address and password on a card for the tester. Do **not** make the app password: the tester
+   does that.
+4. Do **not** put any real driver list, scorecard or export on that computer, and do not turn on
+   demo mode.
+
+## What to tell the tester
+
+Read this out, word for word:
+
+> "This app makes a weekly performance report for each driver and emails it to them. The files
+> for this week are in the Weekly files folder on the desktop. They are made up. Please bring
+> them in, look at how the drivers did, and email the reports to two drivers. Send them from
+> the Gmail address on this card. I can't help you, but please say out loud what you are
+> thinking. Stop whenever you want."
+
+Then stay quiet. If they ask you something, say: "What would you try?"
+
+## What to write down
+
+Use the table at the bottom, one line for each thing that happens.
+
+- **Where they paused** for more than a few seconds, and on which page or tab.
+- **What they asked** out loud, word for word.
+- **What they clicked wrong**: a button, page or tab that was not the next step.
+- **What helped them**: the weekly checklist on Home, a tour, a ? note, How to use, or a message.
+- **Whether they found** the Imports tab, Sync now, the Dashboard, and the email setup in
+  Settings on their own.
+- **The time** it took from opening the app to the "emails sent" message.
+
+## The pass rule
+
+The test **passes** when the tester brings in the week, sets up the email (including the Gmail
+app password) and the app says the two reports were sent, **with no one helping them**. Slow is
+fine. Wrong clicks are fine, if they find their own way back. A "could not be delivered" email
+from Gmail afterwards is fine too: the made-up addresses do not exist.
+
+The test **fails** if you had to help, or if they gave up.
+
+## After the test
+
+- Thank them. Ask: "What was the hardest part?" and "What would you change?" Write the answers
+  down word for word.
+- Delete the app password from the practice Gmail account, and delete the practice account.
+- Give your notes to Jonathan. Do not put names, email addresses, photos of the screen or the
+  files in the notes. The notes may end up on the app's public help forum.
+- If it failed, the place they got stuck is what gets fixed next. Then test again with someone
+  new.
+
+## Notes table
+
+| Time | Page and tab | What happened (pause, question, wrong click, what helped) |
+| ---- | ------------ | --------------------------------------------------------- |
+|      |              |                                                           |
+|      |              |                                                           |
+|      |              |                                                           |
+|      |              |                                                           |
+|      |              |                                                           |
+|      |              |                                                           |
+
+Time to "emails sent": ________ minutes. Passed with no help: **Yes / No**

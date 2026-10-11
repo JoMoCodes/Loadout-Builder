@@ -12,6 +12,7 @@
 
 import type { Page } from '@playwright/test';
 import { CHANNELS } from '../../src/shared/channels';
+import { DEFAULT_PERFORMANCE } from '../../src/shared/performanceSettings';
 import type { AppSettings } from '../../src/shared/settings';
 import type { AppSnapshot } from '../../src/shared/snapshot';
 
@@ -36,20 +37,24 @@ declare global {
 export async function installFakeBridge(page: Page, options: FakeBridgeOptions = {}) {
   const channels = Object.values(CHANNELS).map((def) => ({ name: def.name, kind: def.kind }));
   await page.addInitScript(
-    ({ channels: declared, options: given }) => {
+    ({ channels: declared, options: given, performance }) => {
       const settings: Record<string, unknown> = {
         theme: 'dark',
         fontScale: 1,
         demoMode: false,
         // The same as the app's version, so "What's new" stays out of the way.
-        lastSeenVersion: '2.0.0',
+        lastSeenVersion: '2.1.0',
         oldDataAsked: false,
+        perfOldDataAsked: false,
         checklistHidden: false,
+        weeklyChecklistHidden: false,
+        dashboardSeenOnce: false,
         printedOnce: false,
         // Off here, so a page tour does not cover the page a test is clicking. The tour tests
         // turn it on.
         autoTours: false,
         toursSeen: [],
+        performance,
         ...given.settings,
       };
       const snapshot: Record<string, unknown> = {
@@ -89,6 +94,18 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
         },
         print: { spec: {}, presets: [] },
         matchSummary: new Map(),
+        performance: {
+          hasData: false,
+          weeks: [],
+          drivers: 0,
+          withEmail: 0,
+          thresholds: false,
+          foldersChosen: 0,
+          lastSync: null,
+          emailReady: false,
+          reportsMade: false,
+          reportsEmailed: false,
+        },
         counts: {
           rosterRows: 0,
           matched: 0,
@@ -138,7 +155,7 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
         if (hook) return hook(input);
         switch (name) {
           case 'app:get-version':
-            return { ok: true, value: '2.0.0' };
+            return { ok: true, value: '2.1.0' };
           case 'settings:get':
             return { ok: true, value: { ...settings } };
           case 'settings:set':
@@ -187,7 +204,7 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
       }
       (window as unknown as { loadout: unknown }).loadout = { calls, signals, events };
     },
-    { channels, options },
+    { channels, options, performance: DEFAULT_PERFORMANCE },
   );
 }
 

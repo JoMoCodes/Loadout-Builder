@@ -1,4 +1,5 @@
-// The Help button at the top of every page: the page's tour, How to use, and the help forum.
+// The Help button at the top of every page: the page's tour, How to use, the two checklists
+// (when put away), and the help forum.
 
 import {
   BookOpen,
@@ -24,6 +25,8 @@ interface HelpMenuProps {
   onHowToUse(): void;
   checklistShown: boolean;
   onShowChecklist(): void;
+  weeklyShown: boolean;
+  onShowWeekly(): void;
   onAsk(): void;
 }
 
@@ -33,6 +36,8 @@ export function HelpMenu({
   onHowToUse,
   checklistShown,
   onShowChecklist,
+  weeklyShown,
+  onShowWeekly,
   onAsk,
 }: HelpMenuProps) {
   const tour = tourName ? TOURS[tourName] : undefined;
@@ -62,6 +67,12 @@ export function HelpMenu({
           <DropdownMenuItem onSelect={onShowChecklist} data-testid="help-show-checklist">
             <ListChecks aria-hidden="true" />
             Show the checklist again
+          </DropdownMenuItem>
+        )}
+        {weeklyShown ? null : (
+          <DropdownMenuItem onSelect={onShowWeekly} data-testid="help-show-weekly-checklist">
+            <ListChecks aria-hidden="true" />
+            Show the weekly checklist again
           </DropdownMenuItem>
         )}
         <DropdownMenuSeparator />

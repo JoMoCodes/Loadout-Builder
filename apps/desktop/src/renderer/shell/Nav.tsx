@@ -1,8 +1,10 @@
 import {
   CircleHelp,
+  ChartLine,
   ClipboardList,
   History,
   House,
+  LayoutDashboard,
   Route,
   Settings,
   Sparkles,
@@ -15,10 +17,12 @@ import type { PageId } from '../pages/types';
 
 const ICONS: Record<PageId, LucideIcon> = {
   home: House,
+  dashboard: LayoutDashboard,
   'load-out': ClipboardList,
   'route-data': Route,
   'vehicle-data': Truck,
   associates: Users,
+  performance: ChartLine,
   'previous-roster': History,
   'how-to-use': CircleHelp,
   'features-log': Sparkles,

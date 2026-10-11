@@ -1,0 +1,11 @@
+{
+  "columns": [
+    "Source",
+    "FileName",
+    "FileSize",
+    "LastWriteUtcTicks",
+    "ImportedAtUtc"
+  ],
+  "rows": [],
+  "table": "ImportedFiles"
+}

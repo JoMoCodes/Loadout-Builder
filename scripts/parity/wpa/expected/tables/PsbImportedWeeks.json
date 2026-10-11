@@ -1,0 +1,60 @@
+{
+  "columns": [
+    "Week",
+    "SourceFile",
+    "ImportedAt"
+  ],
+  "rows": [
+    {
+      "ImportedAt": null,
+      "SourceFile": "DSP_Pickup_Failures_XXXX_XXX1_2026-W13.csv",
+      "Week": "2026-W13"
+    },
+    {
+      "ImportedAt": null,
+      "SourceFile": "DSP_Pickup_Failures_XXXX_XXX1_2026-W15.csv",
+      "Week": "2026-W15"
+    },
+    {
+      "ImportedAt": null,
+      "SourceFile": "DSP_Pickup_Failures_XXXX_XXX1_2026-W16.csv",
+      "Week": "2026-W16"
+    },
+    {
+      "ImportedAt": null,
+      "SourceFile": "DSP_Pickup_Failures_XXXX_XXX1_2026-W17.csv",
+      "Week": "2026-W17"
+    },
+    {
+      "ImportedAt": null,
+      "SourceFile": "DSP_Pickup_Failures_XXXX_XXX1_2026-W18.csv",
+      "Week": "2026-W18"
+    },
+    {
+      "ImportedAt": null,
+      "SourceFile": "DSP_Pickup_Failures_XXXX_XXX1_2026-W20.csv",
+      "Week": "2026-W20"
+    },
+    {
+      "ImportedAt": null,
+      "SourceFile": "DSP_Pickup_Failures_XXXX_XXX1_2026-W21.csv",
+      "Week": "2026-W21"
+    },
+    {
+      "ImportedAt": null,
+      "SourceFile": "DSP_Pickup_Failures_XXXX_XXX1_2026-W24.csv",
+      "Week": "2026-W24"
+    },
+    {
+      "ImportedAt": null,
+      "SourceFile": "DSP_Pickup_Failures_XXXX_XXX1_2026-W28.csv",
+      "Week": "2026-W28"
+    },
+    {
+      "ImportedAt": null,
+      "SourceFile": "DSP_Pickup_Failures_XXXX_XXX1_2026-W29.csv",
+      "Week": "2026-W29"
+    }
+  ],
+  "table": "PsbImportedWeeks"
+}

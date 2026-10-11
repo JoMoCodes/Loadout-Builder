@@ -1,0 +1,2106 @@
+{
+  "A02V4L9HIELIDL": {
+    "POD: No Package Detected": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W39"
+    ],
+    "POD: Other": [
+      "2026-W33",
+      "2026-W35"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W34"
+    ]
+  },
+  "A05QUB9XOW4NT1": {
+    "CDF: DA Mishandled Package": [
+      "2026-W34"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W40"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W33"
+    ],
+    "DSB: Simultaneous Deliveries": [
+      "2026-W37"
+    ],
+    "POD: Other": [
+      "2026-W34"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W31"
+    ]
+  },
+  "A0EPR3KZOJDR3R": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W33",
+      "2026-W36"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W37"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W33"
+    ],
+    "POD: Package In Car": [
+      "2026-W37"
+    ]
+  },
+  "A0IHV8Z401XHI9": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W32",
+      "2026-W34",
+      "2026-W36",
+      "2026-W37"
+    ],
+    "CDF: DA was Unprofessional": [
+      "2026-W35"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W34",
+      "2026-W35",
+      "2026-W36"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W37"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W35",
+      "2026-W36",
+      "2026-W38"
+    ],
+    "POD: No Package Detected": [
+      "2026-W32",
+      "2026-W35",
+      "2026-W37",
+      "2026-W38"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W32",
+      "2026-W38"
+    ]
+  },
+  "A0J0XO8BDXCWU": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W36"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W37",
+      "2026-W38"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W34"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W38",
+      "2026-W39"
+    ]
+  },
+  "A0KJSTACMX5D6A": {
+    "CDF: DA Mishandled Package": [
+      "2026-W36"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W38"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W34",
+      "2026-W40"
+    ],
+    "POD: No Package Detected": [
+      "2026-W39"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W40"
+    ],
+    "POD: Package Too Close": [
+      "2026-W32"
+    ]
+  },
+  "A0YNMDE9L3T77O": {
+    "CDF: Delivered to Wrong Address": [
+      "2026-W40"
+    ]
+  },
+  "A1E3ZUFIX1EXA5": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W39",
+      "2026-W40"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W37"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W36"
+    ],
+    "POD: No Package Detected": [
+      "2026-W37",
+      "2026-W38",
+      "2026-W39"
+    ],
+    "POD: Package In Car": [
+      "2026-W39"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W38"
+    ],
+    "POD: Package Too Close": [
+      "2026-W36",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: Photo Too Dark": [
+      "2026-W37"
+    ]
+  },
+  "A1OJN4GT8G7UDZ": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W32",
+      "2026-W36",
+      "2026-W38"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W32"
+    ],
+    "POD: No Package Detected": [
+      "2026-W32",
+      "2026-W33"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W32",
+      "2026-W35",
+      "2026-W39"
+    ]
+  },
+  "A1VWFCFWNQJ1VP": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W37"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: No Package Detected": [
+      "2026-W34",
+      "2026-W35"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W39"
+    ],
+    "POD: Package Too Close": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: Photo Too Dark": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W39",
+      "2026-W40"
+    ]
+  },
+  "A1ZP7FE2I8J7M7": {
+    "CDF: DA Mishandled Package": [
+      "2026-W36"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W37"
+    ],
+    "CDF: DA was Unprofessional": [
+      "2026-W34"
+    ],
+    "DSB: Simultaneous Deliveries": [
+      "2026-W31"
+    ],
+    "POD: No Package Detected": [
+      "2026-W34",
+      "2026-W39"
+    ],
+    "POD: Package Too Close": [
+      "2026-W33",
+      "2026-W36"
+    ]
+  },
+  "A2868K9OBI67DE": {
+    "CDF: DA Mishandled Package": [
+      "2026-W37"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W37"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W36"
+    ],
+    "POD: No Package Detected": [
+      "2026-W33"
+    ],
+    "POD: Package In Car": [
+      "2026-W32"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W35"
+    ],
+    "POD: Package Too Close": [
+      "2026-W32"
+    ]
+  },
+  "A2FR62CAJH6D17": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W34",
+      "2026-W35",
+      "2026-W37",
+      "2026-W39"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W35",
+      "2026-W38",
+      "2026-W40"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W35"
+    ],
+    "POD: No Package Detected": [
+      "2026-W37",
+      "2026-W38",
+      "2026-W39"
+    ],
+    "POD: Package Too Close": [
+      "2026-W39"
+    ]
+  },
+  "A2FYKXSK0KPR1O": {
+    "CDF: DA Mishandled Package": [
+      "2026-W36",
+      "2026-W39"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W33",
+      "2026-W34",
+      "2026-W37",
+      "2026-W39"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W31",
+      "2026-W39"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W33"
+    ],
+    "DSB: Incorrect Scan Usage - Unattended Delivery": [
+      "2026-W33"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W36"
+    ],
+    "POD: No Package Detected": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W38",
+      "2026-W39"
+    ],
+    "POD: Other": [
+      "2026-W35",
+      "2026-W36"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W36"
+    ]
+  },
+  "A2HY5U1W1NRFLQ": {
+    "CDF: DA Mishandled Package": [
+      "2026-W32"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W34",
+      "2026-W37"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W34",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W32",
+      "2026-W40"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W40"
+    ]
+  },
+  "A2O0RLVP9GAMBN": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W37"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W35",
+      "2026-W38"
+    ],
+    "DSB: Simultaneous Deliveries": [
+      "2026-W33"
+    ],
+    "POD: No Package Detected": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W37",
+      "2026-W38"
+    ],
+    "POD: Package In Car": [
+      "2026-W31"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W35"
+    ]
+  },
+  "A2R7RK02P0EFL6": {
+    "POD: No Package Detected": [
+      "2026-W35"
+    ]
+  },
+  "A2XX9DS9WCNFP": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W32",
+      "2026-W36"
+    ],
+    "CDF: DA was Unprofessional": [
+      "2026-W36"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W36",
+      "2026-W37"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W38"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W38"
+    ],
+    "DSB: Simultaneous Deliveries": [
+      "2026-W39"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W31",
+      "2026-W36"
+    ],
+    "POD: No Package Detected": [
+      "2026-W31",
+      "2026-W36",
+      "2026-W37",
+      "2026-W40"
+    ],
+    "POD: Package In Car": [
+      "2026-W36"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W34"
+    ],
+    "POD: Package Too Close": [
+      "2026-W31",
+      "2026-W34",
+      "2026-W37"
+    ]
+  },
+  "A35ORHCIWXSWX6": {
+    "CDF: Delivered to Wrong Address": [
+      "2026-W34",
+      "2026-W38"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W35"
+    ],
+    "POD: Other": [
+      "2026-W36"
+    ]
+  },
+  "A3BZ6NSPPU3UOM": {
+    "CDF: DA Mishandled Package": [
+      "2026-W33",
+      "2026-W36"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W31",
+      "2026-W35"
+    ],
+    "CDF: DA was Unprofessional": [
+      "2026-W36"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W33",
+      "2026-W37"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W34"
+    ],
+    "POD: Other": [
+      "2026-W35",
+      "2026-W37"
+    ],
+    "POD: Package Too Close": [
+      "2026-W32",
+      "2026-W33",
+      "2026-W39"
+    ],
+    "POD: Photo Too Dark": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ]
+  },
+  "A3FGR51D3Y7VKF": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W32"
+    ]
+  },
+  "A3KL6D5G578RU5": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W33"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W34"
+    ],
+    "POD: No Package Detected": [
+      "2026-W33",
+      "2026-W34"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W34"
+    ]
+  },
+  "A3VO429G9YSXRJ": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W39"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W40"
+    ],
+    "POD: No Package Detected": [
+      "2026-W31"
+    ]
+  },
+  "A3YE6514J169GR": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W34"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32",
+      "2026-W34"
+    ],
+    "POD: No Package Detected": [
+      "2026-W38"
+    ],
+    "POD: Package Too Close": [
+      "2026-W40"
+    ]
+  },
+  "A4045ZXIVGHQ3M": {
+    "CDF: DA Mishandled Package": [
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W37"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W31",
+      "2026-W37",
+      "2026-W39"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W39"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W34",
+      "2026-W38",
+      "2026-W39"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W38",
+      "2026-W39"
+    ],
+    "DSB: Simultaneous Deliveries": [
+      "2026-W34"
+    ],
+    "POD: No Package Detected": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W40"
+    ],
+    "POD: Package In Car": [
+      "2026-W40"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W31",
+      "2026-W34",
+      "2026-W35",
+      "2026-W37",
+      "2026-W38",
+      "2026-W40"
+    ]
+  },
+  "A43QODLLAMSDL4": {
+    "CDF: DA Mishandled Package": [
+      "2026-W32",
+      "2026-W35",
+      "2026-W37",
+      "2026-W40"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W32",
+      "2026-W35",
+      "2026-W36",
+      "2026-W38",
+      "2026-W39"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W37",
+      "2026-W40"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W32"
+    ],
+    "DSB: Incorrect Scan Usage - Unattended Delivery": [
+      "2026-W37"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W36",
+      "2026-W37"
+    ],
+    "POD: No Package Detected": [
+      "2026-W38"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W37",
+      "2026-W38"
+    ],
+    "POD: Package Too Close": [
+      "2026-W32",
+      "2026-W37",
+      "2026-W39"
+    ]
+  },
+  "A45IT3RVXCBYU5": {
+    "CDF: Delivered to Wrong Address": [
+      "2026-W38",
+      "2026-W39"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W36"
+    ],
+    "POD: Package In Car": [
+      "2026-W34"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W32",
+      "2026-W37"
+    ]
+  },
+  "A4BAES7NSZGO8A": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W40"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W39"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W38"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W39"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W38"
+    ],
+    "POD: No Package Detected": [
+      "2026-W37"
+    ]
+  },
+  "A4GYZ28TBZ0M6E": {
+    "CDF: DA Mishandled Package": [
+      "2026-W31"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W31"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32",
+      "2026-W33"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W32"
+    ],
+    "POD: Package Too Close": [
+      "2026-W31"
+    ]
+  },
+  "A4K2OMSWNQOC3X": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W33"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W35"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W34",
+      "2026-W35"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W31"
+    ]
+  },
+  "A4LCDNKS4CWPF9": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W35"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W35"
+    ]
+  },
+  "A4OOIRHER4999G": {
+    "CDF: DA Mishandled Package": [
+      "2026-W31",
+      "2026-W36"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W38"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32",
+      "2026-W34",
+      "2026-W36"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W33",
+      "2026-W40"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W35"
+    ],
+    "POD: No Package Detected": [
+      "2026-W32",
+      "2026-W33",
+      "2026-W38"
+    ],
+    "POD: Package In Car": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W39"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W34",
+      "2026-W36"
+    ],
+    "POD: Package Too Close": [
+      "2026-W39"
+    ]
+  },
+  "A4PPR2TC30B3NA": {
+    "CDF: DA Mishandled Package": [
+      "2026-W34"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W34"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W31"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W31"
+    ],
+    "POD: No Package Detected": [
+      "2026-W32"
+    ],
+    "POD: Package In Car": [
+      "2026-W32"
+    ],
+    "POD: Package Too Close": [
+      "2026-W33",
+      "2026-W35"
+    ]
+  },
+  "A4VV6P366J3B25": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W35",
+      "2026-W39"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32",
+      "2026-W34",
+      "2026-W37",
+      "2026-W38"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W31"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W34"
+    ],
+    "DSB: Scanned - Not Delivered - Not Returned": [
+      "2026-W38"
+    ],
+    "DSB: Simultaneous Deliveries": [
+      "2026-W34"
+    ],
+    "POD: No Package Detected": [
+      "2026-W34",
+      "2026-W39"
+    ],
+    "POD: Package In Car": [
+      "2026-W36"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W33"
+    ],
+    "POD: Package Too Close": [
+      "2026-W35",
+      "2026-W37",
+      "2026-W38"
+    ]
+  },
+  "A53KRYF5P432PI": {
+    "POD: No Package Detected": [
+      "2026-W39"
+    ],
+    "POD: Other": [
+      "2026-W35"
+    ],
+    "POD: Package Too Close": [
+      "2026-W32"
+    ]
+  },
+  "A5CEN6SUZUBQIX": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W35"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W34",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W38"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W35",
+      "2026-W37"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W37"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W31",
+      "2026-W35"
+    ],
+    "POD: No Package Detected": [
+      "2026-W34",
+      "2026-W35",
+      "2026-W39"
+    ],
+    "POD: Package In Car": [
+      "2026-W32",
+      "2026-W37"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W32"
+    ],
+    "POD: Package Too Close": [
+      "2026-W37"
+    ]
+  },
+  "A5EAH4MAY2518C": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W32",
+      "2026-W33"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W33"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W34"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W33"
+    ],
+    "POD: No Package Detected": [
+      "2026-W33"
+    ],
+    "POD: Package Too Close": [
+      "2026-W32"
+    ]
+  },
+  "A5G76PFZI2Z0SN": {
+    "CDF: DA Mishandled Package": [
+      "2026-W36"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W31",
+      "2026-W36"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W35",
+      "2026-W36"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W32",
+      "2026-W36"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W32"
+    ],
+    "DSB: Simultaneous Deliveries": [
+      "2026-W37"
+    ],
+    "POD: No Package Detected": [
+      "2026-W32"
+    ],
+    "POD: Other": [
+      "2026-W35",
+      "2026-W36",
+      "2026-W37"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W33"
+    ],
+    "POD: Package Too Close": [
+      "2026-W32",
+      "2026-W33"
+    ],
+    "POD: Photo Too Dark": [
+      "2026-W34"
+    ]
+  },
+  "A5QUGQSG9YPHDA": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W33",
+      "2026-W34",
+      "2026-W39"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W31"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W40"
+    ],
+    "DSB: Simultaneous Deliveries": [
+      "2026-W40"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W33",
+      "2026-W36",
+      "2026-W37"
+    ],
+    "POD: No Package Detected": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W40"
+    ],
+    "POD: Package In Car": [
+      "2026-W33",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W39"
+    ]
+  },
+  "A5Y27B4RIW02AU": {
+    "CDF: Delivered to Wrong Address": [
+      "2026-W36",
+      "2026-W38"
+    ],
+    "POD: No Package Detected": [
+      "2026-W35",
+      "2026-W36",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: Package In Car": [
+      "2026-W35",
+      "2026-W36",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W35",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: Package Too Close": [
+      "2026-W36"
+    ]
+  },
+  "A5YJ9TF0YNUP8N": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W36"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W33"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W33"
+    ],
+    "POD: Other": [
+      "2026-W35",
+      "2026-W37"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W31",
+      "2026-W37"
+    ]
+  },
+  "A61CK7LGWH2XBP": {
+    "CDF: DA Mishandled Package": [
+      "2026-W38"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W36",
+      "2026-W37",
+      "2026-W40"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W31",
+      "2026-W34",
+      "2026-W38"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W31",
+      "2026-W34"
+    ],
+    "DSB: Simultaneous Deliveries": [
+      "2026-W39"
+    ],
+    "POD: No Package Detected": [
+      "2026-W31",
+      "2026-W35",
+      "2026-W38",
+      "2026-W40"
+    ],
+    "POD: Package In Car": [
+      "2026-W31"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W38"
+    ]
+  },
+  "A666USAV8IY3UQ": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W35"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32",
+      "2026-W35",
+      "2026-W36",
+      "2026-W39"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W38"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W35"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: No Package Detected": [
+      "2026-W36",
+      "2026-W37",
+      "2026-W39"
+    ],
+    "POD: Package In Car": [
+      "2026-W38"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W34",
+      "2026-W38"
+    ],
+    "POD: Package Too Close": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: Photo Too Dark": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ]
+  },
+  "A6G2H6H7CL30A4": {
+    "CDF: Delivered to Wrong Address": [
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W35"
+    ],
+    "DSB: Simultaneous Deliveries": [
+      "2026-W36"
+    ],
+    "POD: No Package Detected": [
+      "2026-W39"
+    ]
+  },
+  "A6NMJ80MQJSWQP": {
+    "CDF: DA Mishandled Package": [
+      "2026-W35"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W33"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W36"
+    ],
+    "POD: No Package Detected": [
+      "2026-W35"
+    ]
+  },
+  "A6XJ3V2PRYY75N": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W36"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W34"
+    ]
+  },
+  "A7BE7C3Y1TNPJS": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W31"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W31",
+      "2026-W32"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W32"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W31",
+      "2026-W32"
+    ],
+    "POD: Package Too Close": [
+      "2026-W31"
+    ]
+  },
+  "A7CUH5Y0VWYL2V": {
+    "CDF: DA Mishandled Package": [
+      "2026-W36",
+      "2026-W37"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W31",
+      "2026-W34",
+      "2026-W36",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W35",
+      "2026-W36",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W37",
+      "2026-W40"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W34"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W32",
+      "2026-W33",
+      "2026-W34"
+    ],
+    "POD: No Package Detected": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: Other": [
+      "2026-W35",
+      "2026-W37"
+    ],
+    "POD: Package In Car": [
+      "2026-W32",
+      "2026-W34"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W40"
+    ],
+    "POD: Package Too Close": [
+      "2026-W31"
+    ]
+  },
+  "A7DH1J2PJE0OED": {
+    "CDF: Delivered to Wrong Address": [
+      "2026-W35",
+      "2026-W36",
+      "2026-W37"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W38"
+    ],
+    "POD: No Package Detected": [
+      "2026-W40"
+    ],
+    "POD: Package In Car": [
+      "2026-W40"
+    ]
+  },
+  "A7H54T4FG2O3NX": {
+    "CDF: DA Mishandled Package": [
+      "2026-W34"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W31",
+      "2026-W34",
+      "2026-W39"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W32",
+      "2026-W37",
+      "2026-W39"
+    ],
+    "POD: No Package Detected": [
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W39"
+    ],
+    "POD: Package Too Close": [
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: Photo Too Dark": [
+      "2026-W37"
+    ]
+  },
+  "A7MIENEP388QBI": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W32",
+      "2026-W33",
+      "2026-W35",
+      "2026-W38",
+      "2026-W40"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W40"
+    ],
+    "DSB: Incorrect Scan Usage - Unattended Delivery": [
+      "2026-W33"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W34",
+      "2026-W35",
+      "2026-W37"
+    ]
+  },
+  "A83E4Z4L4ART5U": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W31",
+      "2026-W35"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W33",
+      "2026-W36"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W36"
+    ],
+    "POD: No Package Detected": [
+      "2026-W31",
+      "2026-W32"
+    ],
+    "POD: Other": [
+      "2026-W35",
+      "2026-W36"
+    ]
+  },
+  "A8H5WF9SI4OV8X": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W34"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W36"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W32"
+    ],
+    "POD: No Package Detected": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33"
+    ],
+    "POD: Package In Car": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W32"
+    ]
+  },
+  "A8I0NX204L7M3S": {
+    "POD: No Package Detected": [
+      "2026-W40"
+    ]
+  },
+  "A8M3J46P8HG6FK": {
+    "CDF: DA Mishandled Package": [
+      "2026-W36"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W36",
+      "2026-W37",
+      "2026-W39"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W36",
+      "2026-W37",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "DSB: Simultaneous Deliveries": [
+      "2026-W36",
+      "2026-W38"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W40"
+    ],
+    "POD: No Package Detected": [
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: Package In Car": [
+      "2026-W39"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W37",
+      "2026-W38",
+      "2026-W39"
+    ]
+  },
+  "A8T0R8EZ56IUW4": {
+    "CDF: DA Mishandled Package": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W37"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W33",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W33",
+      "2026-W36"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W32",
+      "2026-W39"
+    ],
+    "POD: No Package Detected": [
+      "2026-W38",
+      "2026-W40"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W39"
+    ],
+    "POD: Package Too Close": [
+      "2026-W34",
+      "2026-W36"
+    ]
+  },
+  "A8ZXXQV6MFYBMG": {
+    "CDF: DA Mishandled Package": [
+      "2026-W32",
+      "2026-W36"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W38"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W35",
+      "2026-W37",
+      "2026-W38"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W32",
+      "2026-W35"
+    ],
+    "DSB: Simultaneous Deliveries": [
+      "2026-W38"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W32",
+      "2026-W33",
+      "2026-W35",
+      "2026-W39"
+    ],
+    "POD: No Package Detected": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W34",
+      "2026-W38",
+      "2026-W40"
+    ],
+    "POD: Other": [
+      "2026-W37"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W31",
+      "2026-W37",
+      "2026-W38"
+    ],
+    "POD: Package Too Close": [
+      "2026-W31"
+    ],
+    "POD: Photo Too Dark": [
+      "2026-W34"
+    ]
+  },
+  "A931GQNILRBDV0": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W36",
+      "2026-W40"
+    ],
+    "CDF: DA was Unprofessional": [
+      "2026-W39"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W36",
+      "2026-W38",
+      "2026-W39"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W38"
+    ],
+    "POD: No Package Detected": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33"
+    ]
+  },
+  "A9BWT96GHSITJO": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W36",
+      "2026-W40"
+    ],
+    "CDF: DA was Unprofessional": [
+      "2026-W33"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W35",
+      "2026-W36",
+      "2026-W38"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W38"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W37",
+      "2026-W38",
+      "2026-W40"
+    ],
+    "POD: No Package Detected": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W35",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: Package In Car": [
+      "2026-W40"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W32",
+      "2026-W33",
+      "2026-W35",
+      "2026-W36",
+      "2026-W38",
+      "2026-W40"
+    ],
+    "POD: Package Too Close": [
+      "2026-W32",
+      "2026-W33",
+      "2026-W35",
+      "2026-W37",
+      "2026-W38"
+    ]
+  },
+  "A9G9MT5TZ0N72": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W32"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W34",
+      "2026-W36",
+      "2026-W38"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W33",
+      "2026-W40"
+    ],
+    "POD: No Package Detected": [
+      "2026-W33"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W36"
+    ],
+    "POD: Package Too Close": [
+      "2026-W31",
+      "2026-W36"
+    ]
+  },
+  "A9I26MDOUT0B0F": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W32",
+      "2026-W40"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W37"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W40"
+    ],
+    "DSB: Scanned - Not Delivered - Not Returned": [
+      "2026-W31"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W39"
+    ],
+    "POD: No Package Detected": [
+      "2026-W38",
+      "2026-W40"
+    ],
+    "POD: Package In Car": [
+      "2026-W34"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W34",
+      "2026-W37",
+      "2026-W38"
+    ],
+    "POD: Package Too Close": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: Photo Too Dark": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ]
+  },
+  "A9INK8J4CTEVZJ": {
+    "CDF: DA Mishandled Package": [
+      "2026-W36"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W35",
+      "2026-W36",
+      "2026-W38",
+      "2026-W39"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32",
+      "2026-W35",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W37",
+      "2026-W40"
+    ],
+    "DSB: Simultaneous Deliveries": [
+      "2026-W36"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W39"
+    ],
+    "POD: No Package Detected": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: Package In Car": [
+      "2026-W32"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W32",
+      "2026-W35",
+      "2026-W37",
+      "2026-W39"
+    ],
+    "POD: Package Too Close": [
+      "2026-W40"
+    ]
+  },
+  "A9OFHCBU4713NB": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W36",
+      "2026-W37"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W31",
+      "2026-W38"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W38"
+    ],
+    "POD: No Package Detected": [
+      "2026-W37"
+    ]
+  },
+  "A9RS0YQEZ51GBA": {
+    "CDF: DA Mishandled Package": [
+      "2026-W32"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32",
+      "2026-W34",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: No Package Detected": [
+      "2026-W34"
+    ],
+    "POD: Other": [
+      "2026-W35",
+      "2026-W36",
+      "2026-W37"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37"
+    ],
+    "POD: Package Too Close": [
+      "2026-W34"
+    ]
+  },
+  "A9WAEP6HQ8GUBB": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W39"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W35",
+      "2026-W37"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W37"
+    ],
+    "POD: No Package Detected": [
+      "2026-W39"
+    ],
+    "POD: Package Too Close": [
+      "2026-W33"
+    ]
+  },
+  "AB3X5V23MIQDQ": {
+    "POD: Package Not Clearly Visible": [
+      "2026-W31"
+    ]
+  },
+  "AFR9AV1XMUQIX": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W34",
+      "2026-W35"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32",
+      "2026-W33",
+      "2026-W40"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W32"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W33"
+    ],
+    "POD: Other": [
+      "2026-W36"
+    ],
+    "POD: Package Too Close": [
+      "2026-W34"
+    ]
+  },
+  "AG4VZJIFVKAAV": {
+    "CDF: Delivered to Wrong Address": [
+      "2026-W39"
+    ],
+    "DSB: Simultaneous Deliveries": [
+      "2026-W39"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W37"
+    ]
+  },
+  "AIJ5WFU9WQ3CQ": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W32",
+      "2026-W34"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W31",
+      "2026-W32"
+    ],
+    "POD: No Package Detected": [
+      "2026-W38"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W33"
+    ]
+  },
+  "AJK9OYLQH0LBR": {
+    "CDF: DA Mishandled Package": [
+      "2026-W35"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W37"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W37"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W33"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W35"
+    ],
+    "POD: No Package Detected": [
+      "2026-W36",
+      "2026-W39"
+    ],
+    "POD: Package In Car": [
+      "2026-W36",
+      "2026-W39"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W34",
+      "2026-W35",
+      "2026-W37",
+      "2026-W40"
+    ],
+    "POD: Package Too Close": [
+      "2026-W32",
+      "2026-W35",
+      "2026-W36",
+      "2026-W38",
+      "2026-W40"
+    ]
+  },
+  "AK62IBYY5RBR5": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W34",
+      "2026-W40"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W38"
+    ],
+    "POD: No Package Detected": [
+      "2026-W33"
+    ]
+  },
+  "AL90S1HKKSEQK": {
+    "CDF: DA Mishandled Package": [
+      "2026-W37"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W33",
+      "2026-W38"
+    ],
+    "CDF: DA was Unprofessional": [
+      "2026-W31"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32",
+      "2026-W34",
+      "2026-W35",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W38"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W36",
+      "2026-W38"
+    ],
+    "DSB: Simultaneous Deliveries": [
+      "2026-W38"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W35",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "POD: No Package Detected": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W38",
+      "2026-W40"
+    ],
+    "POD: Package Too Close": [
+      "2026-W34"
+    ]
+  },
+  "ALUEEXIWSBJUI": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W37",
+      "2026-W39"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W34"
+    ],
+    "POD: Other": [
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W36",
+      "2026-W37"
+    ]
+  },
+  "APT2ETIECGLTD": {
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W31"
+    ]
+  },
+  "AT8MHWWNB3Z9G": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W32",
+      "2026-W33",
+      "2026-W36",
+      "2026-W37",
+      "2026-W40"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W34",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W36"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W36",
+      "2026-W38"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W31",
+      "2026-W34",
+      "2026-W38",
+      "2026-W40"
+    ],
+    "POD: No Package Detected": [
+      "2026-W32",
+      "2026-W38"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W31"
+    ]
+  },
+  "AV1K9DA46OOAC": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W35",
+      "2026-W36",
+      "2026-W39",
+      "2026-W40"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W31",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W37"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W31",
+      "2026-W39"
+    ],
+    "POD: Other": [
+      "2026-W35"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W33",
+      "2026-W36"
+    ]
+  },
+  "AWCMV469J9L4X": {
+    "CDF: DA Mishandled Package": [
+      "2026-W31",
+      "2026-W34"
+    ],
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W32"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32",
+      "2026-W33"
+    ],
+    "CDF: Received Wrong Item": [
+      "2026-W34"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W34"
+    ],
+    "DSB: Incorrect Scan Usage - Attended Delivery": [
+      "2026-W36"
+    ],
+    "POD: Blurry Photo": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W34",
+      "2026-W36"
+    ],
+    "POD: No Package Detected": [
+      "2026-W31",
+      "2026-W36"
+    ],
+    "POD: Package Not Clearly Visible": [
+      "2026-W32",
+      "2026-W34"
+    ],
+    "POD: Package Too Close": [
+      "2026-W33"
+    ]
+  },
+  "AX1DY8O6IXD1R": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W31"
+    ]
+  },
+  "AZ0G28A1GHVQZ": {
+    "CDF: DA did not follow my delivery instructions": [
+      "2026-W32",
+      "2026-W33",
+      "2026-W36"
+    ],
+    "CDF: Delivered to Wrong Address": [
+      "2026-W32",
+      "2026-W37",
+      "2026-W38"
+    ],
+    "DSB: Delivered > 50 m": [
+      "2026-W32",
+      "2026-W36",
+      "2026-W37"
+    ],
+    "DSB: Incorrect Scan Usage - Unattended Delivery": [
+      "2026-W32"
+    ],
+    "POD: Package Too Close": [
+      "2026-W33",
+      "2026-W34"
+    ]
+  }
+}

@@ -49,6 +49,18 @@ describe('theme tokens', () => {
     });
   }
 
+  it('every theme has the chart series colours, and the dark ones stand out from the page', () => {
+    const series = ['series-1', 'series-2', 'series-3', 'series-4', 'series-other'];
+    for (const [theme, tokens] of Object.entries(themes)) {
+      for (const name of series) expect(tokens[name], `${theme} --${name}`).toBeTruthy();
+      if (theme === 'light') continue; // the light ones always come with a legend and numbers
+      for (const name of series.slice(0, 4)) {
+        const ratio = contrastRatio(tokens[name] as string, tokens.surface as string);
+        expect(ratio, `${theme} --${name}`).toBeGreaterThanOrEqual(3);
+      }
+    }
+  });
+
   it('high contrast: body text meets AAA (7:1)', () => {
     const tokens = themes['high-contrast'] as Record<string, string>;
     const failures: string[] = [];

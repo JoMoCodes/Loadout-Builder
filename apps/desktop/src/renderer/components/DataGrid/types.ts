@@ -107,6 +107,13 @@ export interface DataGridProps<Row> {
   /** Draws the panel on the right for the selected row. Leave out for no panel. */
   renderDetail?: (row: Row, close: () => void) => ReactNode;
   onSelectionChange?: (row: Row | null) => void;
+  /**
+   * Scroll to this row, select it and put the keyboard focus on it (on `columnId`, or the first
+   * column), once it is in the table. `onRevealed` is called when that is done, so the page can
+   * clear it. The page makes sure no filter of its own hides the row.
+   */
+  reveal?: { rowId: string; columnId?: string } | null;
+  onRevealed?: () => void;
 
   loading?: boolean;
   loadingText?: string;

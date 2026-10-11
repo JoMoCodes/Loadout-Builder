@@ -12,6 +12,8 @@ import type { DataSourceInfo, OpenFolderResult, UpdateStatus } from '../../share
 import type { StateHost } from '../appState';
 import type { DroppedFiles } from '../fileDrop';
 import type { OldData } from '../oldData';
+import type { OldWpaData } from '../performance/oldWpaData';
+import type { PerfService } from '../performance/service';
 import type { CallHandler, SignalHandler } from '../channels';
 
 /** The parts of the app that need Electron or the computer. `main.ts` builds the real one. */
@@ -40,6 +42,10 @@ export interface Services {
   tempFolder(): string;
   /** Finding and bringing over the old app's saved data. */
   oldData: Pick<OldData, 'find' | 'pick' | 'run'>;
+  /** The weekly performance side: folders, imports, reports, email (main/performance/). */
+  performance: PerfService;
+  /** Finding and bringing over the old Weekly Performance App's saved data. */
+  oldWpaData: Pick<OldWpaData, 'find' | 'pick' | 'run'>;
 }
 
 export interface SaveFileOptions {

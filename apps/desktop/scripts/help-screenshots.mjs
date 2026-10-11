@@ -2,7 +2,9 @@
 // demo mode, so they only ever show the made-up drivers and vans from packages/fixtures.
 //
 // It builds the app, starts it with a throwaway data folder, turns on demo mode, and saves one
-// picture per place the help needs into src/renderer/help/ (1200 pixels wide, PNG). Run
+// picture per place the help needs into src/renderer/help/ (1200 pixels wide, PNG): the first
+// day's pages, then the Performance page (Drivers, Imports, Reports) and the Dashboard with the
+// made-up weekly data. Run
 // `python3 scripts/shrink-help-shots.py` afterwards to keep each picture under 300 kB.
 //
 // In this container: ELECTRON_DISABLE_SANDBOX=1 xvfb-run -a npm run help-shots -w @loadout/desktop
@@ -135,6 +137,31 @@ try {
   await page.waitForSelector('[data-testid="print-page"]', { timeout: 10_000 });
   await page.waitForTimeout(800);
   await shot('print');
+
+  // The made-up weekly data. The main process loads it shortly after demo mode opens, so wait
+  // for the Performance page's rows before each picture.
+  await page.evaluate(() => window.localStorage.setItem('loadout.performance-tab', 'drivers'));
+  await goTo('performance');
+  await page.waitForSelector('[data-page="performance"] [role="rowgroup"] [role="row"]', {
+    timeout: 60_000,
+  });
+  await page.waitForTimeout(600);
+  await shot('perf-drivers');
+
+  await page.click('[data-testid="performance-tab-imports"]');
+  await page.waitForSelector('[data-testid="perf-card-scorecards"]', { timeout: 10_000 });
+  await page.waitForTimeout(600);
+  await shot('perf-imports');
+
+  await page.click('[data-testid="performance-tab-reports"]');
+  await page.waitForSelector('[data-testid="perf-preview-name"]', { timeout: 20_000 });
+  await page.waitForTimeout(1500);
+  await shot('perf-reports');
+
+  await goTo('dashboard');
+  await page.waitForSelector('[data-testid="dashboard-body"]', { timeout: 30_000 });
+  await page.waitForTimeout(1000);
+  await shot('dashboard');
 } finally {
   await app.close();
   rmSync(dataDir, { recursive: true, force: true });

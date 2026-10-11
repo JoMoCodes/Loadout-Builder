@@ -39,9 +39,28 @@ The first time you open the app, it looks for your old roster data. If it finds 
 
 ---
 
+## Weekly performance
+
+**What it does:** once a week, it reads Amazon's weekly scorecard exports, works out how every driver is doing, shows it all on the **Dashboard**, and makes a PDF report for each driver that you can email to them. It used to be a separate app, the Weekly Performance App. Now it is part of Loadout Builder.
+
+**The weekly routine.** Home has a second checklist for this, and the **Performance** page and the **Dashboard** each have a short tour.
+
+1. **Once:** on the **Performance** page, open the **Imports** tab and choose the folder for each kind of export. There is a card for each of the ten.
+2. **Every week:** save the new files into their folders, then click **Sync now**. The app also does this by itself each time it opens.
+3. **Look at the Dashboard.** It shows the scores, the tiers, who needs a word, and whose ID runs out soon.
+4. **Make and email the reports.** On the **Drivers** tab, tick the drivers and click **Generate for selected** or **Email selected**. The app shows who gets what before it sends anything.
+
+**Where the files come from:** all ten are downloaded from Amazon's websites for delivery partners, once a week. Each card on the **Imports** tab says which file it wants, and so does **How to use**.
+
+**Emailing:** the reports go out from a Gmail address, using a Gmail **app password** (a special password just for this app). You set it up once in **Settings**, under **Weekly performance**. The password is kept sealed by the computer's own safe storage. The app never shows it again, and it never goes in a file you can read.
+
+**Used the old Weekly Performance App?** The first time you open this version, it offers to bring the old app's data over. Click **Yes**, or do it later from **Settings**. It never writes over data you already have.
+
+---
+
 ## Where your data lives
 
-Everything stays **on your computer**, in `%APPDATA%\Loadout Builder\data`. Click **Open data folder** in **Settings** to see it. The app never uploads drivers, rosters or files anywhere. The only thing it ever contacts is GitHub, to check whether a newer version of the app is out.
+Everything stays **on your computer**, in `%APPDATA%\Loadout Builder\data`. Click **Open data folder** in **Settings** to see it. The app never uploads drivers, rosters or files anywhere. It only ever contacts GitHub, to check whether a newer version of the app is out, and Gmail, when you email the weekly reports.
 
 Printed rosters and exports go to the folder you choose when you save them.
 
@@ -49,7 +68,7 @@ Printed rosters and exports go to the folder you choose when you save them.
 
 ## Try it without your own data
 
-Turn on **Demo mode** in **Settings**. The app fills itself with made-up drivers and vans, so you can look around or train someone. Your real data is not touched, and nothing you do in demo mode is kept. The app always starts with demo mode off.
+Turn on **Demo mode** in **Settings**. The app fills itself with made-up drivers, vans and weekly scorecards, so you can look around or train someone. Your real data is not touched, and nothing you do in demo mode is kept. The app always starts with demo mode off.
 
 ---
 

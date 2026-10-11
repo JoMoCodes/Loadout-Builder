@@ -3,6 +3,8 @@
 
 # Made-up test files are stored exactly as written.
 packages/fixtures/** -text
+# What the old app's own code produced: compared byte for byte, so never converted.
+scripts/parity/wpa/expected/** -text
 
 *.xlsx binary
 *.xlsm binary

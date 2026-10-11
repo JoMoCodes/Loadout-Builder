@@ -17,6 +17,8 @@ import {
   type Match,
   weekLabel,
 } from '@loadout/core';
+import { EMPTY_PERF_SNAPSHOT } from '../shared/performance';
+import type { PerfSnapshot } from '../shared/performance';
 import type {
   AppSnapshot,
   AssociateView,
@@ -38,6 +40,8 @@ export interface SnapshotOptions {
   today: IsoDate;
   revision: number;
   mode: 'real' | 'demo';
+  /** The weekly performance data in brief. Empty when the main process has none to give. */
+  performance?: PerfSnapshot;
 }
 
 export function buildSnapshot(state: AppState, options: SnapshotOptions): AppSnapshot {
@@ -135,6 +139,7 @@ export function buildSnapshot(state: AppState, options: SnapshotOptions): AppSna
     },
     print: { spec: state.printSpec(), presets: state.printPresets() },
     matchSummary,
+    performance: options.performance ?? EMPTY_PERF_SNAPSHOT,
     counts: {
       rosterRows: rosterRows.length,
       matched: state.matchedCount(),

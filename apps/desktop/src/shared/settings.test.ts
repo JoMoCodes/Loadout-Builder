@@ -59,6 +59,13 @@ describe('old data question', () => {
     expect(sanitizePatch({ oldDataAsked: true })).toEqual({ oldDataAsked: true });
     expect(sanitizePatch({ oldDataAsked: 'yes' })).toEqual({});
   });
+
+  it('remembers the weekly performance question separately', () => {
+    expect(DEFAULT_SETTINGS.perfOldDataAsked).toBe(false);
+    expect(sanitizePatch({ perfOldDataAsked: true })).toEqual({ perfOldDataAsked: true });
+    expect(sanitizePatch({ perfOldDataAsked: 1 })).toEqual({});
+    expect(mergeSettings(DEFAULT_SETTINGS, { perfOldDataAsked: true }).perfOldDataAsked).toBe(true);
+  });
 });
 
 describe('help settings', () => {
@@ -78,6 +85,25 @@ describe('help settings', () => {
     expect(sanitizePatch({ checklistHidden: 'yes', printedOnce: 1, autoTours: null })).toEqual({});
   });
 
+  it('starts with the weekly checklist showing and the Dashboard not yet seen', () => {
+    expect(DEFAULT_SETTINGS.weeklyChecklistHidden).toBe(false);
+    expect(DEFAULT_SETTINGS.dashboardSeenOnce).toBe(false);
+  });
+
+  it('keeps the weekly checklist and Dashboard switches only when they are true or false', () => {
+    expect(sanitizePatch({ weeklyChecklistHidden: true, dashboardSeenOnce: true })).toEqual({
+      weeklyChecklistHidden: true,
+      dashboardSeenOnce: true,
+    });
+    expect(sanitizePatch({ weeklyChecklistHidden: false })).toEqual({
+      weeklyChecklistHidden: false,
+    });
+    expect(sanitizePatch({ weeklyChecklistHidden: 'yes', dashboardSeenOnce: 1 })).toEqual({});
+    const merged = mergeSettings(DEFAULT_SETTINGS, { dashboardSeenOnce: true });
+    expect(merged.dashboardSeenOnce).toBe(true);
+    expect(merged.weeklyChecklistHidden).toBe(false);
+  });
+
   it('keeps a list of tour names, once each', () => {
     expect(sanitizePatch({ toursSeen: ['home', 'load-out-print', 'home'] })).toEqual({
       toursSeen: ['home', 'load-out-print'],
@@ -95,6 +121,8 @@ describe('help settings', () => {
   it('fills in the help settings for a settings file saved before they existed', () => {
     const merged = mergeSettings(DEFAULT_SETTINGS, { theme: 'light', lastSeenVersion: '2.0.0' });
     expect(merged.checklistHidden).toBe(false);
+    expect(merged.weeklyChecklistHidden).toBe(false);
+    expect(merged.dashboardSeenOnce).toBe(false);
     expect(merged.autoTours).toBe(true);
     expect(merged.toursSeen).toEqual([]);
   });

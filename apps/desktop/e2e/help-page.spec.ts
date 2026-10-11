@@ -14,7 +14,17 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('has a jump-to button for every part, and each one scrolls to its part', async ({ page }) => {
-  const parts = ['see', 'first', 'daily', 'colors', 'keys', 'problems', 'guides', 'stuck'];
+  const parts = [
+    'see',
+    'first',
+    'daily',
+    'weekly',
+    'colors',
+    'keys',
+    'problems',
+    'guides',
+    'stuck',
+  ];
   await expect(page.locator('[data-jump]')).toHaveCount(parts.length);
   for (const id of ['stuck', 'colors', 'problems']) {
     await page.click(`[data-jump="${id}"]`);
@@ -41,6 +51,18 @@ test('the problems are folded up and open one at a time', async ({ page }) => {
   await expect(noVan).toContainText('Only LMR vans left, and not on the approved list');
   await noVan.locator('summary').click();
   await expect(noVan).not.toHaveAttribute('open', '');
+});
+
+test('the weekly part walks through the routine and lists all ten exports', async ({ page }) => {
+  const weekly = page.locator('#help-weekly');
+  await expect(weekly.locator('h2')).toHaveText('Weekly performance');
+  for (const words of ['Sync now', 'Dashboard', 'Email selected', 'App password', 'check file'])
+    await expect(weekly).toContainText(words);
+  await expect(weekly.locator('[data-export]')).toHaveCount(10);
+  await expect(weekly.locator('[data-export="safety"]')).toContainText('safety dashboard export');
+  await expect(weekly.locator('figure.help-shot')).toHaveCount(4);
+  await weekly.getByRole('button', { name: 'Performance' }).first().click();
+  await expect(page.locator('[data-page="performance"]')).toBeVisible();
 });
 
 test('a link inside a problem opens that page', async ({ page }) => {

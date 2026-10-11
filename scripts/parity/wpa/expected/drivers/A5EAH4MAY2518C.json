@@ -1,0 +1,462 @@
+{
+  "cdf": [
+    {
+      "didNotFollowInstructions": 1,
+      "mishandled": 0,
+      "name": "Soren Lucinda Eldridge",
+      "neverReceived": 0,
+      "sourceFile": "DSP_Customer_Delivery_Feedback_negative_XXX1_2026-W32.csv",
+      "transporterId": "A5EAH4MAY2518C",
+      "unprofessional": 0,
+      "week": "2026-W32",
+      "wrongAddress": 0,
+      "wrongItem": 0
+    },
+    {
+      "didNotFollowInstructions": 1,
+      "mishandled": 0,
+      "name": "Soren Lucinda Eldridge",
+      "neverReceived": 0,
+      "sourceFile": "DSP_Customer_Delivery_Feedback_negative_XXX1_2026-W33.csv",
+      "transporterId": "A5EAH4MAY2518C",
+      "unprofessional": 0,
+      "week": "2026-W33",
+      "wrongAddress": 1,
+      "wrongItem": 0
+    }
+  ],
+  "dcrEvents": [
+    {
+      "additionalInformation": "Made-up note for testing.",
+      "exemptionReason": "No Exemption Applied",
+      "id": 20,
+      "impactDcr": "Y",
+      "impactsDcr": true,
+      "name": "Soren Lucinda Eldridge",
+      "plannedDeliveryDate": "8/2/2026",
+      "rtsCode": "ADDRESS NOT FOUND",
+      "sourceFile": "Quality_RTS_XXXX_XXX1_2026-W32.csv",
+      "trackingId": "TBA876243319344",
+      "transporterId": "A5EAH4MAY2518C",
+      "week": "2026-W32"
+    }
+  ],
+  "dcrTotals": [
+    {
+      "dcr": 0,
+      "name": "Soren Lucinda Eldridge",
+      "packagesDelivered": 745,
+      "packagesDispatched": 747,
+      "packagesReturnedToStation": 2,
+      "packagesReturnedToStationDaControllable": 0,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 2,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W31.csv",
+      "transporterId": "A5EAH4MAY2518C",
+      "week": "2026-W31"
+    },
+    {
+      "dcr": 0,
+      "name": "Soren Lucinda Eldridge",
+      "packagesDelivered": 1024,
+      "packagesDispatched": 1029,
+      "packagesReturnedToStation": 4,
+      "packagesReturnedToStationDaControllable": 0,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 4,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W32.csv",
+      "transporterId": "A5EAH4MAY2518C",
+      "week": "2026-W32"
+    },
+    {
+      "dcr": 0,
+      "name": "Soren Lucinda Eldridge",
+      "packagesDelivered": 850,
+      "packagesDispatched": 850,
+      "packagesReturnedToStation": 0,
+      "packagesReturnedToStationDaControllable": 0,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 0,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W33.csv",
+      "transporterId": "A5EAH4MAY2518C",
+      "week": "2026-W33"
+    },
+    {
+      "dcr": null,
+      "name": "Soren Lucinda Eldridge",
+      "packagesDelivered": 0,
+      "packagesDispatched": 0,
+      "packagesReturnedToStation": 0,
+      "packagesReturnedToStationDaControllable": 0,
+      "rescuedPackages": null,
+      "rtsAllExempted": 0,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W34.csv",
+      "transporterId": "A5EAH4MAY2518C",
+      "week": "2026-W34"
+    }
+  ],
+  "dsb": [
+    {
+      "deliveredOver50m": 0,
+      "incorrectScanAttended": 1,
+      "incorrectScanUnattended": 0,
+      "name": "Soren Lucinda Eldridge",
+      "noPodOnDelivery": 0,
+      "scannedNotDeliveredNotReturned": 0,
+      "simultaneousDeliveries": 0,
+      "sourceFile": "DSP_Delivery_Concessions_XXX1_2026-W34.csv",
+      "transporterId": "A5EAH4MAY2518C",
+      "week": "2026-W34"
+    }
+  ],
+  "fromWeek": "2026-W31",
+  "name": "Soren Lucinda Eldridge",
+  "pod": [
+    {
+      "acceptanceRate": 100,
+      "blurryPhoto": 0,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Soren Lucinda Eldridge",
+      "noPackageDetected": 0,
+      "opportunities": 539,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 0,
+      "sourceFile": "US-XXXX-XXX1-Week31-2026NA-DA-POD-Details.pdf",
+      "success": 539,
+      "transporterId": "A5EAH4MAY2518C",
+      "week": "2026-W31"
+    },
+    {
+      "acceptanceRate": 99.87244897959184,
+      "blurryPhoto": 0,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Soren Lucinda Eldridge",
+      "noPackageDetected": 0,
+      "opportunities": 784,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 1,
+      "photoTooDark": 0,
+      "rejects": 1,
+      "sourceFile": "US-XXXX-XXX1-Week32-2026NA-DA-POD-Details.pdf",
+      "success": 783,
+      "transporterId": "A5EAH4MAY2518C",
+      "week": "2026-W32"
+    },
+    {
+      "acceptanceRate": 99.68304278922345,
+      "blurryPhoto": 1,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Soren Lucinda Eldridge",
+      "noPackageDetected": 1,
+      "opportunities": 631,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 2,
+      "sourceFile": "US-XXXX-XXX1-Week33-2026NA-DA-POD-Details.pdf",
+      "success": 629,
+      "transporterId": "A5EAH4MAY2518C",
+      "week": "2026-W33"
+    }
+  ],
+  "psb": [],
+  "ranks": {
+    "2026-W31": {
+      "rank": 9,
+      "total": 65
+    },
+    "2026-W32": {
+      "rank": 31,
+      "total": 65
+    },
+    "2026-W33": {
+      "rank": 62,
+      "total": 65
+    }
+  },
+  "scorecards": [
+    {
+      "id": 51,
+      "metrics": [
+        {
+          "id": 505,
+          "metricName": "CDF DPMO",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 51,
+          "tier": "Platinum",
+          "weightApplied": 7.4
+        },
+        {
+          "id": 506,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 51,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 507,
+          "metricName": "DCR",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 51,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 508,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 51,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 502,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 51,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 504,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 51,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 509,
+          "metricName": "POD",
+          "metricValue": "100.0%",
+          "score": 100,
+          "scorecardId": 51,
+          "tier": "Platinum",
+          "weightApplied": 3.2
+        },
+        {
+          "id": 501,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 51,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 503,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 51,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 500,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 51,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        }
+      ],
+      "overallScore": 100,
+      "overallStanding": "Platinum",
+      "packagesDelivered": 745,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W31.csv",
+      "transporterId": "A5EAH4MAY2518C",
+      "week": "2026-W31"
+    },
+    {
+      "id": 116,
+      "metrics": [
+        {
+          "id": 1161,
+          "metricName": "CDF DPMO",
+          "metricValue": "977",
+          "score": 71.79,
+          "scorecardId": 116,
+          "tier": "Gold",
+          "weightApplied": 7
+        },
+        {
+          "id": 1162,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 116,
+          "tier": "Platinum",
+          "weightApplied": 10
+        },
+        {
+          "id": 1163,
+          "metricName": "DCR",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 116,
+          "tier": "Platinum",
+          "weightApplied": 10
+        },
+        {
+          "id": 1164,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 116,
+          "tier": "Platinum",
+          "weightApplied": 10
+        },
+        {
+          "id": 1158,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 116,
+          "tier": "Platinum",
+          "weightApplied": 11
+        },
+        {
+          "id": 1160,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 116,
+          "tier": "Platinum",
+          "weightApplied": 11
+        },
+        {
+          "id": 1165,
+          "metricName": "POD",
+          "metricValue": "99.9%",
+          "score": 89.37,
+          "scorecardId": 116,
+          "tier": "Platinum",
+          "weightApplied": 3
+        },
+        {
+          "id": 1166,
+          "metricName": "PSB",
+          "metricValue": "0.00",
+          "score": 100,
+          "scorecardId": 116,
+          "tier": "Platinum",
+          "weightApplied": 5
+        },
+        {
+          "id": 1157,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 116,
+          "tier": "Platinum",
+          "weightApplied": 11
+        },
+        {
+          "id": 1159,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 116,
+          "tier": "Platinum",
+          "weightApplied": 11
+        },
+        {
+          "id": 1156,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 116,
+          "tier": "Platinum",
+          "weightApplied": 11
+        }
+      ],
+      "overallScore": 97.71,
+      "overallStanding": "Platinum",
+      "packagesDelivered": 1024,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W32.csv",
+      "transporterId": "A5EAH4MAY2518C",
+      "week": "2026-W32"
+    },
+    {
+      "id": 146,
+      "metrics": [
+        {
+          "id": 1463,
+          "metricName": "CDF DPMO",
+          "metricValue": "2367",
+          "score": 0,
+          "scorecardId": 146,
+          "tier": "Bronze",
+          "weightApplied": 17.5
+        },
+        {
+          "id": 1464,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 146,
+          "tier": "Platinum",
+          "weightApplied": 25
+        },
+        {
+          "id": 1465,
+          "metricName": "DCR",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 146,
+          "tier": "Platinum",
+          "weightApplied": 25
+        },
+        {
+          "id": 1466,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 146,
+          "tier": "Platinum",
+          "weightApplied": 25
+        },
+        {
+          "id": 1467,
+          "metricName": "POD",
+          "metricValue": "99.7%",
+          "score": 73.94,
+          "scorecardId": 146,
+          "tier": "Gold",
+          "weightApplied": 7.5
+        }
+      ],
+      "overallScore": 80.55,
+      "overallStanding": "Silver",
+      "packagesDelivered": 850,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W33.csv",
+      "transporterId": "A5EAH4MAY2518C",
+      "week": "2026-W33"
+    }
+  ],
+  "toWeek": "2026-W40",
+  "transporterId": "A5EAH4MAY2518C"
+}

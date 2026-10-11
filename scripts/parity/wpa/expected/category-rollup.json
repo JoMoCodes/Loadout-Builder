@@ -1,0 +1,128 @@
+[
+  {
+    "category": "Blurry Photo",
+    "count": 180,
+    "source": "POD",
+    "sourceCategory": "POD: Blurry Photo"
+  },
+  {
+    "category": "Human In The Picture",
+    "count": 0,
+    "source": "POD",
+    "sourceCategory": "POD: Human In The Picture"
+  },
+  {
+    "category": "No Package Detected",
+    "count": 270,
+    "source": "POD",
+    "sourceCategory": "POD: No Package Detected"
+  },
+  {
+    "category": "Package In Car",
+    "count": 54,
+    "source": "POD",
+    "sourceCategory": "POD: Package In Car"
+  },
+  {
+    "category": "Package In Hand",
+    "count": 0,
+    "source": "POD",
+    "sourceCategory": "POD: Package In Hand"
+  },
+  {
+    "category": "Package Not Clearly Visible",
+    "count": 132,
+    "source": "POD",
+    "sourceCategory": "POD: Package Not Clearly Visible"
+  },
+  {
+    "category": "Package Too Close",
+    "count": 265,
+    "source": "POD",
+    "sourceCategory": "POD: Package Too Close"
+  },
+  {
+    "category": "Photo Too Dark",
+    "count": 270,
+    "source": "POD",
+    "sourceCategory": "POD: Photo Too Dark"
+  },
+  {
+    "category": "Other",
+    "count": 46,
+    "source": "POD",
+    "sourceCategory": "POD: Other"
+  },
+  {
+    "category": "DA Mishandled Package",
+    "count": 51,
+    "source": "CDF",
+    "sourceCategory": "CDF: DA Mishandled Package"
+  },
+  {
+    "category": "DA was Unprofessional",
+    "count": 7,
+    "source": "CDF",
+    "sourceCategory": "CDF: DA was Unprofessional"
+  },
+  {
+    "category": "DA did not follow my delivery instructions",
+    "count": 183,
+    "source": "CDF",
+    "sourceCategory": "CDF: DA did not follow my delivery instructions"
+  },
+  {
+    "category": "Delivered to Wrong Address",
+    "count": 298,
+    "source": "CDF",
+    "sourceCategory": "CDF: Delivered to Wrong Address"
+  },
+  {
+    "category": "Never Received Delivery",
+    "count": 0,
+    "source": "CDF",
+    "sourceCategory": "CDF: Never Received Delivery"
+  },
+  {
+    "category": "Received Wrong Item",
+    "count": 32,
+    "source": "CDF",
+    "sourceCategory": "CDF: Received Wrong Item"
+  },
+  {
+    "category": "Simultaneous Deliveries",
+    "count": 17,
+    "source": "DSB",
+    "sourceCategory": "DSB: Simultaneous Deliveries"
+  },
+  {
+    "category": "Delivered > 50 m",
+    "count": 39,
+    "source": "DSB",
+    "sourceCategory": "DSB: Delivered > 50 m"
+  },
+  {
+    "category": "Incorrect Scan Usage - Attended Delivery",
+    "count": 34,
+    "source": "DSB",
+    "sourceCategory": "DSB: Incorrect Scan Usage - Attended Delivery"
+  },
+  {
+    "category": "Incorrect Scan Usage - Unattended Delivery",
+    "count": 4,
+    "source": "DSB",
+    "sourceCategory": "DSB: Incorrect Scan Usage - Unattended Delivery"
+  },
+  {
+    "category": "No POD on Delivery",
+    "count": 0,
+    "source": "DSB",
+    "sourceCategory": "DSB: No POD on Delivery"
+  },
+  {
+    "category": "Scanned - Not Delivered - Not Returned",
+    "count": 2,
+    "source": "DSB",
+    "sourceCategory": "DSB: Scanned - Not Delivered - Not Returned"
+  }
+]
