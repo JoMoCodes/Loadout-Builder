@@ -26,6 +26,10 @@ legacy/python/data/
 !packages/fixtures/**/*.db
 !packages/fixtures/**/*.xlsx
 !packages/fixtures/**/*.csv
+!packages/fixtures/**/*.pdf
+# The old Weekly Performance App's reference outputs for the fixtures (made up; see docs/WPA-MIGRATION-PLAN.md)
+!scripts/parity/wpa/expected/**/*.csv
+!scripts/parity/wpa/expected/**/*.pdf
 
 # Secrets and shortcuts
 .env
@@ -72,3 +76,7 @@ Thumbs.db
 # Only their text form (scripts/parity/print/expected/) is committed.
 scripts/parity/print/python-out/
 scripts/parity/print/ts-out/
+
+# .NET build output (the old C# app vendored under legacy/wpa)
+bin/
+obj/

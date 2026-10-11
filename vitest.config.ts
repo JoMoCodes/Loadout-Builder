@@ -9,5 +9,9 @@ export default defineConfig({
       'scripts/**/*.test.mjs',
     ],
     environment: 'node',
+    // The Windows build machine is several times slower than a desktop, and a few tests build a
+    // whole made-up database first. Five seconds (the default) is not enough there.
+    testTimeout: 30_000,
+    hookTimeout: 60_000,
   },
 });

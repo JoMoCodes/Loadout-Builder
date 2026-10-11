@@ -24,3 +24,23 @@ export type {
   Vehicle,
   VehicleFleet,
 } from './types';
+export { PERF_TABLES } from './migrations';
+export type { PerfTable } from './migrations';
+export {
+  PerformanceStore,
+  localStamp,
+  msFromTicks,
+  roundTripUtc,
+  ticksFromMs,
+} from './performance';
+export type {
+  AssociatesApplyCounts,
+  LedgerEntry,
+  PerformanceStoreOptions,
+  PsbApplyCounts,
+  ScorecardsApplyCounts,
+  ThresholdsApplyCounts,
+  WeekApplyCounts,
+} from './performance';
+export { importWpaDatabase, ImportWpaError } from './importWpa';
+export type { ImportWpaResult, WpaTableCount } from './importWpa';

@@ -1,0 +1,156 @@
+{
+  "cdf": [],
+  "dcrEvents": [],
+  "dcrTotals": [
+    {
+      "dcr": 0,
+      "name": "Rufus Olive Hartwell",
+      "packagesDelivered": 200,
+      "packagesDispatched": 200,
+      "packagesReturnedToStation": 0,
+      "packagesReturnedToStationDaControllable": 0,
+      "rescuedPackages": 0,
+      "rtsAllExempted": 0,
+      "sourceFile": "Quality_DCR_XXXX_XXX1_2026-W38.csv",
+      "transporterId": "A2A1TH6W7PT1NY",
+      "week": "2026-W38"
+    }
+  ],
+  "dsb": [],
+  "fromWeek": "2026-W31",
+  "name": "Rufus Olive Hartwell",
+  "pod": [
+    {
+      "acceptanceRate": 100,
+      "blurryPhoto": 0,
+      "bypass": 0,
+      "humanInThePicture": 0,
+      "name": "Rufus Olive Hartwell",
+      "noPackageDetected": 0,
+      "opportunities": 137,
+      "other": 0,
+      "packageInCar": 0,
+      "packageInHand": 0,
+      "packageNotClearlyVisible": 0,
+      "packageTooClose": 0,
+      "photoTooDark": 0,
+      "rejects": 0,
+      "sourceFile": "US-XXXX-XXX1-Week38-2026NA-DA-POD-Details.pdf",
+      "success": 137,
+      "transporterId": "A2A1TH6W7PT1NY",
+      "week": "2026-W38"
+    }
+  ],
+  "psb": [],
+  "ranks": {
+    "2026-W38": {
+      "rank": 8,
+      "total": 64
+    }
+  },
+  "scorecards": [
+    {
+      "id": 485,
+      "metrics": [
+        {
+          "id": 4845,
+          "metricName": "CDF DPMO",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 485,
+          "tier": "Platinum",
+          "weightApplied": 7.4
+        },
+        {
+          "id": 4846,
+          "metricName": "CED",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 485,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 4847,
+          "metricName": "DCR",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 485,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 4848,
+          "metricName": "DSB",
+          "metricValue": "0",
+          "score": 100,
+          "scorecardId": 485,
+          "tier": "Platinum",
+          "weightApplied": 10.5
+        },
+        {
+          "id": 4842,
+          "metricName": "Distractions Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 485,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4844,
+          "metricName": "Following Distance Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 485,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4849,
+          "metricName": "POD",
+          "metricValue": "100.0%",
+          "score": 100,
+          "scorecardId": 485,
+          "tier": "Platinum",
+          "weightApplied": 3.2
+        },
+        {
+          "id": 4841,
+          "metricName": "Seatbelt-Off Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 485,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4843,
+          "metricName": "Sign/Signal Violations Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 485,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        },
+        {
+          "id": 4840,
+          "metricName": "Speeding Event Rate",
+          "metricValue": "0.0",
+          "score": 100,
+          "scorecardId": 485,
+          "tier": "Platinum",
+          "weightApplied": 11.6
+        }
+      ],
+      "overallScore": 100,
+      "overallStanding": "Platinum",
+      "packagesDelivered": 200,
+      "sourceFile": "DSP_Overview_Dashboard_XXXX_XXX1_2026-W38.csv",
+      "transporterId": "A2A1TH6W7PT1NY",
+      "week": "2026-W38"
+    }
+  ],
+  "toWeek": "2026-W40",
+  "transporterId": "A2A1TH6W7PT1NY"
+}

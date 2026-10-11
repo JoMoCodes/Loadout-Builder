@@ -10,5 +10,8 @@
   "dependencies": {
     "exceljs": "4.4.0",
     "papaparse": "5.7.0"
+  },
+  "devDependencies": {
+    "pdf-lib": "1.17.1"
   }
 }

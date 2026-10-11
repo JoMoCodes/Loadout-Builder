@@ -50,9 +50,9 @@ const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..', '..');
 const privateDir = join(repoRoot, '.private');
 
-const FAKE_STATION = 'XXX1';
-const FAKE_DSP_CODE = 'XXXX';
-const FAKE_DSP_NAME = 'Example Delivery Team LLC';
+export const FAKE_STATION = 'XXX1';
+export const FAKE_DSP_CODE = 'XXXX';
+export const FAKE_DSP_NAME = 'Example Delivery Team LLC';
 const SUFFIXES = new Set(['jr', 'sr', 'ii', 'iii', 'iv', 'v']);
 
 // Where each kind of file is written, relative to this folder.
@@ -116,7 +116,7 @@ function loadSeed() {
 // The table of real -> made-up values
 // ---------------------------------------------------------------------------
 
-class Registry {
+export class Registry {
   constructor(seed, sources) {
     this.seed = seed;
     this.sources = sources;
@@ -442,12 +442,12 @@ class Registry {
 // Working out which columns hold what
 // ---------------------------------------------------------------------------
 
-const normaliseHeader = (value) =>
+export const normaliseHeader = (value) =>
   String(value ?? '')
     .toLowerCase()
     .replace(/[^a-z0-9]/g, '');
 
-const ROLE_BY_HEADER = {
+export const ROLE_BY_HEADER = {
   driver: 'name',
   drivername: 'name',
   names: 'name',
@@ -473,7 +473,7 @@ const ROLE_BY_HEADER = {
   plate: 'plate',
 };
 
-function collectValue(registry, role, value) {
+export function collectValue(registry, role, value) {
   if (value === null || value === undefined || value === '') return;
   const text = typeof value === 'object' && value.text ? value.text : String(value);
   switch (role) {
@@ -536,7 +536,7 @@ function collectFromWorksheet(registry, worksheet) {
   }
 }
 
-function collectFromCsv(registry, text) {
+export function collectFromCsv(registry, text) {
   const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
   const roles = new Map();
   for (const field of parsed.meta.fields ?? []) {
@@ -675,7 +675,7 @@ async function copyWorkbook(registry, sourcePath, outPath) {
   await workbook.xlsx.writeFile(outPath);
 }
 
-function copyCsv(registry, sourcePath, outPath) {
+export function copyCsv(registry, sourcePath, outPath) {
   const raw = readFileSync(sourcePath, 'utf8');
   const hasBom = raw.charCodeAt(0) === 0xfeff;
   const text = hasBom ? raw.slice(1) : raw;
@@ -839,7 +839,7 @@ async function summariseWorkbook(path) {
   });
 }
 
-function summariseCsv(path) {
+export function summariseCsv(path) {
   const text = readFileSync(path, 'utf8').replace(/^\uFEFF/, '');
   const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
   return { rows: parsed.data.length, columns: (parsed.meta.fields ?? []).length };
@@ -1033,7 +1033,7 @@ async function main() {
   }
 }
 
-async function leakCheck(registry, paths) {
+export async function leakCheck(registry, paths) {
   const groups = {
     ids: [...registry.ids.keys()],
     vins: [...registry.vins.keys()],
@@ -1081,7 +1081,8 @@ async function leakCheck(registry, paths) {
   return Object.keys(counts).length;
 }
 
-main().catch((error) => {
+/** Prints why a run stopped, without quoting what it was working on. */
+export function reportStop(error) {
   // Error text can quote cell contents, so only the kind of failure is shown.
   console.error(
     `The anonymiser stopped: ${error?.name ?? 'Error'} (${String(error?.message ?? '')
@@ -1089,4 +1090,19 @@ main().catch((error) => {
       .replace(/[A-Za-z0-9]{13,}/g, '…')})`,
   );
   process.exit(1);
-});
+}
+
+/** True when this file was started directly (node anonymise.mjs), not imported by another script. */
+export function isRunDirectly(moduleUrl) {
+  try {
+    return (
+      process.argv[1] !== undefined &&
+      realpathSync(process.argv[1]).toLowerCase() ===
+        realpathSync(fileURLToPath(moduleUrl)).toLowerCase()
+    );
+  } catch {
+    return false;
+  }
+}
+
+if (isRunDirectly(import.meta.url)) main().catch(reportStop);

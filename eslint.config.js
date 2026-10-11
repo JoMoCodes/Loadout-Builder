@@ -39,7 +39,12 @@ export default tseslint.config(
         {
           patterns: [
             {
-              group: ['@loadout/storage', '@loadout/storage/*', '@loadout/core/importers'],
+              group: [
+                '@loadout/storage',
+                '@loadout/storage/*',
+                '@loadout/core/importers',
+                '@loadout/performance/importers',
+              ],
               message: 'Pages ask the main process through a channel (see docs/PAGE-PATTERN.md).',
             },
             {

@@ -1,6 +1,9 @@
 // The few choices the app remembers between runs, and the rules for what is allowed.
 // Used by both the main process (which saves them) and the screens (which show them).
 
+import { DEFAULT_PERFORMANCE, mergePerformance } from './performanceSettings';
+import type { PerformanceSettings } from './performanceSettings';
+
 export const THEMES = ['light', 'dark', 'high-contrast'] as const;
 export type ThemeName = (typeof THEMES)[number];
 
@@ -25,18 +28,37 @@ export interface AppSettings {
   lastSeenVersion: string | null;
   /** The person has been asked about bringing over the old app's data (or has done it). */
   oldDataAsked: boolean;
+  /** The person has been asked about bringing over the old Weekly Performance App's data. */
+  perfOldDataAsked: boolean;
   /** The first-day checklist on Home was finished (or put away). How to use can bring it back. */
   checklistHidden: boolean;
+  /** The weekly checklist on Home was finished (or put away). The Help menu can bring it back. */
+  weeklyChecklistHidden: boolean;
+  /** The Dashboard has been opened at least once with the real data (a weekly checklist step). */
+  dashboardSeenOnce: boolean;
   /** A roster has been printed or saved from the real data at least once (a checklist step). */
   printedOnce: boolean;
   /** Run a page's short tour by itself the first time the page opens. */
   autoTours: boolean;
   /** The tours that have already run (or were skipped), by name ("home", "load-out-print"). */
   toursSeen: string[];
+  /** The weekly performance choices (rule numbers, report colours, email, the page's view). */
+  performance: PerformanceSettings;
 }
 
 /** What a screen may ask to change. Anything left out stays as it was. */
-export type SettingsPatch = Partial<AppSettings>;
+export type SettingsPatch = Partial<Omit<AppSettings, 'performance'>> & {
+  /** Only the fields given change; the rest of the performance choices stay. */
+  performance?: DeepPartial<PerformanceSettings>;
+};
+
+type DeepPartial<T> = {
+  [K in keyof T]?: T[K] extends readonly unknown[]
+    ? T[K]
+    : T[K] extends object
+      ? DeepPartial<T[K]>
+      : T[K];
+};
 
 export const DEFAULT_SETTINGS: AppSettings = {
   theme: 'dark',
@@ -44,10 +66,14 @@ export const DEFAULT_SETTINGS: AppSettings = {
   demoMode: false,
   lastSeenVersion: null,
   oldDataAsked: false,
+  perfOldDataAsked: false,
   checklistHidden: false,
+  weeklyChecklistHidden: false,
+  dashboardSeenOnce: false,
   printedOnce: false,
   autoTours: true,
   toursSeen: [],
+  performance: DEFAULT_PERFORMANCE,
 };
 
 /** A tour's name: lower case words with dashes. */
@@ -84,7 +110,16 @@ export function sanitizePatch(raw: unknown): SettingsPatch {
     patch.lastSeenVersion = input.lastSeenVersion;
   }
   if (typeof input.oldDataAsked === 'boolean') patch.oldDataAsked = input.oldDataAsked;
+  if (typeof input.perfOldDataAsked === 'boolean') {
+    patch.perfOldDataAsked = input.perfOldDataAsked;
+  }
   if (typeof input.checklistHidden === 'boolean') patch.checklistHidden = input.checklistHidden;
+  if (typeof input.weeklyChecklistHidden === 'boolean') {
+    patch.weeklyChecklistHidden = input.weeklyChecklistHidden;
+  }
+  if (typeof input.dashboardSeenOnce === 'boolean') {
+    patch.dashboardSeenOnce = input.dashboardSeenOnce;
+  }
   if (typeof input.printedOnce === 'boolean') patch.printedOnce = input.printedOnce;
   if (typeof input.autoTours === 'boolean') patch.autoTours = input.autoTours;
   if (Array.isArray(input.toursSeen) && input.toursSeen.length <= MAX_TOURS) {
@@ -95,9 +130,17 @@ export function sanitizePatch(raw: unknown): SettingsPatch {
     // A list with anything odd in it is refused whole, rather than half kept.
     if (names.length === input.toursSeen.length) patch.toursSeen = [...new Set(names)];
   }
+  // Checked field by field when it is merged (mergePerformance); here it only has to be an object.
+  if (typeof input.performance === 'object' && input.performance !== null) {
+    patch.performance = input.performance as SettingsPatch['performance'];
+  }
   return patch;
 }
 
 export function mergeSettings(current: AppSettings, raw: unknown): AppSettings {
-  return { ...current, ...sanitizePatch(raw) };
+  const { performance, ...rest } = sanitizePatch(raw);
+  const base = { ...current, ...rest };
+  // Older settings files have no performance part; it starts from the defaults.
+  const now = mergePerformance(current.performance ?? DEFAULT_PERFORMANCE, performance);
+  return { ...base, performance: now };
 }

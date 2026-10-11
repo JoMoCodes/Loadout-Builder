@@ -5,8 +5,12 @@
 import { ImageOff } from 'lucide-react';
 import assignResult from './shot-assign-result.png';
 import associates from './shot-associates.png';
+import dashboard from './shot-dashboard.png';
 import homeChecklist from './shot-home-checklist.png';
 import loadOutRoster from './shot-load-out-roster.png';
+import perfDrivers from './shot-perf-drivers.png';
+import perfImports from './shot-perf-imports.png';
+import perfReports from './shot-perf-reports.png';
 import print from './shot-print.png';
 import routeData from './shot-route-data.png';
 import vehicles from './shot-vehicles.png';
@@ -19,6 +23,10 @@ export const SHOTS = {
   'route-data': routeData,
   print,
   'assign-result': assignResult,
+  dashboard,
+  'perf-drivers': perfDrivers,
+  'perf-imports': perfImports,
+  'perf-reports': perfReports,
 } as const;
 
 export type ShotName = keyof typeof SHOTS;

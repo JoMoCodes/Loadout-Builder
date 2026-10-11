@@ -17,6 +17,8 @@ import type {
   printing,
 } from '@loadout/core';
 
+import type { PerfSnapshot } from './performance';
+
 type PrintSpec = printing.PrintSpec;
 
 export interface MatchCandidate {
@@ -175,4 +177,6 @@ export interface AppSnapshot {
   /** How many drivers are in each kind of match ("exact", "fuzzy", "none", ...). */
   matchSummary: Map<string, number>;
   counts: SnapshotCounts;
+  /** The weekly performance data in brief (the pages ask for the rest with a query). */
+  performance: PerfSnapshot;
 }

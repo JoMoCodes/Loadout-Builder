@@ -10,6 +10,7 @@ import {
 } from '../../shared/settings';
 import { call } from '../lib/channels';
 import { Button } from '../ui/button';
+import { PerformanceSettingsSection } from './performance/PerformanceSettingsSection';
 import type { PageProps } from './types';
 
 export function SettingsPage({
@@ -165,6 +166,11 @@ export function SettingsPage({
           works while this app has nothing saved yet, and it never writes over saved data.
         </p>
       </div>
+
+      <PerformanceSettingsSection
+        performance={settings.performance}
+        changeSettings={changeSettings}
+      />
 
       <div className="settings-group card" data-setting="version">
         <h2>About</h2>

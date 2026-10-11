@@ -5,6 +5,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { contrastProblems } from './support/contrast';
 import { callsTo, installFakeBridge } from './support/fakeBridge';
+import { ARCHER, CARMEN, DESMOND, WEEKS, openPerformance } from './support/performance';
 import { demoRosterSnapshot } from './support/rosterRows';
 
 const tour = (page: Page) => page.getByTestId('tour');
@@ -96,6 +97,148 @@ test('each Load Out tab has its own tour', async ({ page }) => {
   await expect
     .poll(() => seenSaved(page))
     .toEqual(['home', 'load-out-roster', 'load-out-available-vans']);
+});
+
+test('each Performance tab has its own tour', async ({ page }) => {
+  await openPerformance(page, {
+    tab: 'drivers',
+    settings: { autoTours: true, toursSeen: ['home'] },
+  });
+  await expect(tour(page)).toHaveAttribute('data-tour-name', 'performance-drivers');
+  await expect(tour(page)).toContainText('Step 1 of 6');
+  await expect(tour(page)).toContainText('Four tabs');
+  await page.keyboard.press('Enter');
+  await expect(tour(page)).toContainText('Pick the weeks');
+  await page.keyboard.press('Escape');
+  await expect(tour(page)).toHaveCount(0);
+
+  await page.getByTestId('performance-tab-imports').click();
+  await expect(tour(page)).toHaveAttribute('data-tour-name', 'performance-imports');
+  await expect(tour(page)).toContainText('One card for each file');
+  await page.keyboard.press('Escape');
+
+  await page.getByTestId('performance-tab-reports').click();
+  await expect(tour(page)).toHaveAttribute('data-tour-name', 'performance-reports');
+  await page.keyboard.press('Escape');
+
+  await page.getByTestId('performance-tab-directory').click();
+  await expect(tour(page)).toHaveAttribute('data-tour-name', 'performance-directory');
+  await page.keyboard.press('Escape');
+  await expect
+    .poll(() => seenSaved(page))
+    .toEqual([
+      'home',
+      'performance-drivers',
+      'performance-imports',
+      'performance-reports',
+      'performance-directory',
+    ]);
+
+  // Help > Take the tour runs the one for the tab on screen.
+  await page.getByTestId('help-menu').click();
+  await page.getByTestId('take-tour').click();
+  await expect(tour(page)).toHaveAttribute('data-tour-name', 'performance-directory');
+  await page.keyboard.press('Escape');
+});
+
+/** A small made-up Dashboard: names from the made-up people in packages/fixtures. */
+const DASHBOARD = {
+  range: null,
+  hasData: true,
+  latestWeek: '2026-W40',
+  previousWeek: '2026-W39',
+  fleetAverage: 90.28,
+  fleetAverageBefore: 91.41,
+  activeDrivers: 5,
+  tiers: [
+    { tier: 'Platinum', count: 2 },
+    { tier: 'Gold', count: 1 },
+    { tier: 'Silver', count: 1 },
+    { tier: 'Bronze', count: 1 },
+  ],
+  tiersBefore: [],
+  tierMoves: [],
+  packagesDelivered: 4100,
+  packagesDeliveredBefore: 3980,
+  driversWithSafetyEvents: 1,
+  coaching: [
+    {
+      transporterId: DESMOND.id,
+      name: DESMOND.name,
+      latestWeek: '2026-W40',
+      latestTier: 'Bronze',
+      latestScore: 76.36,
+      reasons: ['Currently Bronze (2026-W40)'],
+      severity: 'High',
+      topDragMetric: 'DCR',
+      topDragScore: 39.02,
+      topDragWeight: 10.5,
+      topDragTier: 'Silver',
+    },
+  ],
+  compliance: [
+    {
+      transporterId: CARMEN.id,
+      name: CARMEN.name,
+      status: 'ACTIVE',
+      qualifications: 'EDV',
+      expiresOn: '2026-10-20',
+      daysRemaining: 9,
+      severity: 'Expiring soon',
+      isAlert: true,
+      statusDisplay: 'Expires in 9 day(s)',
+    },
+  ],
+  topImproved: [
+    {
+      transporterId: ARCHER.id,
+      name: ARCHER.name,
+      firstWeek: '2026-W31',
+      lastWeek: '2026-W40',
+      firstScore: 80,
+      lastScore: 93.58,
+      delta: 13.58,
+    },
+  ],
+  topDeclined: [],
+  trend: WEEKS.map((week, index) => ({ week, avg: 90 + (index % 3) })),
+  categories: [],
+  rules: { atRiskDecliningWeeks: 3, recurringCategoryWeeks: 3, complianceWindowDays: 30, topN: 5 },
+};
+
+test('the Dashboard has a tour that runs by itself the first time', async ({ page }) => {
+  await openPerformance(page, {
+    page: 'dashboard',
+    settings: { autoTours: true, toursSeen: ['home'] },
+    answers: { 'performance:dashboard': DASHBOARD },
+  });
+  await expect(page.getByTestId('dashboard-body')).toBeVisible();
+  // The "no scorecards yet" step is left out: there are scorecards.
+  await expect(tour(page)).toHaveAttribute('data-tour-name', 'dashboard', { timeout: 8000 });
+  await expect(tour(page)).toContainText('Step 1 of 5');
+  await expect(tour(page)).toContainText('Pick the weeks');
+  await page.keyboard.press('Enter');
+  await expect(tour(page)).toContainText('The week at a glance');
+  await page.keyboard.press('Escape');
+  await expect.poll(() => seenSaved(page)).toEqual(['home', 'dashboard']);
+
+  // Away and back: it does not run again.
+  await page.click('[data-nav="settings"]');
+  await page.click('[data-nav="dashboard"]');
+  await expect(page.getByTestId('dashboard-body')).toBeVisible();
+  await page.waitForTimeout(800);
+  await expect(tour(page)).toHaveCount(0);
+});
+
+test('the Home tour points at the weekly checklist too', async ({ page }) => {
+  await installFakeBridge(page, { settings: { autoTours: true } });
+  await page.addInitScript(() => localStorage.setItem('loadout.page', 'home'));
+  await page.goto('/');
+  await expect(tour(page)).toHaveAttribute('data-tour-name', 'home');
+  await expect(tour(page)).toContainText('Step 1 of 6');
+  for (let i = 0; i < 3; i++) await page.keyboard.press('Enter');
+  await expect(tour(page)).toContainText('Your weekly performance');
+  await page.keyboard.press('Escape');
 });
 
 test('the tours can be turned off in Settings', async ({ page }) => {

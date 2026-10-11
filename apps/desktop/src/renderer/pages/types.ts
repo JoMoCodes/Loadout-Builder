@@ -31,6 +31,12 @@ export interface HelpApi {
   checklistShown: boolean;
   showChecklist(): void;
   hideChecklist(): void;
+  /** The weekly checklist is shown on Home (in demo mode, only for this run). */
+  weeklyShown: boolean;
+  /** The Dashboard has been opened (a weekly checklist step). */
+  dashboardSeen: boolean;
+  showWeekly(): void;
+  hideWeekly(): void;
   /** Opens an allowed help page in the browser. Plain words when it did not open, else null. */
   openLink(url: string): Promise<string | null>;
 }
@@ -43,10 +49,12 @@ export interface PageRequest {
 
 export type PageId =
   | 'home'
+  | 'dashboard'
   | 'load-out'
   | 'route-data'
   | 'vehicle-data'
   | 'associates'
+  | 'performance'
   | 'previous-roster'
   | 'how-to-use'
   | 'features-log'

@@ -13,6 +13,8 @@ const PAGES = [
   'route-data',
   'vehicle-data',
   'associates',
+  'performance',
+  'dashboard',
   'previous-roster',
   'how-to-use',
   'features-log',

@@ -1,0 +1,224 @@
+[
+  {
+    "errors": [],
+    "filesProcessed": 1,
+    "importer": "AssociateImporter",
+    "input": "roster/AssociateData.csv",
+    "otherCounts": {
+      "ActiveCount": 69,
+      "DriversAdded": 76,
+      "DriversUpdated": 0,
+      "InactiveCount": 7
+    },
+    "rowsImported": 76,
+    "skipped": false,
+    "skippedBecause": null,
+    "weeks": []
+  },
+  {
+    "errors": [],
+    "filesProcessed": 1,
+    "importer": "ThresholdImporter",
+    "input": "thresholds/DSP_Thresholds_Scoring_Metadata_XXXX_XXX1_2026-W32.csv",
+    "otherCounts": {
+      "RowsRead": 13,
+      "RowsSkipped": 1,
+      "SourceWeek": "2026-W32"
+    },
+    "rowsImported": 12,
+    "skipped": false,
+    "skippedBecause": null,
+    "weeks": [
+      "2026-W32"
+    ]
+  },
+  {
+    "errors": [],
+    "filesProcessed": 10,
+    "importer": "ScorecardImporter",
+    "input": "scorecards/",
+    "otherCounts": {
+      "DriversAdded": 16
+    },
+    "rowsImported": 647,
+    "skipped": false,
+    "skippedBecause": null,
+    "weeks": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ]
+  },
+  {
+    "errors": [],
+    "filesProcessed": 10,
+    "importer": "PodImporter",
+    "input": "pod/",
+    "otherCounts": {},
+    "rowsImported": 646,
+    "skipped": false,
+    "skippedBecause": null,
+    "weeks": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ]
+  },
+  {
+    "errors": [],
+    "filesProcessed": 10,
+    "importer": "CdfImporter",
+    "input": "cdf/",
+    "otherCounts": {
+      "CsvRowsScanned": 571
+    },
+    "rowsImported": 318,
+    "skipped": false,
+    "skippedBecause": null,
+    "weeks": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ]
+  },
+  {
+    "errors": [],
+    "filesProcessed": 10,
+    "importer": "DsbImporter",
+    "input": "dsb/",
+    "otherCounts": {
+      "CsvRowsCounted": 82,
+      "CsvRowsScanned": 504
+    },
+    "rowsImported": 63,
+    "skipped": false,
+    "skippedBecause": null,
+    "weeks": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ]
+  },
+  {
+    "errors": [],
+    "filesProcessed": 10,
+    "importer": "PsbImporter",
+    "input": "psb/",
+    "otherCounts": {
+      "CsvRowsScanned": 14
+    },
+    "rowsImported": 14,
+    "skipped": false,
+    "skippedBecause": null,
+    "weeks": [
+      "2026-W13",
+      "2026-W15",
+      "2026-W16",
+      "2026-W17",
+      "2026-W18",
+      "2026-W20",
+      "2026-W21",
+      "2026-W24",
+      "2026-W28",
+      "2026-W29"
+    ]
+  },
+  {
+    "errors": [],
+    "filesProcessed": 10,
+    "importer": "DcrImporter",
+    "input": "dcr/",
+    "otherCounts": {
+      "ImpactingEventsImported": 350
+    },
+    "rowsImported": 350,
+    "skipped": false,
+    "skippedBecause": null,
+    "weeks": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ]
+  },
+  {
+    "errors": [],
+    "filesProcessed": 10,
+    "importer": "DcrTotalsImporter",
+    "input": "dcr-totals/",
+    "otherCounts": {},
+    "rowsImported": 653,
+    "skipped": false,
+    "skippedBecause": null,
+    "weeks": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ]
+  },
+  {
+    "errors": [],
+    "filesProcessed": 10,
+    "importer": "SafetyImporter",
+    "input": "safety/",
+    "otherCounts": {
+      "CountedEvents": 67
+    },
+    "rowsImported": 86,
+    "skipped": false,
+    "skippedBecause": null,
+    "weeks": [
+      "2026-W31",
+      "2026-W32",
+      "2026-W33",
+      "2026-W34",
+      "2026-W35",
+      "2026-W36",
+      "2026-W37",
+      "2026-W38",
+      "2026-W39",
+      "2026-W40"
+    ]
+  }
+]

@@ -1,0 +1,77 @@
+﻿Name and ID,TransporterID,Position,Qualifications,ID expiration,Personal Phone Number,Work Phone Number,Email,Status
+Zelda Oakley,AL90S1HKKSEQK,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV, DOT, Step Van",2032-05-19,5905550108,+15535550162,driver030@example.com,ACTIVE
+Zane  Hartwell,A0KJSTACMX5D6A,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2032-01-30,6535550168,+19835550170,driver007@example.com,ACTIVE
+Tobias F Bannister,AL2BBOSMBMCZO,"Helper, Driver",,2028-11-15,3995550144,+17755550165,driver001@example.com,INACTIVE
+Tobias Tristan Rainsford,A0IHV8Z401XHI9,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2030-03-15,5525550102,+16985550115,driver002@example.com,ACTIVE
+Amelia Ximena Northcott,A2O0RLVP9GAMBN,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2029-09-08,9555550147,+19065550183,driver004@example.com,ACTIVE
+Lachlan Vance Thorne,A4VV6P366J3B25,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2032-12-24,6205550176,+16205550176,driver005@example.com,ACTIVE
+Caleb Jenna Greaves,A7H54T4FG2O3NX,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV, DOT, Step Van",2034-02-06,6405550165,+17695550147,driver006@example.com,ACTIVE
+Hector Paloma  Islington,A1ZP7FE2I8J7M7,"Helper, Driver","CDV, Standard Parcel , EDV, DOT, Step Van",2028-09-19,6205550102,+16205550102,driver008@example.com,ACTIVE
+Selena Colbrook,A9I26MDOUT0B0F,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2030-11-11,3965550127,+15315550177,driver019@example.com,ACTIVE
+Ulysses Oswald,AJK9OYLQH0LBR,"Helper, Driver","CDV, Standard Parcel , EDV, DOT, Step Van",2029-06-10,5135550100,+15315550177,driver009@example.com,ACTIVE
+Archer Abigail Dalloway,AV1K9DA46OOAC,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV, In Home Delivery",2034-02-04,8805550104,+14975550107,driver059@example.com,ACTIVE
+Everett Sandoval,AK62IBYY5RBR5,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2031-09-17,8425550197,+17535550146,driver010@example.com,ACTIVE
+Emmett Lucinda Oswald,A9INK8J4CTEVZJ,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2028-05-04,2885550182,+19835550170,driver011@example.com,ACTIVE
+Maxine Alicia  Dalloway,A1OJN4GT8G7UDZ,"Helper, Driver","CDV, Standard Parcel , EDV",2029-06-18,7125550186,+17535550146,driver012@example.com,ACTIVE
+Abigail Damian Gresham,A4BAES7NSZGO8A,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2034-04-07,7295550193,+15655550118,driver014@example.com,ACTIVE
+Tristan Sheffield,A8H5WF9SI4OV8X,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2034-12-08,3125550149,+18535550138,driver016@example.com,ACTIVE
+Tabitha Luther Chesterfield,AZWNQ7IBIAKIN,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2026-11-13,7365550166,+18145550102,driver017@example.com,ACTIVE
+Ximena Orson Darrow,A6XJ3V2PRYY75N,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV, DOT, Step Van",2030-08-26,2995550186,+12995550186,driver018@example.com,ACTIVE
+Andre Kensington,ALUEEXIWSBJUI,"Helper, Driver","CDV, EDV, Standard Parcel ",2028-07-15,9265550149,+19265550149,driver003@example.com,ACTIVE
+Phoebe Kieran Oakley,A35ORHCIWXSWX6,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV, DOT, Step Van",2030-01-15,6055550134,+16055550134,driver025@example.com,ACTIVE
+Emmett Ines  Huxley,A8M3J46P8HG6FK,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2031-06-21,4465550199,+19805550144,driver020@example.com,ACTIVE
+Carmen Bennett Talbot,A43QODLLAMSDL4,"Helper, Driver","CDV, Standard Parcel , EDV, DOT, Step Van",2033-02-28,4555550141,+15655550118,driver024@example.com,ACTIVE
+Barrett Kendra Chesterfield,A7CUH5Y0VWYL2V,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2029-10-16,5645550148,+18535550138,driver021@example.com,ACTIVE
+Rowan Luther  Fairbanks,A3VO429G9YSXRJ,"Helper, Driver","CDV, Standard Parcel , EDV",2031-07-08,4785550185,+16355550177,driver022@example.com,ACTIVE
+Greta Wendell Thackeray,A5CEN6SUZUBQIX,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV, DOT, Step Van",2031-10-25,3055550187,+15635550123,driver023@example.com,ACTIVE
+Stella yara Atwood,A3YE6514J169GR,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2029-09-09,7775550138,+19595550119,driver056@example.com,ACTIVE
+Rafael Julian Eldridge,A2HY5U1W1NRFLQ,"Helper, Driver","CDV, Standard Parcel , EDV",2033-07-16,3675550146,+15655550118,driver027@example.com,ACTIVE
+Nadine Vance Brightwater,A4LCDNKS4CWPF9,"Helper, Driver","CDV, Standard Parcel , EDV, Step Van",2033-03-18,3415550153,+19805550144,driver026@example.com,ACTIVE
+Lena Atwood,A3GKXXFF1LN2XG,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2032-07-15,9055550163,+15145550116,driver028@example.com,INACTIVE
+Micah  Lena Sutherland,A9BWT96GHSITJO,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2030-03-09,6425550124,+16425550124,driver029@example.com,ACTIVE
+Elodie  Rowan Fenwick,A9OFHCBU4713NB,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2032-08-09,9285550146,+19285550146,driver013@example.com,ACTIVE
+Nadine Alicia Barlow,A4045ZXIVGHQ3M,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV, DOT, Step Van",2032-01-31,2625550101,+12625550101,driver031@example.com,ACTIVE
+Vance Amelia Whitaker,A2XX9DS9WCNFP,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2029-06-03,7975550142,+19595550119,driver054@example.com,ACTIVE
+Miriam Nell Underhill,A48ZAFQUVFSQRV,"Helper, Driver","CDV, Standard Parcel , Step Van",2026-02-08,2105550161,+12105550161,driver032@example.com,INACTIVE
+Miriam Blaine Ormsby,A8ZXXQV6MFYBMG,"Helper, Driver","CDV, Standard Parcel , EDV, DOT, Step Van",2032-04-26,3015550107,+13015550107,driver033@example.com,ACTIVE
+Archer Gresham,A02V4L9HIELIDL,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2031-03-24,4885550141,+17535550146,driver034@example.com,ACTIVE
+Desmond Marisol Penrose,A05QUB9XOW4NT1,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV, DOT, Step Van",2031-09-09,7435550178,+17435550178,driver035@example.com,ACTIVE
+Nathaniel Xavier Crawley,A45IT3RVXCBYU5,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2033-05-05,9805550110,+19805550110,driver036@example.com,ACTIVE
+Amelia Aaron Blackwell,A1E3ZUFIX1EXA5,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2030-02-08,3585550135,+13585550135,driver037@example.com,ACTIVE
+Rowan  Dalia  Beaumont,A8T0R8EZ56IUW4,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV, DOT, Step Van",2033-07-12,2725550172,+12725550172,driver038@example.com,ACTIVE
+Rufus  Olive Hartwell,A2A1TH6W7PT1NY,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2029-06-19,5565550124,+16985550115,driver055@example.com,ACTIVE
+Leopold Cora Thackeray,A8I0NX204L7M3S,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2029-03-29,5265550109,+16455550190,driver039@example.com,ACTIVE
+Cleo Silas Jessup,A1VWFCFWNQJ1VP,"Helper, Driver","CDV, EDV, Standard Parcel ",2028-06-08,7215550162,+13405550152,driver040@example.com,ACTIVE
+Willa cora Rainsford,A64C8ABTCL93D2,"Helper, Driver","CDV, EDV, Standard Parcel ",2032-12-08,7965550186,+12245550163,driver041@example.com,ACTIVE
+Dominic Nolan  Caldwell,A7MIENEP388QBI,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV, DOT, Step Van",2030-07-31,6565550192,+14975550107,driver042@example.com,ACTIVE
+Yusuf Lucinda Huxley,AMH9W9ISL2JI5,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2029-08-27,3675550160,+13675550160,driver015@example.com,ACTIVE
+Elodie Bexley,AT8MHWWNB3Z9G,"Helper, Driver","CDV, EDV, Standard Parcel , DOT, Step Van",2027-04-28,2535550159,+18085550193,driver052@example.com,ACTIVE
+Felicia Wendell Thorne,AZ0G28A1GHVQZ,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2026-11-27,6095550161,+16095550161,driver043@example.com,ACTIVE
+Bennett  Desmond Pemberton,A931GQNILRBDV0,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2032-04-06,8845550136,+16605550100,driver071@example.com,ACTIVE
+Maxine Tristan Yorke,A7DH1J2PJE0OED,"Helper, Driver","CDV, EDV, Standard Parcel , DOT, Step Van",2029-05-02,2055550164,+18505550190,driver058@example.com,ACTIVE
+Miriam Camila Stanhope,A7WEJB9AEZ8HLN,"Helper, Driver","CDV, Standard Parcel , EDV, DOT, Step Van",2024-10-26,5045550122,+15115550143,driver044@example.com,INACTIVE
+Marisol Greta Halloran,A6G2H6H7CL30A4,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2031-07-12,6195550102,+15115550143,driver045@example.com,ACTIVE
+Sloane Zane Yorke,A9G9MT5TZ0N72,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2030-10-12,2405550156,+12575550129,driver046@example.com,ACTIVE
+Soren Lindqvist,AG4VZJIFVKAAV,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2030-08-22,2605550105,+15975550124,driver047@example.com,ACTIVE
+Gabriel Amelia Wakefield,A2FR62CAJH6D17,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2026-09-19,7195550198,+18505550190,driver048@example.com,ACTIVE
+Cecil Julian Radcliffe,A5QUGQSG9YPHDA,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2026-08-22,7915550197,+18535550138,driver049@example.com,ACTIVE
+Angela Hollis,A6NMJ80MQJSWQP,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2030-01-30,3375550150,+18535550138,driver050@example.com,ACTIVE
+Orson Ines Applewhite,A5YJ9TF0YNUP8N,"Helper, Driver","CDV, Standard Parcel , EDV",2031-07-10,8945550150,+18085550193,driver051@example.com,ACTIVE
+Andre  Marisol  Carraway,A2FYKXSK0KPR1O,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2031-01-21,9455550177,+19455550177,driver057@example.com,ACTIVE
+Nathaniel Colbrook,A53KRYF5P432PI,"Helper, Driver","CDV, Standard Parcel , EDV, DOT, Step Van",2031-07-06,7565550114,+16455550190,driver053@example.com,ACTIVE
+Dominic  Elias Marlowe,AFR9AV1XMUQIX,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2031-07-15,9795550182,+19805550144,driver060@example.com,ACTIVE
+Hadley Amelia  Abernathy,A9WAEP6HQ8GUBB,"Helper, Driver","CDV, Standard Parcel , EDV, DOT, Step Van",2029-10-04,5085550124,+15315550177,driver061@example.com,ACTIVE
+Julian Nell Whitaker,A666USAV8IY3UQ,"Helper, Driver","CDV, EDV, Standard Parcel ",2027-02-05,3875550193,+18515550124,driver062@example.com,ACTIVE
+Nolan Montrose,AIJ5WFU9WQ3CQ,"Helper, Driver","CDV, Standard Parcel , EDV, Step Van",2033-10-31,9045550141,+19045550141,driver063@example.com,ACTIVE
+Emmett Dalia Ellsworth,A0J0XO8BDXCWU,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2034-03-13,3805550152,+19595550119,driver064@example.com,ACTIVE
+Andre Zachary Tennyson,A61CK7LGWH2XBP,"Helper, Driver","CDV, Standard Parcel , EDV",2034-07-04,6795550199,+16985550115,driver065@example.com,ACTIVE
+Zachary  Bennett  Fenwick,A0YNMDE9L3T77O,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2034-06-01,3175550190,+17875550182,driver066@example.com,ACTIVE
+Phoebe Desmond Hartwell,ACRWIG7ENQZK4,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2031-01-07,4605550103,+14605550103,driver067@example.com,INACTIVE
+Camila  Tristan Wolcott,A9RS0YQEZ51GBA,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV, DOT, Step Van",2029-10-13,4355550135,+12055550171,driver068@example.com,ACTIVE
+Odette Anika Lovell Jr,A0SCTDRYU5SAS,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2030-10-19,7455550129,+17455550129,driver069@example.com,ACTIVE
+Leopold Ines  Tristan Angela Ainsworth,A8SUNNOD41IKZH,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2031-02-26,7395550192,,driver070@example.com,ACTIVE
+Aubrey Orson Montrose,A06A6NS9GC4V0L,"Helper, Driver","CDV, Standard Parcel , EDV, Step Van",2030-07-11,9705550157,+18515550124,driver072@example.com,INACTIVE
+Lachlan Nadine Gresham,A3BZ6NSPPU3UOM,"Helper, Driver","CDV, Standard Parcel , EDV, Step Van",2032-02-02,5445550197,+19595550119,driver073@example.com,ACTIVE
+Dalia Esme Danforth,A83E4Z4L4ART5U,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2032-03-25,6275550137,+18585550167,driver074@example.com,ACTIVE
+Rowan  Clemmons,A5Y27B4RIW02AU,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2032-11-16,6295550166,+18585550167,driver075@example.com,ACTIVE
+Carmen Josie Rutherford,A0EPR3KZOJDR3R,"Helper, Driver","AMZL_HELPER, CDV, Standard Parcel , EDV",2031-09-22,8575550143,+12155550115,driver076@example.com,INACTIVE

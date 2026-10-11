@@ -6,6 +6,7 @@ import { ExternalLink, ListChecks, Signpost } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import { DISCUSSIONS_URL } from '../../shared/links';
 import { Shot } from '../help/HelpParts';
+import { PerfExportList } from '../help/whereToGet';
 import { Button } from '../ui/button';
 import { Chip, type Tone } from '../ui/chip';
 import type { PageId, PageProps } from './types';
@@ -188,6 +189,50 @@ function problems(goTo: (id: PageId) => void): Problem[] {
       ),
     },
     {
+      id: 'perf-missing',
+      question: 'An Imports card says a week or a folder is missing',
+      answer: (
+        <ul>
+          <li>
+            <strong>That folder is not there now</strong> means the app cannot find the folder it
+            reads that kind of file from. If it is on a USB stick, plug it in. If you moved or
+            renamed it, click <strong>Choose folder</strong> on the card and pick it again.
+          </li>
+          <li>
+            <strong>No ... file for 2026-W38</strong> means there is a scorecard for that week, but
+            not that kind of file. Download it for that week, save it in its folder, and click{' '}
+            <strong>Sync now</strong> on the {go('performance', 'Performance')} page,{' '}
+            <strong>Imports</strong> tab.
+          </li>
+        </ul>
+      ),
+    },
+    {
+      id: 'perf-email',
+      question: 'The reports will not email',
+      answer: (
+        <ul>
+          <li>
+            Open {go('settings', 'Settings')} and look under <strong>Weekly performance</strong>.
+            The send-from address must be filled in, and the app password must say{' '}
+            <strong>Saved</strong>.
+          </li>
+          <li>
+            The app password is a special Gmail password, not your usual one. If you changed your
+            Google password, make a new app password and paste it in again.
+          </li>
+          <li>
+            Click <strong>Send test email</strong> to check it works. The message under it says what
+            went wrong, in plain words.
+          </li>
+          <li>
+            Drivers with no email address on the driver list are left out. The app lists them before
+            it sends anything.
+          </li>
+        </ul>
+      ),
+    },
+    {
       id: 'saved-data',
       question: 'The app says it could not open the saved data',
       answer: (
@@ -317,6 +362,129 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
       ),
     },
     {
+      id: 'weekly',
+      title: 'Weekly performance',
+      body: (
+        <>
+          <p>
+            Once a week, after the new scorecards are out, the app turns Amazon&apos;s weekly
+            exports into a score for every driver, a Dashboard, and a PDF report you can email to
+            each driver. The weekly checklist on {go('home', 'Home')} walks you through it.
+          </p>
+
+          <h3>Once, before the first week</h3>
+          <ol className="help-steps">
+            <li>
+              Used the old Weekly Performance App? The first time you open this app, it offers to
+              bring its data over. Click <strong>Yes</strong>. You can also do it later in{' '}
+              {go('settings', 'Settings')}, under <strong>Weekly performance</strong>.
+            </li>
+            <li>
+              On the {go('performance', 'Performance')} page, open the <strong>Imports</strong> tab.
+              There is a card for each of the ten kinds of export.
+            </li>
+            <li>
+              Keep each kind in its own folder on your computer. On each card, click{' '}
+              <strong>Choose folder</strong> (or <strong>Choose file</strong>) once and pick it. The
+              app brings in what is there straight away.
+            </li>
+            <li>To email the reports, set up email once. See &quot;Email setup&quot; below.</li>
+          </ol>
+          <Shot name="perf-imports" caption="The Imports tab, with a card for each export" />
+
+          <h3>Where to get each file</h3>
+          <p>
+            All ten are downloaded from Amazon&apos;s websites for delivery partners. Ask your
+            manager if you are not sure where. Save each one into its own folder.
+          </p>
+          <PerfExportList />
+
+          <h3>Every week, step by step</h3>
+          <ol className="help-steps">
+            <li>Download the new week&apos;s files and save each one into its folder.</li>
+            <li>
+              On the <strong>Imports</strong> tab, click <strong>Sync now</strong>. The app brings
+              in every file it has not seen before and says what it brought in. Leave{' '}
+              <strong>Bring in new files each time the app opens</strong> on, and it does this by
+              itself. You can also drop files, or a whole folder, on the tab.
+            </li>
+            <li>
+              Open {go('dashboard', 'Dashboard')}. The tiles show the average score, the tiers,
+              packages and safety. <strong>Who needs a word</strong> lists drivers to coach, and{' '}
+              <strong>ID expiry</strong> lists IDs that run out soon. Click{' '}
+              <strong>How is this worked out?</strong> to see the rule behind a number.
+            </li>
+            <li>
+              To check a driver, open the <strong>Drivers</strong> tab. Pick the weeks at the top.
+              Double-click a driver to open their report. Click a red safety number to see the
+              events. Next to the weeks, <strong>What changed since last week</strong> counts who
+              moved tier and who had new safety events. Click a count to see the names, and click a
+              name to jump to that driver.
+            </li>
+            <li>
+              Right-click a driver and choose <strong>Explain this score</strong> to see the points
+              each metric lost. Pick another week at the top, or click a bar in the chart.
+            </li>
+            <li>
+              Want to see the reports first? On the <strong>Reports</strong> tab,{' '}
+              <strong>Preview a driver</strong> shows each driver&apos;s report. You can change the
+              report colours there too. The sample page has <strong>Fit width</strong>,{' '}
+              <strong>100%</strong> and zoom buttons.
+            </li>
+            <li>
+              On the <strong>Drivers</strong> tab, tick the drivers (or click{' '}
+              <strong>Select all shown</strong>). Click <strong>Generate for selected</strong> to
+              save their PDF reports in a folder you choose. The app counts up as it makes them.
+              When it is done, click <strong>Show in folder</strong> to open that folder.
+            </li>
+            <li>
+              Click <strong>Email selected</strong> to email each one their report, or{' '}
+              <strong>Email everyone shown</strong> for every driver in the list. The app first
+              shows who would get what, and who has no email address. Nothing is sent until you say
+              yes. While it sends, it counts up: &quot;Emailing 3 of 12...&quot;.
+            </li>
+          </ol>
+          <Shot name="dashboard" caption="The Dashboard with made-up weekly data" />
+          <Shot name="perf-drivers" caption="The Drivers tab with made-up drivers" />
+          <Shot name="perf-reports" caption="The Reports tab: colours and a preview" />
+
+          <h3>Email setup</h3>
+          <ol className="help-steps">
+            <li>
+              The reports are sent from a Gmail address. Gmail needs an{' '}
+              <strong>App password</strong> for this: a special password, not your usual one.
+            </li>
+            <li>
+              Sign in to your Google Account. Turn on <strong>2-Step Verification</strong>. Then
+              search for <strong>App passwords</strong>, make one called &quot;Loadout
+              Builder&quot;, and copy the 16 letters.
+            </li>
+            <li>
+              In {go('settings', 'Settings')}, under <strong>Weekly performance</strong>, fill in{' '}
+              <strong>Send from</strong> and click <strong>Save email settings</strong>. Paste the
+              app password and click <strong>Save password</strong>.
+            </li>
+            <li>
+              The computer keeps the password locked away. The app never shows it again, and it is
+              never written into a file you can read.
+            </li>
+            <li>
+              Click <strong>Send test email</strong> to check it works.
+            </li>
+          </ol>
+
+          <h3>The check file</h3>
+          <p>
+            <strong>Export selected</strong> and <strong>Export shown</strong> on the{' '}
+            <strong>Drivers</strong> tab save a check file: a spreadsheet of every number the app
+            read, for the ticked or shown drivers. Open it to compare the app&apos;s numbers with
+            the scorecard, or to check a driver&apos;s numbers by hand. Click{' '}
+            <strong>Show in folder</strong> after it is saved to see the file.
+          </p>
+        </>
+      ),
+    },
+    {
       id: 'colors',
       title: 'What the colours mean',
       body: (
@@ -431,6 +599,10 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
               hides itself once they are all done.
             </li>
             <li>
+              The <strong>weekly checklist</strong> on Home shows the five steps of the weekly
+              performance reports. It hides itself too once they are all done.
+            </li>
+            <li>
               Each page has a short <strong>tour</strong> that shows its buttons. It runs the first
               time you open the page. Click <strong>Help</strong> at the top of the window, then{' '}
               <strong>Take the tour of this page</strong>, to see it again.
@@ -447,6 +619,16 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
             >
               <ListChecks aria-hidden="true" />
               Show the checklist again
+            </Button>
+            <Button
+              data-testid="show-weekly-checklist-again"
+              onClick={() => {
+                help.showWeekly();
+                goTo('home');
+              }}
+            >
+              <ListChecks aria-hidden="true" />
+              Show the weekly checklist again
             </Button>
             <Button
               data-testid="tour-home-again"
@@ -506,7 +688,8 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
     <section className="page" data-page="how-to-use" aria-labelledby="title-how-to-use">
       <h1 id="title-how-to-use">How to use</h1>
       <p className="lede">
-        Everything you need for a normal day, and what to do when something goes wrong.
+        Everything you need for a normal day and the weekly reports, and what to do when something
+        goes wrong.
       </p>
 
       <nav className="help-jump" aria-label="Jump to a part of this page">
