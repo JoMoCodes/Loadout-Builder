@@ -1,0 +1,686 @@
+{
+  "flags": [
+    {
+      "latestScore": 93.58,
+      "latestScoreDisplay": "93.6",
+      "latestTier": "Gold",
+      "latestWeek": "2026-W40",
+      "name": "Archer Gresham",
+      "reasons": [
+        "Dropped from Platinum to Gold",
+        "Score declined 3 weeks running (100.0 -> 93.6)"
+      ],
+      "reasonsDisplay": "Dropped from Platinum to Gold; Score declined 3 weeks running (100.0 -> 93.6)",
+      "severity": "High",
+      "topDragDisplay": "DCR (score 39, weight 10.5)",
+      "topDragMetric": "DCR",
+      "topDragScore": 39.02,
+      "topDragTier": "Silver",
+      "topDragWeight": 10.5,
+      "transporterId": "A02V4L9HIELIDL"
+    },
+    {
+      "latestScore": 76.36,
+      "latestScoreDisplay": "76.4",
+      "latestTier": "Bronze",
+      "latestWeek": "2026-W40",
+      "name": "Desmond Marisol Penrose",
+      "reasons": [
+        "Currently Bronze (2026-W40)",
+        "Dropped from Platinum to Bronze"
+      ],
+      "reasonsDisplay": "Currently Bronze (2026-W40); Dropped from Platinum to Bronze",
+      "severity": "High",
+      "topDragDisplay": "Speeding Event Rate (score 0, weight 11.6)",
+      "topDragMetric": "Speeding Event Rate",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 11.6,
+      "transporterId": "A05QUB9XOW4NT1"
+    },
+    {
+      "latestScore": 95.07,
+      "latestScoreDisplay": "95.1",
+      "latestTier": "Platinum",
+      "latestWeek": "2026-W37",
+      "name": "Carmen Josie Rutherford",
+      "reasons": [
+        "Score declined 3 weeks running (98.2 -> 95.1)"
+      ],
+      "reasonsDisplay": "Score declined 3 weeks running (98.2 -> 95.1)",
+      "severity": "Watch",
+      "topDragDisplay": "CDF DPMO (score 42, weight 7.4)",
+      "topDragMetric": "CDF DPMO",
+      "topDragScore": 41.55,
+      "topDragTier": "Silver",
+      "topDragWeight": 7.4,
+      "transporterId": "A0EPR3KZOJDR3R"
+    },
+    {
+      "latestScore": 82.11,
+      "latestScoreDisplay": "82.1",
+      "latestTier": "Silver",
+      "latestWeek": "2026-W40",
+      "name": "Zachary Bennett Fenwick",
+      "reasons": [
+        "Dropped from Gold to Silver"
+      ],
+      "reasonsDisplay": "Dropped from Gold to Silver",
+      "severity": "High",
+      "topDragDisplay": "DCR (score 0, weight 10.5)",
+      "topDragMetric": "DCR",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 10.5,
+      "transporterId": "A0YNMDE9L3T77O"
+    },
+    {
+      "latestScore": 32.71,
+      "latestScoreDisplay": "32.7",
+      "latestTier": "Bronze",
+      "latestWeek": "2026-W40",
+      "name": "Amelia Aaron Blackwell",
+      "reasons": [
+        "Currently Bronze (2026-W40)",
+        "Score declined 3 weeks running (89.9 -> 32.7)",
+        "POD: Package Too Close in 3 consecutive weeks"
+      ],
+      "reasonsDisplay": "Currently Bronze (2026-W40); Score declined 3 weeks running (89.9 -> 32.7); POD: Package Too Close in 3 consecutive weeks",
+      "severity": "High",
+      "topDragDisplay": "Speeding Event Rate (score 0, weight 11.6)",
+      "topDragMetric": "Speeding Event Rate",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 11.6,
+      "transporterId": "A1E3ZUFIX1EXA5"
+    },
+    {
+      "latestScore": 97,
+      "latestScoreDisplay": "97.0",
+      "latestTier": "Platinum",
+      "latestWeek": "2026-W40",
+      "name": "Cleo Silas Jessup",
+      "reasons": [
+        "POD: Blurry Photo in 3 consecutive weeks",
+        "POD: Package Too Close in 3 consecutive weeks"
+      ],
+      "reasonsDisplay": "POD: Blurry Photo in 3 consecutive weeks; POD: Package Too Close in 3 consecutive weeks",
+      "severity": "Watch",
+      "topDragDisplay": "POD (score 0, weight 3)",
+      "topDragMetric": "POD",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 3,
+      "transporterId": "A1VWFCFWNQJ1VP"
+    },
+    {
+      "latestScore": 85.41,
+      "latestScoreDisplay": "85.4",
+      "latestTier": "Silver",
+      "latestWeek": "2026-W40",
+      "name": "Gabriel Amelia Wakefield",
+      "reasons": [
+        "Score declined 3 weeks running (97.0 -> 85.4)"
+      ],
+      "reasonsDisplay": "Score declined 3 weeks running (97.0 -> 85.4)",
+      "severity": "Watch",
+      "topDragDisplay": "Distractions Rate (score 0, weight 11.6)",
+      "topDragMetric": "Distractions Rate",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 11.6,
+      "transporterId": "A2FR62CAJH6D17"
+    },
+    {
+      "latestScore": 77.12,
+      "latestScoreDisplay": "77.1",
+      "latestTier": "Bronze",
+      "latestWeek": "2026-W40",
+      "name": "Vance Amelia Whitaker",
+      "reasons": [
+        "Currently Bronze (2026-W40)",
+        "Dropped from Silver to Bronze",
+        "Score declined 3 weeks running (90.0 -> 77.1)"
+      ],
+      "reasonsDisplay": "Currently Bronze (2026-W40); Dropped from Silver to Bronze; Score declined 3 weeks running (90.0 -> 77.1)",
+      "severity": "High",
+      "topDragDisplay": "Speeding Event Rate (score 0, weight 11.6)",
+      "topDragMetric": "Speeding Event Rate",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 11.6,
+      "transporterId": "A2XX9DS9WCNFP"
+    },
+    {
+      "latestScore": 97.8,
+      "latestScoreDisplay": "97.8",
+      "latestTier": "Platinum",
+      "latestWeek": "2026-W40",
+      "name": "Lachlan Nadine Gresham",
+      "reasons": [
+        "POD: Photo Too Dark in 3 consecutive weeks"
+      ],
+      "reasonsDisplay": "POD: Photo Too Dark in 3 consecutive weeks",
+      "severity": "Watch",
+      "topDragDisplay": "POD (score 30, weight 3.2)",
+      "topDragMetric": "POD",
+      "topDragScore": 30.45,
+      "topDragTier": "Silver",
+      "topDragWeight": 3.2,
+      "transporterId": "A3BZ6NSPPU3UOM"
+    },
+    {
+      "latestScore": 86.32,
+      "latestScoreDisplay": "86.3",
+      "latestTier": "Silver",
+      "latestWeek": "2026-W34",
+      "name": "Vera Caleb Westbrook",
+      "reasons": [
+        "Dropped from Gold to Silver",
+        "Score declined 3 weeks running (92.6 -> 86.3)"
+      ],
+      "reasonsDisplay": "Dropped from Gold to Silver; Score declined 3 weeks running (92.6 -> 86.3)",
+      "severity": "High",
+      "topDragDisplay": "DSB (score 0, weight 10.5)",
+      "topDragMetric": "DSB",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 10.5,
+      "transporterId": "A3KL6D5G578RU5"
+    },
+    {
+      "latestScore": 72,
+      "latestScoreDisplay": "72.0",
+      "latestTier": "Bronze",
+      "latestWeek": "2026-W40",
+      "name": "Abigail Damian Gresham",
+      "reasons": [
+        "Currently Bronze (2026-W40)"
+      ],
+      "reasonsDisplay": "Currently Bronze (2026-W40)",
+      "severity": "High",
+      "topDragDisplay": "Distractions Rate (score 0, weight 11)",
+      "topDragMetric": "Distractions Rate",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 11,
+      "transporterId": "A4BAES7NSZGO8A"
+    },
+    {
+      "latestScore": 81.05,
+      "latestScoreDisplay": "81.1",
+      "latestTier": "Silver",
+      "latestWeek": "2026-W40",
+      "name": "Tabitha Aubrey Danforth",
+      "reasons": [
+        "Dropped from Platinum to Silver"
+      ],
+      "reasonsDisplay": "Dropped from Platinum to Silver",
+      "severity": "High",
+      "topDragDisplay": "Speeding Event Rate (score 0, weight 11.6)",
+      "topDragMetric": "Speeding Event Rate",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 11.6,
+      "transporterId": "A4OOIRHER4999G"
+    },
+    {
+      "latestScore": 80.55,
+      "latestScoreDisplay": "80.6",
+      "latestTier": "Silver",
+      "latestWeek": "2026-W33",
+      "name": "Soren Lucinda Eldridge",
+      "reasons": [
+        "Dropped from Platinum to Silver",
+        "Score declined 3 weeks running (100.0 -> 80.6)"
+      ],
+      "reasonsDisplay": "Dropped from Platinum to Silver; Score declined 3 weeks running (100.0 -> 80.6)",
+      "severity": "High",
+      "topDragDisplay": "CDF DPMO (score 0, weight 17.5)",
+      "topDragMetric": "CDF DPMO",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 17.5,
+      "transporterId": "A5EAH4MAY2518C"
+    },
+    {
+      "latestScore": 88.29,
+      "latestScoreDisplay": "88.3",
+      "latestTier": "Gold",
+      "latestWeek": "2026-W37",
+      "name": "Sawyer Lucinda Montrose",
+      "reasons": [
+        "POD: Other in 3 consecutive weeks"
+      ],
+      "reasonsDisplay": "POD: Other in 3 consecutive weeks",
+      "severity": "Watch",
+      "topDragDisplay": "DSB (score 0, weight 10.5)",
+      "topDragMetric": "DSB",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 10.5,
+      "transporterId": "A5G76PFZI2Z0SN"
+    },
+    {
+      "latestScore": 87.04,
+      "latestScoreDisplay": "87.0",
+      "latestTier": "Silver",
+      "latestWeek": "2026-W40",
+      "name": "Cecil Julian Radcliffe",
+      "reasons": [
+        "Dropped from Gold to Silver"
+      ],
+      "reasonsDisplay": "Dropped from Gold to Silver",
+      "severity": "High",
+      "topDragDisplay": "DSB (score 0, weight 10.5)",
+      "topDragMetric": "DSB",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 10.5,
+      "transporterId": "A5QUGQSG9YPHDA"
+    },
+    {
+      "latestScore": 90.55,
+      "latestScoreDisplay": "90.6",
+      "latestTier": "Gold",
+      "latestWeek": "2026-W40",
+      "name": "Rowan Clemmons",
+      "reasons": [
+        "Dropped from Platinum to Gold",
+        "POD: No Package Detected in 3 consecutive weeks",
+        "POD: Package Not Clearly Visible in 3 consecutive weeks"
+      ],
+      "reasonsDisplay": "Dropped from Platinum to Gold; POD: No Package Detected in 3 consecutive weeks; POD: Package Not Clearly Visible in 3 consecutive weeks",
+      "severity": "High",
+      "topDragDisplay": "DCR (score 40, weight 10.5)",
+      "topDragMetric": "DCR",
+      "topDragScore": 40.19,
+      "topDragTier": "Silver",
+      "topDragWeight": 10.5,
+      "transporterId": "A5Y27B4RIW02AU"
+    },
+    {
+      "latestScore": 76.99,
+      "latestScoreDisplay": "77.0",
+      "latestTier": "Bronze",
+      "latestWeek": "2026-W40",
+      "name": "Andre Zachary Tennyson",
+      "reasons": [
+        "Currently Bronze (2026-W40)",
+        "Dropped from Gold to Bronze"
+      ],
+      "reasonsDisplay": "Currently Bronze (2026-W40); Dropped from Gold to Bronze",
+      "severity": "High",
+      "topDragDisplay": "Sign/Signal Violations Rate (score 0, weight 11.6)",
+      "topDragMetric": "Sign/Signal Violations Rate",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 11.6,
+      "transporterId": "A61CK7LGWH2XBP"
+    },
+    {
+      "latestScore": 87,
+      "latestScoreDisplay": "87.0",
+      "latestTier": "Silver",
+      "latestWeek": "2026-W40",
+      "name": "Julian Nell Whitaker",
+      "reasons": [
+        "Dropped from Gold to Silver",
+        "POD: Blurry Photo in 3 consecutive weeks",
+        "POD: Package Too Close in 3 consecutive weeks",
+        "POD: Photo Too Dark in 3 consecutive weeks"
+      ],
+      "reasonsDisplay": "Dropped from Gold to Silver; POD: Blurry Photo in 3 consecutive weeks; POD: Package Too Close in 3 consecutive weeks; POD: Photo Too Dark in 3 consecutive weeks",
+      "severity": "High",
+      "topDragDisplay": "DCR (score 0, weight 10)",
+      "topDragMetric": "DCR",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 10,
+      "transporterId": "A666USAV8IY3UQ"
+    },
+    {
+      "latestScore": 84.96,
+      "latestScoreDisplay": "85.0",
+      "latestTier": "Silver",
+      "latestWeek": "2026-W40",
+      "name": "Marisol Greta Halloran",
+      "reasons": [
+        "Dropped from Platinum to Silver"
+      ],
+      "reasonsDisplay": "Dropped from Platinum to Silver",
+      "severity": "High",
+      "topDragDisplay": "CDF DPMO (score 0, weight 7.4)",
+      "topDragMetric": "CDF DPMO",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 7.4,
+      "transporterId": "A6G2H6H7CL30A4"
+    },
+    {
+      "latestScore": 90.86,
+      "latestScoreDisplay": "90.9",
+      "latestTier": "Gold",
+      "latestWeek": "2026-W40",
+      "name": "Ximena Orson Darrow",
+      "reasons": [
+        "Dropped from Platinum to Gold"
+      ],
+      "reasonsDisplay": "Dropped from Platinum to Gold",
+      "severity": "High",
+      "topDragDisplay": "DCR (score 39, weight 10)",
+      "topDragMetric": "DCR",
+      "topDragScore": 38.65,
+      "topDragTier": "Silver",
+      "topDragWeight": 10,
+      "transporterId": "A6XJ3V2PRYY75N"
+    },
+    {
+      "latestScore": 72.94,
+      "latestScoreDisplay": "72.9",
+      "latestTier": "Bronze",
+      "latestWeek": "2026-W40",
+      "name": "Barrett Kendra Chesterfield",
+      "reasons": [
+        "Currently Bronze (2026-W40)",
+        "Dropped from Silver to Bronze",
+        "Score declined 3 weeks running (87.3 -> 72.9)",
+        "POD: No Package Detected in 3 consecutive weeks"
+      ],
+      "reasonsDisplay": "Currently Bronze (2026-W40); Dropped from Silver to Bronze; Score declined 3 weeks running (87.3 -> 72.9); POD: No Package Detected in 3 consecutive weeks",
+      "severity": "High",
+      "topDragDisplay": "DSB (score 0, weight 10.5)",
+      "topDragMetric": "DSB",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 10.5,
+      "transporterId": "A7CUH5Y0VWYL2V"
+    },
+    {
+      "latestScore": 96.77,
+      "latestScoreDisplay": "96.8",
+      "latestTier": "Platinum",
+      "latestWeek": "2026-W40",
+      "name": "Caleb Jenna Greaves",
+      "reasons": [
+        "POD: No Package Detected in 3 consecutive weeks"
+      ],
+      "reasonsDisplay": "POD: No Package Detected in 3 consecutive weeks",
+      "severity": "Watch",
+      "topDragDisplay": "DCR (score 76, weight 10.5)",
+      "topDragMetric": "DCR",
+      "topDragScore": 76.15,
+      "topDragTier": "Platinum",
+      "topDragWeight": 10.5,
+      "transporterId": "A7H54T4FG2O3NX"
+    },
+    {
+      "latestScore": 82.93,
+      "latestScoreDisplay": "82.9",
+      "latestTier": "Silver",
+      "latestWeek": "2026-W40",
+      "name": "Dominic Nolan Caldwell",
+      "reasons": [
+        "Dropped from Platinum to Silver"
+      ],
+      "reasonsDisplay": "Dropped from Platinum to Silver",
+      "severity": "High",
+      "topDragDisplay": "DSB (score 0, weight 10.5)",
+      "topDragMetric": "DSB",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 10.5,
+      "transporterId": "A7MIENEP388QBI"
+    },
+    {
+      "latestScore": 52.31,
+      "latestScoreDisplay": "52.3",
+      "latestTier": "Bronze",
+      "latestWeek": "2026-W40",
+      "name": "Emmett Ines Huxley",
+      "reasons": [
+        "Currently Bronze (2026-W40)",
+        "Dropped from Silver to Bronze",
+        "POD: No Package Detected in 3 consecutive weeks",
+        "CDF: Delivered to Wrong Address in 3 consecutive weeks",
+        "DSB: Incorrect Scan Usage - Attended Delivery in 3 consecutive weeks"
+      ],
+      "reasonsDisplay": "Currently Bronze (2026-W40); Dropped from Silver to Bronze; POD: No Package Detected in 3 consecutive weeks; CDF: Delivered to Wrong Address in 3 consecutive weeks; DSB: Incorrect Scan Usage - Attended Delivery in 3 consecutive weeks",
+      "severity": "High",
+      "topDragDisplay": "Speeding Event Rate (score 0, weight 11.6)",
+      "topDragMetric": "Speeding Event Rate",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 11.6,
+      "transporterId": "A8M3J46P8HG6FK"
+    },
+    {
+      "latestScore": 83.39,
+      "latestScoreDisplay": "83.4",
+      "latestTier": "Silver",
+      "latestWeek": "2026-W40",
+      "name": "Miriam Blaine Ormsby",
+      "reasons": [
+        "Dropped from Platinum to Silver"
+      ],
+      "reasonsDisplay": "Dropped from Platinum to Silver",
+      "severity": "High",
+      "topDragDisplay": "Speeding Event Rate (score 0, weight 11.6)",
+      "topDragMetric": "Speeding Event Rate",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 11.6,
+      "transporterId": "A8ZXXQV6MFYBMG"
+    },
+    {
+      "latestScore": 91.19,
+      "latestScoreDisplay": "91.2",
+      "latestTier": "Gold",
+      "latestWeek": "2026-W40",
+      "name": "Micah Lena Sutherland",
+      "reasons": [
+        "Dropped from Platinum to Gold",
+        "POD: No Package Detected in 3 consecutive weeks"
+      ],
+      "reasonsDisplay": "Dropped from Platinum to Gold; POD: No Package Detected in 3 consecutive weeks",
+      "severity": "High",
+      "topDragDisplay": "POD (score 0, weight 3.2)",
+      "topDragMetric": "POD",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 3.2,
+      "transporterId": "A9BWT96GHSITJO"
+    },
+    {
+      "latestScore": 86.14,
+      "latestScoreDisplay": "86.1",
+      "latestTier": "Silver",
+      "latestWeek": "2026-W40",
+      "name": "Selena Colbrook",
+      "reasons": [
+        "Dropped from Platinum to Silver",
+        "POD: Package Too Close in 3 consecutive weeks",
+        "POD: Photo Too Dark in 3 consecutive weeks"
+      ],
+      "reasonsDisplay": "Dropped from Platinum to Silver; POD: Package Too Close in 3 consecutive weeks; POD: Photo Too Dark in 3 consecutive weeks",
+      "severity": "High",
+      "topDragDisplay": "CDF DPMO (score 25, weight 7.4)",
+      "topDragMetric": "CDF DPMO",
+      "topDragScore": 25.4,
+      "topDragTier": "Silver",
+      "topDragWeight": 7.4,
+      "transporterId": "A9I26MDOUT0B0F"
+    },
+    {
+      "latestScore": 77.52,
+      "latestScoreDisplay": "77.5",
+      "latestTier": "Bronze",
+      "latestWeek": "2026-W40",
+      "name": "Emmett Lucinda Oswald",
+      "reasons": [
+        "Currently Bronze (2026-W40)",
+        "Dropped from Silver to Bronze",
+        "CDF: Delivered to Wrong Address in 3 consecutive weeks"
+      ],
+      "reasonsDisplay": "Currently Bronze (2026-W40); Dropped from Silver to Bronze; CDF: Delivered to Wrong Address in 3 consecutive weeks",
+      "severity": "High",
+      "topDragDisplay": "Speeding Event Rate (score 0, weight 11.6)",
+      "topDragMetric": "Speeding Event Rate",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 11.6,
+      "transporterId": "A9INK8J4CTEVZJ"
+    },
+    {
+      "latestScore": 88.42,
+      "latestScoreDisplay": "88.4",
+      "latestTier": "Gold",
+      "latestWeek": "2026-W40",
+      "name": "Elodie Rowan Fenwick",
+      "reasons": [
+        "Dropped from Platinum to Gold"
+      ],
+      "reasonsDisplay": "Dropped from Platinum to Gold",
+      "severity": "High",
+      "topDragDisplay": "Sign/Signal Violations Rate (score 0, weight 11.6)",
+      "topDragMetric": "Sign/Signal Violations Rate",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 11.6,
+      "transporterId": "A9OFHCBU4713NB"
+    },
+    {
+      "latestScore": 97.96,
+      "latestScoreDisplay": "98.0",
+      "latestTier": "Platinum",
+      "latestWeek": "2026-W40",
+      "name": "Camila Tristan Wolcott",
+      "reasons": [
+        "CDF: Delivered to Wrong Address in 3 consecutive weeks"
+      ],
+      "reasonsDisplay": "CDF: Delivered to Wrong Address in 3 consecutive weeks",
+      "severity": "Watch",
+      "topDragDisplay": "CDF DPMO (score 71, weight 7)",
+      "topDragMetric": "CDF DPMO",
+      "topDragScore": 70.88,
+      "topDragTier": "Gold",
+      "topDragWeight": 7,
+      "transporterId": "A9RS0YQEZ51GBA"
+    },
+    {
+      "latestScore": 78.95,
+      "latestScoreDisplay": "79.0",
+      "latestTier": "Silver",
+      "latestWeek": "2026-W39",
+      "name": "Hadley Amelia Abernathy",
+      "reasons": [
+        "Dropped from Platinum to Silver"
+      ],
+      "reasonsDisplay": "Dropped from Platinum to Silver",
+      "severity": "High",
+      "topDragDisplay": "DCR (score 0, weight 10.5)",
+      "topDragMetric": "DCR",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 10.5,
+      "transporterId": "A9WAEP6HQ8GUBB"
+    },
+    {
+      "latestScore": 82.11,
+      "latestScoreDisplay": "82.1",
+      "latestTier": "Silver",
+      "latestWeek": "2026-W40",
+      "name": "Dominic Elias Marlowe",
+      "reasons": [
+        "Dropped from Platinum to Silver"
+      ],
+      "reasonsDisplay": "Dropped from Platinum to Silver",
+      "severity": "High",
+      "topDragDisplay": "DCR (score 0, weight 10.5)",
+      "topDragMetric": "DCR",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 10.5,
+      "transporterId": "AFR9AV1XMUQIX"
+    },
+    {
+      "latestScore": 88.42,
+      "latestScoreDisplay": "88.4",
+      "latestTier": "Gold",
+      "latestWeek": "2026-W39",
+      "name": "Nolan Montrose",
+      "reasons": [
+        "Dropped from Platinum to Gold"
+      ],
+      "reasonsDisplay": "Dropped from Platinum to Gold",
+      "severity": "High",
+      "topDragDisplay": "Speeding Event Rate (score 0, weight 11.6)",
+      "topDragMetric": "Speeding Event Rate",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 11.6,
+      "transporterId": "AIJ5WFU9WQ3CQ"
+    },
+    {
+      "latestScore": 95.13,
+      "latestScoreDisplay": "95.1",
+      "latestTier": "Platinum",
+      "latestWeek": "2026-W40",
+      "name": "Zelda Oakley",
+      "reasons": [
+        "POD: Blurry Photo in 3 consecutive weeks"
+      ],
+      "reasonsDisplay": "POD: Blurry Photo in 3 consecutive weeks",
+      "severity": "Watch",
+      "topDragDisplay": "CDF DPMO (score 53, weight 7.4)",
+      "topDragMetric": "CDF DPMO",
+      "topDragScore": 52.54,
+      "topDragTier": "Gold",
+      "topDragWeight": 7.4,
+      "transporterId": "AL90S1HKKSEQK"
+    },
+    {
+      "latestScore": 93.68,
+      "latestScoreDisplay": "93.7",
+      "latestTier": "Gold",
+      "latestWeek": "2026-W40",
+      "name": "Archer Abigail Dalloway",
+      "reasons": [
+        "Dropped from Platinum to Gold",
+        "Score declined 3 weeks running (100.0 -> 93.7)"
+      ],
+      "reasonsDisplay": "Dropped from Platinum to Gold; Score declined 3 weeks running (100.0 -> 93.7)",
+      "severity": "High",
+      "topDragDisplay": "DCR (score 57, weight 10.5)",
+      "topDragMetric": "DCR",
+      "topDragScore": 56.9,
+      "topDragTier": "Gold",
+      "topDragWeight": 10.5,
+      "transporterId": "AV1K9DA46OOAC"
+    },
+    {
+      "latestScore": 77.03,
+      "latestScoreDisplay": "77.0",
+      "latestTier": "Bronze",
+      "latestWeek": "2026-W36",
+      "name": "Mason Ximena Marlowe",
+      "reasons": [
+        "Currently Bronze (2026-W36)",
+        "Dropped from Silver to Bronze",
+        "Score declined 3 weeks running (94.1 -> 77.0)"
+      ],
+      "reasonsDisplay": "Currently Bronze (2026-W36); Dropped from Silver to Bronze; Score declined 3 weeks running (94.1 -> 77.0)",
+      "severity": "High",
+      "topDragDisplay": "DCR (score 0, weight 10.5)",
+      "topDragMetric": "DCR",
+      "topDragScore": 0,
+      "topDragTier": "Bronze",
+      "topDragWeight": 10.5,
+      "transporterId": "AWCMV469J9L4X"
+    }
+  ],
+  "settings": {
+    "atRiskDecliningWeeks": 3,
+    "recurringCategoryWeeks": 3
+  }
+}

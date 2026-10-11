@@ -22,6 +22,7 @@
     "format": "prettier --write .",
     "scan": "node scripts/privacy-scan.mjs",
     "fixtures": "node packages/fixtures/anonymise.mjs",
+    "fixtures:performance": "node packages/fixtures/anonymise-performance.mjs",
     "parity:python": "python3 -I scripts/parity/python_dump.py",
     "parity:ts": "tsx scripts/parity/ts/dump.ts",
     "parity:diff": "node scripts/parity/diff.mjs"

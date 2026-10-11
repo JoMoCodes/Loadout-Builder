@@ -26,6 +26,8 @@ const ROUTE_DATA = '[data-page="route-data"]';
 const VEHICLE_DATA = '[data-page="vehicle-data"]';
 const ASSOCIATES = '[data-page="associates"]';
 const SETTINGS = '[data-page="settings"]';
+const PERF = '[data-page="performance"]';
+const DASHBOARD = '[data-page="dashboard"]';
 
 export const TOURS: Record<string, Tour> = {
   home: {
@@ -48,6 +50,12 @@ export const TOURS: Record<string, Tour> = {
         element: '[data-testid="first-run-checklist"] [data-step-current="true"] [data-step-do]',
         title: 'Do the next step',
         text: 'This button takes you to the right page and starts the step. The ? next to it shows where to get the file.',
+        side: 'left',
+      },
+      {
+        element: '[data-testid="weekly-checklist"]',
+        title: 'Your weekly performance',
+        text: 'Once a week, this list walks you through the scorecards and the driver reports, step by step.',
         side: 'left',
       },
       {
@@ -323,6 +331,183 @@ export const TOURS: Record<string, Tour> = {
     ],
   },
 
+  'performance-drivers': {
+    name: 'performance-drivers',
+    label: 'Performance: Drivers tab',
+    steps: [
+      {
+        element: `${PERF} [role="tablist"]`,
+        title: 'Four tabs',
+        text: 'Drivers lists everyone and makes the reports. Reports sets how they look. Directory has phone numbers and emails. Imports brings in the weekly files.',
+        side: 'bottom',
+      },
+      {
+        element: `${PERF} [data-testid="perf-week-range"]`,
+        title: 'Pick the weeks',
+        text: 'The scores and the reports cover these weeks. Click a quick pick, or choose the first and last week.',
+        side: 'bottom',
+      },
+      {
+        element: `${PERF} [role="group"][aria-label="Show only"]`,
+        title: 'Narrow the list',
+        text: 'Show only active drivers, one tier, or the drivers with a scorecard in these weeks.',
+        side: 'bottom',
+      },
+      {
+        element: `${PERF} [data-testid="data-grid"]`,
+        title: 'Check a driver',
+        text: 'Double-click a driver to open their report. Click a red safety number to see the events. Tick drivers in the first column to act on them.',
+        side: 'top',
+      },
+      {
+        element: `${PERF} [data-testid="perf-generate-selected"]`,
+        title: 'Make the reports',
+        text: 'Generate for selected saves one PDF for each ticked driver, in a folder you choose.',
+        side: 'bottom',
+      },
+      {
+        element: `${PERF} [data-testid="perf-email-selected"]`,
+        title: 'Email the reports',
+        text: 'Email selected sends each ticked driver their report. It shows who gets what first. Set up email once in Settings.',
+        side: 'bottom',
+      },
+    ],
+  },
+
+  'performance-reports': {
+    name: 'performance-reports',
+    label: 'Performance: Reports tab',
+    steps: [
+      {
+        element: `${PERF} [data-testid="perf-use-colour"]`,
+        title: 'Colour or black and white',
+        text: 'Turn colour off for reports that print well on any printer.',
+        side: 'right',
+      },
+      {
+        element: `${PERF} [data-testid="perf-save-colours"]`,
+        title: 'Keep your colours',
+        text: 'Change the colours, look at the sample, then click Save colours. Reset puts the old colours back.',
+        side: 'top',
+      },
+      {
+        element: `${PERF} [data-testid="perf-driver-preview"]`,
+        title: 'Preview a driver',
+        text: "See a driver's report before you send it. The arrows go to the next driver on the Drivers tab.",
+        side: 'top',
+      },
+      {
+        element: `${PERF} [data-testid="perf-import-thresholds"]`,
+        title: 'The scorecard thresholds',
+        text: 'The numbers each tier needs. Bring in a new thresholds file when they change.',
+        side: 'top',
+      },
+    ],
+  },
+
+  'performance-directory': {
+    name: 'performance-directory',
+    label: 'Performance: Directory tab',
+    steps: [
+      {
+        element: `${PERF} [data-testid="data-grid"]`,
+        title: 'How to reach everyone',
+        text: 'Every driver on the driver list, with their email, phones and ID expiry date.',
+        side: 'top',
+      },
+      {
+        element: `${PERF} [aria-label="Search this table"]`,
+        title: 'Find someone',
+        text: 'Type a name, ID, email or phone number.',
+        side: 'bottom',
+      },
+      {
+        element: `${PERF} [data-testid="perf-copy-email"]`,
+        title: 'Copy their details',
+        text: 'Click a driver, then Copy email or Copy phone. Paste it where you need it.',
+        side: 'bottom',
+      },
+    ],
+  },
+
+  'performance-imports': {
+    name: 'performance-imports',
+    label: 'Performance: Imports tab',
+    steps: [
+      {
+        element: `${PERF} [data-testid="perf-card-roster"]`,
+        title: 'One card for each file',
+        text: 'Each card says where its file comes from, which folder it is read from, and when it was last brought in.',
+        side: 'right',
+      },
+      {
+        element: `${PERF} [data-testid="perf-choose-scorecards"]`,
+        title: 'Choose each folder once',
+        text: 'Click Choose folder and pick the folder you save that kind of file in. The app brings in what is there.',
+        side: 'bottom',
+      },
+      {
+        element: `${PERF} [data-testid="perf-sync-now"]`,
+        title: 'Every week: Sync now',
+        text: 'Sync now brings in every new file from the folders you chose.',
+        side: 'bottom',
+      },
+      {
+        element: `${PERF} label:has([data-testid="perf-auto-import"])`,
+        title: 'Or let it happen by itself',
+        text: 'Leave this on, and the app brings in new files each time it opens.',
+        side: 'bottom',
+      },
+      {
+        title: 'Drag and drop works too',
+        text: 'Drop files, or a whole folder, anywhere on this tab. The app works out which kind each file is from its name.',
+      },
+    ],
+  },
+
+  dashboard: {
+    name: 'dashboard',
+    label: 'Dashboard',
+    steps: [
+      {
+        element: `${DASHBOARD} [data-testid="dashboard-weekbar"]`,
+        title: 'Pick the weeks',
+        text: 'Everything on the Dashboard covers these weeks. Click a quick pick, or choose the first and last week.',
+        side: 'bottom',
+      },
+      {
+        element: `${DASHBOARD} [data-testid="tile-fleet"]`,
+        title: 'The week at a glance',
+        text: 'The tiles show the average score, the tiers, packages and safety, with the change from the week before.',
+        side: 'bottom',
+      },
+      {
+        element: `${DASHBOARD} [data-testid="dashboard-coaching"]`,
+        title: 'Who needs a word',
+        text: 'Drivers to coach, with the reasons. Click a driver to open them on the Performance page or preview their report.',
+        side: 'right',
+      },
+      {
+        element: `${DASHBOARD} [data-testid="dashboard-compliance"]`,
+        title: 'IDs that run out soon',
+        text: 'Drivers whose ID has run out, or runs out soon. Tell them before it does.',
+        side: 'left',
+      },
+      {
+        element: `${DASHBOARD} [data-testid="dashboard-coaching-explain"]`,
+        title: 'Where a number comes from',
+        text: 'Click How is this worked out? next to any number to see the rule behind it.',
+        side: 'bottom',
+      },
+      {
+        element: `${DASHBOARD} [data-testid="dashboard-go-imports"]`,
+        title: 'No scorecards yet?',
+        text: 'Bring in the weekly exports on the Performance page, Imports tab, and the Dashboard fills in.',
+        side: 'bottom',
+      },
+    ],
+  },
+
   settings: {
     name: 'settings',
     label: 'Settings',
@@ -355,16 +540,25 @@ export const TOURS: Record<string, Tour> = {
   },
 };
 
-/** The tour for what is on screen: the page, and on Load Out the open tab. Null if none. */
-export function tourNameFor(page: PageId, loadOutTab: string | null): string | null {
-  if (page === 'load-out') return `load-out-${loadOutTab ?? 'roster'}`;
-  return TOURS[page] ? page : null;
+/** The tour for what is on screen: the page, and on Load Out and Performance the open tab. */
+export function tourNameFor(page: PageId, openTab: string | null): string | null {
+  let name: string = page;
+  if (page === 'load-out') name = `load-out-${openTab ?? 'roster'}`;
+  else if (page === 'performance') name = `performance-${openTab ?? 'drivers'}`;
+  return TOURS[name] ? name : null;
 }
 
 /** Reads which Load Out tab is open from the page itself. */
 export function openLoadOutTab(root: ParentNode = document): string | null {
   const tab = root.querySelector('[data-page="load-out"] [role="tab"][aria-selected="true"]');
   return tab?.getAttribute('data-tab-button') ?? null;
+}
+
+/** Reads which Performance tab is open from the page itself ("drivers", "imports"). */
+export function openPerformanceTab(root: ParentNode = document): string | null {
+  const tab = root.querySelector('[data-page="performance"] [role="tab"][aria-selected="true"]');
+  const id = tab?.getAttribute('id') ?? '';
+  return id.startsWith('performance-tab-') ? id.slice('performance-tab-'.length) : null;
 }
 
 /** Every tour name, for "See all the tours again" and for tests. */

@@ -24,6 +24,10 @@
 //   - the Features log lists the note for this version
 //   - the theme (light, dark, high contrast) and the text size (A-, A+, reset) change and stick
 //   - Settings: version, "Open data folder", and Demo mode (made-up data loads, then goes away)
+//   - weekly performance: demo mode holds the made-up weekly data; on the real data every kind
+//     of fixture export comes in through the real bridge (the folder window replaced), the
+//     Performance page shows the drivers, one report is generated and previewed as a real PDF,
+//     the check file has a row per scorecard, and the next start's auto-import finds nothing new
 //   - the window comes back at the size it was left at
 //   - nothing printed an error: not the page, not the main process
 //
@@ -41,7 +45,7 @@ import { _electron as electron } from '@playwright/test';
 import ExcelJS from 'exceljs';
 import { PDFDocument } from 'pdf-lib';
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -58,10 +62,12 @@ setTimeout(() => {
 
 const EXPECTED_PAGES = [
   'home',
+  'dashboard',
   'load-out',
   'route-data',
   'vehicle-data',
   'associates',
+  'performance',
   'previous-roster',
   'how-to-use',
   'features-log',
@@ -423,6 +429,23 @@ try {
     const title = await page.locator('[data-testid="roster-title"]').innerText();
     assert(/^Load Out - /.test(title), 'the roster title does not name the day');
     return `${rows} rows drawn`;
+  });
+
+  await check('demo mode holds the made-up weekly performance data', async () => {
+    // The POD reports are read after demo mode opens, so the weekly part fills in a moment later.
+    const perf = await until(
+      async () => {
+        const reply = await ask('state:snapshot');
+        return reply.ok && reply.value.performance.hasData ? reply.value.performance : null;
+      },
+      'the demo weekly performance data never arrived',
+      30_000,
+    );
+    assert(perf.drivers > 50, `only ${perf.drivers} drivers`);
+    assert(perf.weeks.length === 10, `${perf.weeks.length} weeks`);
+    const dash = await ask('performance:dashboard', { range: null });
+    assert(dash.ok && dash.value.hasData && dash.value.fleetAverage > 0, 'the Dashboard is empty');
+    return `${perf.drivers} drivers, ${perf.weeks.length} weeks`;
   });
 
   await check('the bridge offers exactly the declared channels', async () => {
@@ -960,6 +983,223 @@ try {
     return `${demoRows} demo rows gone`;
   });
 
+  // ---------------------------------------------------------------- weekly performance
+  const perfFixtures = join(root, '..', '..', 'packages', 'fixtures', 'performance');
+  const perfOut = mkdtempSync(join(tmpdir(), 'loadout-smoke-perf-'));
+  const PERF_KINDS = [
+    'roster',
+    'thresholds',
+    'scorecards',
+    'pod',
+    'cdf',
+    'dsb',
+    'psb',
+    'dcr',
+    'dcr-totals',
+    'safety',
+  ];
+  const perfPlace = (kind) => {
+    const folder = join(perfFixtures, kind);
+    if (kind !== 'roster' && kind !== 'thresholds') return folder;
+    const name = readdirSync(folder).find((n) => n.endsWith('.csv'));
+    return join(folder, name);
+  };
+  /** The next folder, file and save windows answer these, in order. */
+  const answerWindows = (open, save = []) =>
+    app.evaluate(
+      ({ dialog }, [opens, saves]) => {
+        dialog.showOpenDialog = async () => {
+          const next = opens.shift();
+          return next ? { canceled: false, filePaths: [next] } : { canceled: true, filePaths: [] };
+        };
+        dialog.showSaveDialog = async () => {
+          const next = saves.shift();
+          return next ? { canceled: false, filePath: next } : { canceled: true };
+        };
+      },
+      [open, save],
+    );
+  let perfRange = null;
+  let perfIds = [];
+  let perfNoScoreIds = [];
+
+  await check('every kind of weekly export comes in through the bridge', async () => {
+    await answerWindows(PERF_KINDS.map(perfPlace));
+    let rows = 0;
+    for (const kind of PERF_KINDS) {
+      const reply = await ask('performance:choose-and-import', { kind });
+      assert(reply.ok && reply.value, `${kind}: ${JSON.stringify(reply).slice(0, 120)}`);
+      assert(reply.value.problems.length === 0, `${kind}: ${reply.value.problems.length} problems`);
+      assert(reply.value.rows > 0, `${kind}: no rows`);
+      rows += reply.value.rows;
+    }
+    const snap = await ask('state:snapshot');
+    assert(snap.ok && snap.value.performance.drivers === 92, 'not 92 drivers in the snapshot');
+    assert(snap.value.performance.foldersChosen === 10, 'the folders were not remembered');
+    const onDisk = settingsOnDisk();
+    assert(onDisk.performanceFolders?.scorecards, 'the folders are not in the settings file');
+    const pageSettings = await ask('settings:get');
+    assert(!('performanceFolders' in pageSettings.value), 'the page was given the folders');
+    const cards = await ask('performance:import-cards');
+    assert(
+      cards.ok && cards.value.every((c) => c.folderName && !c.folderName.includes('/')),
+      'a card shows more than the folder name',
+    );
+    const view = await ask('performance:drivers', { range: null });
+    perfRange = view.value.range;
+    perfIds = view.value.rows.filter((r) => r.activeInRange).map((r) => r.transporterId);
+    perfNoScoreIds = view.value.rows.filter((r) => !r.activeInRange).map((r) => r.transporterId);
+    return `${rows} rows, ${perfIds.length} drivers with scores`;
+  });
+
+  await check('the Performance page shows the drivers', async () => {
+    await goTo(page, 'performance');
+    await page.waitForSelector('[data-page="performance"] [role="rowgroup"] [role="row"]', {
+      timeout: 10_000,
+    });
+    const rows = await page
+      .locator('[data-page="performance"] [role="rowgroup"] [role="row"]')
+      .count();
+    assert(rows > 5, `only ${rows} rows drawn`);
+    return `${rows} rows drawn`;
+  });
+
+  await check('a report is generated as a real PDF in the chosen folder', async () => {
+    assert(perfIds.length > 0, 'no drivers to make a report for');
+    await answerWindows([perfOut]);
+    // A driver with no scores in the weeks is skipped and counted, as the old app skipped them.
+    const reply = await ask('performance:generate', {
+      transporterIds: [...perfIds.slice(0, 1), ...perfNoScoreIds.slice(0, 1)],
+      range: perfRange,
+    });
+    assert(reply.ok, `generate: ${JSON.stringify(reply)}`);
+    assert(
+      reply.value.status === 'written' &&
+        reply.value.written === 1 &&
+        reply.value.skipped === Math.min(1, perfNoScoreIds.length),
+      JSON.stringify(reply.value),
+    );
+    const files = readdirSync(perfOut).filter((f) => f.endsWith('.pdf'));
+    assert(files.length === 1, `${files.length} PDFs written`);
+    const pdf = await PDFDocument.load(readFileSync(join(perfOut, files[0])));
+    assert(pdf.getPageCount() >= 2, `the report has ${pdf.getPageCount()} pages`);
+    return `${pdf.getPageCount()} pages`;
+  });
+
+  await check('making reports counts up for the page, ending on the total', async () => {
+    const ids = perfIds.slice(0, 3);
+    await answerWindows([perfOut]);
+    await page.evaluate(() => {
+      window.__progress = [];
+      window.__stopProgress?.();
+      window.__stopProgress = window.loadout.events['performance:progress']((p) =>
+        window.__progress.push(p),
+      );
+    });
+    const reply = await ask('performance:generate', { transporterIds: ids, range: perfRange });
+    assert(reply.ok && reply.value.written === ids.length, `generate: ${JSON.stringify(reply)}`);
+    const sent = await until(async () => {
+      const got = await page.evaluate(() => window.__progress.slice());
+      return got.at(-1)?.done === ids.length ? got : null;
+    }, 'the last count did not come');
+    assert(sent[0].done === 0 && sent.every((p) => p.job === 'generate'), JSON.stringify(sent));
+    assert(
+      sent.every((p, at) => p.total === ids.length && (at === 0 || p.done > sent[at - 1].done)),
+      'the counts did not go up',
+    );
+    await page.evaluate(() => window.__stopProgress());
+    return `${sent.length} counts`;
+  });
+
+  await check('Explain this score lists the metrics, the most points lost first', async () => {
+    const reply = await ask('performance:explain-score', {
+      transporterId: perfIds[0],
+      range: perfRange,
+    });
+    assert(reply.ok && reply.value, `explain: ${JSON.stringify(reply.ok ? 'none' : reply)}`);
+    const lost = reply.value.items.filter((i) => i.counted).map((i) => i.lost);
+    assert(lost.length > 0, 'no metric counted');
+    assert(
+      lost.every((value, at) => at === 0 || lost[at - 1] >= value),
+      'not sorted by points lost',
+    );
+    assert(reply.value.topDrag?.metric === reply.value.items[0].metric, 'top item is not the drag');
+    const weeks = reply.value.weeks ?? [];
+    assert(weeks.length > 0 && weeks.at(-1).week === reply.value.week, 'no week by week list');
+    return `${lost.length} metrics counted, ${weeks.length} weeks`;
+  });
+
+  await check('Preview PDF writes the report and opens it', async () => {
+    await app.evaluate(({ shell }) => {
+      globalThis.__opened = [];
+      shell.openPath = async (target) => {
+        globalThis.__opened.push(target);
+        return '';
+      };
+    });
+    const reply = await ask('performance:preview-pdf', {
+      transporterId: perfIds[0],
+      range: perfRange,
+    });
+    assert(reply.ok && reply.value.opened, `preview: ${JSON.stringify(reply)}`);
+    const opened = await app.evaluate(() => globalThis.__opened.slice());
+    assert(opened.length === 1 && opened[0].endsWith('.pdf'), 'no PDF was opened');
+    const pdf = await PDFDocument.load(readFileSync(opened[0]));
+    assert(pdf.getPageCount() >= 2, `the preview has ${pdf.getPageCount()} pages`);
+  });
+
+  await check('the check file has one row per scorecard', async () => {
+    const target = join(perfOut, 'check.csv');
+    await answerWindows([], [target]);
+    const all = await ask('performance:drivers', { range: null });
+    const reply = await ask('performance:export-check-file', {
+      transporterIds: all.value.rows.map((r) => r.transporterId),
+    });
+    assert(reply.ok && reply.value.status === 'written', `export: ${JSON.stringify(reply)}`);
+    const bytes = readFileSync(target);
+    assert(bytes[0] === 0xef && bytes[1] === 0xbb && bytes[2] === 0xbf, 'no byte-order mark');
+    const lines = bytes
+      .toString('utf8')
+      .split('\r\n')
+      .filter((l) => l !== '');
+    const expectedLines = readFileSync(
+      join(root, '..', '..', 'scripts', 'parity', 'wpa', 'expected', 'verification.csv'),
+      'utf8',
+    )
+      .split('\n')
+      .filter((l) => l !== '').length;
+    assert(lines.length === expectedLines, `${lines.length} lines, not ${expectedLines}`);
+    assert(reply.value.rows === expectedLines - 1, `${reply.value.rows} rows`);
+    return `${reply.value.rows} rows`;
+  });
+  await check('Show in folder opens the reports folder and shows the check file', async () => {
+    await app.evaluate(({ shell }) => {
+      globalThis.__shown = [];
+      shell.openPath = async (target) => {
+        globalThis.__shown.push(['folder', target]);
+        return '';
+      };
+      shell.showItemInFolder = (target) => {
+        globalThis.__shown.push(['file', target]);
+      };
+    });
+    const reports = await ask('performance:show-last-output', { what: 'reports' });
+    const checkFile = await ask('performance:show-last-output', { what: 'check-file' });
+    assert(reports.ok && reports.value.opened, `reports: ${JSON.stringify(reports)}`);
+    assert(checkFile.ok && checkFile.value.opened, `check file: ${JSON.stringify(checkFile)}`);
+    const shown = await app.evaluate(() => globalThis.__shown.slice());
+    assert(shown.length === 2, `${shown.length} things shown`);
+    assert(
+      shown[0][0] === 'folder' && shown[0][1] === perfOut,
+      'the reports folder was not opened',
+    );
+    assert(
+      shown[1][0] === 'file' && shown[1][1] === join(perfOut, 'check.csv'),
+      'the check file was not shown',
+    );
+  });
+  rmSync(perfOut, { recursive: true, force: true });
+
   // Column layout of the real data: set, then checked again after the restart below.
   await check('a layout is set on the real data', async () => {
     const set = await ask('layout:set', { view: 'restart', order: ['y', 'x'], widths: { x: 99 } });
@@ -978,6 +1218,15 @@ try {
   // ------------------------------------------------------------------ second run
   second = await launch();
   const again = second.page;
+
+  await check('auto-import on start finds nothing new in the remembered folders', async () => {
+    const line = await until(
+      async () => (await second.mainLog()).find((l) => /\] sync: \d+ new files/.test(l)),
+      'auto-import did not run on start',
+      30_000,
+    );
+    assert(/sync: 0 new files/.test(line), 'it brought in files a second time');
+  });
 
   await check("What's new does not show a second time", async () => {
     assert(

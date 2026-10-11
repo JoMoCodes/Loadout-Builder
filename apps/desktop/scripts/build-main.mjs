@@ -4,7 +4,8 @@
 // They are bundled (with Vite) rather than compiled file by file, because the app's own
 // packages (@loadout/core, @loadout/storage) are TypeScript source that Electron cannot load
 // directly. Anything with native code or its own files stays outside the bundle and is loaded
-// from node_modules at run time: electron, better-sqlite3 and electron-updater.
+// from node_modules at run time: electron, better-sqlite3 and electron-updater, and the PDF
+// reader (pdfjs-dist, which loads its own worker file) and nodemailer.
 
 import { builtinModules } from 'node:module';
 import { dirname, resolve } from 'node:path';
@@ -12,7 +13,9 @@ import { fileURLToPath } from 'node:url';
 import { build } from 'vite';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const OUTSIDE = ['electron', 'better-sqlite3', 'electron-updater'];
+const OUTSIDE = ['electron', 'better-sqlite3', 'electron-updater', 'nodemailer'];
+// pdfjs-dist is loaded by sub-path (pdfjs-dist/legacy/build/pdf.mjs), so it is matched by prefix.
+const OUTSIDE_PATTERNS = [/^pdfjs-dist(\/|$)/];
 
 async function bundle(entry, outName) {
   await build({
@@ -21,7 +24,7 @@ async function bundle(entry, outName) {
     logLevel: 'warn',
     publicDir: false,
     resolve: { conditions: ['node'] },
-    ssr: { noExternal: [/^@loadout\//], external: OUTSIDE },
+    ssr: { noExternal: [/^@loadout\//], external: [...OUTSIDE, 'pdfjs-dist'] },
     build: {
       ssr: resolve(root, entry),
       outDir: resolve(root, 'dist', outName),
@@ -30,7 +33,7 @@ async function bundle(entry, outName) {
       minify: false,
       sourcemap: true,
       rollupOptions: {
-        external: [...OUTSIDE, /^node:/, ...builtinModules],
+        external: [...OUTSIDE, ...OUTSIDE_PATTERNS, /^node:/, ...builtinModules],
         output: { format: 'cjs', entryFileNames: `${outName}.js` },
       },
     },

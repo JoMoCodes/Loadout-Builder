@@ -1,14 +1,23 @@
-// The "?" notes on the first-day checklist: where to get each file, step by step, with a picture.
+// The "?" notes on the Home checklists: where to get each file, step by step, with a picture.
 // Pictures of the app are taken in demo mode. Pictures of the websites the files come from need a
 // real account, so a drawn box stands in for them until they are taken (with no real names).
 
 import type { ReactNode } from 'react';
+import {
+  PERF_KINDS,
+  PERF_KIND_WORDS,
+  SINGLE_FILE_KINDS,
+  type PerfKind,
+} from '../../shared/performance';
 import { Modal } from '../pages/dataPages/Modal';
 import type { StepId } from './checklist';
 import { Shot, ShotToCome, type ShotName } from './HelpParts';
+import type { WeeklyStepId } from './weeklySteps';
 
 interface NoteStep {
   text: ReactNode;
+  /** Something under the words that cannot sit in a sentence (a list). */
+  extra?: ReactNode;
   shot?: { name: ShotName; caption: string };
   toCome?: { name: string; what: string };
 }
@@ -181,9 +190,178 @@ export const WHERE_TO_GET: Record<StepId, Note> = {
   },
 };
 
-/** The "?" window for one step. */
-export function WhereToGetDialog({ step, onClose }: { step: StepId; onClose: () => void }) {
-  const note = WHERE_TO_GET[step];
+/** The ten weekly exports: what each is called on the Imports tab, and where it comes from. */
+export function PerfExportList({ kinds = PERF_KINDS }: { kinds?: readonly PerfKind[] }) {
+  return (
+    <ul className="m-0 mt-1 list-disc pl-5" data-testid="perf-export-list">
+      {kinds.map((kind) => (
+        <li key={kind} data-export={kind}>
+          <strong>{PERF_KIND_WORDS[kind].title}</strong>
+          {SINGLE_FILE_KINDS.includes(kind) ? ' (one file)' : ' (a folder, one file a week)'}:{' '}
+          {PERF_KIND_WORDS[kind].whereFrom}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export const WEEKLY_WHERE_TO_GET: Record<WeeklyStepId, Note> = {
+  'perf-roster': {
+    title: 'Where to get the driver list',
+    lead: PERF_KIND_WORDS.roster.whereFrom,
+    steps: [
+      {
+        text: 'Download the driver list from the DSP portal. The file goes to your Downloads folder.',
+        toCome: { name: 'perf-roster-download', what: 'where the driver list is downloaded' },
+      },
+      {
+        text: (
+          <>
+            In this app, open <strong>Performance</strong>, then the <strong>Imports</strong> tab.
+            On the <strong>Driver list</strong> card, click <strong>Choose file</strong> and pick
+            the file.
+          </>
+        ),
+        shot: { name: 'perf-imports', caption: 'The Imports tab, with a card for each export' },
+      },
+      {
+        text: 'The app remembers the file. Next time, Sync now brings it in again if it has changed.',
+      },
+    ],
+  },
+  'perf-folders': {
+    title: 'Where to keep the weekly exports',
+    lead: 'There are ten kinds of weekly export. Keep each kind in its own folder, and choose that folder once.',
+    steps: [
+      {
+        text: (
+          <>
+            Make a folder for each kind on your computer, for example in Downloads. Save each
+            week&apos;s file into its folder. The ten kinds are:
+          </>
+        ),
+        extra: <PerfExportList />,
+        toCome: { name: 'perf-exports-download', what: 'where the weekly exports are downloaded' },
+      },
+      {
+        text: (
+          <>
+            On the <strong>Imports</strong> tab, click <strong>Choose folder</strong> on each card
+            and pick its folder. The app brings in what is there straight away.
+          </>
+        ),
+        shot: { name: 'perf-imports', caption: 'The Imports tab, with a card for each export' },
+      },
+      {
+        text: 'If a folder is on a USB stick that is unplugged, the card says so. Plug it in, or choose the folder again.',
+      },
+    ],
+  },
+  'perf-sync': {
+    title: 'How to bring in a new week',
+    lead: 'Save the new files into their folders, then let the app bring them in.',
+    steps: [
+      {
+        text: (
+          <>
+            On the <strong>Imports</strong> tab, click <strong>Sync now</strong>. The app brings in
+            every file it has not seen before, and says how many weeks it updated.
+          </>
+        ),
+        shot: { name: 'perf-imports', caption: 'The Imports tab, with Sync now at the top' },
+      },
+      {
+        text: (
+          <>
+            Leave <strong>Bring in new files each time the app opens</strong> on, and the app does
+            this by itself when you open it.
+          </>
+        ),
+      },
+      {
+        text: 'No folders chosen? Drop the files, or a whole folder, anywhere on the Imports tab. The app works out which kind each file is from its name.',
+      },
+    ],
+  },
+  'perf-dashboard': {
+    title: 'How to read the Dashboard',
+    lead: 'No file to download for this one.',
+    steps: [
+      {
+        text: (
+          <>
+            Open <strong>Dashboard</strong>. The tiles at the top show the fleet average score, the
+            tiers, packages and safety events, with the change from the week before.
+          </>
+        ),
+        shot: { name: 'dashboard', caption: 'The Dashboard with made-up weekly data' },
+      },
+      {
+        text: (
+          <>
+            <strong>Who needs a word</strong> lists drivers to coach, with the reasons.{' '}
+            <strong>ID expiry</strong> lists IDs that run out soon. Click a driver to open them on
+            the Performance page or preview their report.
+          </>
+        ),
+      },
+      {
+        text: (
+          <>
+            Not sure what a number means? Click <strong>How is this worked out?</strong> next to it.
+          </>
+        ),
+      },
+    ],
+  },
+  'perf-reports': {
+    title: 'How to make and email the reports',
+    lead: 'No file to download for this one. Emailing needs setting up once.',
+    steps: [
+      {
+        text: (
+          <>
+            Set up email once: open <strong>Settings</strong>, go to{' '}
+            <strong>Weekly performance</strong>, and fill in the Gmail address to send from. Then
+            make a Gmail <strong>App password</strong> (not your usual password) and paste it in.
+            The computer keeps it locked away.
+          </>
+        ),
+      },
+      {
+        text: (
+          <>
+            On the <strong>Performance</strong> page, <strong>Drivers</strong> tab, tick the
+            drivers. Click <strong>Generate for selected</strong> to save their PDF reports, or{' '}
+            <strong>Email selected</strong> to send them. The app shows who would get what before it
+            sends anything.
+          </>
+        ),
+        shot: { name: 'perf-drivers', caption: 'The Drivers tab with made-up drivers' },
+      },
+      {
+        text: (
+          <>
+            Want to see a report first? Double-click a driver, or use{' '}
+            <strong>Preview a driver</strong> on the <strong>Reports</strong> tab.
+          </>
+        ),
+        shot: { name: 'perf-reports', caption: 'The Reports tab: colours and a preview' },
+      },
+    ],
+  },
+};
+
+/** The "?" window for one step of either checklist. */
+export function WhereToGetDialog({
+  step,
+  onClose,
+}: {
+  step: StepId | WeeklyStepId;
+  onClose: () => void;
+}) {
+  const note =
+    step in WHERE_TO_GET ? WHERE_TO_GET[step as StepId] : WEEKLY_WHERE_TO_GET[step as WeeklyStepId];
   return (
     <Modal
       name="where-to-get"
@@ -197,6 +375,7 @@ export function WhereToGetDialog({ step, onClose }: { step: StepId; onClose: () 
         {note.steps.map((item, index) => (
           <li key={index}>
             <p>{item.text}</p>
+            {item.extra}
             {item.shot ? <Shot name={item.shot.name} caption={item.shot.caption} /> : null}
             {item.toCome ? <ShotToCome name={item.toCome.name} what={item.toCome.what} /> : null}
           </li>

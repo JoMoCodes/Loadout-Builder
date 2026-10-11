@@ -17,6 +17,7 @@ import type {
 } from './channels';
 import type { PayloadOf } from './channels/define';
 import type { DropFromPage } from './channels/files';
+import type { PerfDropFromPage } from './channels/performance';
 
 export type { DataSourceInfo, OpenFolderResult, UpdateState, UpdateStatus } from './shell';
 
@@ -24,7 +25,11 @@ export type { DataSourceInfo, OpenFolderResult, UpdateState, UpdateStatus } from
  * What the page sends on a call. The same as the main process receives, except for a dropped
  * file: the page hands over the file itself and the bridge turns it into a place on the computer.
  */
-export type PageInput<N extends CallName> = N extends 'files:dropped' ? DropFromPage : CallInput<N>;
+export type PageInput<N extends CallName> = N extends 'files:dropped'
+  ? DropFromPage
+  : N extends 'performance:dropped'
+    ? PerfDropFromPage
+    : CallInput<N>;
 
 type Args<N extends ChannelName> = N extends CallName
   ? [PageInput<N>] extends [undefined]

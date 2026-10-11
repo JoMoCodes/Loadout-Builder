@@ -430,6 +430,23 @@ export function DataGrid<Row>(props: DataGridProps<Row>) {
       scroller.scrollLeft = right - scroller.clientWidth;
   }, [focusTick, activeIndex, activeCol, virtualRows, widths]);
 
+  // A row the page asked to show (opened from another page): scroll to it, select it and focus it.
+  // After the focus effect above, so that one never acts on the old active cell in this pass.
+  const { reveal, onRevealed } = props;
+  useEffect(() => {
+    if (!reveal) return;
+    const index = indexById.get(reveal.rowId);
+    if (index === undefined) return; // runs again once the row is in the table
+    const col = reveal.columnId
+      ? Math.max(
+          0,
+          visibleColumns.findIndex((column) => column.id === reveal.columnId),
+        )
+      : 0;
+    moveTo(index, col);
+    onRevealed?.();
+  }, [reveal, indexById, visibleColumns, moveTo, onRevealed]);
+
   // ----------------------------------------------------------------- actions
   const actionsFor = useCallback(
     (row: Row, columnId: string): RowAction<Row>[] =>

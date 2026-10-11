@@ -2,18 +2,15 @@
 // sees them done, a button on each that does the step, and a "?" that says where to get the file.
 // It hides itself once every step is done; How to use can bring it back.
 
-import { CircleCheck, CircleHelp, FlaskConical } from 'lucide-react';
+import { FlaskConical } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useAppSnapshot } from '../lib/useAppSnapshot';
 import type { PageProps } from '../pages/types';
-import { Button } from '../ui/button';
-import { cn } from '../ui/cn';
+import { ChecklistCard, type CardStep } from './ChecklistCard';
 import {
   STEP_ORDER,
   allDone,
   checklistFacts,
-  currentStep,
-  doneCount,
   stepAction,
   stepsDone,
   type StepAction,
@@ -90,139 +87,65 @@ export function FirstRunChecklist({
     }
   }, [finished, onFinished]);
 
-  if (!facts || !done) {
-    return (
-      <aside
-        className="checklist card"
-        aria-label="Your first day"
-        data-testid="first-run-checklist"
-      >
-        <h2>Your first day</h2>
-        <p className="hint">Getting the saved data...</p>
-      </aside>
-    );
-  }
-
-  const count = doneCount(done);
-  const current = currentStep(done);
-  const percent = Math.round((count / STEP_ORDER.length) * 100);
-
   function doStep(id: StepId) {
     if (!facts) return;
     help.skipNextAutoTour();
     void runStepAction(stepAction(id, facts), goTo);
   }
 
+  const steps: CardStep[] | null =
+    facts && done
+      ? STEP_ORDER.map((id) => ({
+          id,
+          ...STEP_WORDS[id],
+          done: done[id],
+          button: BUTTON_WORDS[stepAction(id, facts)],
+          onDo: () => doStep(id),
+          onHelp: () => setNote(id),
+        }))
+      : null;
+
   return (
-    <aside
-      className="checklist card"
-      aria-labelledby="checklist-title"
-      data-testid="first-run-checklist"
-      data-done={finished ? 'true' : 'false'}
-    >
-      <h2 id="checklist-title">Your first day</h2>
-      {finished ? (
-        <p data-testid="checklist-finished">
+    <ChecklistCard
+      testId="first-run-checklist"
+      partsId="checklist"
+      title="Your first day"
+      hint="Do these in order. Each one ticks itself off when it is done."
+      steps={steps}
+      finished={
+        <>
           <strong>All five steps are done.</strong> You are ready for a normal day. Open{' '}
           <button type="button" className="link-button" onClick={() => goTo('how-to-use')}>
             How to use
           </button>{' '}
           any time you need help.
-        </p>
-      ) : (
-        <p className="hint">Do these in order. Each one ticks itself off when it is done.</p>
-      )}
-
-      <div className="checklist-progress">
-        <span data-testid="checklist-count">
-          {count} of {STEP_ORDER.length} done
-        </span>
-        <div
-          className="checklist-bar"
-          role="progressbar"
-          aria-label="Steps done"
-          aria-valuemin={0}
-          aria-valuemax={STEP_ORDER.length}
-          aria-valuenow={count}
-          aria-valuetext={`${count} of ${STEP_ORDER.length} steps done`}
-        >
-          <span style={{ width: `${percent}%` }} />
-        </div>
-      </div>
-
-      <ol className="checklist-steps">
-        {STEP_ORDER.map((id, index) => {
-          const isDone = done[id];
-          const isCurrent = id === current;
-          const words = STEP_WORDS[id];
-          return (
-            <li
-              key={id}
-              className={cn('checklist-step', isCurrent && 'is-current', isDone && 'is-done')}
-              data-step={id}
-              data-step-done={isDone ? 'true' : 'false'}
-              data-step-current={isCurrent ? 'true' : 'false'}
+        </>
+      }
+      foot={
+        <>
+          {settings.demoMode ? null : (
+            <button
+              type="button"
+              className="link-button"
+              data-testid="checklist-try-demo"
+              onClick={() => void changeSettings({ demoMode: true })}
             >
-              <span className="checklist-mark" aria-hidden="true">
-                {isDone ? <CircleCheck /> : <span>{index + 1}</span>}
-              </span>
-              <div className="checklist-body">
-                <div className="checklist-title-row">
-                  <span className="checklist-step-title">
-                    {words.title}
-                    <span className="sr-only">{isDone ? ' (done)' : ' (not done yet)'}</span>
-                  </span>
-                  <button
-                    type="button"
-                    className="checklist-help"
-                    aria-label={`Help: ${words.title}`}
-                    title="Where to get this file"
-                    data-step-help={id}
-                    onClick={() => setNote(id)}
-                  >
-                    <CircleHelp aria-hidden="true" />
-                  </button>
-                </div>
-                <p className="checklist-why">{words.why}</p>
-                {isDone ? null : (
-                  <Button
-                    size="sm"
-                    variant={isCurrent ? 'primary' : 'default'}
-                    data-step-do={id}
-                    onClick={() => doStep(id)}
-                  >
-                    {BUTTON_WORDS[stepAction(id, facts)]}
-                  </Button>
-                )}
-              </div>
-            </li>
-          );
-        })}
-      </ol>
-
-      <div className="checklist-foot">
-        {settings.demoMode ? null : (
+              <FlaskConical aria-hidden="true" className="inline size-[1em] align-[-0.125em]" /> Try
+              it with made-up data
+            </button>
+          )}
           <button
             type="button"
             className="link-button"
-            data-testid="checklist-try-demo"
-            onClick={() => void changeSettings({ demoMode: true })}
+            data-testid="checklist-hide"
+            onClick={help.hideChecklist}
           >
-            <FlaskConical aria-hidden="true" className="inline size-[1em] align-[-0.125em]" /> Try
-            it with made-up data
+            Hide this list
           </button>
-        )}
-        <button
-          type="button"
-          className="link-button"
-          data-testid="checklist-hide"
-          onClick={help.hideChecklist}
-        >
-          Hide this list
-        </button>
-      </div>
-
+        </>
+      }
+    >
       {note ? <WhereToGetDialog step={note} onClose={() => setNote(null)} /> : null}
-    </aside>
+    </ChecklistCard>
   );
 }

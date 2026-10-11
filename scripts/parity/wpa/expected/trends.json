@@ -1,0 +1,500 @@
+{
+  "A02V4L9HIELIDL": {
+    "scoreDelta": -2.719999999999999,
+    "slope": -0.34169696969696967,
+    "tierDelta": -1,
+    "trendDirection": "Flat"
+  },
+  "A05QUB9XOW4NT1": {
+    "scoreDelta": -20.480000000000004,
+    "slope": -0.5101212121212122,
+    "tierDelta": -3,
+    "trendDirection": "Declining"
+  },
+  "A0EPR3KZOJDR3R": {
+    "scoreDelta": -2.6100000000000136,
+    "slope": -0.5800000000000003,
+    "tierDelta": 0,
+    "trendDirection": "Declining"
+  },
+  "A0IHV8Z401XHI9": {
+    "scoreDelta": 8.25,
+    "slope": 0.3845238095238093,
+    "tierDelta": 1,
+    "trendDirection": "Flat"
+  },
+  "A0J0XO8BDXCWU": {
+    "scoreDelta": 0.1599999999999966,
+    "slope": -0.2729696969696971,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "A0KJSTACMX5D6A": {
+    "scoreDelta": -2.490000000000009,
+    "slope": -0.46630303030303083,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "A0YNMDE9L3T77O": {
+    "scoreDelta": -7.359999999999999,
+    "slope": -7.359999999999999,
+    "tierDelta": -1,
+    "trendDirection": "Declining"
+  },
+  "A1E3ZUFIX1EXA5": {
+    "scoreDelta": -40.910000000000004,
+    "slope": -10.833,
+    "tierDelta": 0,
+    "trendDirection": "Declining"
+  },
+  "A1OJN4GT8G7UDZ": {
+    "scoreDelta": 0.8100000000000023,
+    "slope": 0.9443636363636365,
+    "tierDelta": 0,
+    "trendDirection": "Improving"
+  },
+  "A1VWFCFWNQJ1VP": {
+    "scoreDelta": 0.1599999999999966,
+    "slope": 0.3771515151515152,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "A1ZP7FE2I8J7M7": {
+    "scoreDelta": 17.489999999999995,
+    "slope": 1.1214285714285706,
+    "tierDelta": 2,
+    "trendDirection": "Improving"
+  },
+  "A2868K9OBI67DE": {
+    "scoreDelta": 7.3700000000000045,
+    "slope": 1.2989285714285717,
+    "tierDelta": 1,
+    "trendDirection": "Improving"
+  },
+  "A2A1TH6W7PT1NY": {
+    "scoreDelta": null,
+    "slope": null,
+    "tierDelta": null,
+    "trendDirection": "Flat"
+  },
+  "A2FR62CAJH6D17": {
+    "scoreDelta": -0.010000000000005116,
+    "slope": -1.3685714285714279,
+    "tierDelta": 0,
+    "trendDirection": "Declining"
+  },
+  "A2FYKXSK0KPR1O": {
+    "scoreDelta": 6.3700000000000045,
+    "slope": -0.8103636363636366,
+    "tierDelta": 1,
+    "trendDirection": "Declining"
+  },
+  "A2HY5U1W1NRFLQ": {
+    "scoreDelta": -0.3100000000000023,
+    "slope": -0.7627272727272729,
+    "tierDelta": 0,
+    "trendDirection": "Declining"
+  },
+  "A2O0RLVP9GAMBN": {
+    "scoreDelta": 0,
+    "slope": 0.19909090909090915,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "A2R7RK02P0EFL6": {
+    "scoreDelta": -1.4500000000000028,
+    "slope": -1.4500000000000028,
+    "tierDelta": 0,
+    "trendDirection": "Declining"
+  },
+  "A2XX9DS9WCNFP": {
+    "scoreDelta": -1.8299999999999983,
+    "slope": -1.9867878787878783,
+    "tierDelta": -1,
+    "trendDirection": "Declining"
+  },
+  "A35ORHCIWXSWX6": {
+    "scoreDelta": 1.8499999999999943,
+    "slope": -0.3859999999999998,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "A3BZ6NSPPU3UOM": {
+    "scoreDelta": 0.9599999999999937,
+    "slope": 0.4457575757575756,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "A3FGR51D3Y7VKF": {
+    "scoreDelta": null,
+    "slope": null,
+    "tierDelta": null,
+    "trendDirection": "Flat"
+  },
+  "A3KL6D5G578RU5": {
+    "scoreDelta": -6.070000000000007,
+    "slope": -3.155000000000001,
+    "tierDelta": -1,
+    "trendDirection": "Declining"
+  },
+  "A3VO429G9YSXRJ": {
+    "scoreDelta": 2.6099999999999994,
+    "slope": -0.7949696969696974,
+    "tierDelta": 1,
+    "trendDirection": "Declining"
+  },
+  "A3YE6514J169GR": {
+    "scoreDelta": -1.2099999999999937,
+    "slope": 0.14472727272727226,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "A4045ZXIVGHQ3M": {
+    "scoreDelta": 6.689999999999998,
+    "slope": -1.186242424242425,
+    "tierDelta": 1,
+    "trendDirection": "Declining"
+  },
+  "A43QODLLAMSDL4": {
+    "scoreDelta": 10.459999999999994,
+    "slope": -1.1670909090909098,
+    "tierDelta": 1,
+    "trendDirection": "Declining"
+  },
+  "A45IT3RVXCBYU5": {
+    "scoreDelta": 2.200000000000003,
+    "slope": -0.2617575757575761,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "A4BAES7NSZGO8A": {
+    "scoreDelta": 4.1299999999999955,
+    "slope": -5.983,
+    "tierDelta": 0,
+    "trendDirection": "Declining"
+  },
+  "A4GYZ28TBZ0M6E": {
+    "scoreDelta": 7.3700000000000045,
+    "slope": 1.2620000000000005,
+    "tierDelta": 1,
+    "trendDirection": "Improving"
+  },
+  "A4K2OMSWNQOC3X": {
+    "scoreDelta": 0,
+    "slope": -0.288571428571428,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "A4LCDNKS4CWPF9": {
+    "scoreDelta": 0,
+    "slope": 0.1228333333333334,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "A4OOIRHER4999G": {
+    "scoreDelta": -17.799999999999997,
+    "slope": -0.4334545454545461,
+    "tierDelta": -2,
+    "trendDirection": "Flat"
+  },
+  "A4PPR2TC30B3NA": {
+    "scoreDelta": 7.710000000000008,
+    "slope": 1.0140000000000016,
+    "tierDelta": 1,
+    "trendDirection": "Improving"
+  },
+  "A4VV6P366J3B25": {
+    "scoreDelta": 15.989999999999995,
+    "slope": -0.5220000000000001,
+    "tierDelta": 2,
+    "trendDirection": "Declining"
+  },
+  "A53KRYF5P432PI": {
+    "scoreDelta": 8.230000000000004,
+    "slope": -0.511878787878788,
+    "tierDelta": 1,
+    "trendDirection": "Declining"
+  },
+  "A5CEN6SUZUBQIX": {
+    "scoreDelta": 8.420000000000002,
+    "slope": 0.2811515151515153,
+    "tierDelta": 1,
+    "trendDirection": "Flat"
+  },
+  "A5EAH4MAY2518C": {
+    "scoreDelta": -17.159999999999997,
+    "slope": -9.725000000000001,
+    "tierDelta": -2,
+    "trendDirection": "Declining"
+  },
+  "A5G76PFZI2Z0SN": {
+    "scoreDelta": 6.88000000000001,
+    "slope": -0.12499999999999949,
+    "tierDelta": 1,
+    "trendDirection": "Flat"
+  },
+  "A5QUGQSG9YPHDA": {
+    "scoreDelta": -2.7099999999999937,
+    "slope": -1.0881212121212118,
+    "tierDelta": -1,
+    "trendDirection": "Declining"
+  },
+  "A5Y27B4RIW02AU": {
+    "scoreDelta": -6.290000000000006,
+    "slope": -1.178214285714286,
+    "tierDelta": -1,
+    "trendDirection": "Declining"
+  },
+  "A5YJ9TF0YNUP8N": {
+    "scoreDelta": 4.840000000000003,
+    "slope": 0.06533333333333326,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "A61CK7LGWH2XBP": {
+    "scoreDelta": -12.480000000000004,
+    "slope": -1.8015757575757583,
+    "tierDelta": -2,
+    "trendDirection": "Declining"
+  },
+  "A64C8ABTCL93D2": {
+    "scoreDelta": null,
+    "slope": null,
+    "tierDelta": null,
+    "trendDirection": "Flat"
+  },
+  "A666USAV8IY3UQ": {
+    "scoreDelta": -2.3499999999999943,
+    "slope": -0.8996969696969703,
+    "tierDelta": -1,
+    "trendDirection": "Declining"
+  },
+  "A6G2H6H7CL30A4": {
+    "scoreDelta": -10.920000000000002,
+    "slope": -1.3535714285714295,
+    "tierDelta": -2,
+    "trendDirection": "Declining"
+  },
+  "A6NMJ80MQJSWQP": {
+    "scoreDelta": 0,
+    "slope": 0.18466666666666684,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "A6XJ3V2PRYY75N": {
+    "scoreDelta": -8.25,
+    "slope": -0.5784242424242425,
+    "tierDelta": -1,
+    "trendDirection": "Declining"
+  },
+  "A76WVAI7JL6OFD": {
+    "scoreDelta": null,
+    "slope": null,
+    "tierDelta": null,
+    "trendDirection": "Flat"
+  },
+  "A7BE7C3Y1TNPJS": {
+    "scoreDelta": 20.629999999999995,
+    "slope": 20.629999999999995,
+    "tierDelta": 1,
+    "trendDirection": "Improving"
+  },
+  "A7CUH5Y0VWYL2V": {
+    "scoreDelta": -6.859999999999999,
+    "slope": -2.118060606060606,
+    "tierDelta": -1,
+    "trendDirection": "Declining"
+  },
+  "A7DH1J2PJE0OED": {
+    "scoreDelta": -0.8599999999999994,
+    "slope": -1.5347272727272732,
+    "tierDelta": 0,
+    "trendDirection": "Declining"
+  },
+  "A7H54T4FG2O3NX": {
+    "scoreDelta": 5.409999999999997,
+    "slope": -0.27981818181818224,
+    "tierDelta": 1,
+    "trendDirection": "Flat"
+  },
+  "A7MIENEP388QBI": {
+    "scoreDelta": -17.069999999999993,
+    "slope": -0.42327272727272697,
+    "tierDelta": -2,
+    "trendDirection": "Flat"
+  },
+  "A83E4Z4L4ART5U": {
+    "scoreDelta": 23.159999999999997,
+    "slope": -0.7856363636363632,
+    "tierDelta": 3,
+    "trendDirection": "Declining"
+  },
+  "A8H5WF9SI4OV8X": {
+    "scoreDelta": 0,
+    "slope": -0.13483333333333386,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "A8I0NX204L7M3S": {
+    "scoreDelta": -1.8400000000000034,
+    "slope": -1.8400000000000034,
+    "tierDelta": 0,
+    "trendDirection": "Declining"
+  },
+  "A8M3J46P8HG6FK": {
+    "scoreDelta": -26.64,
+    "slope": -6.621785714285713,
+    "tierDelta": -1,
+    "trendDirection": "Declining"
+  },
+  "A8T0R8EZ56IUW4": {
+    "scoreDelta": 20.789999999999992,
+    "slope": -1.1498787878787877,
+    "tierDelta": 2,
+    "trendDirection": "Declining"
+  },
+  "A8ZXXQV6MFYBMG": {
+    "scoreDelta": -14.540000000000006,
+    "slope": -0.9476969696969697,
+    "tierDelta": -2,
+    "trendDirection": "Declining"
+  },
+  "A931GQNILRBDV0": {
+    "scoreDelta": 4.1200000000000045,
+    "slope": -0.30193939393939434,
+    "tierDelta": 1,
+    "trendDirection": "Flat"
+  },
+  "A9BWT96GHSITJO": {
+    "scoreDelta": -6.490000000000009,
+    "slope": -0.2903030303030297,
+    "tierDelta": -1,
+    "trendDirection": "Flat"
+  },
+  "A9G9MT5TZ0N72": {
+    "scoreDelta": 7.050000000000011,
+    "slope": -0.21749999999999947,
+    "tierDelta": 1,
+    "trendDirection": "Flat"
+  },
+  "A9I26MDOUT0B0F": {
+    "scoreDelta": -11.959999999999994,
+    "slope": -0.458424242424243,
+    "tierDelta": -2,
+    "trendDirection": "Flat"
+  },
+  "A9INK8J4CTEVZJ": {
+    "scoreDelta": -5.810000000000002,
+    "slope": -2.4754545454545456,
+    "tierDelta": -1,
+    "trendDirection": "Declining"
+  },
+  "A9OFHCBU4713NB": {
+    "scoreDelta": -8.560000000000002,
+    "slope": -0.9858181818181816,
+    "tierDelta": -1,
+    "trendDirection": "Declining"
+  },
+  "A9RS0YQEZ51GBA": {
+    "scoreDelta": 3.3999999999999915,
+    "slope": -0.1925454545454546,
+    "tierDelta": 1,
+    "trendDirection": "Flat"
+  },
+  "A9WAEP6HQ8GUBB": {
+    "scoreDelta": -21.049999999999997,
+    "slope": 4.403000000000001,
+    "tierDelta": -2,
+    "trendDirection": "Improving"
+  },
+  "AB3X5V23MIQDQ": {
+    "scoreDelta": null,
+    "slope": null,
+    "tierDelta": null,
+    "trendDirection": "Flat"
+  },
+  "AFR9AV1XMUQIX": {
+    "scoreDelta": -17.89,
+    "slope": -0.23115151515151566,
+    "tierDelta": -2,
+    "trendDirection": "Flat"
+  },
+  "AG4VZJIFVKAAV": {
+    "scoreDelta": 14.099999999999994,
+    "slope": -1.286,
+    "tierDelta": 2,
+    "trendDirection": "Declining"
+  },
+  "AIJ5WFU9WQ3CQ": {
+    "scoreDelta": -11.049999999999997,
+    "slope": -0.5761666666666666,
+    "tierDelta": -1,
+    "trendDirection": "Declining"
+  },
+  "AJK9OYLQH0LBR": {
+    "scoreDelta": 0.6099999999999994,
+    "slope": 0.3382424242424247,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "AK62IBYY5RBR5": {
+    "scoreDelta": -1.7900000000000063,
+    "slope": -0.35884848484848497,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "AL90S1HKKSEQK": {
+    "scoreDelta": 3.6700000000000017,
+    "slope": -0.7490909090909093,
+    "tierDelta": 1,
+    "trendDirection": "Declining"
+  },
+  "ALUEEXIWSBJUI": {
+    "scoreDelta": 17.89,
+    "slope": -1.2593333333333336,
+    "tierDelta": 2,
+    "trendDirection": "Declining"
+  },
+  "AMH9W9ISL2JI5": {
+    "scoreDelta": 0,
+    "slope": 0,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "APT2ETIECGLTD": {
+    "scoreDelta": null,
+    "slope": null,
+    "tierDelta": null,
+    "trendDirection": "Flat"
+  },
+  "AT8MHWWNB3Z9G": {
+    "scoreDelta": 0.6600000000000108,
+    "slope": 0.19109090909090945,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  },
+  "AV1K9DA46OOAC": {
+    "scoreDelta": -2.799999999999997,
+    "slope": 0.029515151515151973,
+    "tierDelta": -1,
+    "trendDirection": "Flat"
+  },
+  "AWCMV469J9L4X": {
+    "scoreDelta": -1.9200000000000017,
+    "slope": -4.084999999999999,
+    "tierDelta": -1,
+    "trendDirection": "Declining"
+  },
+  "AX1DY8O6IXD1R": {
+    "scoreDelta": 5.400000000000006,
+    "slope": 5.400000000000006,
+    "tierDelta": 1,
+    "trendDirection": "Improving"
+  },
+  "AZ0G28A1GHVQZ": {
+    "scoreDelta": 2.75,
+    "slope": 0.0005454545454545661,
+    "tierDelta": 0,
+    "trendDirection": "Flat"
+  }
+}

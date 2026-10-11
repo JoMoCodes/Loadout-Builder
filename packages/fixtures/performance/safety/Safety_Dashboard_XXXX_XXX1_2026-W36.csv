@@ -1,0 +1,5 @@
+﻿Date,"Delivery Associate ",Transporter ID,Event ID,Date (Station Local Time),VIN,Program Impact,Metric Type,Metric Subtype,Source,Video Link,Review Details
+2026-09-01,Emmett Lucinda Oswald,A9INK8J4CTEVZJ,0033777161,2026-09-01 11:00:14,1FTZZ2F93RKZ34358,"Scorecard, ORCAS",Distraction,Looking At Phone,Netradyne,https://example.com/video/000033,Made-up note for testing.
+2026-09-01,Emmett Lucinda Oswald,A9INK8J4CTEVZJ,0648468539,2026-09-01 12:46:00,1FTZZ2F93RKZ34358,"Scorecard, ORCAS",Distraction,Looking At Phone,Netradyne,https://example.com/video/000034,Made-up note for testing.
+2026-09-02,Nolan Montrose,AIJ5WFU9WQ3CQ,0763250296,2026-09-02 18:36:21,7FCDYLJ02TN879495,"Scorecard, ORCAS",Speeding,Above Posted Speed Limit,Netradyne on Fleet Edge,https://example.com/video/000035,Made-up note for testing.
+2026-09-04,Rowan Luther Fairbanks,A3VO429G9YSXRJ,0103959089,2026-09-04 10:16:25,7FCRVTW06PN281049,"Scorecard, ORCAS",Speeding,Above Posted Speed Limit,Netradyne on Fleet Edge,https://example.com/video/000036,Made-up note for testing.

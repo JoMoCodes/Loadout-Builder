@@ -12,6 +12,7 @@ import { filesChannels } from './files';
 import { layoutChannels } from './layout';
 import { loadOutChannels } from './loadOut';
 import { migrationChannels } from './migration';
+import { performanceChannels } from './performance';
 import { printChannels } from './print';
 import { routeDataChannels } from './routeData';
 import { settingsChannels } from './settings';
@@ -33,6 +34,7 @@ const ALL = [
   ...dwpChannels,
   ...vehicleChannels,
   ...associateChannels,
+  ...performanceChannels,
 ] as const;
 
 export const CHANNELS = indexChannels(ALL);

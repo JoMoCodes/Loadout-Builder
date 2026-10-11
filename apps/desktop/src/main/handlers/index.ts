@@ -17,6 +17,7 @@ import { filesHandlers } from './files';
 import { layoutHandlers } from './layout';
 import { loadOutHandlers } from './loadOut';
 import { migrationHandlers } from './migration';
+import { performanceHandlers } from './performance';
 import { printHandlers } from './print';
 import { routeDataHandlers } from './routeData';
 import { settingsHandlers } from './settings';
@@ -51,6 +52,7 @@ const HANDLERS: AllHandlers = {
   ...dwpHandlers,
   ...vehicleHandlers,
   ...associateHandlers,
+  ...performanceHandlers,
 };
 
 /** Registers a handler for every query, command and signal in the registry. */

@@ -1,0 +1,148 @@
+{
+  "columns": [
+    "MetricName",
+    "Indicator",
+    "PlatinumThreshold",
+    "GoldThreshold",
+    "SilverThreshold",
+    "BronzeThreshold",
+    "OverallMetricWeight",
+    "SourceWeek",
+    "ImportedAt"
+  ],
+  "rows": [
+    {
+      "BronzeThreshold": 2000,
+      "GoldThreshold": 900,
+      "ImportedAt": null,
+      "Indicator": "NEGATIVE",
+      "MetricName": "CDF DPMO",
+      "OverallMetricWeight": 7,
+      "PlatinumThreshold": 0,
+      "SilverThreshold": 1500,
+      "SourceWeek": "2026-W32"
+    },
+    {
+      "BronzeThreshold": 1,
+      "GoldThreshold": 0.01,
+      "ImportedAt": null,
+      "Indicator": "NEGATIVE",
+      "MetricName": "CED",
+      "OverallMetricWeight": 10,
+      "PlatinumThreshold": 0,
+      "SilverThreshold": 0.02,
+      "SourceWeek": "2026-W32"
+    },
+    {
+      "BronzeThreshold": 3000,
+      "GoldThreshold": 1000,
+      "ImportedAt": null,
+      "Indicator": "NEGATIVE",
+      "MetricName": "DCR",
+      "OverallMetricWeight": 10,
+      "PlatinumThreshold": 0,
+      "SilverThreshold": 2000,
+      "SourceWeek": "2026-W32"
+    },
+    {
+      "BronzeThreshold": 750,
+      "GoldThreshold": 233,
+      "ImportedAt": null,
+      "Indicator": "NEGATIVE",
+      "MetricName": "DSB",
+      "OverallMetricWeight": 10,
+      "PlatinumThreshold": 0,
+      "SilverThreshold": 450,
+      "SourceWeek": "2026-W32"
+    },
+    {
+      "BronzeThreshold": 0.03,
+      "GoldThreshold": 0.01,
+      "ImportedAt": null,
+      "Indicator": "NEGATIVE",
+      "MetricName": "Distractions Rate",
+      "OverallMetricWeight": 11,
+      "PlatinumThreshold": 0,
+      "SilverThreshold": 0.02,
+      "SourceWeek": "2026-W32"
+    },
+    {
+      "BronzeThreshold": 0.03,
+      "GoldThreshold": 0.01,
+      "ImportedAt": null,
+      "Indicator": "NEGATIVE",
+      "MetricName": "Following Distance Rate",
+      "OverallMetricWeight": 11,
+      "PlatinumThreshold": 0,
+      "SilverThreshold": 0.02,
+      "SourceWeek": "2026-W32"
+    },
+    {
+      "BronzeThreshold": 78,
+      "GoldThreshold": 95,
+      "ImportedAt": null,
+      "Indicator": "POSITIVE",
+      "MetricName": "Overall Score",
+      "OverallMetricWeight": 0,
+      "PlatinumThreshold": 100,
+      "SilverThreshold": 88,
+      "SourceWeek": "2026-W32"
+    },
+    {
+      "BronzeThreshold": 99,
+      "GoldThreshold": 99.7,
+      "ImportedAt": null,
+      "Indicator": "POSITIVE",
+      "MetricName": "POD",
+      "OverallMetricWeight": 3,
+      "PlatinumThreshold": 100,
+      "SilverThreshold": 99.3,
+      "SourceWeek": "2026-W32"
+    },
+    {
+      "BronzeThreshold": 25,
+      "GoldThreshold": 10,
+      "ImportedAt": null,
+      "Indicator": "NEGATIVE",
+      "MetricName": "PSB",
+      "OverallMetricWeight": 5,
+      "PlatinumThreshold": 0,
+      "SilverThreshold": 18,
+      "SourceWeek": "2026-W32"
+    },
+    {
+      "BronzeThreshold": 0.03,
+      "GoldThreshold": 0.01,
+      "ImportedAt": null,
+      "Indicator": "NEGATIVE",
+      "MetricName": "Seatbelt-Off Rate",
+      "OverallMetricWeight": 11,
+      "PlatinumThreshold": 0,
+      "SilverThreshold": 0.02,
+      "SourceWeek": "2026-W32"
+    },
+    {
+      "BronzeThreshold": 0.03,
+      "GoldThreshold": 0.01,
+      "ImportedAt": null,
+      "Indicator": "NEGATIVE",
+      "MetricName": "Sign/Signal Violations Rate",
+      "OverallMetricWeight": 11,
+      "PlatinumThreshold": 0,
+      "SilverThreshold": 0.02,
+      "SourceWeek": "2026-W32"
+    },
+    {
+      "BronzeThreshold": 0.03,
+      "GoldThreshold": 0.01,
+      "ImportedAt": null,
+      "Indicator": "NEGATIVE",
+      "MetricName": "Speeding Event Rate",
+      "OverallMetricWeight": 11,
+      "PlatinumThreshold": 0,
+      "SilverThreshold": 0.02,
+      "SourceWeek": "2026-W32"
+    }
+  ],
+  "table": "MetricThresholds"
+}

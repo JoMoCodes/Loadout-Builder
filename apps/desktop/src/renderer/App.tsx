@@ -2,11 +2,12 @@ import { notesBetween } from '@loadout/core';
 import { FlaskConical } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { DataSourceInfo } from '../shared/shell';
-import { DEFAULT_SETTINGS, sanitizePatch, stepFontScale } from '../shared/settings';
+import { DEFAULT_SETTINGS, mergeSettings, stepFontScale } from '../shared/settings';
 import type { AppSettings, SettingsPatch } from '../shared/settings';
 import { HelpMenu } from './help/HelpMenu';
 import { PRINTED_EVENT } from './help/printed';
 import { useTours } from './help/useTours';
+import { useWeeklyMemory } from './help/weeklyMemory';
 import { call, explain, listen, signal } from './lib/channels';
 import { PAGES, pageIdFrom } from './pages';
 import type { HelpApi, PageId, PageRequest } from './pages/types';
@@ -29,6 +30,10 @@ export function App() {
   // not start underneath it.
   const [oldData, setOldData] = useState<'start' | 'settings' | null>(null);
   const [oldDataChecked, setOldDataChecked] = useState(false);
+  // The same question for the old Weekly Performance App's data. There is no setting that
+  // remembers it was asked, so it is asked once per run while this app has no weekly data.
+  const [perfOldData, setPerfOldData] = useState(false);
+  const [perfOldDataChecked, setPerfOldDataChecked] = useState(false);
   // In demo mode nothing is kept, so what the checklist sees there lasts for this run only.
   const [demoPrinted, setDemoPrinted] = useState(false);
   const [demoChecklistHidden, setDemoChecklistHidden] = useState(false);
@@ -79,6 +84,18 @@ export function App() {
           });
         }
 
+        // The same once-only offer for the old Weekly Performance App's data.
+        if (foundSettings.perfOldDataAsked || foundSettings.demoMode) {
+          setPerfOldDataChecked(true);
+        } else {
+          void call('performance:old-data-find').then((found) => {
+            if (cancelled) return;
+            const it = found.ok ? found.value : null;
+            if (it && it.found && it.empty && !it.demo) setPerfOldData(true);
+            setPerfOldDataChecked(true);
+          });
+        }
+
         console.log(`Loadout Builder page is ready, version ${foundVersion}`);
         signal('app:renderer-ready', foundVersion);
       })
@@ -110,7 +127,7 @@ export function App() {
     }
     // Show the change straight away, then let the main process save it and confirm.
     setSettings((now) => {
-      const next = { ...(now ?? DEFAULT_SETTINGS), ...sanitizePatch(patch) };
+      const next = mergeSettings(now ?? DEFAULT_SETTINGS, patch);
       applyLook(next);
       return next;
     });
@@ -161,6 +178,11 @@ export function App() {
     setOldData(null);
   }, [oldData, changeSettings]);
   const openOldData = useCallback(() => setOldData('settings'), []);
+  const closePerfOldData = useCallback(() => {
+    // Asked once: Yes, Not now and Esc all count as answered. Settings can bring it over later.
+    void changeSettings({ perfOldDataAsked: true });
+    setPerfOldData(false);
+  }, [changeSettings]);
 
   const current = settings ?? DEFAULT_SETTINGS;
   const entry = PAGES.find((candidate) => candidate.id === page) ?? PAGES[0]!;
@@ -171,7 +193,7 @@ export function App() {
     page,
     settings,
     changeSettings,
-    blocked: showNews || oldData !== null || !oldDataChecked,
+    blocked: showNews || oldData !== null || !oldDataChecked || perfOldData || !perfOldDataChecked,
   });
   const { takeTour, skipNextAutoTour } = tours;
 
@@ -186,6 +208,8 @@ export function App() {
   }, [demo, settings, changeSettings]);
 
   const checklistShown = demo ? !demoChecklistHidden : !current.checklistHidden;
+  const weekly = useWeeklyMemory({ settings, changeSettings, page });
+  const { setHidden: setWeeklyHidden } = weekly;
 
   const help = useMemo<HelpApi>(
     () => ({
@@ -201,6 +225,10 @@ export function App() {
         if (demo) setDemoChecklistHidden(true);
         else void changeSettings({ checklistHidden: true });
       },
+      weeklyShown: !weekly.hidden,
+      dashboardSeen: weekly.dashboardSeen,
+      showWeekly: () => setWeeklyHidden(false),
+      hideWeekly: () => setWeeklyHidden(true),
       openLink: async (url: string) => {
         const reply = await call('app:open-link', url);
         return reply.ok ? null : explain(reply);
@@ -214,6 +242,9 @@ export function App() {
       current.printedOnce,
       checklistShown,
       changeSettings,
+      weekly.hidden,
+      weekly.dashboardSeen,
+      setWeeklyHidden,
     ],
   );
 
@@ -245,6 +276,11 @@ export function App() {
               help.showChecklist();
               goTo('home');
             }}
+            weeklyShown={help.weeklyShown}
+            onShowWeekly={() => {
+              help.showWeekly();
+              goTo('home');
+            }}
             onAsk={askAQuestion}
           />
         </TopBar>
@@ -272,7 +308,10 @@ export function App() {
         </main>
       </div>
       {oldData ? <OldDataDialog how={oldData} onClose={closeOldData} /> : null}
-      {showNews && version && settings?.lastSeenVersion && !oldData ? (
+      {perfOldData && oldDataChecked && !oldData ? (
+        <OldDataDialog how="start" about="performance" onClose={closePerfOldData} />
+      ) : null}
+      {showNews && version && settings?.lastSeenVersion && !oldData && !perfOldData ? (
         <WhatsNewDialog
           notes={notesBetween(settings.lastSeenVersion, version)}
           onClose={closeNews}

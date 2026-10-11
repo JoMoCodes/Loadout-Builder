@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, ipcMain, screen, session, shell } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, safeStorage, screen, session, shell } from 'electron';
 import { existsSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import type { EventName } from '../shared/channels';
@@ -18,6 +18,11 @@ import { registerAllChannels } from './handlers';
 import type { HandlerContext, Services } from './handlers';
 import type { SaveFileOptions } from './handlers/types';
 import { readJson, writeJson } from './jsonFile';
+import { nodemailerTransport } from './performance/mailer';
+import { OldWpaData, usualWpaDbPath } from './performance/oldWpaData';
+import * as report from './performance/report';
+import { PerfService } from './performance/service';
+import { SettingsFile } from './settingsFile';
 import { isOwnPage } from './senderCheck';
 import * as updater from './updater';
 import { MIN_SIZE, parseWindowState, pickBounds } from './windowState';
@@ -59,6 +64,8 @@ function log(message: string): void {
 }
 
 const settingsFile = () => path.join(app.getPath('userData'), 'settings.json');
+// Created once the app is ready (the data folder may be moved for a test before that).
+let settingsStore: SettingsFile | null = null;
 const windowStateFile = () => path.join(app.getPath('userData'), 'window-state.json');
 const dataFolder = () => path.join(app.getPath('userData'), 'data');
 
@@ -66,6 +73,13 @@ function fixtureDb(): string {
   return app.isPackaged
     ? path.join(process.resourcesPath, 'fixtures', 'v1', 'loadout.db')
     : path.resolve(__dirname, '..', '..', '..', '..', 'packages', 'fixtures', 'v1', 'loadout.db');
+}
+
+/** The made-up weekly performance exports demo mode brings in (packages/fixtures/performance). */
+function fixturePerformanceFolder(): string {
+  return app.isPackaged
+    ? path.join(process.resourcesPath, 'fixtures', 'performance')
+    : path.resolve(__dirname, '..', '..', '..', '..', 'packages', 'fixtures', 'performance');
 }
 
 /**
@@ -100,6 +114,39 @@ const oldData = new OldData({
   rebuild: () => stateHost?.rebuild(),
 });
 
+/**
+ * The old Weekly Performance App's data file. A test build (never the installed app) can point at
+ * another file with LOADOUT_OLD_WPA_DB.
+ */
+function oldWpaDbFile(): string {
+  if (!app.isPackaged && process.env.LOADOUT_OLD_WPA_DB) {
+    return path.resolve(process.env.LOADOUT_OLD_WPA_DB);
+  }
+  return usualWpaDbPath(app.getPath('home'), process.env.LOCALAPPDATA);
+}
+
+async function pickOldWpaDb(): Promise<string | null> {
+  const options = {
+    title: "Choose the Weekly Performance App's data file (app.db)",
+    defaultPath: path.dirname(oldWpaDbFile()),
+    properties: ['openFile' as const],
+    filters: [{ name: 'Weekly Performance App data', extensions: ['db'] }],
+  };
+  const result = mainWindow
+    ? await dialog.showOpenDialog(mainWindow, options)
+    : await dialog.showOpenDialog(options);
+  return result.canceled || result.filePaths.length === 0 ? null : (result.filePaths[0] ?? null);
+}
+
+const oldWpaData = new OldWpaData({
+  usualFile: oldWpaDbFile,
+  store: () => (settings.demoMode ? null : (dataSource?.getStore() ?? null)),
+  demo: () => settings.demoMode,
+  pickFile: pickOldWpaDb,
+  perfEmpty: () => stateHost?.perf.store.isPerfEmpty() ?? false,
+  reload: () => stateHost?.perf.invalidate(),
+});
+
 /** The app's icon for the window (the installer and the .exe carry the .ico). */
 function windowIcon(): string {
   return app.isPackaged
@@ -108,14 +155,14 @@ function windowIcon(): string {
 }
 
 function loadSettings(): AppSettings {
-  // Demo mode is never remembered: the app always starts on the real saved data.
-  return { ...mergeSettings(DEFAULT_SETTINGS, readJson(settingsFile())), demoMode: false };
+  // Demo mode is never remembered: the app always starts on the real saved data. The
+  // main-only part of the file (export folders, the sealed email password) stays in the store.
+  settingsStore = new SettingsFile(settingsFile());
+  return settingsStore.load();
 }
 
 function saveSettings(): void {
-  if (!writeJson(settingsFile(), { ...settings, demoMode: false })) {
-    log('could not save settings');
-  }
+  if (!settingsStore?.save(settings)) log('could not save settings');
 }
 
 function openDataSource(demo: boolean): void {
@@ -348,7 +395,90 @@ const services: Services = {
   openFile,
   tempFolder: () => app.getPath('temp'),
   oldData,
+  performance: null as unknown as PerfService,
+  oldWpaData,
 };
+
+/** Asks for a folder in the main process's own window. */
+async function chooseFolder(title: string, startIn: string | null): Promise<string | null> {
+  const options = {
+    title,
+    defaultPath: startIn ?? app.getPath('downloads'),
+    properties: ['openDirectory' as const],
+  };
+  const result = mainWindow
+    ? await dialog.showOpenDialog(mainWindow, options)
+    : await dialog.showOpenDialog(options);
+  return result.canceled || result.filePaths.length === 0 ? null : (result.filePaths[0] ?? null);
+}
+
+async function chooseOneFile(
+  title: string,
+  filters: Array<{ name: string; extensions: string[] }>,
+  startIn: string | null,
+): Promise<string | null> {
+  const options = {
+    title,
+    defaultPath: startIn ?? app.getPath('downloads'),
+    properties: ['openFile' as const],
+    filters,
+  };
+  const result = mainWindow
+    ? await dialog.showOpenDialog(mainWindow, options)
+    : await dialog.showOpenDialog(options);
+  return result.canceled || result.filePaths.length === 0 ? null : (result.filePaths[0] ?? null);
+}
+
+async function chooseSaveAs(
+  title: string,
+  defaultName: string,
+  filters: Array<{ name: string; extensions: string[] }>,
+): Promise<string | null> {
+  const options = { title, defaultPath: path.join(app.getPath('documents'), defaultName), filters };
+  const result = mainWindow
+    ? await dialog.showSaveDialog(mainWindow, options)
+    : await dialog.showSaveDialog(options);
+  return result.canceled || !result.filePath ? null : result.filePath;
+}
+
+const perfService = new PerfService({
+  host: () => stateHost!.perf,
+  performance: () => settings.performance,
+  demo: () => settings.demoMode,
+  mainOnly: () => settingsStore!.getMainOnly(),
+  updateMainOnly: (change) => {
+    if (!settingsStore?.updateMainOnly(change)) log('could not save settings');
+  },
+  dialogs: { chooseFolder, chooseFile: chooseOneFile, chooseSaveFile: chooseSaveAs },
+  sealer: safeStorage,
+  transport: nodemailerTransport,
+  report,
+  openFile,
+  folders: {
+    showFile: (file) => {
+      shell.showItemInFolder(file);
+      return true;
+    },
+    // openPath gives back an empty text when it worked, or a reason (never logged) when not.
+    openFolder: async (folder) => !(await shell.openPath(folder)),
+  },
+  progress: (progress) => sendEvent('performance:progress', progress),
+  tempFolder: () => app.getPath('temp'),
+  today: () => stateHost!.today(),
+  log,
+});
+services.performance = perfService;
+
+/** Auto-import on startup: when it is on and folders are remembered, after the window is up. */
+async function autoImportOnStartup(): Promise<void> {
+  if (!perfService.shouldAutoImport(settings.performance)) return;
+  try {
+    await perfService.syncNow();
+  } catch {
+    log('auto-import did not run');
+  }
+  announceChange();
+}
 
 const picked = new Set<string>();
 const dropped: DroppedFiles = new Map();
@@ -400,12 +530,20 @@ if (!app.requestSingleInstanceLock()) {
       fixtureDb: fixtureDb(),
       tempFolder: app.getPath('temp'),
     });
-    stateHost = new StateHost(dataSource);
+    stateHost = new StateHost(dataSource, undefined, {
+      demoPerformanceFolder: fixturePerformanceFolder(),
+      onAsyncChange: () => {
+        if (stateHost) announceChange();
+      },
+      log,
+    });
+    stateHost.perfStatus = () => perfService.status();
     openDataSource(false);
 
     registerMessages();
     lockDownPage();
     createWindow();
+    mainWindow?.webContents.once('did-finish-load', () => void autoImportOnStartup());
     updater.init((status) => {
       log(`updates: ${status.state}`);
       sendEvent('updates:status-changed', status);

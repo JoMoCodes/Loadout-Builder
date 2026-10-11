@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { FirstRunChecklist } from '../help/FirstRunChecklist';
+import { WeeklyChecklist } from '../help/WeeklyChecklist';
 import type { PageProps } from './types';
 
 function count(counts: Record<string, number>, table: string): number {
@@ -16,6 +17,16 @@ export function HomePage({ version, dataSource, goTo, settings, changeSettings, 
     setJustFinished(true);
     hideChecklist();
   }, [hideChecklist]);
+
+  // The weekly checklist has its own hide and show.
+  const [weeklyJustFinished, setWeeklyJustFinished] = useState(false);
+  const { hideWeekly } = help;
+  const weeklyFinished = useCallback(() => {
+    setWeeklyJustFinished(true);
+    hideWeekly();
+  }, [hideWeekly]);
+  const showFirstDay = help.checklistShown || justFinished;
+  const showWeekly = help.weeklyShown || weeklyJustFinished;
 
   return (
     <section className="page home-page" data-page="home" aria-labelledby="title-home">
@@ -46,18 +57,42 @@ export function HomePage({ version, dataSource, goTo, settings, changeSettings, 
               </button>{' '}
               for help, step by step.
             </p>
+            {showWeekly ? null : (
+              <p>
+                Doing the weekly performance reports?{' '}
+                <button
+                  type="button"
+                  className="link-button"
+                  data-testid="show-weekly-checklist"
+                  onClick={help.showWeekly}
+                >
+                  Show the weekly checklist
+                </button>
+              </p>
+            )}
           </div>
         </div>
 
-        {help.checklistShown || justFinished ? (
-          <div className="home-aside" data-slot="first-run-checklist">
-            <FirstRunChecklist
-              settings={settings}
-              changeSettings={changeSettings}
-              goTo={goTo}
-              help={help}
-              onFinished={finished}
-            />
+        {showFirstDay || showWeekly ? (
+          <div className="home-aside flex flex-col gap-4">
+            {showFirstDay ? (
+              <FirstRunChecklist
+                settings={settings}
+                changeSettings={changeSettings}
+                goTo={goTo}
+                help={help}
+                onFinished={finished}
+              />
+            ) : null}
+            {showWeekly ? (
+              <WeeklyChecklist
+                goTo={goTo}
+                help={help}
+                dashboardSeen={help.dashboardSeen}
+                onHide={hideWeekly}
+                onFinished={weeklyFinished}
+              />
+            ) : null}
           </div>
         ) : null}
       </div>
