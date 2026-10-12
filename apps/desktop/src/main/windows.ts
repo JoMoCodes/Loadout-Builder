@@ -4,11 +4,36 @@
 //
 // What a window is opened on travels in its address: `?page=load-out&tab=available-vans`. The
 // main process makes the window, so the page itself never opens one (it is not allowed to).
+// Each remembers its size and place, by page and tab, so it opens the same way next time.
 
 import { BrowserWindow, screen } from 'electron';
 import path from 'node:path';
 import { sameTarget, windowQuery, windowTitle, type WindowTarget } from '../shared/windows';
-import { MIN_SIZE, placeBeside } from './windowState';
+import { MIN_SIZE, pickBounds, placeBeside, type WindowState } from './windowState';
+
+/**
+ * Remembers a window's size and place: a moment after the last change, and when it closes.
+ * `save` is given the normal (not maximized, not minimized) rectangle and whether it is maximized.
+ */
+export function watchBounds(win: BrowserWindow, save: (state: WindowState) => void): void {
+  let timer: NodeJS.Timeout | undefined;
+  const remember = () => {
+    if (win.isDestroyed() || win.isMinimized()) return;
+    save({ ...win.getNormalBounds(), maximized: win.isMaximized() });
+  };
+  const rememberSoon = () => {
+    clearTimeout(timer);
+    timer = setTimeout(remember, 400);
+  };
+  win.on('resize', rememberSoon);
+  win.on('move', rememberSoon);
+  win.on('maximize', rememberSoon);
+  win.on('unmaximize', rememberSoon);
+  win.on('close', () => {
+    clearTimeout(timer);
+    remember();
+  });
+}
 
 export interface ExtraWindowSetup {
   /** The main window, which the new one opens beside (and closes with). */
@@ -24,6 +49,10 @@ export interface ExtraWindowSetup {
   devServerUrl: string | undefined;
   /** The installed app's page file. */
   pageFile: string;
+  /** Where this window was last left, or null for a window never opened before. */
+  remembered(target: WindowTarget): WindowState | null;
+  /** Keeps where the window is now, for next time. */
+  remember(target: WindowTarget, state: WindowState): void;
   /** Counts only. */
   log(message: string): void;
 }
@@ -61,8 +90,13 @@ export class ExtraWindows {
     const main = this.setup.main();
     const mainBounds = main && !main.isDestroyed() ? main.getBounds() : null;
     const screens = screen.getAllDisplays().map((display) => display.workArea);
+    // Where it was last left, if it is still on a screen; else beside the main window.
+    const saved = this.setup.remembered(target);
+    const { bounds, maximized } = saved
+      ? pickBounds(saved, screens)
+      : { bounds: placeBeside(mainBounds, screens), maximized: false };
     const win = new BrowserWindow({
-      ...placeBeside(mainBounds, screens),
+      ...bounds,
       minWidth: MIN_SIZE.width,
       minHeight: MIN_SIZE.height,
       title: windowTitle(target),
@@ -70,7 +104,9 @@ export class ExtraWindows {
       ...this.setup.options(),
     });
     this.open.set(win, target);
+    if (maximized) win.maximize();
     win.once('ready-to-show', () => win.show());
+    watchBounds(win, (state) => this.setup.remember(target, state));
     win.on('closed', () => {
       this.open.delete(win);
     });

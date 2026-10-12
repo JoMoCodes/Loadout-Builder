@@ -20,6 +20,8 @@ export const RELEASE_NOTES: readonly ReleaseNote[] = [
       'A window opened this way shows just that page, with no left menu. Its title says what it shows, like "Load Out · Available Vans".',
       'Right-click the same page or tab again and the window you already have comes to the front instead of a second one opening.',
       'Closing the main window closes the other windows with it.',
+      'Each of these windows remembers its size and place, so it opens the same way next time.',
+      'A file or folder window now opens over the window you clicked in, not over the main window.',
     ],
   },
   {

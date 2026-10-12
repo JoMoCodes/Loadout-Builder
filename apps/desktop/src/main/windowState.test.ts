@@ -3,6 +3,8 @@ import {
   DEFAULT_SIZE,
   EXTRA_SIZE,
   MIN_SIZE,
+  extraWindowKey,
+  parseExtraWindowStates,
   parseWindowState,
   pickBounds,
   placeBeside,
@@ -105,5 +107,30 @@ describe('placing a page-only window', () => {
   it('gives only a size when there is no main window to open beside', () => {
     expect(placeBeside(null, [screen])).toEqual({ ...EXTRA_SIZE });
     expect(placeBeside(null, [])).toEqual({ ...EXTRA_SIZE });
+  });
+});
+
+describe('remembering page-only windows', () => {
+  it('names each by its page and tab', () => {
+    expect(extraWindowKey({ page: 'load-out', tab: 'available-vans' })).toBe(
+      'load-out/available-vans',
+    );
+    expect(extraWindowKey({ page: 'settings' })).toBe('settings');
+  });
+
+  it('reads the entries that make sense and drops the rest', () => {
+    const good = { x: 10, y: 20, width: 1000, height: 700, maximized: false };
+    expect(
+      parseExtraWindowStates({
+        'load-out/roster': good,
+        settings: { ...good, maximized: true },
+        'too-small': { x: 0, y: 0, width: 100, height: 100 },
+        'Bad Key!': good,
+        nothing: null,
+      }),
+    ).toEqual({ 'load-out/roster': good, settings: { ...good, maximized: true } });
+    expect(parseExtraWindowStates(null)).toEqual({});
+    expect(parseExtraWindowStates([good])).toEqual({});
+    expect(parseExtraWindowStates('x')).toEqual({});
   });
 });
