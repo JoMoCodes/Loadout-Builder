@@ -151,9 +151,10 @@ test('the colour preview zooms: Fit width, 100%, in and out, remembered in this 
   const boxWidth = async () =>
     page.getByTestId('perf-zoom-box').evaluate((el) => (el as HTMLElement).clientWidth);
 
-  // It starts fitting the width: the page is as wide as the box.
+  // It starts fitting the width: the page is as wide as the box. The box can still be settling
+  // when the sample first draws (the preview measures it again as it changes), so wait for it.
   await expect(page.getByTestId('perf-zoom-fit')).toHaveAttribute('aria-pressed', 'true');
-  expect(Math.abs((await width()) - (await boxWidth()))).toBeLessThan(4);
+  await expect.poll(async () => Math.abs((await width()) - (await boxWidth()))).toBeLessThan(4);
 
   await page.getByTestId('perf-zoom-100').click();
   await expect(level).toHaveText('100%');
