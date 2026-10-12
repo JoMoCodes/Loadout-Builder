@@ -25,6 +25,7 @@ import { PerfService } from './performance/service';
 import { SettingsFile } from './settingsFile';
 import { isOwnPage } from './senderCheck';
 import * as updater from './updater';
+import { ExtraWindows } from './windows';
 import { MIN_SIZE, parseWindowState, pickBounds } from './windowState';
 import type { WindowState } from './windowState';
 
@@ -187,6 +188,66 @@ function loadWindowState(): WindowState | null {
   return parseWindowState(readJson(windowStateFile()));
 }
 
+const pageFile = () => path.join(__dirname, '..', 'renderer', 'index.html');
+
+/** How every window of the app is made: the icon, the dark start colour, and the bridge. */
+function windowOptions() {
+  return {
+    icon: windowIcon(),
+    backgroundColor: WINDOW_BACKGROUND,
+    webPreferences: {
+      preload: path.join(__dirname, '..', 'preload', 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true,
+    },
+  };
+}
+
+/** Locks a window's page down and copies the few log lines it may say. The same for every window. */
+function prepareWindow(win: BrowserWindow): void {
+  // The page may not open other windows or wander off to another address. (A page-only window
+  // is opened by the main process, on the page's request: see `app:open-window`.)
+  win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
+  // In the installed app the page never navigates at all: it is one page, and a file dropped
+  // on the window must not replace it. In dev, only the dev server's own address is allowed.
+  win.webContents.on('will-navigate', (event, url) => {
+    const allowed = devServerUrl ? url.startsWith(devServerUrl) : false;
+    if (!allowed) event.preventDefault();
+  });
+
+  // Lets a start-up check (and whoever is running the app in a terminal) see that the page is
+  // up. Only the page's own "ready" line and error levels are copied, never the message text
+  // of anything else: from phase 4 on, a page error could carry a driver's name.
+  win.webContents.on('console-message', (event) => {
+    if (event.message.startsWith(PAGE_READY_PREFIX)) {
+      log(`page says: ${event.message}`);
+    } else if (event.level === 'error' || event.level === 'warning') {
+      log(`page logged a ${event.level} (${event.message.length} characters)`);
+    }
+  });
+
+  win.webContents.on('did-finish-load', () => {
+    log(`window title is "${win.getTitle()}"`);
+  });
+}
+
+/** The page-only windows ("Open in new window"). They open beside the main window and close with it. */
+const extraWindows = new ExtraWindows({
+  main: () => mainWindow,
+  options: windowOptions,
+  prepare: prepareWindow,
+  devServerUrl,
+  pageFile: pageFile(),
+  log,
+});
+
+/** Every window that is open: the main one first, then the page-only ones. */
+function allWindows(): BrowserWindow[] {
+  const main = mainWindow && !mainWindow.isDestroyed() ? [mainWindow] : [];
+  return [...main, ...extraWindows.all()];
+}
+
 function createWindow(): void {
   const screens = screen.getAllDisplays().map((display) => display.workArea);
   const { bounds, maximized } = pickBounds(loadWindowState(), screens);
@@ -196,15 +257,8 @@ function createWindow(): void {
     minWidth: MIN_SIZE.width,
     minHeight: MIN_SIZE.height,
     title: APP_TITLE,
-    icon: windowIcon(),
-    backgroundColor: WINDOW_BACKGROUND,
     show: false,
-    webPreferences: {
-      preload: path.join(__dirname, '..', 'preload', 'preload.js'),
-      contextIsolation: true,
-      nodeIntegration: false,
-      sandbox: true,
-    },
+    ...windowOptions(),
   });
   const win = mainWindow;
   if (maximized) win.maximize();
@@ -232,36 +286,16 @@ function createWindow(): void {
   });
   win.on('closed', () => {
     mainWindow = null;
+    // The main window is the app: the page-only windows go with it.
+    extraWindows.closeAll();
   });
 
-  // The page may not open other windows or wander off to another address.
-  win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
-  // In the installed app the page never navigates at all: it is one page, and a file dropped
-  // on the window must not replace it. In dev, only the dev server's own address is allowed.
-  win.webContents.on('will-navigate', (event, url) => {
-    const allowed = devServerUrl ? url.startsWith(devServerUrl) : false;
-    if (!allowed) event.preventDefault();
-  });
-
-  // Lets a start-up check (and whoever is running the app in a terminal) see that the page is
-  // up. Only the page's own "ready" line and error levels are copied, never the message text
-  // of anything else: from phase 4 on, a page error could carry a driver's name.
-  win.webContents.on('console-message', (event) => {
-    if (event.message.startsWith(PAGE_READY_PREFIX)) {
-      log(`page says: ${event.message}`);
-    } else if (event.level === 'error' || event.level === 'warning') {
-      log(`page logged a ${event.level} (${event.message.length} characters)`);
-    }
-  });
-
-  win.webContents.on('did-finish-load', () => {
-    log(`window title is "${win.getTitle()}"`);
-  });
+  prepareWindow(win);
 
   if (devServerUrl) {
     void win.loadURL(devServerUrl);
   } else {
-    void win.loadFile(path.join(__dirname, '..', 'renderer', 'index.html'));
+    void win.loadFile(pageFile());
   }
 }
 
@@ -292,8 +326,13 @@ async function openDataFolder(): Promise<OpenFolderResult> {
   }
 }
 
-/** Sends a note to the page, typed by the channel registry. */
+/** Sends a note to every window's page, typed by the channel registry. */
 function sendEvent<N extends EventName>(name: N, payload: PayloadOf<Channels[N]>): void {
+  for (const win of allWindows()) win.webContents.send(name, payload);
+}
+
+/** Sends a note to the main window's page only. */
+function sendToMain<N extends EventName>(name: N, payload: PayloadOf<Channels[N]>): void {
   const win = mainWindow;
   if (win && !win.isDestroyed()) win.webContents.send(name, payload);
 }
@@ -380,11 +419,21 @@ const services: Services = {
       announceChange();
     }
     saveSettings();
+    // Every window shows the new look and choices, not only the one that made the change.
+    sendEvent('settings:changed', settings);
     return settings;
   },
   openDataFolder: () => openDataFolder(),
   openLink,
   dataSourceInfo: () => dataSource!.getInfo(),
+  openWindow: (target) => extraWindows.show(target),
+  showPage: (page) => {
+    const win = mainWindow;
+    if (!win || win.isDestroyed()) return;
+    sendToMain('app:go-to', { page });
+    if (win.isMinimized()) win.restore();
+    win.focus();
+  },
   updates: {
     status: () => updater.getStatus(),
     check: () => updater.check(),
@@ -495,10 +544,7 @@ function registerMessages(): void {
     dropped,
     today: host.today,
   };
-  const pageOrigin = {
-    devServerUrl,
-    pageFile: path.join(__dirname, '..', 'renderer', 'index.html'),
-  };
+  const pageOrigin = { devServerUrl, pageFile: pageFile() };
   const env: ChannelEnv<HandlerContext> = {
     isOwnPage: (url) => isOwnPage(url, pageOrigin),
     context: () => context,

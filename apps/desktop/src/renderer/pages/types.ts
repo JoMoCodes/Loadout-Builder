@@ -1,5 +1,8 @@
 import type { DataSourceInfo } from '../../shared/shell';
 import type { AppSettings, SettingsPatch } from '../../shared/settings';
+import type { PageId } from '../../shared/windows';
+
+export type { PageId };
 
 /** What the shell hands to every page. */
 export interface PageProps {
@@ -7,8 +10,15 @@ export interface PageProps {
   settings: AppSettings;
   changeSettings(patch: SettingsPatch): Promise<void>;
   dataSource: DataSourceInfo | null;
-  /** Moves to another page by its id. */
+  /** Moves to another page by its id. From a page-only window, the main window moves instead. */
   goTo(pageId: PageId): void;
+  /**
+   * This is a page-only window ("Open in new window"): one page, no left menu. It does not
+   * remember the last page or tab for next time (the main window does that).
+   */
+  ownWindow: boolean;
+  /** The tab this page-only window was opened on, or null (the page picks as usual). */
+  startTab: string | null;
   /** Something a shortcut key asked this page to do (Ctrl+O, Ctrl+I), or null. */
   request: PageRequest | null;
   /** The page has taken the request; it is not run again. */
@@ -46,16 +56,3 @@ export interface PageRequest {
   id: number;
   action: 'import-sheet' | 'import-associates';
 }
-
-export type PageId =
-  | 'home'
-  | 'dashboard'
-  | 'load-out'
-  | 'route-data'
-  | 'vehicle-data'
-  | 'associates'
-  | 'performance'
-  | 'previous-roster'
-  | 'how-to-use'
-  | 'features-log'
-  | 'settings';

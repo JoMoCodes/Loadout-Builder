@@ -2,7 +2,7 @@
 
 import type { AppSettings, SettingsPatch } from '../settings';
 import { anyObject, nothing } from './check';
-import { as, defineCommand, defineQuery } from './define';
+import { as, defineCommand, defineEvent, defineQuery } from './define';
 
 export const settingsChannels = [
   defineQuery('settings:get', { input: nothing, result: as<AppSettings>() }),
@@ -15,4 +15,9 @@ export const settingsChannels = [
     result: as<AppSettings>(),
     quiet: true,
   }),
+  /**
+   * Main process to every window: the settings changed (in this window or another one). Each
+   * window puts the new look on and shows the new choices.
+   */
+  defineEvent('settings:changed', { payload: as<AppSettings>() }),
 ] as const;

@@ -20,4 +20,12 @@ export const appHandlers: HandlersFor<typeof appChannels> = {
     }
     return null;
   },
+  'app:open-window': (target, ctx) => {
+    ctx.services.openWindow(target);
+    return null;
+  },
+  'app:show-page': ({ page }, ctx) => {
+    ctx.services.showPage(page);
+    return null;
+  },
 };

@@ -2,21 +2,21 @@
 // a tab of its own. Ported from the old app's Associates page.
 
 import { useCallback, useState } from 'react';
+import { PAGE_TABS, isTabOf } from '../../shared/windows';
 import { useAppSnapshot } from '../lib/useAppSnapshot';
 import { AssociatesTab } from './associates/AssociatesTab';
 import { LifetimeRoutesTab } from './associates/LifetimeRoutesTab';
 import { ProblemBanner, StatusLine, useMessages } from './dataPages/PageParts';
-import { TabPanel, Tabs, type TabItem } from './dataPages/Tabs';
+import { TabPanel, Tabs } from './dataPages/Tabs';
 import type { PageProps } from './types';
 
-const TABS: readonly TabItem[] = [
-  { id: 'associates', label: 'Associates' },
-  { id: 'lifetime-routes', label: 'Lifetime Routes' },
-];
+const TABS = PAGE_TABS.associates;
 
-export function AssociatesPage({ request, takeRequest }: PageProps) {
+export function AssociatesPage({ request, takeRequest, startTab }: PageProps) {
   const { snapshot, loading, error } = useAppSnapshot();
-  const [tab, setTab] = useState<string>(TABS[0]!.id);
+  const [tab, setTab] = useState<string>(() =>
+    isTabOf('associates', startTab) ? startTab : TABS[0]!.id,
+  );
   const messages = useMessages();
   const { setStatus, clearProblem } = messages;
 
@@ -44,6 +44,7 @@ export function AssociatesPage({ request, takeRequest }: PageProps) {
       <Tabs
         label="Associates"
         name="associates"
+        page="associates"
         tabs={TABS}
         value={shown}
         onChange={(id) => {

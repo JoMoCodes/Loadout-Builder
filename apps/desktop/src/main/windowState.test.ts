@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_SIZE, parseWindowState, pickBounds } from './windowState';
+import {
+  DEFAULT_SIZE,
+  EXTRA_SIZE,
+  MIN_SIZE,
+  parseWindowState,
+  pickBounds,
+  placeBeside,
+} from './windowState';
 
 const screen = { x: 0, y: 0, width: 1920, height: 1080 };
 
@@ -62,5 +69,41 @@ describe('window size on a small screen', () => {
       bounds: { width: 1366, height: 728 },
       maximized: true,
     });
+  });
+});
+
+describe('placing a page-only window', () => {
+  const screen = { x: 0, y: 0, width: 1920, height: 1040 };
+  const main = { x: 100, y: 80, width: 1200, height: 800 };
+
+  it('opens a step down and right of the main window, at the usual size', () => {
+    expect(placeBeside(main, [screen])).toEqual({
+      x: 140,
+      y: 120,
+      width: EXTRA_SIZE.width,
+      height: EXTRA_SIZE.height,
+    });
+  });
+
+  it('stays on the main window’s screen', () => {
+    const second = { x: 1920, y: 0, width: 1920, height: 1040 };
+    const onSecond = { ...main, x: 2800, y: 500 };
+    const placed = placeBeside(onSecond, [screen, second]);
+    expect(placed.x).toBe(second.x + second.width - EXTRA_SIZE.width);
+    expect(placed.y).toBe(second.y + second.height - EXTRA_SIZE.height);
+  });
+
+  it('is never bigger than the screen, and never smaller than the smallest window', () => {
+    const small = { x: 0, y: 0, width: 900, height: 650 };
+    expect(placeBeside(main, [small])).toEqual({ x: 0, y: 0, width: 900, height: 650 });
+    const tiny = { x: 0, y: 0, width: 400, height: 300 };
+    const placed = placeBeside(main, [tiny]);
+    expect(placed.width).toBe(MIN_SIZE.width);
+    expect(placed.height).toBe(MIN_SIZE.height);
+  });
+
+  it('gives only a size when there is no main window to open beside', () => {
+    expect(placeBeside(null, [screen])).toEqual({ ...EXTRA_SIZE });
+    expect(placeBeside(null, [])).toEqual({ ...EXTRA_SIZE });
   });
 });
