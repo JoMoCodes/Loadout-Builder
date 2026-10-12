@@ -12,6 +12,7 @@ import {
   Users,
   type LucideIcon,
 } from 'lucide-react';
+import { OpenInNewWindow } from '../components/OpenInNewWindow';
 import { PAGES } from '../pages';
 import type { PageId } from '../pages/types';
 
@@ -34,7 +35,10 @@ interface NavProps {
   onGo(pageId: PageId): void;
 }
 
-/** The left menu. Plain buttons, so Tab moves between them and Enter opens one. */
+/**
+ * The left menu. Plain buttons, so Tab moves between them and Enter opens one. A right-click
+ * offers to open the page in a window of its own.
+ */
 export function Nav({ current, onGo }: NavProps) {
   return (
     <nav className="sidebar" aria-label="Pages">
@@ -52,16 +56,18 @@ export function Nav({ current, onGo }: NavProps) {
           const Icon = ICONS[page.id];
           return (
             <li key={page.id}>
-              <button
-                type="button"
-                className="nav-item"
-                data-nav={page.id}
-                aria-current={page.id === current ? 'page' : undefined}
-                onClick={() => onGo(page.id)}
-              >
-                <Icon aria-hidden="true" />
-                {page.label}
-              </button>
+              <OpenInNewWindow target={{ page: page.id }}>
+                <button
+                  type="button"
+                  className="nav-item"
+                  data-nav={page.id}
+                  aria-current={page.id === current ? 'page' : undefined}
+                  onClick={() => onGo(page.id)}
+                >
+                  <Icon aria-hidden="true" />
+                  {page.label}
+                </button>
+              </OpenInNewWindow>
             </li>
           );
         })}

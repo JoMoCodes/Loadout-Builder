@@ -2,22 +2,22 @@
 // Affinity and the LMR Approved Drivers. Ported from the old app's Vehicle Data page.
 
 import { useState } from 'react';
+import { PAGE_TABS, isTabOf } from '../../shared/windows';
 import { useAppSnapshot } from '../lib/useAppSnapshot';
 import { ProblemBanner, StatusLine, useMessages } from './dataPages/PageParts';
-import { TabPanel, Tabs, type TabItem } from './dataPages/Tabs';
+import { TabPanel, Tabs } from './dataPages/Tabs';
+import type { PageProps } from './types';
 import { AffinityTab } from './vehicleData/AffinityTab';
 import { LmrTab } from './vehicleData/LmrTab';
 import { ManagementTab } from './vehicleData/ManagementTab';
 
-const TABS: readonly TabItem[] = [
-  { id: 'management', label: 'Vehicle Management' },
-  { id: 'affinity', label: 'Van Affinity' },
-  { id: 'lmr', label: 'LMR Approved Drivers' },
-];
+const TABS = PAGE_TABS['vehicle-data'];
 
-export function VehicleDataPage() {
+export function VehicleDataPage({ startTab }: PageProps) {
   const { snapshot, loading, error } = useAppSnapshot();
-  const [tab, setTab] = useState<string>(TABS[0]!.id);
+  const [tab, setTab] = useState<string>(() =>
+    isTabOf('vehicle-data', startTab) ? startTab : TABS[0]!.id,
+  );
   const messages = useMessages();
 
   return (
@@ -34,6 +34,7 @@ export function VehicleDataPage() {
       <Tabs
         label="Vehicle data"
         name="vehicle-data"
+        page="vehicle-data"
         tabs={TABS}
         value={tab}
         onChange={(id) => {

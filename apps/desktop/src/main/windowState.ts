@@ -83,3 +83,29 @@ export function pickBounds(
   const y = Math.max(area.y, Math.min(saved.y, area.y + area.height - height));
   return { bounds: { x, y, width, height }, maximized: saved.maximized };
 }
+
+/** The size a page-only window opens at, before it is kept on its screen. */
+export const EXTRA_SIZE = { width: 1000, height: 700 } as const;
+
+/** How far down and right of the main window a page-only window opens, in pixels. */
+const EXTRA_OFFSET = 40;
+
+/**
+ * Where a page-only window opens: a step down and right of the main window, on the main
+ * window's screen, and never bigger than that screen's usable area. With no main window (or no
+ * screens) it is left to the computer to place.
+ */
+export function placeBeside(
+  main: Rect | null,
+  screens: readonly Rect[],
+  size: { width: number; height: number } = EXTRA_SIZE,
+): Partial<Rect> & { width: number; height: number } {
+  const area = main ? screenFor(main, screens) : (screens[0] ?? null);
+  if (!area) return { ...size };
+  const width = Math.max(MIN_SIZE.width, Math.min(size.width, area.width));
+  const height = Math.max(MIN_SIZE.height, Math.min(size.height, area.height));
+  if (!main) return { width, height };
+  const x = Math.max(area.x, Math.min(main.x + EXTRA_OFFSET, area.x + area.width - width));
+  const y = Math.max(area.y, Math.min(main.y + EXTRA_OFFSET, area.y + area.height - height));
+  return { x, y, width, height };
+}
