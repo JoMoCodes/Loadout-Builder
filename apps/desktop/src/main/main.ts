@@ -1,4 +1,6 @@
 import { app, BrowserWindow, dialog, ipcMain, safeStorage, screen, session, shell } from 'electron';
+import type { OpenDialogOptions, SaveDialogOptions, WebContents } from 'electron';
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { existsSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import type { EventName } from '../shared/channels';
@@ -25,8 +27,14 @@ import { PerfService } from './performance/service';
 import { SettingsFile } from './settingsFile';
 import { isOwnPage } from './senderCheck';
 import * as updater from './updater';
-import { ExtraWindows } from './windows';
-import { MIN_SIZE, parseWindowState, pickBounds } from './windowState';
+import { ExtraWindows, watchBounds } from './windows';
+import {
+  MIN_SIZE,
+  extraWindowKey,
+  parseExtraWindowStates,
+  parseWindowState,
+  pickBounds,
+} from './windowState';
 import type { WindowState } from './windowState';
 
 const APP_TITLE = 'Loadout Builder';
@@ -68,7 +76,38 @@ const settingsFile = () => path.join(app.getPath('userData'), 'settings.json');
 // Created once the app is ready (the data folder may be moved for a test before that).
 let settingsStore: SettingsFile | null = null;
 const windowStateFile = () => path.join(app.getPath('userData'), 'window-state.json');
+// Where each page-only window was last left, by page and tab.
+const extraWindowsFile = () => path.join(app.getPath('userData'), 'extra-windows.json');
 const dataFolder = () => path.join(app.getPath('userData'), 'data');
+
+/**
+ * The window whose page made the call being handled right now, so a file or folder window opens
+ * over it and not over the main window. Set by `inCall` for the whole of a handler's run.
+ */
+const asking = new AsyncLocalStorage<BrowserWindow>();
+
+/** The window a file, folder or save window should open over: the one that asked, else the main one. */
+function askingWindow(): BrowserWindow | null {
+  const win = asking.getStore();
+  if (win && !win.isDestroyed()) return win;
+  return mainWindow && !mainWindow.isDestroyed() ? mainWindow : null;
+}
+
+async function showOpenDialog(options: OpenDialogOptions): Promise<string | null> {
+  const win = askingWindow();
+  const result = win
+    ? await dialog.showOpenDialog(win, options)
+    : await dialog.showOpenDialog(options);
+  return result.canceled || result.filePaths.length === 0 ? null : (result.filePaths[0] ?? null);
+}
+
+async function showSaveDialog(options: SaveDialogOptions): Promise<string | null> {
+  const win = askingWindow();
+  const result = win
+    ? await dialog.showSaveDialog(win, options)
+    : await dialog.showSaveDialog(options);
+  return result.canceled || !result.filePath ? null : result.filePath;
+}
 
 function fixtureDb(): string {
   return app.isPackaged
@@ -94,17 +133,13 @@ function oldDbFile(): string {
   return usualOldDbPath(app.getPath('home'));
 }
 
-async function pickOldDb(): Promise<string | null> {
-  const options = {
+function pickOldDb(): Promise<string | null> {
+  return showOpenDialog({
     title: "Choose the old app's data file (loadout.db)",
     defaultPath: path.dirname(oldDbFile()),
-    properties: ['openFile' as const],
+    properties: ['openFile'],
     filters: [{ name: 'Old app data', extensions: ['db'] }],
-  };
-  const result = mainWindow
-    ? await dialog.showOpenDialog(mainWindow, options)
-    : await dialog.showOpenDialog(options);
-  return result.canceled || result.filePaths.length === 0 ? null : (result.filePaths[0] ?? null);
+  });
 }
 
 const oldData = new OldData({
@@ -126,17 +161,13 @@ function oldWpaDbFile(): string {
   return usualWpaDbPath(app.getPath('home'), process.env.LOCALAPPDATA);
 }
 
-async function pickOldWpaDb(): Promise<string | null> {
-  const options = {
+function pickOldWpaDb(): Promise<string | null> {
+  return showOpenDialog({
     title: "Choose the Weekly Performance App's data file (app.db)",
     defaultPath: path.dirname(oldWpaDbFile()),
-    properties: ['openFile' as const],
+    properties: ['openFile'],
     filters: [{ name: 'Weekly Performance App data', extensions: ['db'] }],
-  };
-  const result = mainWindow
-    ? await dialog.showOpenDialog(mainWindow, options)
-    : await dialog.showOpenDialog(options);
-  return result.canceled || result.filePaths.length === 0 ? null : (result.filePaths[0] ?? null);
+  });
 }
 
 const oldWpaData = new OldWpaData({
@@ -186,6 +217,10 @@ function openDataSource(demo: boolean): void {
 
 function loadWindowState(): WindowState | null {
   return parseWindowState(readJson(windowStateFile()));
+}
+
+function loadExtraWindowStates(): Record<string, WindowState> {
+  return parseExtraWindowStates(readJson(extraWindowsFile()));
 }
 
 const pageFile = () => path.join(__dirname, '..', 'renderer', 'index.html');
@@ -239,6 +274,13 @@ const extraWindows = new ExtraWindows({
   prepare: prepareWindow,
   devServerUrl,
   pageFile: pageFile(),
+  remembered: (target) => loadExtraWindowStates()[extraWindowKey(target)] ?? null,
+  remember: (target, state) => {
+    writeJson(extraWindowsFile(), {
+      ...loadExtraWindowStates(),
+      [extraWindowKey(target)]: state,
+    });
+  },
   log,
 });
 
@@ -266,24 +308,7 @@ function createWindow(): void {
   win.once('ready-to-show', () => win.show());
 
   // Remember size and position (a moment after the last change, and when the window closes).
-  let timer: NodeJS.Timeout | undefined;
-  const remember = () => {
-    if (win.isDestroyed() || win.isMinimized()) return;
-    const normal = win.getNormalBounds();
-    writeJson(windowStateFile(), { ...normal, maximized: win.isMaximized() });
-  };
-  const rememberSoon = () => {
-    clearTimeout(timer);
-    timer = setTimeout(remember, 400);
-  };
-  win.on('resize', rememberSoon);
-  win.on('move', rememberSoon);
-  win.on('maximize', rememberSoon);
-  win.on('unmaximize', rememberSoon);
-  win.on('close', () => {
-    clearTimeout(timer);
-    remember();
-  });
+  watchBounds(win, (state) => writeJson(windowStateFile(), state));
   win.on('closed', () => {
     mainWindow = null;
     // The main window is the app: the page-only windows go with it.
@@ -342,18 +367,14 @@ function announceChange(): void {
   sendEvent('state:changed', { revision: stateHost!.bump() });
 }
 
-async function pickFile(kind: keyof typeof PICKS): Promise<string | null> {
+function pickFile(kind: keyof typeof PICKS): Promise<string | null> {
   const spec = PICKS[kind];
-  const options = {
+  return showOpenDialog({
     title: spec.title,
     defaultPath: app.getPath('downloads'),
-    properties: ['openFile' as const],
+    properties: ['openFile'],
     filters: spec.filters,
-  };
-  const result = mainWindow
-    ? await dialog.showOpenDialog(mainWindow, options)
-    : await dialog.showOpenDialog(options);
-  return result.canceled || result.filePaths.length === 0 ? null : (result.filePaths[0] ?? null);
+  });
 }
 
 /**
@@ -368,19 +389,15 @@ function saveFolder(nearFile: string, startIn: SaveFileOptions['startIn']): stri
   return existsSync(fallback) ? fallback : app.getPath('home');
 }
 
-async function chooseSaveFile(spec: SaveFileOptions): Promise<string | null> {
-  const options = {
+function chooseSaveFile(spec: SaveFileOptions): Promise<string | null> {
+  return showSaveDialog({
     title: spec.title,
     defaultPath: path.join(saveFolder(spec.nearFile, spec.startIn), `${spec.defaultName}.pdf`),
     filters: [
       { name: 'PDF', extensions: ['pdf'] },
       { name: 'Excel workbook', extensions: ['xlsx'] },
     ],
-  };
-  const result = mainWindow
-    ? await dialog.showSaveDialog(mainWindow, options)
-    : await dialog.showSaveDialog(options);
-  return result.canceled || !result.filePath ? null : result.filePath;
+  });
 }
 
 async function openLink(url: string): Promise<boolean> {
@@ -448,46 +465,38 @@ const services: Services = {
   oldWpaData,
 };
 
-/** Asks for a folder in the main process's own window. */
-async function chooseFolder(title: string, startIn: string | null): Promise<string | null> {
-  const options = {
+/** Asks for a folder, over the window that asked. */
+function chooseFolder(title: string, startIn: string | null): Promise<string | null> {
+  return showOpenDialog({
     title,
     defaultPath: startIn ?? app.getPath('downloads'),
-    properties: ['openDirectory' as const],
-  };
-  const result = mainWindow
-    ? await dialog.showOpenDialog(mainWindow, options)
-    : await dialog.showOpenDialog(options);
-  return result.canceled || result.filePaths.length === 0 ? null : (result.filePaths[0] ?? null);
+    properties: ['openDirectory'],
+  });
 }
 
-async function chooseOneFile(
+function chooseOneFile(
   title: string,
   filters: Array<{ name: string; extensions: string[] }>,
   startIn: string | null,
 ): Promise<string | null> {
-  const options = {
+  return showOpenDialog({
     title,
     defaultPath: startIn ?? app.getPath('downloads'),
-    properties: ['openFile' as const],
+    properties: ['openFile'],
     filters,
-  };
-  const result = mainWindow
-    ? await dialog.showOpenDialog(mainWindow, options)
-    : await dialog.showOpenDialog(options);
-  return result.canceled || result.filePaths.length === 0 ? null : (result.filePaths[0] ?? null);
+  });
 }
 
-async function chooseSaveAs(
+function chooseSaveAs(
   title: string,
   defaultName: string,
   filters: Array<{ name: string; extensions: string[] }>,
 ): Promise<string | null> {
-  const options = { title, defaultPath: path.join(app.getPath('documents'), defaultName), filters };
-  const result = mainWindow
-    ? await dialog.showSaveDialog(mainWindow, options)
-    : await dialog.showSaveDialog(options);
-  return result.canceled || !result.filePath ? null : result.filePath;
+  return showSaveDialog({
+    title,
+    defaultPath: path.join(app.getPath('documents'), defaultName),
+    filters,
+  });
 }
 
 const perfService = new PerfService({
@@ -550,6 +559,12 @@ function registerMessages(): void {
     context: () => context,
     log,
     afterCommand: announceChange,
+    // The handler runs knowing which window asked, so its file windows open over that one.
+    inCall: (event, work) => {
+      const sender = event.sender as WebContents | undefined;
+      const win = sender ? BrowserWindow.fromWebContents(sender) : null;
+      return win ? asking.run(win, work) : work();
+    },
   };
   registerAllChannels(ipcMain, env);
 }

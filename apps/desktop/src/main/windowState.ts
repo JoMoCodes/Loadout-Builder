@@ -1,4 +1,7 @@
-// Remembers where the window was and how big, so it opens the same way next time.
+// Remembers where the window was and how big, so it opens the same way next time. The page-only
+// windows ("Open in new window") are remembered too, one entry per page and tab.
+
+import type { WindowTarget } from '../shared/windows';
 
 export interface Rect {
   x: number;
@@ -108,4 +111,20 @@ export function placeBeside(
   const x = Math.max(area.x, Math.min(main.x + EXTRA_OFFSET, area.x + area.width - width));
   const y = Math.max(area.y, Math.min(main.y + EXTRA_OFFSET, area.y + area.height - height));
   return { x, y, width, height };
+}
+
+/** The name a page-only window is remembered under: "load-out/available-vans", or "settings". */
+export function extraWindowKey(target: WindowTarget): string {
+  return target.tab ? `${target.page}/${target.tab}` : target.page;
+}
+
+/** Reads the remembered page-only windows, keeping only the entries that make sense. */
+export function parseExtraWindowStates(raw: unknown): Record<string, WindowState> {
+  const states: Record<string, WindowState> = {};
+  if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) return states;
+  for (const [key, value] of Object.entries(raw as Record<string, unknown>)) {
+    const state = parseWindowState(value);
+    if (state && /^[a-z-]+(\/[a-z-]+)?$/.test(key)) states[key] = state;
+  }
+  return states;
 }

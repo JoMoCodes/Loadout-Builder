@@ -237,6 +237,51 @@ describe('registerChannel: telling the page something changed', () => {
   });
 });
 
+describe('registerChannel: the call\u2019s setting', () => {
+  it('runs the handler inside inCall, which sees the event', async () => {
+    const { env } = makeEnv();
+    const seen: unknown[] = [];
+    let inside = false;
+    env.inCall = async (event, work) => {
+      seen.push(event.sender);
+      inside = true;
+      try {
+        return await work();
+      } finally {
+        inside = false;
+      }
+    };
+    const reply = await runCall(
+      doIt,
+      () => {
+        expect(inside).toBe(true);
+        return 7;
+      },
+      { ...good, sender: 'page-2' },
+      undefined,
+      env,
+    );
+    expect(reply).toEqual({ ok: true, value: 7 });
+    expect(seen).toEqual(['page-2']);
+    expect(inside).toBe(false);
+  });
+
+  it('still answers a refusal thrown inside inCall', async () => {
+    const { env } = makeEnv();
+    env.inCall = (_event, work) => work();
+    const reply = await runCall(
+      doIt,
+      () => {
+        throw new ChannelRefusal('refused', 'Not now.');
+      },
+      good,
+      undefined,
+      env,
+    );
+    expect(reply).toEqual({ ok: false, reason: 'refused', message: 'Not now.' });
+  });
+});
+
 describe('registerChannel: wiring', () => {
   it('registers calls with handle and signals with on', async () => {
     const { env } = makeEnv();
