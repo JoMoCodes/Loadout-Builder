@@ -3,6 +3,8 @@
 // Print sits next to the Roster because it is the roster it prints.
 
 import { useCallback, useEffect, useState } from 'react';
+import { LOAD_OUT_TABS, type LoadOutTab } from '../../shared/windows';
+import { OpenInNewWindow } from '../components/OpenInNewWindow';
 import { useAppSnapshot } from '../lib/useAppSnapshot';
 import { cn } from '../ui/cn';
 import { AvailableVansTab } from './loadOut/AvailableVansTab';
@@ -11,43 +13,46 @@ import { PrintTab } from './loadOut/print';
 import { RosterTab } from './loadOut/RosterTab';
 import type { PageProps } from './types';
 
-export type LoadOutTab = 'roster' | 'print' | 'available-vans' | 'previous-roster';
+export type { LoadOutTab };
 
-const TABS: { id: LoadOutTab; label: string }[] = [
-  { id: 'roster', label: 'Roster' },
-  { id: 'print', label: 'Print' },
-  { id: 'available-vans', label: 'Available Vans' },
-  { id: 'previous-roster', label: 'Previous Roster' },
-];
+const TABS = LOAD_OUT_TABS;
 
 const TAB_KEY = 'loadout.load-out-tab';
+
+const isTab = (id: string | null | undefined): id is LoadOutTab =>
+  TABS.some((tab) => tab.id === id);
 
 function rememberedTab(): LoadOutTab {
   try {
     const saved = globalThis.localStorage?.getItem(TAB_KEY);
-    return TABS.find((tab) => tab.id === saved)?.id ?? 'roster';
+    return isTab(saved) ? saved : 'roster';
   } catch {
     return 'roster';
   }
 }
 
-export function LoadOutPage({ request, takeRequest }: PageProps) {
+export function LoadOutPage({ request, takeRequest, ownWindow, startTab }: PageProps) {
   const { snapshot, loading, error } = useAppSnapshot();
-  const [tab, setTab] = useState<LoadOutTab>(rememberedTab);
+  const [tab, setTab] = useState<LoadOutTab>(() => (isTab(startTab) ? startTab : rememberedTab()));
   const [status, setStatus] = useState('');
   const [pendingPrint, setPendingPrint] = useState(false);
   const printTaken = useCallback(() => setPendingPrint(false), []);
 
-  const choose = useCallback((next: LoadOutTab) => {
-    setTab(next);
-    // What a tab said last is not news on the next one.
-    setStatus('');
-    try {
-      globalThis.localStorage?.setItem(TAB_KEY, next);
-    } catch {
-      // The tab is then remembered until the window closes.
-    }
-  }, []);
+  const choose = useCallback(
+    (next: LoadOutTab) => {
+      setTab(next);
+      // What a tab said last is not news on the next one.
+      setStatus('');
+      // A page-only window does not change which tab the main window opens on next time.
+      if (ownWindow) return;
+      try {
+        globalThis.localStorage?.setItem(TAB_KEY, next);
+      } catch {
+        // The tab is then remembered until the window closes.
+      }
+    },
+    [ownWindow],
+  );
 
   // Ctrl+O (from any page; the shell brings it here) brings in a load-out sheet on the Roster tab.
   const pendingImport = request?.action === 'import-sheet';
@@ -84,24 +89,25 @@ export function LoadOutPage({ request, takeRequest }: PageProps) {
         </h1>
         <div role="tablist" aria-label="Load Out tabs" className="flex gap-1">
           {TABS.map((entry) => (
-            <button
-              key={entry.id}
-              type="button"
-              role="tab"
-              id={`tab-${entry.id}`}
-              aria-selected={shown === entry.id}
-              aria-controls={`panel-${entry.id}`}
-              data-tab-button={entry.id}
-              onClick={() => choose(entry.id)}
-              className={cn(
-                'rounded-t-md border border-b-0 px-3 py-1.5 text-sm font-medium',
-                shown === entry.id
-                  ? 'border-line bg-app text-fg'
-                  : 'border-transparent text-muted hover:text-fg',
-              )}
-            >
-              {entry.label}
-            </button>
+            <OpenInNewWindow key={entry.id} target={{ page: 'load-out', tab: entry.id }}>
+              <button
+                type="button"
+                role="tab"
+                id={`tab-${entry.id}`}
+                aria-selected={shown === entry.id}
+                aria-controls={`panel-${entry.id}`}
+                data-tab-button={entry.id}
+                onClick={() => choose(entry.id)}
+                className={cn(
+                  'rounded-t-md border border-b-0 px-3 py-1.5 text-sm font-medium',
+                  shown === entry.id
+                    ? 'border-line bg-app text-fg'
+                    : 'border-transparent text-muted hover:text-fg',
+                )}
+              >
+                {entry.label}
+              </button>
+            </OpenInNewWindow>
           ))}
         </div>
       </div>

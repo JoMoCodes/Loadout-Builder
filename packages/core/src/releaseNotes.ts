@@ -11,6 +11,18 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.2.0',
+    items: [
+      'You can now open any page in a window of its own. Right-click a page in the left menu and choose Open in new window.',
+      'The same works for tabs. Right-click a tab, such as Available Vans on the Load Out page, and choose Open in new window.',
+      'Every window shows the same live data. Take a van off a driver in one window and the Available Vans list in another window changes straight away.',
+      'Changing the text size, the colours or demo mode in one window changes it in every window.',
+      'A window opened this way shows just that page, with no left menu. Its title says what it shows, like "Load Out · Available Vans".',
+      'Right-click the same page or tab again and the window you already have comes to the front instead of a second one opening.',
+      'Closing the main window closes the other windows with it.',
+    ],
+  },
+  {
     version: '2.1.0',
     items: [
       'The Weekly Performance App is now part of Loadout Builder. You only need one app for the roster and for the weekly scorecards.',

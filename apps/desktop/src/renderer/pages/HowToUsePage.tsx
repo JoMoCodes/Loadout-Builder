@@ -571,6 +571,12 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
             example, drop the load-out sheet on the <strong>Roster</strong> tab, or the vehicle list
             on <strong>Vehicle Management</strong>. The page lights up when it can take the file.
           </p>
+          <p data-testid="help-new-window">
+            Want two things on screen at once? Right-click a page in the left menu, or a tab such as{' '}
+            <strong>Available Vans</strong>, and choose <strong>Open in new window</strong>. The new
+            window shows just that page. Every window shows the same data, so a change in one shows
+            in the others straight away. Closing the main window closes them all.
+          </p>
         </>
       ),
     },
