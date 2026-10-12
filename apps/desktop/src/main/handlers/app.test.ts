@@ -1,7 +1,9 @@
 // "Ask a question" and the release pages open in the computer's browser through one channel,
-// which only lets the app's own help pages through.
+// which only lets the app's own help pages through. "Open in new window" and "show this page in
+// the main window" each ask the main process, which owns the windows.
 
 import { describe, expect, it, vi } from 'vitest';
+import { CHANNELS } from '../../shared/channels';
 import { DISCUSSIONS_URL } from '../../shared/links';
 import { ChannelRefusal } from '../channels';
 import { appHandlers } from './app';
@@ -37,5 +39,41 @@ describe('app:open-link', () => {
     );
     await expect(refused).rejects.toMatchObject({ reason: 'refused' });
     await expect(refused).rejects.toThrow(/could not be opened/);
+  });
+});
+
+describe('app:open-window', () => {
+  it('asks the main process for a window on that page and tab', () => {
+    const openWindow = vi.fn();
+    const ctx = { services: { openWindow } as unknown as Services } as unknown as HandlerContext;
+    expect(appHandlers['app:open-window']({ page: 'load-out', tab: 'available-vans' }, ctx)).toBe(
+      null,
+    );
+    expect(openWindow).toHaveBeenCalledWith({ page: 'load-out', tab: 'available-vans' });
+  });
+
+  it('only takes a page with one of its own tabs (the input check)', () => {
+    const { input } = CHANNELS['app:open-window'];
+    expect(input({ page: 'settings' })).toBe(true);
+    expect(input({ page: 'load-out', tab: 'roster' })).toBe(true);
+    expect(input({ page: 'load-out', tab: 'drivers' })).toBe(false);
+    expect(input({ page: 'nowhere' })).toBe(false);
+    expect(input('load-out')).toBe(false);
+  });
+});
+
+describe('app:show-page', () => {
+  it('asks the main window to show that page', () => {
+    const showPage = vi.fn();
+    const ctx = { services: { showPage } as unknown as Services } as unknown as HandlerContext;
+    expect(appHandlers['app:show-page']({ page: 'performance' }, ctx)).toBe(null);
+    expect(showPage).toHaveBeenCalledWith('performance');
+  });
+
+  it('only takes a page (the input check)', () => {
+    const { input } = CHANNELS['app:show-page'];
+    expect(input({ page: 'home' })).toBe(true);
+    expect(input({ page: 'nowhere' })).toBe(false);
+    expect(input({})).toBe(false);
   });
 });

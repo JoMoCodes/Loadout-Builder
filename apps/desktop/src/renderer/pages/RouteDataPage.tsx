@@ -3,27 +3,22 @@
 // read for the same day. Ported from the old app's Route Data page.
 
 import { useState } from 'react';
-import { ROUTE_KINDS, type RouteKindName } from '../../shared/channels/routeData';
+import type { RouteKindName } from '../../shared/channels/routeData';
+import { PAGE_TABS, isTabOf } from '../../shared/windows';
 import { useAppSnapshot } from '../lib/useAppSnapshot';
 import { ProblemBanner, StatusLine, useMessages } from './dataPages/PageParts';
-import { TabPanel, Tabs, type TabItem } from './dataPages/Tabs';
+import { TabPanel, Tabs } from './dataPages/Tabs';
 import { DwpTab } from './routeData/DwpTab';
 import { RouteSourceTab } from './routeData/RouteSourceTab';
+import type { PageProps } from './types';
 
-const LABELS: Record<RouteKindName, string> = {
-  routes: 'Routes',
-  itineraries: 'Itineraries',
-  schedule: 'Weekly Schedule',
-};
+const TABS = PAGE_TABS['route-data'];
 
-const TABS: readonly TabItem[] = [
-  ...ROUTE_KINDS.map((kind) => ({ id: kind, label: LABELS[kind] })),
-  { id: 'dwp', label: 'DWP' },
-];
-
-export function RouteDataPage() {
+export function RouteDataPage({ startTab }: PageProps) {
   const { snapshot, loading, error } = useAppSnapshot();
-  const [tab, setTab] = useState<string>(TABS[0]!.id);
+  const [tab, setTab] = useState<string>(() =>
+    isTabOf('route-data', startTab) ? startTab : TABS[0]!.id,
+  );
   const messages = useMessages();
 
   return (
@@ -40,6 +35,7 @@ export function RouteDataPage() {
       <Tabs
         label="Route data"
         name="route-data"
+        page="route-data"
         tabs={TABS}
         value={tab}
         onChange={(id) => {

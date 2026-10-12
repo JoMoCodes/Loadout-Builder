@@ -6,11 +6,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { PerfDriversView } from '../../shared/performance';
 import { EMPTY_PERF_SNAPSHOT } from '../../shared/performance';
 import type { WeekRangeChoice } from '../../shared/performanceSettings';
+import { PAGE_TABS, isTabOf } from '../../shared/windows';
 import { call, explain } from '../lib/channels';
 import { useAppSnapshot } from '../lib/useAppSnapshot';
 import { clearPerformanceHandoff, peekPerformanceHandoff } from './dashboard/handoff';
 import { ProblemBanner, StatusLine, useMessages } from './dataPages/PageParts';
-import { TabPanel, Tabs, type TabItem } from './dataPages/Tabs';
+import { TabPanel, Tabs } from './dataPages/Tabs';
 import { DirectoryTab } from './performance/DirectoryTab';
 import { DriversTab } from './performance/DriversTab';
 import { ImportsTab } from './performance/ImportsTab';
@@ -25,16 +26,11 @@ import {
 import { ReportsTab } from './performance/ReportsTab';
 import type { PageProps } from './types';
 
-const TABS: readonly TabItem[] = [
-  { id: 'drivers', label: 'Drivers' },
-  { id: 'reports', label: 'Reports' },
-  { id: 'directory', label: 'Directory' },
-  { id: 'imports', label: 'Imports' },
-];
+const TABS = PAGE_TABS.performance;
 
 const TAB_KEY = 'loadout.performance-tab';
 
-const isTab = (id: string | null): id is string => TABS.some((tab) => tab.id === id);
+const isTab = (id: string | null): id is string => isTabOf('performance', id);
 
 const NO_FILTERS: DriverFilters = { status: 'ALL', tiers: [], activity: 'all' };
 
@@ -47,12 +43,24 @@ function readTab(): string {
   }
 }
 
-export function PerformancePage({ settings, changeSettings, goTo }: PageProps) {
+export function PerformancePage({
+  settings,
+  changeSettings,
+  goTo,
+  ownWindow,
+  startTab,
+}: PageProps) {
   const { snapshot, loading, error } = useAppSnapshot();
   // What the Dashboard handed over (a driver to show, or a tab), read once when the page opens.
   const [handoff] = useState(peekPerformanceHandoff);
   const [tab, setTab] = useState<string>(() =>
-    handoff.driver ? 'drivers' : isTab(handoff.tab) ? handoff.tab : readTab(),
+    handoff.driver
+      ? 'drivers'
+      : isTab(handoff.tab)
+        ? handoff.tab
+        : isTab(startTab)
+          ? startTab
+          : readTab(),
   );
   const [reveal, setReveal] = useState<string | null>(handoff.driver);
   useEffect(() => clearPerformanceHandoff(), []);
@@ -136,16 +144,19 @@ export function PerformancePage({ settings, changeSettings, goTo }: PageProps) {
   const choose = useCallback(
     (id: string) => {
       setTab(id);
-      try {
-        window.localStorage.setItem(TAB_KEY, id);
-      } catch {
-        // Only a convenience: the page opens on Drivers next time instead.
+      // A page-only window does not change which tab the main window opens on next time.
+      if (!ownWindow) {
+        try {
+          window.localStorage.setItem(TAB_KEY, id);
+        } catch {
+          // Only a convenience: the page opens on Drivers next time instead.
+        }
       }
       // What a tab said last is not news on the next one.
       messages.setStatus('');
       messages.clearProblem();
     },
-    [messages],
+    [messages, ownWindow],
   );
 
   return (
@@ -159,7 +170,14 @@ export function PerformancePage({ settings, changeSettings, goTo }: PageProps) {
           Performance
         </h1>
       </div>
-      <Tabs label="Performance" name="performance" tabs={TABS} value={tab} onChange={choose} />
+      <Tabs
+        label="Performance"
+        name="performance"
+        page="performance"
+        tabs={TABS}
+        value={tab}
+        onChange={choose}
+      />
       <ProblemBanner
         problem={messages.problem}
         onClose={messages.clearProblem}

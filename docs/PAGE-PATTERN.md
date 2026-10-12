@@ -300,8 +300,12 @@ the snapshot's `revision` and refuse when it has moved on.
 | `data:get-source-info` | query | none || `DataSourceInfo`: real or demo, whether it opened, table counts. |
 | `data:open-folder` | command (quiet) | none || Opens the folder that holds the saved data. |
 | `app:open-link` | command (quiet) | link text | Opens the help forum or one of the app's release pages in the browser. Refuses any other link (`shared/links.ts`). |
+| `app:open-window` | command (quiet) | `{ page, tab? }` | Opens a page (and tab) in a page-only window beside the main one, or brings the window already open on it to the front (`shared/windows.ts`). |
+| `app:show-page` | command (quiet) | `{ page }` | From a page-only window: show this page in the main window and bring it to the front. |
+| `app:go-to` | event |  | Main process to the main window: a page-only window asked for this page. |
 | `settings:get` | query | none || The settings (`AppSettings`). |
 | `settings:set` | command (quiet) | settings patch | Takes a patch, keeps only the valid fields, saves, and returns the settings as they now are. Turning demo... |
+| `settings:changed` | event |  | Main process to every window: the settings changed (in this window or another). Each window puts the new look on. |
 | `updates:get-status` | query | none || Where the update check is (`UpdateStatus`). |
 | `updates:check` | command (quiet) | none || Checks GitHub for an update now. |
 | `updates:install` | signal |  | Restart the app to finish installing a downloaded update. |

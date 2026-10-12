@@ -9,6 +9,7 @@ import type {
 } from '../../shared/channels/define';
 import type { FileKind } from '../../shared/channels/files';
 import type { DataSourceInfo, OpenFolderResult, UpdateStatus } from '../../shared/shell';
+import type { PageId, WindowTarget } from '../../shared/windows';
 import type { StateHost } from '../appState';
 import type { DroppedFiles } from '../fileDrop';
 import type { OldData } from '../oldData';
@@ -27,6 +28,10 @@ export interface Services {
   /** Opens an allowed web page in the computer's browser. Whether it opened. */
   openLink(url: string): Promise<boolean>;
   dataSourceInfo(): DataSourceInfo;
+  /** Opens a page-only window on this page and tab, or brings the one already open to the front. */
+  openWindow(target: WindowTarget): void;
+  /** Shows this page in the main window and brings it to the front. */
+  showPage(page: PageId): void;
   updates: {
     status(): UpdateStatus;
     check(): UpdateStatus | Promise<UpdateStatus>;

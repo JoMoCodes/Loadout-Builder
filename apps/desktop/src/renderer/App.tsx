@@ -4,6 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { DataSourceInfo } from '../shared/shell';
 import { DEFAULT_SETTINGS, mergeSettings, stepFontScale } from '../shared/settings';
 import type { AppSettings, SettingsPatch } from '../shared/settings';
+import { parseWindowTarget, windowTitle } from '../shared/windows';
+import type { WindowTarget } from '../shared/windows';
 import { HelpMenu } from './help/HelpMenu';
 import { PRINTED_EVENT } from './help/printed';
 import { useTours } from './help/useTours';
@@ -19,11 +21,28 @@ import { WhatsNewDialog } from './shell/WhatsNewDialog';
 import { applyLook, cacheLook, readLastPage, writeLastPage } from './shell/display';
 import { Button } from './ui/button';
 
+/**
+ * What this window was opened on, from its address. The main window has nothing there. A
+ * page-only window ("Open in new window") carries its page and tab, and shows that page alone:
+ * no left menu, no start-up questions, no tours by themselves.
+ */
+function readWindowTarget(): WindowTarget | null {
+  try {
+    return parseWindowTarget(window.location.search);
+  } catch {
+    return null;
+  }
+}
+
 export function App() {
+  const [target] = useState(readWindowTarget);
+  const ownWindow = target !== null;
   const [version, setVersion] = useState<string | null>(null);
   const [settings, setSettings] = useState<AppSettings | null>(null);
   const [dataSource, setDataSource] = useState<DataSourceInfo | null>(null);
-  const [page, setPage] = useState<PageId>(() => pageIdFrom(readLastPage()));
+  const [page, setPage] = useState<PageId>(() =>
+    target ? target.page : pageIdFrom(readLastPage()),
+  );
   const [showNews, setShowNews] = useState(false);
   // The "bring over your old data" window: asked at start-up on a first run, or opened from
   // Settings. `oldDataChecked` stays false until the start-up look is done, so a page tour does
@@ -61,6 +80,15 @@ export function App() {
         setDataSource(dataReply.value);
         applyLook(foundSettings);
         cacheLook(foundSettings);
+
+        // The start-up questions are the main window's: a page-only window never asks them.
+        if (ownWindow) {
+          setOldDataChecked(true);
+          setPerfOldDataChecked(true);
+          console.log(`Loadout Builder page is ready, version ${foundVersion}`);
+          signal('app:renderer-ready', foundVersion);
+          return;
+        }
 
         // A first run has nothing to show yet; after an update, show what changed once.
         if (foundSettings.lastSeenVersion === null) {
@@ -105,7 +133,7 @@ export function App() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [ownWindow]);
 
   // The counts on Home come from the saved data, so read them again whenever it changes.
   useEffect(
@@ -114,6 +142,18 @@ export function App() {
         void call('data:get-source-info').then((reply) => {
           if (reply.ok) setDataSource(reply.value);
         });
+      }),
+    [],
+  );
+
+  // A setting changed in this window or another one (text size, colours, demo mode): every
+  // window shows it.
+  useEffect(
+    () =>
+      listen('settings:changed', (next) => {
+        setSettings(next);
+        applyLook(next);
+        cacheLook(next);
       }),
     [],
   );
@@ -142,14 +182,50 @@ export function App() {
     }
   }, []);
 
-  const goTo = useCallback((pageId: PageId) => {
-    setPage(pageId);
-    writeLastPage(pageId);
-  }, []);
+  const goTo = useCallback(
+    (pageId: PageId) => {
+      // A page-only window shows its one page: another page opens in the main window.
+      if (ownWindow) {
+        void call('app:show-page', { page: pageId });
+        return;
+      }
+      setPage(pageId);
+      writeLastPage(pageId);
+    },
+    [ownWindow],
+  );
+
+  // A page-only window asked for a page: the main window shows it.
+  useEffect(() => {
+    if (ownWindow) return;
+    return listen('app:go-to', ({ page: pageId }) => goTo(pageId));
+  }, [ownWindow, goTo]);
+
+  // A page-only window's title says what it shows: "Load Out · Available Vans". The tab part
+  // follows the open tab, which the page marks on its tab buttons.
+  useEffect(() => {
+    if (!target) return;
+    const frame = document.getElementById('page-frame');
+    if (!frame) return;
+    const read = () => {
+      const tab = frame.querySelector('[role="tab"][aria-selected="true"][data-tab-button]');
+      const id = tab?.getAttribute('data-tab-button') ?? undefined;
+      document.title = windowTitle(id ? { page: target.page, tab: id } : { page: target.page });
+    };
+    read();
+    const watch = new MutationObserver(read);
+    watch.observe(frame, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ['aria-selected'],
+    });
+    return () => watch.disconnect();
+  }, [target]);
 
   // Ctrl+O (Import Sheet) and Ctrl+I (Import Associate Data) work from every page: they go to
   // the page that does it and run it there. Not while a question is open: it would be pushed
-  // aside and never answered.
+  // aside and never answered. In a page-only window they work only on the page that does it.
   useEffect(() => {
     let next = 0;
     function onKey(event: KeyboardEvent) {
@@ -159,13 +235,15 @@ export function App() {
       if (!action) return;
       event.preventDefault();
       if (document.querySelector('dialog[open]')) return;
+      const wanted: PageId = action === 'import-sheet' ? 'load-out' : 'associates';
+      if (ownWindow && target.page !== wanted) return;
       next += 1;
-      goTo(action === 'import-sheet' ? 'load-out' : 'associates');
+      goTo(wanted);
       setRequest({ id: next, action });
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [goTo]);
+  }, [goTo, ownWindow, target]);
 
   const closeNews = useCallback(() => {
     setShowNews(false);
@@ -193,7 +271,14 @@ export function App() {
     page,
     settings,
     changeSettings,
-    blocked: showNews || oldData !== null || !oldDataChecked || perfOldData || !perfOldDataChecked,
+    // A page-only window never starts a tour by itself (Help > Take the tour still works).
+    blocked:
+      ownWindow ||
+      showNews ||
+      oldData !== null ||
+      !oldDataChecked ||
+      perfOldData ||
+      !perfOldDataChecked,
   });
   const { takeTour, skipNextAutoTour } = tours;
 
@@ -258,8 +343,13 @@ export function App() {
   }, [goTo]);
 
   return (
-    <div className="shell" data-shell data-ready={settings && version ? 'true' : 'false'}>
-      <Nav current={page} onGo={goTo} />
+    <div
+      className="shell"
+      data-shell
+      data-ready={settings && version ? 'true' : 'false'}
+      data-own-window={ownWindow ? 'true' : undefined}
+    >
+      {ownWindow ? null : <Nav current={page} onGo={goTo} />}
       <div className="main-column">
         <TopBar
           fontScale={current.fontScale}
@@ -304,6 +394,8 @@ export function App() {
             openOldData={openOldData}
             request={request}
             takeRequest={takeRequest}
+            ownWindow={ownWindow}
+            startTab={target?.tab ?? null}
           />
         </main>
       </div>
