@@ -300,7 +300,7 @@ the snapshot's `revision` and refuse when it has moved on.
 | `data:get-source-info` | query | none || `DataSourceInfo`: real or demo, whether it opened, table counts. |
 | `data:open-folder` | command (quiet) | none || Opens the folder that holds the saved data. |
 | `app:open-link` | command (quiet) | link text | Opens the help forum or one of the app's release pages in the browser. Refuses any other link (`shared/links.ts`). |
-| `app:open-window` | command (quiet) | `{ page, tab? }` | Opens a page (and tab) in a page-only window beside the main one, or brings the window already open on it to the front (`shared/windows.ts`). |
+| `app:open-window` | command (quiet) | `{ page, tab? }` | Opens a page (and tab) in a page-only window beside the main one (or where it was last left), or brings the window already open on it to the front (`shared/windows.ts`). A file, folder or save window opened by any handler opens over the window that made the call (`askingWindow` in `main.ts`). |
 | `app:show-page` | command (quiet) | `{ page }` | From a page-only window: show this page in the main window and bring it to the front. |
 | `app:go-to` | event |  | Main process to the main window: a page-only window asked for this page. |
 | `settings:get` | query | none || The settings (`AppSettings`). |

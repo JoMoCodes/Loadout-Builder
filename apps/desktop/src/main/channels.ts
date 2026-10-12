@@ -33,6 +33,8 @@ export class ChannelRefusal extends Error {
 /** The part of an Electron IPC event the checks read. */
 export interface ChannelEvent {
   senderFrame: { url: string; parent?: unknown } | null;
+  /** The page that sent it (Electron's `WebContents`). Only `inCall` looks at it. */
+  sender?: unknown;
 }
 
 /** The part of `ipcMain` that is used. */
@@ -50,6 +52,11 @@ export interface ChannelEnv<C> {
   log(message: string): void;
   /** Called after every command that is not declared quiet, whether it worked or not. */
   afterCommand(): void;
+  /**
+   * Runs a handler inside the call's setting, so whatever it does (open a file window, say) can
+   * find out which window asked. Optional: without it the handler simply runs.
+   */
+  inCall?<T>(event: ChannelEvent, work: () => Promise<T>): Promise<T>;
 }
 
 export type CallHandler<D extends QueryDef | CommandDef, C> = (
@@ -82,8 +89,9 @@ export async function runCall<D extends QueryDef | CommandDef, C>(
   if (!def.input(rawInput)) return fail('bad-input');
 
   const quiet = def.kind === 'query' || def.quiet;
+  const run = env.inCall ?? ((_event, work) => work());
   try {
-    const value = await handler(rawInput as InputOf<D>, env.context());
+    const value = await run(event, async () => handler(rawInput as InputOf<D>, env.context()));
     if (def.kind === 'command') env.log(`${def.name} ok`);
     if (!quiet) env.afterCommand();
     return { ok: true, value };
