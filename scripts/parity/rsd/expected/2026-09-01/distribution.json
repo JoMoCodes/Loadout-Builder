@@ -318,6 +318,60 @@
       ]
     },
     {
+      "routeCode": "CX7",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 11,
+        "pageNumbers": [
+          11
+        ],
+        "staging": "STG.B3.1",
+        "waveTime": "10:25 AM",
+        "pad": "2",
+        "serviceType": "Standard Parcel - Large Van",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 6,
+        "overflowCount": 0,
+        "totalPackages": 81,
+        "commercialPackages": 1,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "",
+          "routesName": "Harlan Penrose",
+          "found": false,
+          "rosterName": null,
+          "status": null,
+          "email": "",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": "Harlan Penrose has no Transporter ID on the routes file",
+          "valid": false
+        }
+      ],
+      "kind": "single",
+      "state": "exception",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Harlan Penrose has no Transporter ID on the routes file",
+      "issues": [
+        {
+          "level": "error",
+          "text": "Harlan Penrose has no Transporter ID on the routes file"
+        }
+      ]
+    },
+    {
       "routeCode": "AX13",
       "hasSheet": true,
       "onRoutesFile": true,
@@ -328,7 +382,7 @@
         ],
         "staging": "STG.A3.1",
         "waveTime": "02:30 PM",
-        "pad": "3",
+        "pad": null,
         "serviceType": "Standard Parcel - Large Van - Recycle",
         "dsp": "XXXX",
         "station": "XXX1",
@@ -586,7 +640,7 @@
           "found": true,
           "rosterName": "Sloane Winston Winslow",
           "status": "ACTIVE",
-          "email": "driver067@example.com",
+          "email": "",
           "otherRoutes": [],
           "nameMismatch": false,
           "problem": null,
@@ -600,14 +654,19 @@
         {
           "transporterId": "AWJ5XN1FMHXXV",
           "name": "Sloane Winston Winslow",
-          "email": "driver067@example.com",
+          "email": "",
           "status": "ACTIVE"
         }
       ],
       "suggestion": null,
       "suggestionReason": null,
       "headline": "Exact Transporter ID match",
-      "issues": []
+      "issues": [
+        {
+          "level": "warn",
+          "text": "No email on file for Sloane Winston Winslow — copy the sheet and send it another way"
+        }
+      ]
     },
     {
       "routeCode": "CX13",
@@ -1185,62 +1244,6 @@
       "issues": []
     },
     {
-      "routeCode": "CX7",
-      "hasSheet": true,
-      "onRoutesFile": true,
-      "sheet": {
-        "pageNumber": 11,
-        "pageNumbers": [
-          11
-        ],
-        "staging": "STG.B3.1",
-        "waveTime": "10:25 AM",
-        "pad": "2",
-        "serviceType": "Standard Parcel - Large Van",
-        "dsp": "XXXX",
-        "station": "XXX1",
-        "date": "2026-09-01",
-        "dateLabel": "TUE, SEP 1, 2026",
-        "cycle": "CYCLE_1",
-        "bagCount": 6,
-        "overflowCount": 0,
-        "totalPackages": 81,
-        "commercialPackages": 1,
-        "checkOk": true,
-        "checkProblems": [],
-        "notes": []
-      },
-      "listed": [
-        {
-          "transporterId": "A2051ICVODZP9E",
-          "routesName": "Harlan Penrose",
-          "found": true,
-          "rosterName": "Harlan Vera Penrose",
-          "status": "ACTIVE",
-          "email": "driver032@example.com",
-          "otherRoutes": [],
-          "nameMismatch": false,
-          "problem": null,
-          "valid": true
-        }
-      ],
-      "kind": "single",
-      "state": "ready",
-      "source": "auto",
-      "recipients": [
-        {
-          "transporterId": "A2051ICVODZP9E",
-          "name": "Harlan Vera Penrose",
-          "email": "driver032@example.com",
-          "status": "ACTIVE"
-        }
-      ],
-      "suggestion": null,
-      "suggestionReason": null,
-      "headline": "Exact Transporter ID match",
-      "issues": []
-    },
-    {
       "routeCode": "CX8",
       "hasSheet": true,
       "onRoutesFile": true,
@@ -1355,13 +1358,13 @@
       "listed": [
         {
           "transporterId": "A9D25MDVZ2T1ON",
-          "routesName": "Harlan Clemmons",
+          "routesName": "Andre Abigail Birchfield",
           "found": true,
           "rosterName": "Harlan Soren Clemmons",
           "status": "ACTIVE",
           "email": "driver013@example.com",
           "otherRoutes": [],
-          "nameMismatch": false,
+          "nameMismatch": true,
           "problem": null,
           "valid": true
         }
@@ -1380,7 +1383,12 @@
       "suggestion": null,
       "suggestionReason": null,
       "headline": "Exact Transporter ID match",
-      "issues": []
+      "issues": [
+        {
+          "level": "warn",
+          "text": "Name check: routes file says \"Andre Abigail Birchfield\" but A9D25MDVZ2T1ON belongs to \"Harlan Soren Clemmons\" in the associate data"
+        }
+      ]
     },
     {
       "routeCode": "CX11",
@@ -1913,6 +1921,18 @@
         ]
       },
       {
+        "transporterId": "",
+        "name": "Harlan Penrose",
+        "inRoster": false,
+        "status": null,
+        "routes": [
+          {
+            "routeCode": "CX7",
+            "reason": "Harlan Penrose has no Transporter ID on the routes file"
+          }
+        ]
+      },
+      {
         "transporterId": "A5QUM4XU1H9HQS",
         "name": "Mabel Vera Kensington",
         "inRoster": true,
@@ -2001,12 +2021,12 @@
   },
   "counts": {
     "total": 30,
-    "ready": 22,
+    "ready": 21,
     "needs-decision": 3,
-    "exception": 3,
+    "exception": 4,
     "skipped": 1,
     "no-sheet": 1,
-    "missingEmail": 0
+    "missingEmail": 1
   },
   "waves": [
     {
@@ -2022,7 +2042,7 @@
     {
       "waveTime": "02:30 PM",
       "routes": 1,
-      "pad": "3"
+      "pad": null
     }
   ]
 }

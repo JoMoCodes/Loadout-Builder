@@ -285,7 +285,9 @@ export async function writeRouteSheetFixtures() {
       await writeFile(join(outDir, name), bytes);
       paths.push(`route-sheets/${name}`);
       const pages = sheets.length + sheets.filter((s) => s.continued).length;
-      console.log(`${name}: ${pages} pages, ${sheets.length} sheets drawn`);
+      console.log(
+        `${name}: ${pages} pages, ${sheets.filter((s) => !s.blank && !s.notRouteSheet).length} route sheets drawn`,
+      );
     }
   }
   const added = await addToManifest(paths);

@@ -5,17 +5,20 @@
 //   node scripts/parity/rsd/dump.mjs
 //
 // Per layout (a fixture day in each of the two PDF layouts):
-//   inputs.json        routes, associates, decisions, wavePads (what both sides are given)
-//   sheets.json        the parsed PDF: sheets, pageErrors, pageCount
-//   distribution.json  distribute(...) with those decisions and pads
-//   emails.json        per route with a sheet: subject, html, text, pdfName, attachment page count
-//   eml/<route>.eml    the email draft of every ready route, with fixed boundaries
-//   summary.html       the Export all summary page
-//   summary.csv        the Export all summary table
+//   inputs.json                 routes, associates, decisions, wavePads (what both sides are given)
+//   sheets.json                 the parsed PDF: sheets, pageErrors, pageCount
+//   distribution-undecided.json distribute(...) before any decision, with no pads
+//   distribution.json           distribute(...) with the decisions and pads
+//   emails.json                 per route with a sheet: subject, html, text, pdfName, attachment page count
+//   eml/<route>.eml             the email draft of every ready route, with fixed boundaries
+//   export-files.json           what Export all writes: the folder name and every file's path
+//   summary.html, summary.csv   the two summary files Export all writes
+//   run.json                    the run's id and label
 //
 // It prints counts only.
 
-import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { PDFDocument } from 'pdf-lib';
 import {
@@ -24,20 +27,24 @@ import {
   buildDecisions,
   buildLists,
   buildWavePads,
+  listFiles,
   old,
   readLayoutPdf,
   toJson,
 } from './inputs.mjs';
 
-/** The old buildEml draws its boundaries from Date.now and Math.random; pin both while it runs. */
-function withFixedBoundaries(fn) {
+/**
+ * The old buildEml draws its boundaries from Date.now and Math.random; pin both while `fn` runs
+ * (it may be async: the pins stay until it settles).
+ */
+async function withFixedBoundaries(fn) {
   const realNow = Date.now;
   const realRandom = Math.random;
   // mixed_<now base36>_<random base36 minus "0."> and alt_<random base36 minus "0.">
   Date.now = () => parseInt('parity', 36);
   Math.random = () => 0.5;
   try {
-    return fn();
+    return await fn();
   } finally {
     Date.now = realNow;
     Math.random = realRandom;
@@ -46,14 +53,40 @@ function withFixedBoundaries(fn) {
 
 /** What the pinned boundaries come out as, so the new side can be told the same strings. */
 export function pinnedBoundaries() {
-  return withFixedBoundaries(() => ({
-    mixed: `mixed_${Date.now().toString(36)}_${Math.random().toString(36).slice(2)}`,
-    alt: `alt_${Math.random().toString(36).slice(2)}`,
-  }));
+  const realNow = Date.now;
+  const realRandom = Math.random;
+  Date.now = () => parseInt('parity', 36);
+  Math.random = () => 0.5;
+  try {
+    return {
+      mixed: `mixed_${Date.now().toString(36)}_${Math.random().toString(36).slice(2)}`,
+      alt: `alt_${Math.random().toString(36).slice(2)}`,
+    };
+  } finally {
+    Date.now = realNow;
+    Math.random = realRandom;
+  }
+}
+
+/** Enough of the old Store for Service.exportAll: the driver list and the run's PDF. */
+function stubStore(associates, pdf) {
+  return {
+    getSettings: () => ({}),
+    setSettings: () => ({}),
+    getAssociates: () => ({ associates }),
+    loadRun: () => null,
+    hasRun: () => false,
+    listRuns: () => [],
+    saveRun: () => {},
+    readRunPdf: () => pdf,
+    runsDir: '',
+    defaultRunsDir: '',
+    outputDirProblem: null,
+  };
 }
 
 async function dumpLayout(dayInfo, layout, lists) {
-  const { pdfParser, matcher, emailRender, exporter, service } = old;
+  const { pdfParser, matcher, exporter, service } = old;
   const out = join(EXPECTED, layout);
   rmSync(out, { recursive: true, force: true });
   mkdirSync(join(out, 'eml'), { recursive: true });
@@ -63,6 +96,7 @@ async function dumpLayout(dayInfo, layout, lists) {
   const sheets = parsed.sheets;
 
   const first = matcher.distribute({ sheets, routes: lists.routes, associates: lists.associates });
+  writeFileSync(join(out, 'distribution-undecided.json'), toJson(first));
   const decisions = buildDecisions(first, lists.associates);
   const wavePads = buildWavePads(sheets);
   writeFileSync(
@@ -94,6 +128,8 @@ async function dumpLayout(dayInfo, layout, lists) {
     cycle: sheets[0].cycle,
     dateLabel: sheets[0].dateLabel,
   };
+
+  // The emails, through the old buildRouteEmail (the email, its text, the subject and the draft).
   const emails = {};
   let drafts = 0;
   for (const r of dist.routes) {
@@ -101,93 +137,54 @@ async function dumpLayout(dayInfo, layout, lists) {
     const sheet = sheets.find((s) => s.routeCode === r.routeCode);
     const withPad = { ...sheet, pad: wavePads[sheet.waveTime] || null };
     const recipients = r.state === 'ready' ? r.recipients : [];
-    const primary = recipients[0];
-    const html = emailRender.renderEmailHtml(withPad, primary);
-    const text = emailRender.renderEmailText(withPad, primary);
-    const subject = emailRender.subjectFor(withPad);
-    const pages = await exporter.extractPages(pdf, sheet.pageNumbers || [sheet.pageNumber]);
-    const pdfName = exporter.safeFileName(
-      `${sheet.routeCode} ${sheet.staging || ''} route sheet.pdf`,
-    );
+    const e = await withFixedBoundaries(() => exporter.buildRouteEmail(withPad, recipients, pdf));
     emails[r.routeCode] = {
-      subject,
-      html,
-      text,
-      pdfName,
-      attachmentPages: (await PDFDocument.load(pages)).getPageCount(),
+      subject: e.subject,
+      html: e.html,
+      text: e.text,
+      pdfName: e.pdfName,
+      attachmentPages: (await PDFDocument.load(e.pdf)).getPageCount(),
     };
     if (r.state === 'ready') {
-      const eml = withFixedBoundaries(() =>
-        exporter.buildEml({
-          to: recipients.map((p) => p.email).filter(Boolean),
-          subject,
-          html,
-          text,
-          attachments: [{ filename: pdfName, content: pages, contentType: 'application/pdf' }],
-        }),
-      );
       const who = recipients.map((p) => p.name).join(' & ');
       writeFileSync(
         join(out, 'eml', `${exporter.safeFileName(`${r.routeCode} - ${who}`)}.eml`),
-        eml,
+        e.eml,
       );
       drafts++;
     }
   }
   writeFileSync(join(out, 'emails.json'), toJson(emails));
-  writeFileSync(join(out, 'summary.html'), service.renderSummaryHtml(run, dist));
-  // renderSummaryCsv is not exported by the old service; it is reached through exportAll, which
-  // writes to disk. The same lines are rebuilt here from the old module's own text.
-  writeFileSync(join(out, 'summary.csv'), oldSummaryCsv(dist));
+
+  // Export all, through the old Service, into a throwaway folder; keep the file list and the
+  // two summary files.
+  const sv = new service.Service(stubStore(lists.associates, pdf));
+  sv.run = { ...run, sheets, routes: lists.routes, decisions, sent: {}, wavePads, pdf: {} };
+  const tmp = mkdtempSync(join(tmpdir(), 'rsd-parity-'));
+  try {
+    const exported = await withFixedBoundaries(() => sv.exportAll(tmp));
+    const folder = exported.folder.slice(tmp.length + 1);
+    writeFileSync(
+      join(out, 'export-files.json'),
+      toJson({ folder, drafts: exported.drafts, files: listFiles(exported.folder) }),
+    );
+    writeFileSync(
+      join(out, 'summary.html'),
+      readFileSync(join(exported.folder, 'Distribution summary.html'), 'utf8'),
+    );
+    writeFileSync(
+      join(out, 'summary.csv'),
+      readFileSync(join(exported.folder, 'Distribution summary.csv'), 'utf8'),
+    );
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
   writeFileSync(join(out, 'run.json'), toJson({ ...run, label: service.runLabel(run) }));
 
   console.log(
     `${layout}: ${parsed.pageCount} pages, ${sheets.length} sheets, ${parsed.pageErrors.length} skipped pages, ` +
       `${dist.routes.length} routes (${dist.counts.ready} ready), ${drafts} drafts`,
   );
-}
-
-/** The old renderSummaryCsv, line for line (service.js does not export it). */
-function oldSummaryCsv(dist) {
-  const STATE_LABEL = old.service.STATE_LABEL;
-  const q = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
-  const lines = [
-    [
-      'Route',
-      'Staging',
-      'Wave',
-      'Pad',
-      'Total Packages',
-      'Listed Transporter IDs',
-      'Recipient',
-      'Recipient Transporter ID',
-      'Recipient Email',
-      'Status',
-      'Reason',
-    ]
-      .map(q)
-      .join(','),
-  ];
-  for (const r of dist.routes) {
-    lines.push(
-      [
-        r.routeCode,
-        r.sheet?.staging,
-        r.sheet?.waveTime,
-        r.sheet?.pad,
-        r.sheet?.totalPackages,
-        r.listed.map((c) => c.transporterId).join(' | '),
-        r.recipients.map((p) => p.name).join(' | '),
-        r.recipients.map((p) => p.transporterId).join(' | '),
-        r.recipients.map((p) => p.email).join(' | '),
-        STATE_LABEL[r.state],
-        r.headline,
-      ]
-        .map(q)
-        .join(','),
-    );
-  }
-  return lines.join('\r\n');
 }
 
 async function main() {

@@ -9,17 +9,12 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { PDFDocument } from 'pdf-lib';
 import {
-  buildEml,
+  buildRouteEmail,
   distribute,
-  extractPages,
-  renderEmailHtml,
-  renderEmailText,
-  renderSummaryCsv,
-  renderSummaryHtml,
+  planExportAll,
   runIdFor,
   runLabel,
   safeFileName,
-  subjectFor,
   type AssociateInput,
   type Decision,
   type RouteInput,
@@ -46,6 +41,9 @@ async function runLayout(layout: string): Promise<void> {
   const { sheets } = parsed;
   writeFileSync(join(out, 'sheets.json'), toJson(parsed));
 
+  const first = distribute({ sheets, routes: inputs.routes, associates: inputs.associates });
+  writeFileSync(join(out, 'distribution-undecided.json'), toJson(first));
+
   const dist = distribute({
     sheets,
     routes: inputs.routes,
@@ -55,56 +53,61 @@ async function runLayout(layout: string): Promise<void> {
   });
   writeFileSync(join(out, 'distribution.json'), toJson(dist));
 
-  const first = sheets[0];
-  if (!first) throw new Error('no sheets');
+  const firstSheet = sheets[0];
+  if (!firstSheet) throw new Error('no sheets');
   const run = {
-    id: runIdFor(first),
-    station: first.station,
-    date: first.date,
-    cycle: first.cycle,
-    dateLabel: first.dateLabel,
+    id: runIdFor(firstSheet),
+    station: firstSheet.station,
+    date: firstSheet.date,
+    cycle: firstSheet.cycle,
+    dateLabel: firstSheet.dateLabel,
   };
+  const label = runLabel(run);
+
+  const emailFor = async (routeCode: string) => {
+    const sheet = sheets.find((s) => s.routeCode === routeCode);
+    if (!sheet) throw new Error('no sheet');
+    const r = dist.routes.find((x) => x.routeCode === routeCode);
+    const withPad = { ...sheet, pad: (sheet.waveTime && inputs.wavePads[sheet.waveTime]) || null };
+    const recipients = r && r.state === 'ready' ? r.recipients : [];
+    return buildRouteEmail(withPad, recipients, pdf, inputs.boundaries);
+  };
+
   const emails: Record<string, unknown> = {};
   let drafts = 0;
   for (const r of dist.routes) {
     if (!r.hasSheet) continue;
-    const sheet = sheets.find((s) => s.routeCode === r.routeCode);
-    if (!sheet) continue;
-    const withPad = { ...sheet, pad: (sheet.waveTime && inputs.wavePads[sheet.waveTime]) || null };
-    const recipients = r.state === 'ready' ? r.recipients : [];
-    const primary = recipients[0];
-    const html = renderEmailHtml(withPad, primary);
-    const text = renderEmailText(withPad, primary);
-    const subject = subjectFor(withPad);
-    const pages = await extractPages(pdf, sheet.pageNumbers);
-    const pdfName = safeFileName(`${sheet.routeCode} ${sheet.staging || ''} route sheet.pdf`);
+    const e = await emailFor(r.routeCode);
     emails[r.routeCode] = {
-      subject,
-      html,
-      text,
-      pdfName,
-      attachmentPages: (await PDFDocument.load(pages)).getPageCount(),
+      subject: e.subject,
+      html: e.html,
+      text: e.text,
+      pdfName: e.pdfName,
+      attachmentPages: e.pdf ? (await PDFDocument.load(e.pdf)).getPageCount() : 0,
     };
     if (r.state === 'ready') {
-      const eml = buildEml(
-        {
-          to: recipients.map((p) => p.email).filter(Boolean),
-          subject,
-          html,
-          text,
-          attachments: [{ filename: pdfName, content: pages, contentType: 'application/pdf' }],
-        },
-        inputs.boundaries,
-      );
-      const who = recipients.map((p) => p.name).join(' & ');
-      writeFileSync(join(out, 'eml', `${safeFileName(`${r.routeCode} - ${who}`)}.eml`), eml);
+      const who = r.recipients.map((p) => p.name).join(' & ');
+      writeFileSync(join(out, 'eml', `${safeFileName(`${r.routeCode} - ${who}`)}.eml`), e.eml);
       drafts++;
     }
   }
   writeFileSync(join(out, 'emails.json'), toJson(emails));
-  writeFileSync(join(out, 'summary.html'), renderSummaryHtml(runLabel(run), dist));
-  writeFileSync(join(out, 'summary.csv'), renderSummaryCsv(dist));
-  writeFileSync(join(out, 'run.json'), toJson({ ...run, label: runLabel(run) }));
+
+  const plan = await planExportAll(label, dist, emailFor);
+  const sub = { drafts: plan.draftsFolder, pdfs: plan.pdfsFolder, root: '' };
+  const files = plan.files
+    .map((f) => (sub[f.folder] ? `${sub[f.folder]}/${f.name}` : f.name))
+    .sort();
+  writeFileSync(
+    join(out, 'export-files.json'),
+    toJson({ folder: plan.folder, drafts: plan.written, files }),
+  );
+  for (const f of plan.files) {
+    if (f.folder !== 'root' || typeof f.content !== 'string') continue;
+    if (f.name === 'Distribution summary.html') writeFileSync(join(out, 'summary.html'), f.content);
+    if (f.name === 'Distribution summary.csv') writeFileSync(join(out, 'summary.csv'), f.content);
+  }
+  writeFileSync(join(out, 'run.json'), toJson({ ...run, label }));
   console.log(
     `${layout}: ${parsed.pageCount} pages, ${sheets.length} sheets, ${parsed.pageErrors.length} skipped pages, ` +
       `${dist.routes.length} routes (${dist.counts.ready} ready), ${drafts} drafts`,

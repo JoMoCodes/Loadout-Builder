@@ -31,11 +31,11 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
 - [ ] **Changed (item 2).** When the loaded route data is the Itineraries or Weekly Schedule
       export, it is used the same way when it carries Transporter IDs; the page says which file
       it is using and asks for the Routes export when none is loaded. Test: phase 2 and 3.
-- [ ] Route sheet PDF: one route per page; a long route spills onto a second page; blank pages are
+- [x] Route sheet PDF: one route per page; a long route spills onto a second page; blank pages are
       skipped; a page with no route code is reported. Test: 'PDF: a long route whose tables spill
       onto the next page is read as one sheet, and blank pages are skipped'
       (`packages/route-sheets/src/parser/pdf.test.ts`); parity `sheets.json`.
-- [ ] Two PDF layouts: headings in one run or split into runs; the lost "fl" ligature in
+- [x] Two PDF layouts: headings in one run or split into runs; the lost "fl" ligature in
       "overflow". Test: 'PDF: headings split into separate runs ("24" + "bags", "ETDT ·" + service)
       are still read'; parity for both `<day>` and `<day>-split-runs`.
 - [ ] Drag the PDF onto the window. **Changed (items 1 and 2):** only the PDF is dropped here; the
@@ -48,56 +48,61 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
 
 ## 2. The number check
 
-- [ ] Bag rows match the "N bags" heading, rows are numbered 1..N, overflow rows add up to the
+- [x] Bag rows match the "N bags" heading, rows are numbered 1..N, overflow rows add up to the
       "N overflow" heading, bags + overflow = Total Packages, Commercial Packages present. Test:
       'PDF: reads header, bags, overflow and totals exactly as printed', 'PDF: numbers that do not
       add up fail the check', 'PDF: every synthetic fixture page passes the number check except the
       one meant to fail'; parity `sheets.json` (`check.problems`).
-- [ ] Blank cells stay blank, are never shifted, and are reported as notes. Test: 'PDF: a blank
+- [x] Blank cells stay blank, are never shifted, and are reported as notes. Test: 'PDF: a blank
       Sort Zone stays blank (row is not shifted) and is reported as a note', 'PDF: parser works
       from positioned items without widths (fallback path)'.
 
 ## 3. Distribute
 
 - [ ] Counts along the top (ready, need a decision, no exact match, no route sheet, not sending,
-      missing email). Rule: `countStates`; parity `distribution.json` (`counts`). Page: phase 3.
+      missing email). The numbers are proven (`countStates`; parity `distribution.json`). Page:
+      phase 3.
 - [ ] **Changed (item 3).** "Pad for each wave" is replaced by the pads the Route Data page knows,
       matched by clock value; the box stays only for a wave time that matches no dispatch time.
       Rule: 'Distribute: lists each wave time in clock order with its route count and pad'
-      (`waves`, `padFor`); the join in phase 2; the page in phase 3.
-- [ ] Ready to send. Test: 'Distribute: exact single match is ready; everything else needs a
+      (`waves`, `wavePadFor`); the join in phase 2; the page in phase 3.
+- [x] Ready to send. Test: 'Distribute: exact single match is ready; everything else needs a
       person to decide'; parity.
-- [ ] Choose who gets these route sheets: a route listing two or more drivers; the green
-      Suggested tag (only active match, or only one not listed elsewhere); Accept all suggestions.
-      Test: the same twin (`suggestion`, `suggestionReason`); parity (`inputs.json` decisions
-      accept suggestions); Accept all in phase 2.
-- [ ] No exact match, with the reason (not in the driver list, INACTIVE, no Transporter ID,
+- [x] A route listing two or more drivers waits for a choice; the green Suggested tag (only
+      active match, or only one not listed elsewhere). Test: the same twin (`suggestion`,
+      `suggestionReason`); parity (`distribution-undecided.json`, and the fixed choices accept
+      the suggestions in `distribution.json`).
+- [ ] Choose who gets these route sheets on the page; Accept all suggestions. Phase 2 and 3.
+- [x] No exact match, with the reason (not in the driver list, INACTIVE, no Transporter ID,
       numbers did not add up, page found but tables unreadable, in the PDF but not on the Routes
-      file). Test: the same twin (`headline` for each case); parity (the INACTIVE and missing-ID
-      twists in `inputs.json`).
+      file). Test: the same twin (`headline` for each case); parity (`inputs.json` adds a driver
+      marked INACTIVE, one taken off the list and a route with no Transporter ID;
+      `distribution-undecided.json` carries every headline before any choice is made).
 - [ ] Choose someone from a drop-down and Assign; Don't send. Test: 'Distribute: manual
       assignment resolves an exception'; decisions in parity; the page in phase 3.
-- [ ] On the Routes file but missing from the PDF. Test: the exact-match twin (`no-sheet`); parity.
-- [ ] People who won't get a route sheet, and why; anyone getting more than one. Test:
+- [x] On the Routes file but missing from the PDF. Test: the exact-match twin (`no-sheet`); parity.
+- [x] People who won't get a route sheet, and why; anyone getting more than one. Test:
       'Distribute: explains who gets no route sheet and why; flags people getting several'; parity
       (`people`).
 - [ ] All routes in one table; Change undoes a choice. Page: phase 3.
-- [ ] The name check warns when the Routes file name and the driver list name disagree; matching
+- [x] The name check warns when the Routes file name and the driver list name disagree; matching
       is always by ID. Test: 'Name check tolerates middle names but catches a different person';
-      parity (`issues` with `Name check:`).
+      parity (`inputs.json` gives one route another person's name; the `Name check:` warning is
+      in `distribution.json`).
 
 ## 4. Sheets
 
-- [ ] Click a route, see exactly the email the driver gets: route, staging, pad, wave and date
-      boxes; the date in a maroon box with the full day name; bag table with colour swatches;
-      overflow table; totals. Test: 'Email HTML escapes values and marks blank cells', 'Email: the
+- [x] The email the driver gets: route, staging, pad, wave and date boxes; the date in a maroon
+      box with the full day name; bag table with colour swatches; overflow table; totals. Test: 'Email HTML escapes values and marks blank cells', 'Email: the
       pad shows as its own box and in the subject only when one is set', 'Email: the pad is a tall
       box on the right, beside the route, staging, wave and date', 'Email: the Date box shows the
       full day name, with the date on the line under it', 'Email: the greeting says the full day
       name too; the subject keeps it short', 'Email: the date stands out in a maroon box with
       white writing and a big, bold label', 'Email: the words in every box at the top are
-      centered, side to side and top to bottom'; parity `emails.json` (same bytes).
-- [ ] A note when the page could not be read, telling the driver to use the attached PDF. Test:
+      centered, side to side and top to bottom'; parity `emails.json` (same bytes, with and
+      without a pad: the last wave has none).
+- [ ] Click a route on the Sheets tab to see its email. Phase 3.
+- [x] A note when the page could not be read, telling the driver to use the attached PDF. Test:
       'Email: when the page failed its number check, the email tells the driver to use the
       attached PDF'; parity.
 - [ ] Send email; Copy for email (rich clipboard); Open email draft (`.eml`, opens unsent, page
@@ -106,19 +111,23 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
       and PDF attachment', 'Export: the PDF a driver gets carries both pages of a long route';
       parity `eml/*.eml`. Buttons: phase 2 channels and phase 3 page.
 - [ ] Email all: asks first, one email per driver over one login, each success saved at once, a
-      plain-words tally; routes with no address are left out and said so. Rules: 'Runs: ...' send
-      problem and unsent rules (`sendProblem`, `unsentRoutes`); the sending in phase 2.
+      plain-words tally; routes with no address are left out and said so. Rules: 'Runs: Email all
+      leaves out routes with no address and routes already sent' (`sendProblem`, `unsentRoutes`);
+      parity (`inputs.json` gives one driver no email; the missing-email count and warning are in
+      `distribution.json`); the sending in phase 2.
 - [ ] Export all: a folder with an email draft and a PDF per ready route, every PDF, and a
       summary as HTML and CSV. Rules: 'Service: import in any order, persist decisions, export
       drafts' (file names, `planExportAll`), 'Service: pads are saved with the run, trimmed,
       cleared with a blank, and put on the email and summary' (the summary columns); parity
+      `export-files.json` (the folder and every file name the old Export all wrote),
       `summary.html`, `summary.csv`. Writing the folder: phase 2.
 
 ## 5. History
 
 - [ ] **Changed (item 7).** Every day's work is saved with its choices, sent marks and pads, keyed
-      by station, date and cycle, in the app's database; the PDF beside it. Rule: `runIdFor`,
-      `runLabel` ('Service: import in any order...' twin). Storage: phase 2.
+      by station, date and cycle, in the app's database; the PDF beside it. Rules: `runIdFor`
+      ('Service: import in any order...' twin), `runLabel` ('Runs: the label is the station, the
+      short date and the cycle'); parity `run.json`. Storage: phase 2.
 - [ ] Reopen an older day; New run; Delete a run (asks first). Phase 2 and 3.
 - [ ] **Changed (item 8).** No "clear earlier days?" question: runs older than 30 days are removed
       quietly when the app opens. Rule: 'Runs: runs older than 30 days are the ones removed when

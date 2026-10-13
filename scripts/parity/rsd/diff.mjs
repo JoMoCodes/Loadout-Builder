@@ -38,10 +38,23 @@ function walk(root, dir = root, out = []) {
 
 // The attachment part of a draft: everything between its base64 header and the closing boundary.
 const ATTACHMENT_BYTES =
-  /(Content-Disposition: attachment;[^\r\n]*\r\nContent-Transfer-Encoding: base64\r\n\r\n)[\s\S]*?(\r\n--mixed_)/g;
+  /(Content-Disposition: attachment;[^\r\n]*\r\nContent-Transfer-Encoding: base64\r\n\r\n)([\s\S]*?)(\r\n--mixed_)/g;
 
+/**
+ * Replaces the attached PDF's base64 with a description of its shape: every line but the last is
+ * full (76 characters), the lines end the Windows way, and the bytes decode to a PDF. The bytes
+ * themselves differ on every run (pdf-lib stamps the time and a fresh id), and so can the number
+ * of lines by one; the shape must not.
+ */
 function withoutAttachmentBytes(eml) {
-  return eml.replace(ATTACHMENT_BYTES, '$1[the PDF bytes]$2');
+  return eml.replace(ATTACHMENT_BYTES, (_m, head, body, tail) => {
+    const lines = body.split('\r\n');
+    if (lines.at(-1) === '') lines.pop();
+    const full = lines.slice(0, -1).every((l) => l.length === 76);
+    const clean = lines.every((l) => !l.includes('\n') && !l.includes('\r'));
+    const start = Buffer.from(lines.slice(0, 2).join(''), 'base64').subarray(0, 5).toString();
+    return `${head}[a PDF in base64: full lines ${full}, clean line ends ${clean}, starts %PDF- ${start === '%PDF-'}]${tail}`;
+  });
 }
 
 function compareText(expected, actual) {

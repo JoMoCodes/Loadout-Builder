@@ -1,9 +1,25 @@
 // Email drafts (.eml files) that Outlook opens ready to send.
+//
+// No Node-only helpers here: this file is part of the package's main entry, which a page may
+// import, so text and bytes are turned into base64 with what both Node and a browser window have.
+
+/** Bytes as base64 text. */
+export function bytesToBase64(bytes: Uint8Array): string {
+  let binary = '';
+  const chunk = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunk) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+  }
+  return btoa(binary);
+}
+
+/** Text as base64 of its UTF-8 bytes. */
+export const utf8ToBase64 = (text: string): string => bytesToBase64(new TextEncoder().encode(text));
 
 export const wrap76 = (b64: string): string => b64.replace(/.{1,76}/g, '$&\r\n');
 
 export const encodeHeader = (s: string): string =>
-  /^[\x20-\x7e]*$/.test(s) ? s : `=?UTF-8?B?${Buffer.from(s, 'utf8').toString('base64')}?=`;
+  /^[\x20-\x7e]*$/.test(s) ? s : `=?UTF-8?B?${utf8ToBase64(s)}?=`;
 
 export const safeFileName = (s: unknown): string =>
   String(s)
@@ -47,12 +63,12 @@ export function buildEml(m: EmlMessage, boundaries?: { mixed: string; alt: strin
     'Content-Type: text/plain; charset="utf-8"',
     'Content-Transfer-Encoding: base64',
     '',
-    wrap76(Buffer.from(m.text, 'utf8').toString('base64')),
+    wrap76(utf8ToBase64(m.text)),
     `--${alt}`,
     'Content-Type: text/html; charset="utf-8"',
     'Content-Transfer-Encoding: base64',
     '',
-    wrap76(Buffer.from(m.html, 'utf8').toString('base64')),
+    wrap76(utf8ToBase64(m.html)),
     `--${alt}--`,
   ];
   for (const a of m.attachments || []) {
@@ -62,7 +78,7 @@ export function buildEml(m: EmlMessage, boundaries?: { mixed: string; alt: strin
       `Content-Disposition: attachment; filename="${a.filename}"`,
       'Content-Transfer-Encoding: base64',
       '',
-      wrap76(Buffer.from(a.content).toString('base64')),
+      wrap76(bytesToBase64(a.content)),
     );
   }
   lines.push(`--${mixed}--`, '');

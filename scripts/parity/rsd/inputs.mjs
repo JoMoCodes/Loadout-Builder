@@ -10,9 +10,9 @@
 // the driver list): the driver of one single-driver route is marked INACTIVE, and the driver of
 // another is taken off the list. Both are picked by position, so they are the same every run.
 
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { dirname, join } from 'node:path';
+import { dirname, join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ExcelJS from 'exceljs';
 
@@ -68,7 +68,13 @@ export async function readXlsxRows(file) {
   return rows;
 }
 
-/** The routes and the driver list for one fixture day, with the two twists applied. */
+/**
+ * The routes and the driver list for one fixture day, with five twists the fixture files cannot
+ * give on their own, each picked by position among the single-driver routes so they are the same
+ * every run: one driver marked INACTIVE, one taken off the driver list, one route with no
+ * Transporter ID, one route whose printed name is another person's (the name check), and one
+ * driver with no email address.
+ */
 export async function buildLists(dayInfo) {
   const { tableParsers } = old;
   const routeRows = await readXlsxRows(join(FIXTURES, dayInfo.routesFile));
@@ -77,12 +83,29 @@ export async function buildLists(dayInfo) {
   const { associates: all } = tableParsers.parseAssociates(tableParsers.parseCsvRows(csv));
 
   const single = routes.filter((r) => r.drivers.length === 1 && r.drivers[0].transporterId);
-  const inactiveId = single[4]?.drivers[0].transporterId ?? null;
-  const missingId = single[5]?.drivers[0].transporterId ?? null;
+  const idOf = (i) => single[i]?.drivers[0].transporterId ?? null;
+  const twists = {
+    inactiveId: idOf(4),
+    missingId: idOf(5),
+    noIdRoute: single[6]?.routeCode ?? null,
+    wrongNameRoute: single[7]?.routeCode ?? null,
+    noEmailId: idOf(8),
+  };
+  const otherName = all.find((a) => a.transporterId !== idOf(7))?.name ?? '';
+  const twistedRoutes = routes.map((r) => {
+    if (r.routeCode === twists.noIdRoute) {
+      return { ...r, drivers: r.drivers.map((d) => ({ ...d, transporterId: '' })) };
+    }
+    if (r.routeCode === twists.wrongNameRoute) {
+      return { ...r, drivers: r.drivers.map((d) => ({ ...d, driverName: otherName })) };
+    }
+    return r;
+  });
   const associates = all
-    .filter((a) => a.transporterId !== missingId)
-    .map((a) => (a.transporterId === inactiveId ? { ...a, status: 'INACTIVE' } : a));
-  return { routes, associates, twists: { inactiveId, missingId } };
+    .filter((a) => a.transporterId !== twists.missingId)
+    .map((a) => (a.transporterId === twists.inactiveId ? { ...a, status: 'INACTIVE' } : a))
+    .map((a) => (a.transporterId === twists.noEmailId ? { ...a, email: '' } : a));
+  return { routes: twistedRoutes, associates, twists };
 }
 
 /**
@@ -118,13 +141,23 @@ export function buildDecisions(distribution, associates) {
   return decisions;
 }
 
-/** A pad for every wave time, in clock order: "1", "2", "3"... */
+/** A pad for every wave time but the last, in clock order: "1", "2"... (the last has no pad). */
 export function buildWavePads(sheets) {
   const { waveSortKey } = old.matcher;
   const waves = [...new Set(sheets.map((s) => s.waveTime).filter(Boolean))].sort((a, b) =>
     waveSortKey(a).localeCompare(waveSortKey(b)),
   );
-  return Object.fromEntries(waves.map((w, i) => [w, String(i + 1)]));
+  return Object.fromEntries(waves.slice(0, -1).map((w, i) => [w, String(i + 1)]));
+}
+
+/** The relative paths of every file under a folder, sorted, with forward slashes. */
+export function listFiles(root, dir = root, out = []) {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) listFiles(root, full, out);
+    else out.push(relative(root, full).split(sep).join('/'));
+  }
+  return out.sort();
 }
 
 /** The pdf bytes of one layout. */

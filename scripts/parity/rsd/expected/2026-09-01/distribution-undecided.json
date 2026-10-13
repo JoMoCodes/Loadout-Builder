@@ -1,0 +1,2071 @@
+{
+  "routes": [
+    {
+      "routeCode": "CX4",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 3,
+        "pageNumbers": [
+          3,
+          4
+        ],
+        "staging": "STG.A2.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 30,
+        "overflowCount": 6,
+        "totalPackages": 434,
+        "commercialPackages": 4,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "AU9G43K0RMQVQ",
+          "routesName": "Miriam Huxley",
+          "found": true,
+          "rosterName": "Miriam Nathaniel Huxley",
+          "status": "ACTIVE",
+          "email": "driver046@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        },
+        {
+          "transporterId": "A4OQGIPQ6DAKF4",
+          "routesName": "Zane Applewhite",
+          "found": true,
+          "rosterName": "Zane Quentin Applewhite",
+          "status": "ACTIVE",
+          "email": "driver027@example.com",
+          "otherRoutes": [
+            "CX8",
+            "CX12",
+            "CX25"
+          ],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "duplicate",
+      "state": "needs-decision",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": "AU9G43K0RMQVQ",
+      "suggestionReason": "Only driver on this route who is not also listed on another route",
+      "headline": "2 Transporter IDs are listed on this route",
+      "issues": []
+    },
+    {
+      "routeCode": "CX12",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 16,
+        "pageNumbers": [
+          16
+        ],
+        "staging": "STG.C2.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 4,
+        "overflowCount": 0,
+        "totalPackages": 75,
+        "commercialPackages": 4,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "APC3N0EIX2VK4",
+          "routesName": "Barrett Ainsworth",
+          "found": true,
+          "rosterName": "Barrett Hadley Ainsworth",
+          "status": "ACTIVE",
+          "email": "driver016@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        },
+        {
+          "transporterId": "A4OQGIPQ6DAKF4",
+          "routesName": "Zane Applewhite",
+          "found": true,
+          "rosterName": "Zane Quentin Applewhite",
+          "status": "ACTIVE",
+          "email": "driver027@example.com",
+          "otherRoutes": [
+            "CX4",
+            "CX8",
+            "CX25"
+          ],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        },
+        {
+          "transporterId": "A34KITC8D730CW",
+          "routesName": "Caleb Wadsworth",
+          "found": true,
+          "rosterName": "Caleb Wadsworth",
+          "status": "ACTIVE",
+          "email": "driver060@example.com",
+          "otherRoutes": [
+            "AX13",
+            "CX25",
+            "CX27"
+          ],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "duplicate",
+      "state": "needs-decision",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": "APC3N0EIX2VK4",
+      "suggestionReason": "Only driver on this route who is not also listed on another route",
+      "headline": "3 Transporter IDs are listed on this route",
+      "issues": []
+    },
+    {
+      "routeCode": "CX14",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 18,
+        "pageNumbers": [
+          18
+        ],
+        "staging": "STG.C4.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel - On-Road Experience: Driver",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 3,
+        "overflowCount": 1,
+        "totalPackages": 39,
+        "commercialPackages": 1,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A8KSSZB6LALEOL",
+          "routesName": "Nolan Rainsford",
+          "found": true,
+          "rosterName": "Nolan Phoebe Rainsford",
+          "status": "ACTIVE",
+          "email": "driver034@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        },
+        {
+          "transporterId": "AW9CKWGLCCLMU",
+          "routesName": "Elodie Ashdown",
+          "found": true,
+          "rosterName": "Elodie Ashdown",
+          "status": "ACTIVE",
+          "email": "driver052@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "duplicate",
+      "state": "needs-decision",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "2 Transporter IDs are listed on this route",
+      "issues": []
+    },
+    {
+      "routeCode": "CX27",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 29,
+        "pageNumbers": [
+          29
+        ],
+        "staging": "STG.E3.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 5,
+        "overflowCount": 7,
+        "totalPackages": 94,
+        "commercialPackages": 4,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A9C6T83A3QX1LH",
+          "routesName": "Edith Hawthorne",
+          "found": true,
+          "rosterName": "Edith Dalia Hawthorne",
+          "status": "ACTIVE",
+          "email": "driver020@example.com",
+          "otherRoutes": [
+            "CX28"
+          ],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        },
+        {
+          "transporterId": "A34KITC8D730CW",
+          "routesName": "Caleb Wadsworth",
+          "found": true,
+          "rosterName": "Caleb Wadsworth",
+          "status": "ACTIVE",
+          "email": "driver060@example.com",
+          "otherRoutes": [
+            "AX13",
+            "CX12",
+            "CX25"
+          ],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "duplicate",
+      "state": "needs-decision",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "2 Transporter IDs are listed on this route",
+      "issues": []
+    },
+    {
+      "routeCode": "CX28",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 30,
+        "pageNumbers": [
+          30
+        ],
+        "staging": "STG.E4.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 6,
+        "overflowCount": 3,
+        "totalPackages": 80,
+        "commercialPackages": 0,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A6LA5Y7P3AGUTC",
+          "routesName": "Leopold Caldwell",
+          "found": true,
+          "rosterName": "Leopold Sawyer Caldwell",
+          "status": "ACTIVE",
+          "email": "driver028@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        },
+        {
+          "transporterId": "A9C6T83A3QX1LH",
+          "routesName": "Edith Hawthorne",
+          "found": true,
+          "rosterName": "Edith Dalia Hawthorne",
+          "status": "ACTIVE",
+          "email": "driver020@example.com",
+          "otherRoutes": [
+            "CX27"
+          ],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "duplicate",
+      "state": "needs-decision",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": "A6LA5Y7P3AGUTC",
+      "suggestionReason": "Only driver on this route who is not also listed on another route",
+      "headline": "2 Transporter IDs are listed on this route",
+      "issues": []
+    },
+    {
+      "routeCode": "CX8",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 12,
+        "pageNumbers": [
+          12
+        ],
+        "staging": "STG.B4.1",
+        "waveTime": "10:25 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel - Large Van",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 3,
+        "overflowCount": 5,
+        "totalPackages": 45,
+        "commercialPackages": 3,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "AK92X3BJNUBTF",
+          "routesName": "Carmen Abernathy",
+          "found": true,
+          "rosterName": "Carmen Abernathy",
+          "status": "ACTIVE",
+          "email": "driver031@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        },
+        {
+          "transporterId": "A4OQGIPQ6DAKF4",
+          "routesName": "Zane Applewhite",
+          "found": true,
+          "rosterName": "Zane Quentin Applewhite",
+          "status": "ACTIVE",
+          "email": "driver027@example.com",
+          "otherRoutes": [
+            "CX4",
+            "CX12",
+            "CX25"
+          ],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        },
+        {
+          "transporterId": "A9ZG8P8IMK2LUL",
+          "routesName": "Caleb Eldridge",
+          "found": true,
+          "rosterName": "Caleb Tabitha Eldridge",
+          "status": "ACTIVE",
+          "email": "driver065@example.com",
+          "otherRoutes": [
+            "AX13"
+          ],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "duplicate",
+      "state": "needs-decision",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": "AK92X3BJNUBTF",
+      "suggestionReason": "Only driver on this route who is not also listed on another route",
+      "headline": "3 Transporter IDs are listed on this route",
+      "issues": []
+    },
+    {
+      "routeCode": "CX19",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 22,
+        "pageNumbers": [
+          22
+        ],
+        "staging": "STG.D2.1",
+        "waveTime": "10:25 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Step Van - US",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 4,
+        "overflowCount": 5,
+        "totalPackages": 65,
+        "commercialPackages": 1,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A4S6I3ZV10EUC4",
+          "routesName": "Phoebe Holloway",
+          "found": true,
+          "rosterName": "Phoebe Gemma Holloway",
+          "status": "ACTIVE",
+          "email": "driver040@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        },
+        {
+          "transporterId": "AC7RVVCLB4P7H",
+          "routesName": "Rhea Lockhart",
+          "found": true,
+          "rosterName": "Rhea Lockhart",
+          "status": "ACTIVE",
+          "email": "driver059@example.com",
+          "otherRoutes": [
+            "CX18"
+          ],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "duplicate",
+      "state": "needs-decision",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": "A4S6I3ZV10EUC4",
+      "suggestionReason": "Only driver on this route who is not also listed on another route",
+      "headline": "2 Transporter IDs are listed on this route",
+      "issues": []
+    },
+    {
+      "routeCode": "CX22",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 25,
+        "pageNumbers": [
+          25
+        ],
+        "staging": "STG.D5.1",
+        "waveTime": "10:25 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 4,
+        "overflowCount": 4,
+        "totalPackages": 77,
+        "commercialPackages": 3,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A5JGA6O3VGJC9D",
+          "routesName": "Nolan Wakefield",
+          "found": true,
+          "rosterName": "Nolan Anika Wakefield",
+          "status": "ACTIVE",
+          "email": "driver021@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        },
+        {
+          "transporterId": "AO2I4MJ59WDHS",
+          "routesName": "Micah Kingsley",
+          "found": true,
+          "rosterName": "Micah Tobias Kingsley",
+          "status": "ACTIVE",
+          "email": "driver066@example.com",
+          "otherRoutes": [
+            "CX23"
+          ],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "duplicate",
+      "state": "needs-decision",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": "A5JGA6O3VGJC9D",
+      "suggestionReason": "Only driver on this route who is not also listed on another route",
+      "headline": "2 Transporter IDs are listed on this route",
+      "issues": []
+    },
+    {
+      "routeCode": "CX25",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 27,
+        "pageNumbers": [
+          27
+        ],
+        "staging": "STG.E1.1",
+        "waveTime": "10:25 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel - Large Van",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 6,
+        "overflowCount": 4,
+        "totalPackages": 93,
+        "commercialPackages": 5,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A6URN0K4YHEUUX",
+          "routesName": "Elodie Hargrove",
+          "found": true,
+          "rosterName": "Elodie Hadley Hargrove",
+          "status": "ACTIVE",
+          "email": "driver011@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        },
+        {
+          "transporterId": "A34KITC8D730CW",
+          "routesName": "Caleb Wadsworth",
+          "found": true,
+          "rosterName": "Caleb Wadsworth",
+          "status": "ACTIVE",
+          "email": "driver060@example.com",
+          "otherRoutes": [
+            "AX13",
+            "CX12",
+            "CX27"
+          ],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        },
+        {
+          "transporterId": "A4OQGIPQ6DAKF4",
+          "routesName": "Zane Applewhite",
+          "found": true,
+          "rosterName": "Zane Quentin Applewhite",
+          "status": "ACTIVE",
+          "email": "driver027@example.com",
+          "otherRoutes": [
+            "CX4",
+            "CX8",
+            "CX12"
+          ],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "duplicate",
+      "state": "needs-decision",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": "A6URN0K4YHEUUX",
+      "suggestionReason": "Only driver on this route who is not also listed on another route",
+      "headline": "3 Transporter IDs are listed on this route",
+      "issues": []
+    },
+    {
+      "routeCode": "CX5",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 9,
+        "pageNumbers": [
+          9
+        ],
+        "staging": "STG.B1.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 4,
+        "overflowCount": 7,
+        "totalPackages": 74,
+        "commercialPackages": 4,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A8LKEVUMZ2502T",
+          "routesName": "Mason Winslow",
+          "found": true,
+          "rosterName": "Mason Felicia Winslow",
+          "status": "INACTIVE",
+          "email": "driver058@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": "Mason Felicia Winslow (A8LKEVUMZ2502T) is INACTIVE in the associate data",
+          "valid": false
+        }
+      ],
+      "kind": "single",
+      "state": "exception",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Mason Felicia Winslow (A8LKEVUMZ2502T) is INACTIVE in the associate data",
+      "issues": [
+        {
+          "level": "error",
+          "text": "Mason Felicia Winslow (A8LKEVUMZ2502T) is INACTIVE in the associate data"
+        }
+      ]
+    },
+    {
+      "routeCode": "CX6",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 10,
+        "pageNumbers": [
+          10
+        ],
+        "staging": "STG.B2.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 5,
+        "overflowCount": 4,
+        "totalPackages": 58,
+        "commercialPackages": 0,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A9LE0ZXWQH9RYQ",
+          "routesName": "Sabrina Gresham",
+          "found": false,
+          "rosterName": null,
+          "status": null,
+          "email": "",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": "Transporter ID A9LE0ZXWQH9RYQ (Sabrina Gresham) is not in the associate data",
+          "valid": false
+        }
+      ],
+      "kind": "single",
+      "state": "exception",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Transporter ID A9LE0ZXWQH9RYQ (Sabrina Gresham) is not in the associate data",
+      "issues": [
+        {
+          "level": "error",
+          "text": "Transporter ID A9LE0ZXWQH9RYQ (Sabrina Gresham) is not in the associate data"
+        }
+      ]
+    },
+    {
+      "routeCode": "CX900",
+      "hasSheet": true,
+      "onRoutesFile": false,
+      "sheet": {
+        "pageNumber": 31,
+        "pageNumbers": [
+          31
+        ],
+        "staging": "STG.E6.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 5,
+        "overflowCount": 4,
+        "totalPackages": 77,
+        "commercialPackages": 4,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [],
+      "kind": "unassigned",
+      "state": "exception",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Route is in the PDF but not on the routes file",
+      "issues": [
+        {
+          "level": "error",
+          "text": "CX900 has a route sheet page but is not on the routes file, so no driver is assigned."
+        }
+      ]
+    },
+    {
+      "routeCode": "CX7",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 11,
+        "pageNumbers": [
+          11
+        ],
+        "staging": "STG.B3.1",
+        "waveTime": "10:25 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel - Large Van",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 6,
+        "overflowCount": 0,
+        "totalPackages": 81,
+        "commercialPackages": 1,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "",
+          "routesName": "Harlan Penrose",
+          "found": false,
+          "rosterName": null,
+          "status": null,
+          "email": "",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": "Harlan Penrose has no Transporter ID on the routes file",
+          "valid": false
+        }
+      ],
+      "kind": "single",
+      "state": "exception",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Harlan Penrose has no Transporter ID on the routes file",
+      "issues": [
+        {
+          "level": "error",
+          "text": "Harlan Penrose has no Transporter ID on the routes file"
+        }
+      ]
+    },
+    {
+      "routeCode": "AX13",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 5,
+        "pageNumbers": [
+          5
+        ],
+        "staging": "STG.A3.1",
+        "waveTime": "02:30 PM",
+        "pad": null,
+        "serviceType": "Standard Parcel - Large Van - Recycle",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 3,
+        "overflowCount": 3,
+        "totalPackages": 100,
+        "commercialPackages": 4,
+        "checkOk": false,
+        "checkProblems": [
+          "Bags (47) + overflow (3) = 50, but Total Packages says 100"
+        ],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A9ZG8P8IMK2LUL",
+          "routesName": "Caleb Eldridge",
+          "found": true,
+          "rosterName": "Caleb Tabitha Eldridge",
+          "status": "ACTIVE",
+          "email": "driver065@example.com",
+          "otherRoutes": [
+            "CX8"
+          ],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        },
+        {
+          "transporterId": "A34KITC8D730CW",
+          "routesName": "Caleb Wadsworth",
+          "found": true,
+          "rosterName": "Caleb Wadsworth",
+          "status": "ACTIVE",
+          "email": "driver060@example.com",
+          "otherRoutes": [
+            "CX12",
+            "CX25",
+            "CX27"
+          ],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "duplicate",
+      "state": "exception",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Found this route's page, but the app couldn't read its tables. Check the original page, then send it so the driver uses the attached PDF.",
+      "issues": [
+        {
+          "level": "error",
+          "text": "Route sheet check failed: Bags (47) + overflow (3) = 50, but Total Packages says 100"
+        }
+      ]
+    },
+    {
+      "routeCode": "CX29",
+      "hasSheet": false,
+      "onRoutesFile": true,
+      "sheet": null,
+      "listed": [
+        {
+          "transporterId": "A5QUM4XU1H9HQS",
+          "routesName": "Mabel Kensington",
+          "found": true,
+          "rosterName": "Mabel Vera Kensington",
+          "status": "ACTIVE",
+          "email": "driver012@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "no-sheet",
+      "state": "no-sheet",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "No page for this route in the route sheet PDF",
+      "issues": [
+        {
+          "level": "error",
+          "text": "CX29 is on the routes file but has no page in the route sheet PDF, so there is nothing to send."
+        }
+      ]
+    },
+    {
+      "routeCode": "CX2",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 7,
+        "pageNumbers": [
+          7
+        ],
+        "staging": "STG.A5.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 5,
+        "overflowCount": 4,
+        "totalPackages": 53,
+        "commercialPackages": 4,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A3QVN63ZJEGQYP",
+          "routesName": "Nolan Abernathy",
+          "found": true,
+          "rosterName": "Nolan Abernathy",
+          "status": "ACTIVE",
+          "email": "driver056@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "single",
+      "state": "ready",
+      "source": "auto",
+      "recipients": [
+        {
+          "transporterId": "A3QVN63ZJEGQYP",
+          "name": "Nolan Abernathy",
+          "email": "driver056@example.com",
+          "status": "ACTIVE"
+        }
+      ],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Exact Transporter ID match",
+      "issues": []
+    },
+    {
+      "routeCode": "CX10",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 14,
+        "pageNumbers": [
+          14
+        ],
+        "staging": "STG.B6.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 6,
+        "overflowCount": 8,
+        "totalPackages": 96,
+        "commercialPackages": 1,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "AWJ5XN1FMHXXV",
+          "routesName": "Sloane Winslow",
+          "found": true,
+          "rosterName": "Sloane Winston Winslow",
+          "status": "ACTIVE",
+          "email": "",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "single",
+      "state": "ready",
+      "source": "auto",
+      "recipients": [
+        {
+          "transporterId": "AWJ5XN1FMHXXV",
+          "name": "Sloane Winston Winslow",
+          "email": "",
+          "status": "ACTIVE"
+        }
+      ],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Exact Transporter ID match",
+      "issues": [
+        {
+          "level": "warn",
+          "text": "No email on file for Sloane Winston Winslow — copy the sheet and send it another way"
+        }
+      ]
+    },
+    {
+      "routeCode": "CX13",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 17,
+        "pageNumbers": [
+          17
+        ],
+        "staging": "STG.C3.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 6,
+        "overflowCount": 4,
+        "totalPackages": 106,
+        "commercialPackages": 3,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A3FM1CRWW54MMO",
+          "routesName": "Yara Halloran",
+          "found": true,
+          "rosterName": "Yara Julian Halloran",
+          "status": "ACTIVE",
+          "email": "driver075@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "single",
+      "state": "ready",
+      "source": "auto",
+      "recipients": [
+        {
+          "transporterId": "A3FM1CRWW54MMO",
+          "name": "Yara Julian Halloran",
+          "email": "driver075@example.com",
+          "status": "ACTIVE"
+        }
+      ],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Exact Transporter ID match",
+      "issues": []
+    },
+    {
+      "routeCode": "CX15",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 19,
+        "pageNumbers": [
+          19
+        ],
+        "staging": "STG.C5.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 4,
+        "overflowCount": 6,
+        "totalPackages": 63,
+        "commercialPackages": 3,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A55NZ7WTBR2RXC",
+          "routesName": "Isidro Ingram",
+          "found": true,
+          "rosterName": "Isidro Ariana Ingram",
+          "status": "ACTIVE",
+          "email": "driver072@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "single",
+      "state": "ready",
+      "source": "auto",
+      "recipients": [
+        {
+          "transporterId": "A55NZ7WTBR2RXC",
+          "name": "Isidro Ariana Ingram",
+          "email": "driver072@example.com",
+          "status": "ACTIVE"
+        }
+      ],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Exact Transporter ID match",
+      "issues": []
+    },
+    {
+      "routeCode": "CX16",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 2,
+        "pageNumbers": [
+          2
+        ],
+        "staging": "STG.A1.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 4,
+        "overflowCount": 3,
+        "totalPackages": 78,
+        "commercialPackages": 5,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": [
+          "Bag #2 (Black 7553) has no Sort Zone printed on the sheet",
+          "Bag #3 (D-3.4D) has no Bag label printed on the sheet"
+        ]
+      },
+      "listed": [
+        {
+          "transporterId": "A486QRCQCVMTG1",
+          "routesName": "Nadine Abernathy",
+          "found": true,
+          "rosterName": "Nadine Olive Abernathy",
+          "status": "ACTIVE",
+          "email": "driver076@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "single",
+      "state": "ready",
+      "source": "auto",
+      "recipients": [
+        {
+          "transporterId": "A486QRCQCVMTG1",
+          "name": "Nadine Olive Abernathy",
+          "email": "driver076@example.com",
+          "status": "ACTIVE"
+        }
+      ],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Exact Transporter ID match",
+      "issues": [
+        {
+          "level": "info",
+          "text": "Bag #2 (Black 7553) has no Sort Zone printed on the sheet"
+        },
+        {
+          "level": "info",
+          "text": "Bag #3 (D-3.4D) has no Bag label printed on the sheet"
+        }
+      ]
+    },
+    {
+      "routeCode": "CX17",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 20,
+        "pageNumbers": [
+          20
+        ],
+        "staging": "STG.C6.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 5,
+        "overflowCount": 3,
+        "totalPackages": 72,
+        "commercialPackages": 0,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "AKA0HPH6GU9DK",
+          "routesName": "Elodie Vandermeer",
+          "found": true,
+          "rosterName": "Elodie Vandermeer",
+          "status": "ACTIVE",
+          "email": "driver070@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "single",
+      "state": "ready",
+      "source": "auto",
+      "recipients": [
+        {
+          "transporterId": "AKA0HPH6GU9DK",
+          "name": "Elodie Vandermeer",
+          "email": "driver070@example.com",
+          "status": "ACTIVE"
+        }
+      ],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Exact Transporter ID match",
+      "issues": []
+    },
+    {
+      "routeCode": "CX18",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 21,
+        "pageNumbers": [
+          21
+        ],
+        "staging": "STG.D1.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 3,
+        "overflowCount": 0,
+        "totalPackages": 46,
+        "commercialPackages": 1,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "AC7RVVCLB4P7H",
+          "routesName": "Rhea Lockhart",
+          "found": true,
+          "rosterName": "Rhea Lockhart",
+          "status": "ACTIVE",
+          "email": "driver059@example.com",
+          "otherRoutes": [
+            "CX19"
+          ],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "single",
+      "state": "ready",
+      "source": "auto",
+      "recipients": [
+        {
+          "transporterId": "AC7RVVCLB4P7H",
+          "name": "Rhea Lockhart",
+          "email": "driver059@example.com",
+          "status": "ACTIVE"
+        }
+      ],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Exact Transporter ID match",
+      "issues": []
+    },
+    {
+      "routeCode": "CX20",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 23,
+        "pageNumbers": [
+          23
+        ],
+        "staging": "STG.D3.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 5,
+        "overflowCount": 1,
+        "totalPackages": 76,
+        "commercialPackages": 2,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A2A1CI9GH4T37",
+          "routesName": "Olive Marlowe",
+          "found": true,
+          "rosterName": "Olive Xavier Marlowe",
+          "status": "ACTIVE",
+          "email": "driver051@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "single",
+      "state": "ready",
+      "source": "auto",
+      "recipients": [
+        {
+          "transporterId": "A2A1CI9GH4T37",
+          "name": "Olive Xavier Marlowe",
+          "email": "driver051@example.com",
+          "status": "ACTIVE"
+        }
+      ],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Exact Transporter ID match",
+      "issues": []
+    },
+    {
+      "routeCode": "CX26",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 28,
+        "pageNumbers": [
+          28
+        ],
+        "staging": "STG.E2.1",
+        "waveTime": "10:20 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 4,
+        "overflowCount": 3,
+        "totalPackages": 75,
+        "commercialPackages": 0,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A7O9MN0YIUZXN",
+          "routesName": "Greta Vance",
+          "found": true,
+          "rosterName": "Greta Esme Vance",
+          "status": "ACTIVE",
+          "email": "driver071@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "single",
+      "state": "ready",
+      "source": "auto",
+      "recipients": [
+        {
+          "transporterId": "A7O9MN0YIUZXN",
+          "name": "Greta Esme Vance",
+          "email": "driver071@example.com",
+          "status": "ACTIVE"
+        }
+      ],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Exact Transporter ID match",
+      "issues": []
+    },
+    {
+      "routeCode": "CX1",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 6,
+        "pageNumbers": [
+          6
+        ],
+        "staging": "STG.A4.1",
+        "waveTime": "10:25 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 4,
+        "overflowCount": 0,
+        "totalPackages": 64,
+        "commercialPackages": 3,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "AFRYVFGBLTBTV",
+          "routesName": "Rhea Ravenscroft",
+          "found": true,
+          "rosterName": "Rhea Ravenscroft",
+          "status": "ACTIVE",
+          "email": "driver003@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "single",
+      "state": "ready",
+      "source": "auto",
+      "recipients": [
+        {
+          "transporterId": "AFRYVFGBLTBTV",
+          "name": "Rhea Ravenscroft",
+          "email": "driver003@example.com",
+          "status": "ACTIVE"
+        }
+      ],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Exact Transporter ID match",
+      "issues": []
+    },
+    {
+      "routeCode": "CX3",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 8,
+        "pageNumbers": [
+          8
+        ],
+        "staging": "STG.A6.1",
+        "waveTime": "10:25 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 6,
+        "overflowCount": 2,
+        "totalPackages": 74,
+        "commercialPackages": 3,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A63AK2RYZDOMF0",
+          "routesName": "Greta Eastwood",
+          "found": true,
+          "rosterName": "Greta Bennett Eastwood",
+          "status": "ACTIVE",
+          "email": "driver038@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "single",
+      "state": "ready",
+      "source": "auto",
+      "recipients": [
+        {
+          "transporterId": "A63AK2RYZDOMF0",
+          "name": "Greta Bennett Eastwood",
+          "email": "driver038@example.com",
+          "status": "ACTIVE"
+        }
+      ],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Exact Transporter ID match",
+      "issues": []
+    },
+    {
+      "routeCode": "CX9",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 13,
+        "pageNumbers": [
+          13
+        ],
+        "staging": "STG.B5.1",
+        "waveTime": "10:25 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian SMALL",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 5,
+        "overflowCount": 2,
+        "totalPackages": 66,
+        "commercialPackages": 1,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A9D25MDVZ2T1ON",
+          "routesName": "Andre Abigail Birchfield",
+          "found": true,
+          "rosterName": "Harlan Soren Clemmons",
+          "status": "ACTIVE",
+          "email": "driver013@example.com",
+          "otherRoutes": [],
+          "nameMismatch": true,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "single",
+      "state": "ready",
+      "source": "auto",
+      "recipients": [
+        {
+          "transporterId": "A9D25MDVZ2T1ON",
+          "name": "Harlan Soren Clemmons",
+          "email": "driver013@example.com",
+          "status": "ACTIVE"
+        }
+      ],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Exact Transporter ID match",
+      "issues": [
+        {
+          "level": "warn",
+          "text": "Name check: routes file says \"Andre Abigail Birchfield\" but A9D25MDVZ2T1ON belongs to \"Harlan Soren Clemmons\" in the associate data"
+        }
+      ]
+    },
+    {
+      "routeCode": "CX11",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 15,
+        "pageNumbers": [
+          15
+        ],
+        "staging": "STG.C1.1",
+        "waveTime": "10:25 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 3,
+        "overflowCount": 5,
+        "totalPackages": 57,
+        "commercialPackages": 5,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A1QVVPYVZD6R9F",
+          "routesName": "Beatrice Sutherland",
+          "found": true,
+          "rosterName": "Beatrice Sutherland",
+          "status": "ACTIVE",
+          "email": "driver007@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "single",
+      "state": "ready",
+      "source": "auto",
+      "recipients": [
+        {
+          "transporterId": "A1QVVPYVZD6R9F",
+          "name": "Beatrice Sutherland",
+          "email": "driver007@example.com",
+          "status": "ACTIVE"
+        }
+      ],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Exact Transporter ID match",
+      "issues": []
+    },
+    {
+      "routeCode": "CX21",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 24,
+        "pageNumbers": [
+          24
+        ],
+        "staging": "STG.D4.1",
+        "waveTime": "10:25 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian SMALL",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 3,
+        "overflowCount": 6,
+        "totalPackages": 42,
+        "commercialPackages": 5,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "A1I13S2WRY55FH",
+          "routesName": "Ariana Nethercott",
+          "found": true,
+          "rosterName": "Ariana Nethercott",
+          "status": "ACTIVE",
+          "email": "driver080@example.com",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "single",
+      "state": "ready",
+      "source": "auto",
+      "recipients": [
+        {
+          "transporterId": "A1I13S2WRY55FH",
+          "name": "Ariana Nethercott",
+          "email": "driver080@example.com",
+          "status": "ACTIVE"
+        }
+      ],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Exact Transporter ID match",
+      "issues": []
+    },
+    {
+      "routeCode": "CX23",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 26,
+        "pageNumbers": [
+          26
+        ],
+        "staging": "STG.D6.1",
+        "waveTime": "10:25 AM",
+        "pad": null,
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-01",
+        "dateLabel": "TUE, SEP 1, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 5,
+        "overflowCount": 0,
+        "totalPackages": 58,
+        "commercialPackages": 3,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "AO2I4MJ59WDHS",
+          "routesName": "Micah Kingsley",
+          "found": true,
+          "rosterName": "Micah Tobias Kingsley",
+          "status": "ACTIVE",
+          "email": "driver066@example.com",
+          "otherRoutes": [
+            "CX22"
+          ],
+          "nameMismatch": false,
+          "problem": null,
+          "valid": true
+        }
+      ],
+      "kind": "single",
+      "state": "ready",
+      "source": "auto",
+      "recipients": [
+        {
+          "transporterId": "AO2I4MJ59WDHS",
+          "name": "Micah Tobias Kingsley",
+          "email": "driver066@example.com",
+          "status": "ACTIVE"
+        }
+      ],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Exact Transporter ID match",
+      "issues": []
+    }
+  ],
+  "people": {
+    "notReceiving": [
+      {
+        "transporterId": "APC3N0EIX2VK4",
+        "name": "Barrett Hadley Ainsworth",
+        "inRoster": true,
+        "status": "ACTIVE",
+        "routes": [
+          {
+            "routeCode": "CX12",
+            "reason": "Waiting on your decision — CX12 also lists Zane Quentin Applewhite, Caleb Wadsworth"
+          }
+        ]
+      },
+      {
+        "transporterId": "A9ZG8P8IMK2LUL",
+        "name": "Caleb Tabitha Eldridge",
+        "inRoster": true,
+        "status": "ACTIVE",
+        "routes": [
+          {
+            "routeCode": "CX8",
+            "reason": "Waiting on your decision — CX8 also lists Carmen Abernathy, Zane Quentin Applewhite"
+          },
+          {
+            "routeCode": "AX13",
+            "reason": "Found this route's page, but the app couldn't read its tables. Check the original page, then send it so the driver uses the attached PDF."
+          }
+        ]
+      },
+      {
+        "transporterId": "A34KITC8D730CW",
+        "name": "Caleb Wadsworth",
+        "inRoster": true,
+        "status": "ACTIVE",
+        "routes": [
+          {
+            "routeCode": "CX12",
+            "reason": "Waiting on your decision — CX12 also lists Barrett Hadley Ainsworth, Zane Quentin Applewhite"
+          },
+          {
+            "routeCode": "CX27",
+            "reason": "Waiting on your decision — CX27 also lists Edith Dalia Hawthorne"
+          },
+          {
+            "routeCode": "CX25",
+            "reason": "Waiting on your decision — CX25 also lists Elodie Hadley Hargrove, Zane Quentin Applewhite"
+          },
+          {
+            "routeCode": "AX13",
+            "reason": "Found this route's page, but the app couldn't read its tables. Check the original page, then send it so the driver uses the attached PDF."
+          }
+        ]
+      },
+      {
+        "transporterId": "AK92X3BJNUBTF",
+        "name": "Carmen Abernathy",
+        "inRoster": true,
+        "status": "ACTIVE",
+        "routes": [
+          {
+            "routeCode": "CX8",
+            "reason": "Waiting on your decision — CX8 also lists Zane Quentin Applewhite, Caleb Tabitha Eldridge"
+          }
+        ]
+      },
+      {
+        "transporterId": "A9C6T83A3QX1LH",
+        "name": "Edith Dalia Hawthorne",
+        "inRoster": true,
+        "status": "ACTIVE",
+        "routes": [
+          {
+            "routeCode": "CX27",
+            "reason": "Waiting on your decision — CX27 also lists Caleb Wadsworth"
+          },
+          {
+            "routeCode": "CX28",
+            "reason": "Waiting on your decision — CX28 also lists Leopold Sawyer Caldwell"
+          }
+        ]
+      },
+      {
+        "transporterId": "AW9CKWGLCCLMU",
+        "name": "Elodie Ashdown",
+        "inRoster": true,
+        "status": "ACTIVE",
+        "routes": [
+          {
+            "routeCode": "CX14",
+            "reason": "Waiting on your decision — CX14 also lists Nolan Phoebe Rainsford"
+          }
+        ]
+      },
+      {
+        "transporterId": "A6URN0K4YHEUUX",
+        "name": "Elodie Hadley Hargrove",
+        "inRoster": true,
+        "status": "ACTIVE",
+        "routes": [
+          {
+            "routeCode": "CX25",
+            "reason": "Waiting on your decision — CX25 also lists Caleb Wadsworth, Zane Quentin Applewhite"
+          }
+        ]
+      },
+      {
+        "transporterId": "",
+        "name": "Harlan Penrose",
+        "inRoster": false,
+        "status": null,
+        "routes": [
+          {
+            "routeCode": "CX7",
+            "reason": "Harlan Penrose has no Transporter ID on the routes file"
+          }
+        ]
+      },
+      {
+        "transporterId": "A6LA5Y7P3AGUTC",
+        "name": "Leopold Sawyer Caldwell",
+        "inRoster": true,
+        "status": "ACTIVE",
+        "routes": [
+          {
+            "routeCode": "CX28",
+            "reason": "Waiting on your decision — CX28 also lists Edith Dalia Hawthorne"
+          }
+        ]
+      },
+      {
+        "transporterId": "A5QUM4XU1H9HQS",
+        "name": "Mabel Vera Kensington",
+        "inRoster": true,
+        "status": "ACTIVE",
+        "routes": [
+          {
+            "routeCode": "CX29",
+            "reason": "No page for CX29 in the route sheet PDF"
+          }
+        ]
+      },
+      {
+        "transporterId": "A8LKEVUMZ2502T",
+        "name": "Mason Felicia Winslow",
+        "inRoster": true,
+        "status": "INACTIVE",
+        "routes": [
+          {
+            "routeCode": "CX5",
+            "reason": "Mason Felicia Winslow (A8LKEVUMZ2502T) is INACTIVE in the associate data"
+          }
+        ]
+      },
+      {
+        "transporterId": "AU9G43K0RMQVQ",
+        "name": "Miriam Nathaniel Huxley",
+        "inRoster": true,
+        "status": "ACTIVE",
+        "routes": [
+          {
+            "routeCode": "CX4",
+            "reason": "Waiting on your decision — CX4 also lists Zane Quentin Applewhite"
+          }
+        ]
+      },
+      {
+        "transporterId": "A5JGA6O3VGJC9D",
+        "name": "Nolan Anika Wakefield",
+        "inRoster": true,
+        "status": "ACTIVE",
+        "routes": [
+          {
+            "routeCode": "CX22",
+            "reason": "Waiting on your decision — CX22 also lists Micah Tobias Kingsley"
+          }
+        ]
+      },
+      {
+        "transporterId": "A8KSSZB6LALEOL",
+        "name": "Nolan Phoebe Rainsford",
+        "inRoster": true,
+        "status": "ACTIVE",
+        "routes": [
+          {
+            "routeCode": "CX14",
+            "reason": "Waiting on your decision — CX14 also lists Elodie Ashdown"
+          }
+        ]
+      },
+      {
+        "transporterId": "A4S6I3ZV10EUC4",
+        "name": "Phoebe Gemma Holloway",
+        "inRoster": true,
+        "status": "ACTIVE",
+        "routes": [
+          {
+            "routeCode": "CX19",
+            "reason": "Waiting on your decision — CX19 also lists Rhea Lockhart"
+          }
+        ]
+      },
+      {
+        "transporterId": "A9LE0ZXWQH9RYQ",
+        "name": "Sabrina Gresham",
+        "inRoster": false,
+        "status": null,
+        "routes": [
+          {
+            "routeCode": "CX6",
+            "reason": "Transporter ID A9LE0ZXWQH9RYQ (Sabrina Gresham) is not in the associate data"
+          }
+        ]
+      },
+      {
+        "transporterId": "A4OQGIPQ6DAKF4",
+        "name": "Zane Quentin Applewhite",
+        "inRoster": true,
+        "status": "ACTIVE",
+        "routes": [
+          {
+            "routeCode": "CX4",
+            "reason": "Waiting on your decision — CX4 also lists Miriam Nathaniel Huxley"
+          },
+          {
+            "routeCode": "CX12",
+            "reason": "Waiting on your decision — CX12 also lists Barrett Hadley Ainsworth, Caleb Wadsworth"
+          },
+          {
+            "routeCode": "CX8",
+            "reason": "Waiting on your decision — CX8 also lists Carmen Abernathy, Caleb Tabitha Eldridge"
+          },
+          {
+            "routeCode": "CX25",
+            "reason": "Waiting on your decision — CX25 also lists Elodie Hadley Hargrove, Caleb Wadsworth"
+          }
+        ]
+      }
+    ],
+    "multiple": []
+  },
+  "counts": {
+    "total": 30,
+    "ready": 15,
+    "needs-decision": 9,
+    "exception": 5,
+    "skipped": 0,
+    "no-sheet": 1,
+    "missingEmail": 1
+  },
+  "waves": [
+    {
+      "waveTime": "10:20 AM",
+      "routes": 17,
+      "pad": null
+    },
+    {
+      "waveTime": "10:25 AM",
+      "routes": 11,
+      "pad": null
+    },
+    {
+      "waveTime": "02:30 PM",
+      "routes": 1,
+      "pad": null
+    }
+  ]
+}

@@ -264,7 +264,7 @@ export function distribute({
       routeCode,
       hasSheet: !!sheet,
       onRoutesFile: !!route,
-      sheet: summarizeSheet(sheet, padFor(wavePads, sheet && sheet.waveTime)),
+      sheet: summarizeSheet(sheet, wavePadFor(wavePads, sheet && sheet.waveTime)),
       listed,
       kind: !sheet
         ? 'no-sheet'
@@ -395,7 +395,7 @@ export function distribute({
   };
 }
 
-export function padFor(
+export function wavePadFor(
   wavePads: WavePads | null | undefined,
   waveTime: string | null | undefined,
 ): string | null {
@@ -413,7 +413,7 @@ export function summarizeWaves(
     counts.set(s.waveTime, (counts.get(s.waveTime) || 0) + 1);
   }
   return [...counts]
-    .map(([waveTime, routes]) => ({ waveTime, routes, pad: padFor(wavePads, waveTime) }))
+    .map(([waveTime, routes]) => ({ waveTime, routes, pad: wavePadFor(wavePads, waveTime) }))
     .sort((a, b) => waveSortKey(a.waveTime).localeCompare(waveSortKey(b.waveTime)));
 }
 

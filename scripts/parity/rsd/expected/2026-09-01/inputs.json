@@ -108,7 +108,7 @@
       "routeCode": "CX7",
       "drivers": [
         {
-          "transporterId": "A2051ICVODZP9E",
+          "transporterId": "",
           "driverName": "Harlan Penrose"
         }
       ],
@@ -141,7 +141,7 @@
       "drivers": [
         {
           "transporterId": "A9D25MDVZ2T1ON",
-          "driverName": "Harlan Clemmons"
+          "driverName": "Andre Abigail Birchfield"
         }
       ],
       "dsp": "Example Delivery Team LLC",
@@ -1180,7 +1180,7 @@
       "idExpiration": "2031-07-15",
       "personalPhone": "8375550178",
       "workPhone": "+16735550122",
-      "email": "driver067@example.com",
+      "email": "",
       "status": "ACTIVE"
     },
     {
@@ -1307,12 +1307,14 @@
   },
   "wavePads": {
     "10:20 AM": "1",
-    "10:25 AM": "2",
-    "02:30 PM": "3"
+    "10:25 AM": "2"
   },
   "twists": {
     "inactiveId": "A8LKEVUMZ2502T",
-    "missingId": "A9LE0ZXWQH9RYQ"
+    "missingId": "A9LE0ZXWQH9RYQ",
+    "noIdRoute": "CX7",
+    "wrongNameRoute": "CX9",
+    "noEmailId": "AWJ5XN1FMHXXV"
   },
   "boundaries": {
     "mixed": "mixed_parity_i",

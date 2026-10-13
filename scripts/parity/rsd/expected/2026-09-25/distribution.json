@@ -1,6 +1,60 @@
 {
   "routes": [
     {
+      "routeCode": "CX174",
+      "hasSheet": true,
+      "onRoutesFile": true,
+      "sheet": {
+        "pageNumber": 9,
+        "pageNumbers": [
+          9
+        ],
+        "staging": "STG.B1.1",
+        "waveTime": "10:20 AM",
+        "pad": "1",
+        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+        "dsp": "XXXX",
+        "station": "XXX1",
+        "date": "2026-09-25",
+        "dateLabel": "FRI, SEP 25, 2026",
+        "cycle": "CYCLE_1",
+        "bagCount": 4,
+        "overflowCount": 7,
+        "totalPackages": 74,
+        "commercialPackages": 4,
+        "checkOk": true,
+        "checkProblems": [],
+        "notes": []
+      },
+      "listed": [
+        {
+          "transporterId": "",
+          "routesName": "Greta Eastwood",
+          "found": false,
+          "rosterName": null,
+          "status": null,
+          "email": "",
+          "otherRoutes": [],
+          "nameMismatch": false,
+          "problem": "Greta Eastwood has no Transporter ID on the routes file",
+          "valid": false
+        }
+      ],
+      "kind": "single",
+      "state": "exception",
+      "source": "auto",
+      "recipients": [],
+      "suggestion": null,
+      "suggestionReason": null,
+      "headline": "Greta Eastwood has no Transporter ID on the routes file",
+      "issues": [
+        {
+          "level": "error",
+          "text": "Greta Eastwood has no Transporter ID on the routes file"
+        }
+      ]
+    },
+    {
       "routeCode": "CX173",
       "hasSheet": true,
       "onRoutesFile": true,
@@ -11,7 +65,7 @@
         ],
         "staging": "STG.A6.1",
         "waveTime": "10:25 AM",
-        "pad": "2",
+        "pad": null,
         "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
         "dsp": "XXXX",
         "station": "XXX1",
@@ -65,7 +119,7 @@
         ],
         "staging": "STG.A5.1",
         "waveTime": "10:25 AM",
-        "pad": "2",
+        "pad": null,
         "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
         "dsp": "XXXX",
         "station": "XXX1",
@@ -119,7 +173,7 @@
         ],
         "staging": "STG.A3.1",
         "waveTime": "10:25 AM",
-        "pad": "2",
+        "pad": null,
         "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
         "dsp": "XXXX",
         "station": "XXX1",
@@ -196,62 +250,6 @@
           "text": "CX182 is on the routes file but has no page in the route sheet PDF, so there is nothing to send."
         }
       ]
-    },
-    {
-      "routeCode": "CX174",
-      "hasSheet": true,
-      "onRoutesFile": true,
-      "sheet": {
-        "pageNumber": 9,
-        "pageNumbers": [
-          9
-        ],
-        "staging": "STG.B1.1",
-        "waveTime": "10:20 AM",
-        "pad": "1",
-        "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
-        "dsp": "XXXX",
-        "station": "XXX1",
-        "date": "2026-09-25",
-        "dateLabel": "FRI, SEP 25, 2026",
-        "cycle": "CYCLE_1",
-        "bagCount": 4,
-        "overflowCount": 7,
-        "totalPackages": 74,
-        "commercialPackages": 4,
-        "checkOk": true,
-        "checkProblems": [],
-        "notes": []
-      },
-      "listed": [
-        {
-          "transporterId": "A63AK2RYZDOMF0",
-          "routesName": "Greta Eastwood",
-          "found": true,
-          "rosterName": "Greta Bennett Eastwood",
-          "status": "ACTIVE",
-          "email": "driver038@example.com",
-          "otherRoutes": [],
-          "nameMismatch": false,
-          "problem": null,
-          "valid": true
-        }
-      ],
-      "kind": "single",
-      "state": "ready",
-      "source": "auto",
-      "recipients": [
-        {
-          "transporterId": "A63AK2RYZDOMF0",
-          "name": "Greta Bennett Eastwood",
-          "email": "driver038@example.com",
-          "status": "ACTIVE"
-        }
-      ],
-      "suggestion": null,
-      "suggestionReason": null,
-      "headline": "Exact Transporter ID match",
-      "issues": []
     },
     {
       "routeCode": "CX178",
@@ -343,7 +341,7 @@
           "found": true,
           "rosterName": "Nadine Olive Abernathy",
           "status": "ACTIVE",
-          "email": "driver076@example.com",
+          "email": "",
           "otherRoutes": [],
           "nameMismatch": false,
           "problem": null,
@@ -357,14 +355,19 @@
         {
           "transporterId": "A486QRCQCVMTG1",
           "name": "Nadine Olive Abernathy",
-          "email": "driver076@example.com",
+          "email": "",
           "status": "ACTIVE"
         }
       ],
       "suggestion": null,
       "suggestionReason": null,
       "headline": "Exact Transporter ID match",
-      "issues": []
+      "issues": [
+        {
+          "level": "warn",
+          "text": "No email on file for Nadine Olive Abernathy — copy the sheet and send it another way"
+        }
+      ]
     },
     {
       "routeCode": "CX184",
@@ -825,7 +828,7 @@
         ],
         "staging": "STG.B2.1",
         "waveTime": "10:25 AM",
-        "pad": "2",
+        "pad": null,
         "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
         "dsp": "XXXX",
         "station": "XXX1",
@@ -843,13 +846,13 @@
       "listed": [
         {
           "transporterId": "A5QUM4XU1H9HQS",
-          "routesName": "Mabel Kensington",
+          "routesName": "Andre Abigail Birchfield",
           "found": true,
           "rosterName": "Mabel Vera Kensington",
           "status": "ACTIVE",
           "email": "driver012@example.com",
           "otherRoutes": [],
-          "nameMismatch": false,
+          "nameMismatch": true,
           "problem": null,
           "valid": true
         }
@@ -868,7 +871,12 @@
       "suggestion": null,
       "suggestionReason": null,
       "headline": "Exact Transporter ID match",
-      "issues": []
+      "issues": [
+        {
+          "level": "warn",
+          "text": "Name check: routes file says \"Andre Abigail Birchfield\" but A5QUM4XU1H9HQS belongs to \"Mabel Vera Kensington\" in the associate data"
+        }
+      ]
     },
     {
       "routeCode": "CX186",
@@ -881,7 +889,7 @@
         ],
         "staging": "STG.B5.1",
         "waveTime": "10:25 AM",
-        "pad": "2",
+        "pad": null,
         "serviceType": "Standard Parcel Electric - Rivian SMALL",
         "dsp": "XXXX",
         "station": "XXX1",
@@ -937,7 +945,7 @@
         ],
         "staging": "STG.B6.1",
         "waveTime": "10:25 AM",
-        "pad": "2",
+        "pad": null,
         "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
         "dsp": "XXXX",
         "station": "XXX1",
@@ -993,7 +1001,7 @@
         ],
         "staging": "STG.C1.1",
         "waveTime": "10:25 AM",
-        "pad": "2",
+        "pad": null,
         "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
         "dsp": "XXXX",
         "station": "XXX1",
@@ -1049,7 +1057,7 @@
         ],
         "staging": "STG.C4.1",
         "waveTime": "10:25 AM",
-        "pad": "2",
+        "pad": null,
         "serviceType": "Standard Parcel Electric - Rivian SMALL",
         "dsp": "XXXX",
         "station": "XXX1",
@@ -1105,7 +1113,7 @@
         ],
         "staging": "STG.C5.1",
         "waveTime": "10:25 AM",
-        "pad": "2",
+        "pad": null,
         "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
         "dsp": "XXXX",
         "station": "XXX1",
@@ -1161,7 +1169,7 @@
         ],
         "staging": "STG.C6.1",
         "waveTime": "10:25 AM",
-        "pad": "2",
+        "pad": null,
         "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
         "dsp": "XXXX",
         "station": "XXX1",
@@ -1217,7 +1225,7 @@
         ],
         "staging": "STG.D1.1",
         "waveTime": "10:25 AM",
-        "pad": "2",
+        "pad": null,
         "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
         "dsp": "XXXX",
         "station": "XXX1",
@@ -1273,7 +1281,7 @@
         ],
         "staging": "STG.D4.1",
         "waveTime": "10:25 AM",
-        "pad": "2",
+        "pad": null,
         "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
         "dsp": "XXXX",
         "station": "XXX1",
@@ -1329,7 +1337,7 @@
         ],
         "staging": "STG.E2.1",
         "waveTime": "10:25 AM",
-        "pad": "2",
+        "pad": null,
         "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
         "dsp": "XXXX",
         "station": "XXX1",
@@ -1372,7 +1380,7 @@
         ],
         "staging": "STG.A1.1",
         "waveTime": "10:25 AM",
-        "pad": "2",
+        "pad": null,
         "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
         "dsp": "XXXX",
         "station": "XXX1",
@@ -1438,6 +1446,18 @@
         ]
       },
       {
+        "transporterId": "",
+        "name": "Greta Eastwood",
+        "inRoster": false,
+        "status": null,
+        "routes": [
+          {
+            "routeCode": "CX174",
+            "reason": "Greta Eastwood has no Transporter ID on the routes file"
+          }
+        ]
+      },
+      {
         "transporterId": "A0DZDWECHDJ5TO",
         "name": "Paloma Marcus Selwyn",
         "inRoster": true,
@@ -1490,12 +1510,12 @@
   },
   "counts": {
     "total": 26,
-    "ready": 21,
+    "ready": 20,
     "needs-decision": 0,
-    "exception": 3,
+    "exception": 4,
     "skipped": 1,
     "no-sheet": 1,
-    "missingEmail": 0
+    "missingEmail": 1
   },
   "waves": [
     {
@@ -1506,7 +1526,7 @@
     {
       "waveTime": "10:25 AM",
       "routes": 14,
-      "pad": "2"
+      "pad": null
     }
   ]
 }

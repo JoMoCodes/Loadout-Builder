@@ -5,10 +5,11 @@
 // matcher, the email and export renderers, and the run rules. Reading a PDF into items needs
 // Node and pdfjs, so it lives in its own entry, the same way @loadout/performance does it:
 //
-//   import { readPdfItems } from '@loadout/route-sheets/pdf-items';
+//   import { readPdfItems, parseRouteSheetPdf } from '@loadout/route-sheets/pdf-items';
 
 export const ROUTE_SHEETS_NAME = '@loadout/route-sheets';
 
+export type * from './types';
 export * from './parser';
 export * from './matcher';
 export * from './email';
