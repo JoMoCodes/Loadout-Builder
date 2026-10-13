@@ -18,6 +18,7 @@ import type {
 } from '@loadout/core';
 
 import type { PerfSnapshot } from './performance';
+import type { RouteSheetsCounts } from './routeSheets';
 
 type PrintSpec = printing.PrintSpec;
 
@@ -179,4 +180,6 @@ export interface AppSnapshot {
   counts: SnapshotCounts;
   /** The weekly performance data in brief (the pages ask for the rest with a query). */
   performance: PerfSnapshot;
+  /** The open route sheet run's numbers (the Route Sheets page asks for the rest). */
+  routeSheets: RouteSheetsCounts;
 }

@@ -39,7 +39,8 @@ import type { ChannelEnv, ChannelEvent, IpcLike } from './channels';
 import { DataSource } from './dataSource';
 import { registerAllChannels } from './handlers';
 import type { HandlerContext, Services } from './handlers';
-import type { MailMessage, MailTransport, SmtpConfig } from './performance/mailer';
+import { EmailAccount } from './mail/emailAccount';
+import type { MailMessage, MailTransport, SmtpConfig } from './mail/mailer';
 import { OldWpaData } from './performance/oldWpaData';
 import { buildReportHtml, sampleReportHtml } from './performance/report';
 import { PerfService } from './performance/service';
@@ -154,18 +155,11 @@ function makeRig(options: { settingsJson?: unknown; batch?: boolean } = {}): Rig
   const batches: number[] = [];
   const oldWpaFile = { path: path.join(base, 'no-such-app.db') };
 
-  const service = new PerfService({
-    host: () => host.perf,
-    performance: () => settings.performance,
-    demo: () => settings.demoMode,
+  // The app's one email account, shared with the route sheets (main/mail/emailAccount.ts).
+  const account = new EmailAccount({
+    settings: () => settings.email,
     mainOnly: () => file.getMainOnly(),
     updateMainOnly: (change) => void file.updateMainOnly(change),
-    dialogs: {
-      chooseFolder: (title, startIn) => ask(title, startIn),
-      chooseFile: (title, _filters, startIn) => ask(title, startIn),
-      // The save window starts with a file name, kept here as "start".
-      chooseSaveFile: (title, defaultName) => ask(title, defaultName),
-    },
     sealer: {
       isEncryptionAvailable: () => sealer.available,
       encryptString: (plain) => Buffer.from(`sealed:${[...plain].reverse().join('')}`),
@@ -199,6 +193,22 @@ function makeRig(options: { settingsJson?: unknown; batch?: boolean } = {}): Rig
       transports.push(transport);
       return transport;
     },
+    log: (line) => logs.push(line),
+  });
+
+  const service = new PerfService({
+    host: () => host.perf,
+    performance: () => settings.performance,
+    demo: () => settings.demoMode,
+    mainOnly: () => file.getMainOnly(),
+    updateMainOnly: (change) => void file.updateMainOnly(change),
+    dialogs: {
+      chooseFolder: (title, startIn) => ask(title, startIn),
+      chooseFile: (title, _filters, startIn) => ask(title, startIn),
+      // The save window starts with a file name, kept here as "start".
+      chooseSaveFile: (title, defaultName) => ask(title, defaultName),
+    },
+    account,
     report: {
       buildReportHtml,
       sampleReportHtml,
@@ -271,6 +281,7 @@ function makeRig(options: { settingsJson?: unknown; batch?: boolean } = {}): Rig
     setSettings,
     performance: service,
     oldWpaData,
+    emailAccount: account,
   } as unknown as Services;
 
   const handlers = new Map<string, (event: ChannelEvent, input: unknown) => unknown>();
@@ -876,7 +887,7 @@ describe('with every fixture brought in', () => {
     expect(first.text).toContain(`Hi ${withEmail[0]!.name},`);
     expect(first.attachments?.[0]?.filename).toMatch(/\.pdf$/);
     // The temporary PDFs are gone afterwards.
-    expect(existsSync(first.attachments![0]!.path)).toBe(false);
+    expect(existsSync(first.attachments![0]!.path!)).toBe(false);
     expect((await snapshot(rig)).performance.reportsEmailed).toBe(true);
     // Nobody's address or name went to the log.
     expect(rig.logs.join('\n')).not.toContain('@example.com');

@@ -30,6 +30,15 @@ export class DataSource {
     return this.store;
   }
 
+  /**
+   * The folder the open database is in (the data folder, or the demo copy's throwaway folder),
+   * for files kept beside it. Null when nothing is open.
+   */
+  folder(): string | null {
+    if (this.store === null) return null;
+    return this.demoFolder ?? this.paths.dataFolder;
+  }
+
   getInfo(): DataSourceInfo {
     // The counts are read fresh, so they follow what was saved or brought over since it opened.
     if (this.store && this.info.ok)

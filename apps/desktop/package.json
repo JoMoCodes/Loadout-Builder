@@ -70,6 +70,14 @@
       {
         "from": "../../packages/fixtures/performance",
         "to": "fixtures/performance"
+      },
+      {
+        "from": "../../packages/fixtures/route-sheets",
+        "to": "fixtures/route-sheets"
+      },
+      {
+        "from": "../../packages/fixtures/routes",
+        "to": "fixtures/routes"
       }
     ]
   },
@@ -86,6 +94,7 @@
     "@electron/rebuild": "4.2.1",
     "@loadout/core": "*",
     "@loadout/performance": "*",
+    "@loadout/route-sheets": "*",
     "@loadout/storage": "*",
     "@playwright/test": "1.56.1",
     "@radix-ui/react-context-menu": "2.3.8",

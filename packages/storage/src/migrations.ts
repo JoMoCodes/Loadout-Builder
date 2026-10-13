@@ -446,9 +446,66 @@ CREATE TABLE perf_imported_files (
 );
 `;
 
+/**
+ * Step 3: the route sheet runs, from the old Route Sheet Distributor (its runs/<id>/run.json
+ * files). One row per day's run, keyed by the old run id (station, date and cycle); the sheets as
+ * read from the PDF, the choices made and the sent marks hang off it and go with it. The PDF
+ * itself is kept as a file beside the database (route-sheets/<run id>.pdf), not in it.
+ */
+const SCHEMA_V3_ROUTE_SHEETS = `
+CREATE TABLE rs_runs (
+    id               TEXT PRIMARY KEY,
+    station          TEXT,
+    date             TEXT,
+    date_label       TEXT,
+    cycle            TEXT,
+    pdf_file_name    TEXT,
+    imported_at      TEXT,
+    page_count       INTEGER NOT NULL DEFAULT 0,
+    warnings         TEXT NOT NULL DEFAULT '[]',
+    routes_file_name TEXT,
+    wave_pads        TEXT NOT NULL DEFAULT '{}',
+    created_at       TEXT NOT NULL,
+    updated_at       TEXT NOT NULL
+);
+
+CREATE TABLE rs_sheets (
+    run_id       TEXT NOT NULL,
+    route_code   TEXT NOT NULL,
+    position     INTEGER NOT NULL,
+    sheet        TEXT NOT NULL,
+    page_numbers TEXT NOT NULL DEFAULT '[]',
+    PRIMARY KEY (run_id, route_code),
+    FOREIGN KEY (run_id) REFERENCES rs_runs(id) ON DELETE CASCADE
+);
+
+CREATE TABLE rs_decisions (
+    run_id         TEXT NOT NULL,
+    route_code     TEXT NOT NULL,
+    recipients     TEXT,
+    skipped        INTEGER NOT NULL DEFAULT 0,
+    manual         INTEGER NOT NULL DEFAULT 0,
+    via_suggestion INTEGER NOT NULL DEFAULT 0,
+    at             TEXT,
+    PRIMARY KEY (run_id, route_code),
+    FOREIGN KEY (run_id) REFERENCES rs_runs(id) ON DELETE CASCADE
+);
+
+CREATE TABLE rs_sent (
+    run_id     TEXT NOT NULL,
+    route_code TEXT NOT NULL,
+    how        TEXT NOT NULL,
+    at         TEXT NOT NULL,
+    sent_to    TEXT,
+    PRIMARY KEY (run_id, route_code),
+    FOREIGN KEY (run_id) REFERENCES rs_runs(id) ON DELETE CASCADE
+);
+`;
+
 export const MIGRATIONS: readonly Migration[] = [
   { version: 1, name: 'v1 schema from the old version', sql: SCHEMA_V1 },
   { version: 2, name: 'weekly performance tables', sql: SCHEMA_V2_PERFORMANCE },
+  { version: 3, name: 'route sheet runs', sql: SCHEMA_V3_ROUTE_SHEETS },
 ];
 
 /** Every table a migration creates for saved data (not the bookkeeping table). */
@@ -502,6 +559,14 @@ export const PERF_TABLES = [
 ] as const;
 
 export type PerfTable = (typeof PERF_TABLES)[number];
+
+/**
+ * The route sheet tables (step 3). Kept apart from DATA_TABLES for the same reason as the
+ * performance tables.
+ */
+export const RS_TABLES = ['rs_runs', 'rs_sheets', 'rs_decisions', 'rs_sent'] as const;
+
+export type RsTable = (typeof RS_TABLES)[number];
 
 /**
  * Bring a database up to date. Each step not yet recorded in `schema_version` is applied, in

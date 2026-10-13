@@ -20,6 +20,7 @@ import { migrationHandlers } from './migration';
 import { performanceHandlers } from './performance';
 import { printHandlers } from './print';
 import { routeDataHandlers } from './routeData';
+import { routeSheetsHandlers } from './routeSheets';
 import { settingsHandlers } from './settings';
 import { stateHandlers } from './state';
 import type { HandlerContext } from './types';
@@ -53,6 +54,7 @@ const HANDLERS: AllHandlers = {
   ...vehicleHandlers,
   ...associateHandlers,
   ...performanceHandlers,
+  ...routeSheetsHandlers,
 };
 
 /** Registers a handler for every query, command and signal in the registry. */

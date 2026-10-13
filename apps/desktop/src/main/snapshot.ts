@@ -19,6 +19,7 @@ import {
 } from '@loadout/core';
 import { EMPTY_PERF_SNAPSHOT } from '../shared/performance';
 import type { PerfSnapshot } from '../shared/performance';
+import { EMPTY_ROUTE_SHEETS, type RouteSheetsCounts } from '../shared/routeSheets';
 import type {
   AppSnapshot,
   AssociateView,
@@ -42,6 +43,8 @@ export interface SnapshotOptions {
   mode: 'real' | 'demo';
   /** The weekly performance data in brief. Empty when the main process has none to give. */
   performance?: PerfSnapshot;
+  /** The open route sheet run's numbers. Empty when the main process has none to give. */
+  routeSheets?: RouteSheetsCounts;
 }
 
 export function buildSnapshot(state: AppState, options: SnapshotOptions): AppSnapshot {
@@ -140,6 +143,7 @@ export function buildSnapshot(state: AppState, options: SnapshotOptions): AppSna
     print: { spec: state.printSpec(), presets: state.printPresets() },
     matchSummary,
     performance: options.performance ?? EMPTY_PERF_SNAPSHOT,
+    routeSheets: options.routeSheets ?? { ...EMPTY_ROUTE_SHEETS },
     counts: {
       rosterRows: rosterRows.length,
       matched: state.matchedCount(),

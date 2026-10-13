@@ -42,5 +42,9 @@ export type {
   ThresholdsApplyCounts,
   WeekApplyCounts,
 } from './performance';
+export { RS_TABLES } from './migrations';
+export type { RsTable } from './migrations';
+export { RouteSheetsStore } from './routeSheets';
+export type { RouteSheetsStoreOptions, SentMark, StoredRun, StoredRunListing } from './routeSheets';
 export { importWpaDatabase, ImportWpaError } from './importWpa';
 export type { ImportWpaResult, WpaTableCount } from './importWpa';

@@ -18,16 +18,20 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
 
 ## 1. Bringing files in
 
-- [ ] **Changed (item 1).** The Associate Data `.csv` is not imported here. Matching reads the
-      Associates page's list (the same export). Test: phase 2 host test.
+- [x] **Changed (item 1).** The Associate Data `.csv` is not imported here. Matching reads the
+      Associates page's list (the same export). Test: phase 2 host test ('a fixture day’s Routes
+      export, the synthetic PDF and the fixture driver list give the parity harness’s
+      distribution', `apps/desktop/src/main/routeSheets.test.ts`; 'the driver list read by the app gives the old reader’s list',
+      `packages/route-sheets/src/join/join.test.ts`).
 - [ ] The "driver list is over a month old" reminder (amber, one calendar month after the import),
       on the Associates page and the Route Sheets page's driver-list card. Rule: `addMonth`.
       Test: 'Associate Data: due for a new import one calendar month after it was imported'
       (`packages/route-sheets/src/runs/rules.test.ts`, the rule); the pages in phase 3.
-- [ ] **Changed (item 2).** The Routes export is not imported here. Matching reads the Route Data
+- [x] **Changed (item 2).** The Routes export is not imported here. Matching reads the Route Data
       page's loaded Routes export, with every pipe-joined Transporter ID and name on a shared
       route; a title row above the header is skipped by the Route Data reader. Test: phase 2 host
-      test proves the join gives the parity harness's distribution.
+      test proves the join gives the parity harness's distribution (the same test, `apps/desktop/src/main/routeSheets.test.ts`; 'the
+      Routes export read by the app gives the old reader’s routes', `join.test.ts`).
 - [ ] **Changed (item 2).** When the loaded route data is the Itineraries or Weekly Schedule
       export, it is used the same way when it carries Transporter IDs; the page says which file
       it is using and asks for the Routes export when none is loaded. Test: phase 2 and 3.
@@ -40,11 +44,12 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
       are still read'; parity for both `<day>` and `<day>-split-runs`.
 - [ ] Drag the PDF onto the window. **Changed (items 1 and 2):** only the PDF is dropped here; the
       Routes export is dropped on the Route Data page. Test: phase 3 page test.
-- [ ] **Changed (items 1 and 2).** "PDFs are read first so a Routes file dropped with them lands
+- [x] **Changed (items 1 and 2).** "PDFs are read first so a Routes file dropped with them lands
       in the same run" and "a Routes file that shares no route codes with the open PDF starts a
       new run" no longer apply: the route data is the Route Data page's. A PDF whose route codes
       share nothing with the loaded route data is still shown, with every route "in the PDF but
-      not on the Routes file". Test: phase 2 host test.
+      not on the Routes file". Test: phase 2 host test ('says which route data it reads, and asks
+      for the Routes export when none is loaded', `apps/desktop/src/main/routeSheets.test.ts`).
 
 ## 2. The number check
 
@@ -110,28 +115,34 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
       sent; a tick after any of them. Rules: 'EML draft opens as unsent with recipients, HTML body
       and PDF attachment', 'Export: the PDF a driver gets carries both pages of a long route';
       parity `eml/*.eml`. Buttons: phase 2 channels and phase 3 page.
-- [ ] Email all: asks first, one email per driver over one login, each success saved at once, a
+- [x] Email all: asks first, one email per driver over one login, each success saved at once, a
       plain-words tally; routes with no address are left out and said so. Rules: 'Runs: Email all
       leaves out routes with no address and routes already sent' (`sendProblem`, `unsentRoutes`);
       parity (`inputs.json` gives one driver no email; the missing-email count and warning are in
-      `distribution.json`); the sending in phase 2.
+      `distribution.json`); the sending in phase 2 ('Email all: sends one email per ready route
+      with its PDF page, marks each sent, skips what it cannot send', 'Email all: a rejected login
+      stops the batch before anything is sent', `apps/desktop/src/main/routeSheets.test.ts`); asking first is the page's (phase 3).
 - [ ] Export all: a folder with an email draft and a PDF per ready route, every PDF, and a
       summary as HTML and CSV. Rules: 'Service: import in any order, persist decisions, export
       drafts' (file names, `planExportAll`), 'Service: pads are saved with the run, trimmed,
       cleared with a blank, and put on the email and summary' (the summary columns); parity
       `export-files.json` (the folder and every file name the old Export all wrote),
-      `summary.html`, `summary.csv`. Writing the folder: phase 2.
+      `summary.html`, `summary.csv`. Writing the folder: phase 2 ('Export all writes the same
+      folder of drafts, PDFs and summary as the old app', `apps/desktop/src/main/routeSheets.test.ts`).
 
 ## 5. History
 
-- [ ] **Changed (item 7).** Every day's work is saved with its choices, sent marks and pads, keyed
+- [x] **Changed (item 7).** Every day's work is saved with its choices, sent marks and pads, keyed
       by station, date and cycle, in the app's database; the PDF beside it. Rules: `runIdFor`
       ('Service: import in any order...' twin), `runLabel` ('Runs: the label is the station, the
-      short date and the cycle'); parity `run.json`. Storage: phase 2.
+      short date and the cycle'); parity `run.json`. Storage: phase 2 ('reads a whole run back as
+      it was saved', `packages/storage/src/routeSheets.test.ts`; 'previews, chooses, accepts the
+      suggestions, marks sent and keeps typed pads', `apps/desktop/src/main/routeSheets.test.ts`).
 - [ ] Reopen an older day; New run; Delete a run (asks first). Phase 2 and 3.
-- [ ] **Changed (item 8).** No "clear earlier days?" question: runs older than 30 days are removed
+- [x] **Changed (item 8).** No "clear earlier days?" question: runs older than 30 days are removed
       quietly when the app opens. Rule: 'Runs: runs older than 30 days are the ones removed when
-      the app opens' (`staleRunIds`). Phase 2 host.
+      the app opens' (`staleRunIds`). Phase 2 host ('reopens the last run only if it is for
+      today, and quietly removes runs older than 30 days', `apps/desktop/src/main/routeSheets.test.ts`).
 - [ ] A re-import drops the decisions that no longer fit (a chosen driver who left the route);
       hand-made and skipped decisions stay. Rule: 'Runs: decisions that no longer fit the routes
       file are dropped' (`pruneDecisions`).
@@ -140,11 +151,15 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
 
 ## 6. Email settings
 
-- [ ] **Changed (item 4).** Gmail address, 16-letter App Password (spaces removed, sealed with the
+- [x] **Changed (item 4).** Gmail address, 16-letter App Password (spaces removed, sealed with the
       computer's safe storage, never shown again), optional BCC, Send test, in Settings > Email,
-      shared with Weekly performance. Phase 2.
-- [ ] Plain-words explanations for every SMTP failure (wrong password, 2-Step off, no connection,
-      daily limit). Phase 2 (the app's mailer).
+      shared with Weekly performance. Phase 2 ('Email settings: App Password is stored encrypted,
+      Gmail spaces removed, unreadable blobs count as not set', 'is the one setup: an older
+      settings file’s weekly performance email comes up to the top',
+      `apps/desktop/src/main/mail/emailAccount.test.ts`); the section's heading is phase 3.
+- [x] Plain-words explanations for every SMTP failure (wrong password, 2-Step off, no connection,
+      daily limit). Phase 2 (the app's mailer: 'Mailer: explains what is missing and turns SMTP
+      errors into plain words', `apps/desktop/src/main/mail/mailer.test.ts`).
 
 ## 7. Shell
 
@@ -175,12 +190,12 @@ Every test in the old `test/core.test.js` (35 tests at release 1.5.2) and what b
 | Distribute: manual assignment resolves an exception | twin |
 | Email HTML escapes values and marks blank cells | twin |
 | EML draft opens as unsent with recipients, HTML body and PDF attachment | twin, `export/*.test.ts` |
-| Service: import in any order, persist decisions, export drafts | the pure half is a twin (run id, export file names); the rest is the phase 2 host test |
-| Mailer: Gmail defaults use STARTTLS on 587; 465 uses TLS from the start | phase 2 (the app's mailer) |
-| Mailer: explains what is missing and turns SMTP errors into plain words | phase 2 |
-| Email settings: App Password is stored encrypted, Gmail spaces removed, unreadable blobs count as not set | phase 2 (item 4: the app's Email settings) |
-| Email all: sends one email per ready route with its PDF page, marks each sent, skips what it cannot send | phase 2 |
-| Email all: a rejected login stops the batch before anything is sent | phase 2 |
+| Service: import in any order, persist decisions, export drafts | the pure half is a twin (run id, export file names); the rest is the phase 2 host test ('previews, chooses, accepts the suggestions, marks sent and keeps typed pads', 'Export all writes the same folder of drafts, PDFs and summary as the old app', `apps/desktop/src/main/routeSheets.test.ts`) |
+| Mailer: Gmail defaults use STARTTLS on 587; 465 uses TLS from the start | twin, `apps/desktop/src/main/mail/mailer.test.ts` (the app's mailer) |
+| Mailer: explains what is missing and turns SMTP errors into plain words | twin, `apps/desktop/src/main/mail/mailer.test.ts` (this app's words) |
+| Email settings: App Password is stored encrypted, Gmail spaces removed, unreadable blobs count as not set | twin, `apps/desktop/src/main/mail/emailAccount.test.ts` (item 4: the app's Email settings) |
+| Email all: sends one email per ready route with its PDF page, marks each sent, skips what it cannot send | twin, `apps/desktop/src/main/routeSheets.test.ts` |
+| Email all: a rejected login stops the batch before anything is sent | twin, `apps/desktop/src/main/routeSheets.test.ts` |
 | What's new: notes cover the running version and pick the versions in between | not ported (item 5): the app's own What's new and its release note test |
 | What's new: shown once after an update, never on a fresh install | not ported (item 5) |
 | Associate Data: due for a new import one calendar month after it was imported | the rule is a twin, `runs/rules.test.ts`; the reminder on the pages is phase 3 |
@@ -194,4 +209,4 @@ Every test in the old `test/core.test.js` (35 tests at release 1.5.2) and what b
 | Email: the greeting says the full day name too; the subject keeps it short | twin |
 | Email: the date stands out in a maroon box with white writing and a big, bold label | twin |
 | Email: the words in every box at the top are centered, side to side and top to bottom | twin |
-| Service: pads are saved with the run, trimmed, cleared with a blank, and put on the email and summary | the summary half is a twin; saving pads with the run is phase 2 |
+| Service: pads are saved with the run, trimmed, cleared with a blank, and put on the email and summary | the summary half is a twin; saving pads with the run: 'previews, chooses, accepts the suggestions, marks sent and keeps typed pads', `apps/desktop/src/main/routeSheets.test.ts` |

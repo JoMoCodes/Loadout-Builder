@@ -106,6 +106,17 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
           reportsMade: false,
           reportsEmailed: false,
         },
+        routeSheets: {
+          runId: null,
+          sheets: 0,
+          ready: 0,
+          needsDecision: 0,
+          exceptions: 0,
+          noSheet: 0,
+          skipped: 0,
+          unsent: 0,
+          runs: 0,
+        },
         counts: {
           rosterRows: 0,
           matched: 0,

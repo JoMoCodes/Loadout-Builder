@@ -2,6 +2,7 @@
 // The readers' refusal texts were written for the person using the app ("The selected file is not
 // a DWP sheet we can read..."), so they are passed on as they are.
 
+import { readFile } from 'node:fs/promises';
 import { basename } from 'node:path';
 import { newestWeek, weekLabel, type AppState, type IsoDate, type TenureBook } from '@loadout/core';
 import {
@@ -20,6 +21,7 @@ import {
 } from '@loadout/core/importers';
 import type { FileKind, ImportSummary, TenureImportResult } from '../shared/channels/files';
 import { ChannelRefusal } from './channels';
+import type { RouteSheetsHost } from './routeSheets/host';
 
 const READER_ERRORS = [
   AssociateImportError,
@@ -48,6 +50,9 @@ async function read(
       return state.importVehicles(await importVehicleData(path)).rows.length;
     case 'dwp':
       return state.importDwp(await importDwpSheet(path)).rows.length;
+    case 'route-sheets':
+      // Read by the route sheets of the open data (importRouteSheetsPdf), never here.
+      throw new ChannelRefusal('not-allowed');
     case 'routes':
     case 'itineraries':
     case 'schedule': {
@@ -105,4 +110,26 @@ export async function importFile(
     }
     throw error;
   }
+}
+
+/**
+ * A route sheet PDF, read into the run for its day. Refusals come back in the old app's words
+ * ("No route sheets were found in ...").
+ */
+export async function importRouteSheetsPdf(
+  host: RouteSheetsHost,
+  path: string,
+): Promise<ImportSummary> {
+  let bytes: Uint8Array;
+  try {
+    bytes = new Uint8Array(await readFile(path));
+  } catch {
+    throw new ChannelRefusal(
+      'refused',
+      'That file could not be found. It may have been moved or deleted.',
+    );
+  }
+  const result = await host.importPdf(bytes, basename(path));
+  const sheets = host.counts().sheets;
+  return { kind: 'route-sheets', rows: sheets, routeSheets: result };
 }

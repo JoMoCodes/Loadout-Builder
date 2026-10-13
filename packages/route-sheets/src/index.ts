@@ -15,3 +15,4 @@ export * from './matcher';
 export * from './email';
 export * from './export';
 export * from './runs';
+export * from './join';

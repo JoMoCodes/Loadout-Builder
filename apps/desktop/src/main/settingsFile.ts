@@ -17,12 +17,15 @@ export interface MainOnlySettings {
   emailPasswordSealed: string | null;
   /** Reports have been made / emailed from the real data at least once (checklist steps). */
   performanceFlags: { reportsMade: boolean; reportsEmailed: boolean };
+  /** The route sheet run open last (reopened when the app opens, if it is for today). */
+  lastRunId?: string | null;
 }
 
 export const MAIN_ONLY_KEYS = [
   'performanceFolders',
   'emailPasswordSealed',
   'performanceFlags',
+  'lastRunId',
 ] as const satisfies readonly (keyof MainOnlySettings)[];
 
 export function emptyMainOnly(): MainOnlySettings {
@@ -34,6 +37,8 @@ export function emptyMainOnly(): MainOnlySettings {
 }
 
 const BASE64 = /^[A-Za-z0-9+/=]{1,20000}$/;
+// The shape of a route sheet run id (the old app's rule for a run folder's name).
+const RUN_ID = /^[A-Za-z0-9_.-]{1,80}$/;
 
 function record(value: unknown): Record<string, unknown> | null {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -62,6 +67,9 @@ export function readMainOnly(raw: unknown): MainOnlySettings {
   if (flags) {
     out.performanceFlags.reportsMade = flags.reportsMade === true;
     out.performanceFlags.reportsEmailed = flags.reportsEmailed === true;
+  }
+  if (typeof input.lastRunId === 'string' && RUN_ID.test(input.lastRunId)) {
+    out.lastRunId = input.lastRunId;
   }
   return out;
 }

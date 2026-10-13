@@ -15,6 +15,7 @@ import { migrationChannels } from './migration';
 import { performanceChannels } from './performance';
 import { printChannels } from './print';
 import { routeDataChannels } from './routeData';
+import { routeSheetsChannels } from './routeSheets';
 import { settingsChannels } from './settings';
 import { stateChannels } from './state';
 import { updatesChannels } from './updates';
@@ -35,6 +36,7 @@ const ALL = [
   ...vehicleChannels,
   ...associateChannels,
   ...performanceChannels,
+  ...routeSheetsChannels,
 ] as const;
 
 export const CHANNELS = indexChannels(ALL);

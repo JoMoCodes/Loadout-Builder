@@ -1,5 +1,7 @@
-// Emailing the reports, ported from the old app's EmailSender.cs (MailKit) to nodemailer: SMTP
-// with STARTTLS on 587 (Gmail) or TLS from the start on 465, logged in with the account's app
+// The app's one mailer: the weekly reports and the route sheets both go out through it. Ported
+// from the old Weekly Performance app's EmailSender.cs (MailKit) to nodemailer, and extended for
+// Route Sheet Distributor's mailer.js (an HTML part, and attachments given as bytes): SMTP with
+// STARTTLS on 587 (Gmail) or TLS from the start on 465, logged in with the account's app
 // password. One connection is opened for a whole batch and closed at the end. The transport is
 // handed in, so the tests use a stand-in and nothing goes over the network.
 
@@ -13,13 +15,27 @@ export interface SmtpConfig {
   password: string;
 }
 
+export interface MailAddress {
+  name: string;
+  address: string;
+}
+
+/** A file to attach: one on the disk (the reports), or bytes already in hand (a route sheet). */
+export type MailAttachment =
+  | { filename: string; path: string; content?: undefined; contentType?: undefined }
+  | { filename: string; content: Uint8Array; contentType: string; path?: undefined };
+
 export interface MailMessage {
-  from: { name: string; address: string };
-  to: { name: string; address: string };
+  from: MailAddress;
+  to: MailAddress;
+  /** More people on the To line, after `to` (a route sheet chosen for two drivers). */
+  moreTo?: MailAddress[];
   bcc?: string;
   subject: string;
   text: string;
-  attachments?: Array<{ filename: string; path: string }>;
+  /** The same message as a web page, shown instead of `text` by mail apps that can. */
+  html?: string;
+  attachments?: MailAttachment[];
 }
 
 /** One open connection to the email server. */
@@ -52,13 +68,26 @@ export const nodemailerTransport: TransportFactory = (config) => {
       await transport.verify();
     },
     send: async (message) => {
+      const to = [message.to, ...(message.moreTo ?? [])].map((one) => ({
+        name: one.name,
+        address: one.address,
+      }));
       await transport.sendMail({
         from: { name: message.from.name, address: message.from.address },
-        to: { name: message.to.name, address: message.to.address },
+        to: to.length === 1 ? to[0] : to,
         bcc: message.bcc || undefined,
         subject: message.subject,
         text: message.text,
-        attachments: message.attachments,
+        ...(message.html !== undefined ? { html: message.html } : {}),
+        attachments: message.attachments?.map((a) =>
+          a.path !== undefined
+            ? { filename: a.filename, path: a.path }
+            : {
+                filename: a.filename,
+                content: Buffer.from(a.content),
+                contentType: a.contentType,
+              },
+        ),
       });
     },
     close: () => transport.close(),

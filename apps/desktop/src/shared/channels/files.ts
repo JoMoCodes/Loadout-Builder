@@ -1,10 +1,11 @@
 // Picking a file and bringing it in. The reading happens in the main process; the page never
 // sees a file's contents, only the counts.
 
+import type { RouteSheetsImportResult } from '../routeSheets';
 import { filled, oneOf, shape, text } from './check';
 import { as, defineCommand } from './define';
 
-/** The six kinds of file the app reads (the schedule, routes and itineraries are route data). */
+/** The kinds of file the app reads (the schedule, routes and itineraries are route data). */
 export const FILE_KINDS = [
   'loadout',
   'associates',
@@ -14,11 +15,18 @@ export const FILE_KINDS = [
   'routes',
   'itineraries',
   'schedule',
+  'route-sheets',
 ] as const;
 export type FileKind = (typeof FILE_KINDS)[number];
 
 /** The pages a file can be dropped on. */
-export const DROP_PAGES = ['load-out', 'route-data', 'vehicle-data', 'associates'] as const;
+export const DROP_PAGES = [
+  'load-out',
+  'route-data',
+  'vehicle-data',
+  'associates',
+  'route-sheets',
+] as const;
 export type DropPage = (typeof DROP_PAGES)[number];
 
 /** Which kinds of file each page takes when one is dropped on it. */
@@ -27,6 +35,7 @@ export const DROP_KINDS: Record<DropPage, readonly FileKind[]> = {
   'route-data': ['routes', 'itineraries', 'schedule', 'dwp'],
   'vehicle-data': ['vehicles'],
   associates: ['associates', 'tenure'],
+  'route-sheets': ['route-sheets'],
 };
 
 /** How each kind of file is named to the person, and the endings it may have. */
@@ -61,6 +70,11 @@ export const FILE_WORDS: Record<
     a: 'a Weekly Schedule',
     the: 'the Weekly Schedule',
     endings: ['.xlsx', '.xlsm'],
+  },
+  'route-sheets': {
+    a: 'a route sheet PDF',
+    the: 'the route sheet PDF',
+    endings: ['.pdf'],
   },
 };
 
@@ -108,10 +122,12 @@ export interface TenureImportResult {
 
 export interface ImportSummary {
   kind: FileKind;
-  /** How many lines came in (drivers, vans, route lines, counts). */
+  /** How many lines came in (drivers, vans, route lines, counts; route sheets for a PDF). */
   rows: number;
   /** For a Tenured Workforce file only: what it did to the kept counts. */
   tenure?: TenureImportResult;
+  /** For a route sheet PDF only: what was read, in the old app's words. */
+  routeSheets?: RouteSheetsImportResult;
 }
 
 export const filesChannels = [
