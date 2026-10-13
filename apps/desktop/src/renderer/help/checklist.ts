@@ -1,10 +1,10 @@
-// The first-day checklist on Home: five steps that tick themselves off as the app sees them done.
+// The first-day checklist on Home: six steps that tick themselves off as the app sees them done.
 // Pure functions only, so vitest can check them (checklist.test.ts). The words people read are
 // in FirstRunChecklist.tsx; this file only says which steps are done and what each button does.
 
 import type { AppSnapshot } from '../../shared/snapshot';
 
-export type StepId = 'drivers' | 'vans' | 'sheet' | 'route-data' | 'assign-print';
+export type StepId = 'drivers' | 'vans' | 'sheet' | 'route-data' | 'assign-print' | 'route-sheets';
 
 export const STEP_ORDER: readonly StepId[] = [
   'drivers',
@@ -12,6 +12,7 @@ export const STEP_ORDER: readonly StepId[] = [
   'sheet',
   'route-data',
   'assign-print',
+  'route-sheets',
 ];
 
 /** What the checklist needs to know, read from the snapshot (counts only, never names). */
@@ -27,6 +28,13 @@ export interface ChecklistFacts {
   driversWithVan: number;
   /** A roster was printed or saved as a file. */
   printed: boolean;
+  /** Route sheets read from the PDF in the open run. */
+  routeSheets: number;
+  /**
+   * Every route sheet is settled: none waits for a choice or has no match, and every ready one has been sent (at least one is ready). The
+   * snapshot gives the ready count and what Email all would still send, not the sent marks.
+   */
+  routeSheetsSent: boolean;
 }
 
 export function checklistFacts(snapshot: AppSnapshot, printed: boolean): ChecklistFacts {
@@ -35,6 +43,7 @@ export function checklistFacts(snapshot: AppSnapshot, printed: boolean): Checkli
     (sum, n) => sum + n,
     0,
   );
+  const sheets = snapshot.routeSheets;
   return {
     drivers: snapshot.counts.associates,
     vans: snapshot.counts.vehicles,
@@ -45,6 +54,14 @@ export function checklistFacts(snapshot: AppSnapshot, printed: boolean): Checkli
     ),
     driversWithVan: rows.filter((view) => view.row.vehicle.trim() !== '').length,
     printed,
+    routeSheets: sheets?.sheets ?? 0,
+    routeSheetsSent:
+      sheets != null &&
+      sheets.runId !== null &&
+      sheets.ready > 0 &&
+      sheets.unsent === 0 &&
+      sheets.needsDecision === 0 &&
+      sheets.exceptions === 0,
   };
 }
 
@@ -56,6 +73,7 @@ export function stepsDone(facts: ChecklistFacts): Record<StepId, boolean> {
     sheet: facts.rosterRows > 0,
     'route-data': facts.rosterRows > 0 && facts.routeDataOnRoster,
     'assign-print': facts.driversWithVan > 0 && facts.printed,
+    'route-sheets': facts.routeSheets > 0 && facts.routeSheetsSent,
   };
 }
 
@@ -83,7 +101,9 @@ export type StepAction =
   | 'import-routes'
   | 'bring-over'
   | 'assign-vans'
-  | 'open-print';
+  | 'open-print'
+  | 'import-route-sheets'
+  | 'open-route-sheets';
 
 export function stepAction(id: StepId, facts: ChecklistFacts): StepAction {
   switch (id) {
@@ -98,5 +118,9 @@ export function stepAction(id: StepId, facts: ChecklistFacts): StepAction {
       return facts.routeExportRows > 0 ? 'bring-over' : 'import-routes';
     case 'assign-print':
       return facts.driversWithVan > 0 ? 'open-print' : 'assign-vans';
+    case 'route-sheets':
+      // The PDF is brought in on the Route Sheets page first; after that the page is where
+      // the choices are made and the emails are sent.
+      return facts.routeSheets > 0 ? 'open-route-sheets' : 'import-route-sheets';
   }
 }

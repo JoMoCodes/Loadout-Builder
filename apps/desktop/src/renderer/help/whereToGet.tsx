@@ -188,6 +188,54 @@ export const WHERE_TO_GET: Record<StepId, Note> = {
       },
     ],
   },
+  'route-sheets': {
+    title: 'Where to get the route sheet PDF',
+    lead: 'The route sheet PDF has one page for each route. It is a .pdf file.',
+    steps: [
+      {
+        text: (
+          <>
+            In Slack, go to your <strong>escalations</strong> chat room and download the PDF for
+            your route sheets. It goes to your Downloads folder.
+          </>
+        ),
+        shot: {
+          name: 'slack-download-pdf',
+          caption: 'Slack: the download button on the route sheet PDF',
+        },
+      },
+      {
+        text: (
+          <>
+            In this app, open <strong>Route Sheets</strong> and click{' '}
+            <strong>Bring in the route sheet PDF</strong>. Pick the file. You can also drop the file
+            on the page.
+          </>
+        ),
+        shot: {
+          name: 'route-sheets-distribute',
+          caption: 'The Route Sheets page, with a made-up day',
+        },
+      },
+      {
+        text: (
+          <>
+            The driver list and the Routes file are the ones already in the app. Click the{' '}
+            <strong>?</strong> on those steps in the checklist on <strong>Home</strong> to see where
+            to get them.
+          </>
+        ),
+      },
+      {
+        text: (
+          <>
+            To email the route sheets, set up your Gmail once in <strong>Settings</strong>, under{' '}
+            <strong>Email</strong>.
+          </>
+        ),
+      },
+    ],
+  },
 };
 
 /** The ten weekly exports: what each is called on the Imports tab, and where it comes from. */
@@ -321,10 +369,9 @@ export const WEEKLY_WHERE_TO_GET: Record<WeeklyStepId, Note> = {
       {
         text: (
           <>
-            Set up email once: open <strong>Settings</strong>, go to{' '}
-            <strong>Weekly performance</strong>, and fill in the Gmail address to send from. Then
-            make a Gmail <strong>App password</strong> (not your usual password) and paste it in.
-            The computer keeps it locked away.
+            Set up email once: open <strong>Settings</strong>, go to <strong>Email</strong>, and
+            fill in the Gmail address to send from. Then make a Gmail <strong>App password</strong>{' '}
+            (not your usual password) and paste it in. The computer keeps it locked away.
           </>
         ),
       },

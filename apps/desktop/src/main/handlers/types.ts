@@ -12,6 +12,7 @@ import type { DataSourceInfo, OpenFolderResult, UpdateStatus } from '../../share
 import type { PageId, WindowTarget } from '../../shared/windows';
 import type { StateHost } from '../appState';
 import type { DroppedFiles } from '../fileDrop';
+import type { EmailAccount } from '../mail/emailAccount';
 import type { OldData } from '../oldData';
 import type { OldWpaData } from '../performance/oldWpaData';
 import type { PerfService } from '../performance/service';
@@ -51,6 +52,14 @@ export interface Services {
   performance: PerfService;
   /** Finding and bringing over the old Weekly Performance App's saved data. */
   oldWpaData: Pick<OldWpaData, 'find' | 'pick' | 'run'>;
+  /** The app's one email account (Settings > Email): the weekly reports and the route sheets. */
+  emailAccount: EmailAccount;
+  /** Shows the folder window. The chosen folder, or null if they closed it. */
+  chooseFolder(title: string, startIn: string | null): Promise<string | null>;
+  /** Opens the computer's mail app on a new email (a mailto: link). Whether it opened. */
+  openMailApp(mailto: string): Promise<boolean>;
+  /** The old Route Sheet Distributor's data folder is on this computer (only a yes or no). */
+  oldRouteSheetsFolderExists(): boolean;
 }
 
 export interface SaveFileOptions {

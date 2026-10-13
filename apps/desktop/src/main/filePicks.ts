@@ -9,6 +9,7 @@ export interface PickSpec {
 
 const SHEET = { name: 'Excel workbook', extensions: ['xlsx', 'xlsm'] };
 const CSV = { name: 'CSV file', extensions: ['csv'] };
+const PDF = { name: 'PDF', extensions: ['pdf'] };
 const ANY = { name: 'All files', extensions: ['*'] };
 
 export const PICKS: Record<FileKind, PickSpec> = {
@@ -20,4 +21,5 @@ export const PICKS: Record<FileKind, PickSpec> = {
   routes: { title: 'Choose the Routes export', filters: [SHEET, ANY] },
   itineraries: { title: 'Choose the Itineraries export', filters: [SHEET, ANY] },
   schedule: { title: 'Choose the Weekly Schedule', filters: [SHEET, ANY] },
+  'route-sheets': { title: 'Choose the route sheet PDF', filters: [PDF, ANY] },
 };

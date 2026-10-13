@@ -24,6 +24,10 @@
 //   - the Features log lists the note for this version
 //   - the theme (light, dark, high contrast) and the text size (A-, A+, reset) change and stick
 //   - Settings: version, "Open data folder", and Demo mode (made-up data loads, then goes away)
+//   - demo mode loads the made-up route sheet day (the fixture Routes export and PDF)
+//   - route sheets: in demo mode the synthetic route sheet PDF comes in through the real bridge,
+//     Accept all suggestions takes them, a ready route previews as its email, one page is saved
+//     as a PDF, Export all writes its folder, and the page's three tabs show the run
 //   - weekly performance: demo mode holds the made-up weekly data; on the real data every kind
 //     of fixture export comes in through the real bridge (the folder window replaced), the
 //     Performance page shows the drivers, one report is generated and previewed as a real PDF,
@@ -64,6 +68,7 @@ const EXPECTED_PAGES = [
   'home',
   'dashboard',
   'load-out',
+  'route-sheets',
   'route-data',
   'vehicle-data',
   'associates',
@@ -217,8 +222,8 @@ try {
     await until(
       async () =>
         (await page.locator('[data-testid="checklist-count"]').innerText()).trim() ===
-        '0 of 5 done',
-      'the checklist does not say 0 of 5 done',
+        '0 of 6 done',
+      'the checklist does not say 0 of 6 done',
     );
     const current = await list.locator('[data-step-current="true"]').getAttribute('data-step');
     assert(current === 'drivers', `the first step to do is ${current}`);
@@ -446,6 +451,23 @@ try {
     const dash = await ask('performance:dashboard', { range: null });
     assert(dash.ok && dash.value.hasData && dash.value.fleetAverage > 0, 'the Dashboard is empty');
     return `${perf.drivers} drivers, ${perf.weeks.length} weeks`;
+  });
+
+  await check('demo mode holds the made-up route sheet day, ready to click through', async () => {
+    // The Routes export and the route sheet PDF are read after demo mode opens, like the weekly data.
+    const counts = await until(
+      async () => {
+        const reply = await ask('state:snapshot');
+        return reply.ok && reply.value.routeSheets.sheets > 0 ? reply.value.routeSheets : null;
+      },
+      'the demo route sheet day never arrived',
+      30_000,
+    );
+    assert(counts.sheets === 29, `${counts.sheets} route sheets, not 29`);
+    assert(counts.ready > 0 && counts.needsDecision > 0, 'the made-up day has nothing to do');
+    const state = await ask('routeSheets:state');
+    assert(state.ok && state.value.routeData?.kind === 'routes', 'the Routes export is not in use');
+    return `${counts.sheets} route sheets, ${counts.ready} ready`;
   });
 
   await check('the bridge offers exactly the declared channels', async () => {
@@ -946,7 +968,8 @@ try {
     return (await windows()).join(', ');
   });
 
-  // Route Data, Vehicle Data and Associates, on the numbers the old app's harness wrote down.
+  // Route Data, Vehicle Data and Associates, on the numbers the old app's harness wrote down, then
+  // Route Sheets on the fixture day.
   await otherPagesChecks({ app, page, check, assert, until, ask, goTo, root });
 
   await check('a table layout is kept in the saved data', async () => {

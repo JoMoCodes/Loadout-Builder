@@ -1,6 +1,13 @@
 import Database from 'better-sqlite3';
 import { describe, expect, it } from 'vitest';
-import { DATA_TABLES, MIGRATIONS, PERF_TABLES, runMigrations, schemaVersion } from './migrations';
+import {
+  DATA_TABLES,
+  MIGRATIONS,
+  PERF_TABLES,
+  RS_TABLES,
+  runMigrations,
+  schemaVersion,
+} from './migrations';
 import { PERF_TABLE_SPECS } from './perfTables';
 
 function tableNames(db: Database.Database): string[] {
@@ -17,13 +24,17 @@ describe('migration runner', () => {
   it('creates every table on a blank database', () => {
     const db = new Database(':memory:');
     expect(schemaVersion(db)).toBe(0);
-    expect(runMigrations(db)).toEqual([1, 2]);
-    expect(tableNames(db)).toEqual([...DATA_TABLES, ...PERF_TABLES, 'schema_version'].sort());
+    expect(runMigrations(db)).toEqual([1, 2, 3]);
+    expect(tableNames(db)).toEqual(
+      [...DATA_TABLES, ...PERF_TABLES, ...RS_TABLES, 'schema_version'].sort(),
+    );
     // The 23 tables of the old schema, plus the old hand-typed tenure table it left behind.
     expect(DATA_TABLES).toHaveLength(24);
     // The 13 tables of the old weekly performance app.
     expect(PERF_TABLES).toHaveLength(13);
-    expect(schemaVersion(db)).toBe(2);
+    // The four route sheet tables.
+    expect(RS_TABLES).toHaveLength(4);
+    expect(schemaVersion(db)).toBe(3);
   });
 
   it('changes nothing when run again', () => {
@@ -122,8 +133,52 @@ describe('step 2: the weekly performance tables', () => {
     const db = new Database(':memory:');
     runMigrations(db, MIGRATIONS.slice(0, 1));
     db.prepare("INSERT INTO lmr_approved (transporter_id) VALUES ('A02V4L9HIELIDL')").run();
-    expect(runMigrations(db)).toEqual([2]);
+    expect(runMigrations(db, MIGRATIONS.slice(0, 2))).toEqual([2]);
     expect(schemaVersion(db)).toBe(2);
+    expect(db.prepare('SELECT COUNT(*) AS n FROM lmr_approved').get()).toEqual({ n: 1 });
+  });
+});
+
+describe('step 3: the route sheet tables', () => {
+  it('keeps the route sheet tables out of the load-out and performance lists', () => {
+    for (const table of RS_TABLES) {
+      expect(DATA_TABLES).not.toContain(table as never);
+      expect(PERF_TABLES).not.toContain(table as never);
+    }
+  });
+
+  it("removes a run's sheets, choices and sent marks with it", () => {
+    const db = new Database(':memory:');
+    runMigrations(db);
+    const now = '2026-09-01T08:00:00.000Z';
+    db.prepare('INSERT INTO rs_runs (id, created_at, updated_at) VALUES (?, ?, ?)').run(
+      'XXX1_2026-09-01_CYCLE1',
+      now,
+      now,
+    );
+    for (const table of ['rs_sheets', 'rs_decisions', 'rs_sent']) {
+      const extra =
+        table === 'rs_sheets'
+          ? ['position, sheet', "0, '{}'"]
+          : table === 'rs_sent'
+            ? ['how, at', `'manual', '${now}'`]
+            : ['skipped', '1'];
+      db.prepare(
+        `INSERT INTO ${table} (run_id, route_code, ${extra[0]}) VALUES ('XXX1_2026-09-01_CYCLE1', 'CX1', ${extra[1]})`,
+      ).run();
+    }
+    db.prepare('DELETE FROM rs_runs').run();
+    for (const table of ['rs_sheets', 'rs_decisions', 'rs_sent']) {
+      expect(db.prepare(`SELECT COUNT(*) AS n FROM ${table}`).get(), table).toEqual({ n: 0 });
+    }
+  });
+
+  it('adds the route sheet tables to a database that has steps 1 and 2, keeping its data', () => {
+    const db = new Database(':memory:');
+    runMigrations(db, MIGRATIONS.slice(0, 2));
+    db.prepare("INSERT INTO lmr_approved (transporter_id) VALUES ('A02V4L9HIELIDL')").run();
+    expect(runMigrations(db)).toEqual([3]);
+    expect(schemaVersion(db)).toBe(3);
     expect(db.prepare('SELECT COUNT(*) AS n FROM lmr_approved').get()).toEqual({ n: 1 });
   });
 });

@@ -20,7 +20,8 @@ import { registerAllChannels } from './handlers';
 import type { HandlerContext, Services } from './handlers';
 import type { SaveFileOptions } from './handlers/types';
 import { readJson, writeJson } from './jsonFile';
-import { nodemailerTransport } from './performance/mailer';
+import { EmailAccount } from './mail/emailAccount';
+import { nodemailerTransport } from './mail/mailer';
 import { OldWpaData, usualWpaDbPath } from './performance/oldWpaData';
 import * as report from './performance/report';
 import { PerfService } from './performance/service';
@@ -120,6 +121,13 @@ function fixturePerformanceFolder(): string {
   return app.isPackaged
     ? path.join(process.resourcesPath, 'fixtures', 'performance')
     : path.resolve(__dirname, '..', '..', '..', '..', 'packages', 'fixtures', 'performance');
+}
+
+/** The made-up fixtures demo mode brings the route sheet day in from (routes, associates, route-sheets). */
+function fixturesFolder(): string {
+  return app.isPackaged
+    ? path.join(process.resourcesPath, 'fixtures')
+    : path.resolve(__dirname, '..', '..', '..', '..', 'packages', 'fixtures');
 }
 
 /**
@@ -463,6 +471,22 @@ const services: Services = {
   oldData,
   performance: null as unknown as PerfService,
   oldWpaData,
+  emailAccount: null as unknown as EmailAccount,
+  // Export all's folder window, which may make a new folder (as the old app's did).
+  chooseFolder: (title, startIn) =>
+    showOpenDialog({
+      title,
+      defaultPath: startIn ?? app.getPath('documents'),
+      properties: ['openDirectory', 'createDirectory'],
+    }),
+  openMailApp,
+  oldRouteSheetsFolderExists: () => {
+    try {
+      return existsSync(path.join(app.getPath('appData'), 'Route Sheet Distributor'));
+    } catch {
+      return false;
+    }
+  },
 };
 
 /** Asks for a folder, over the window that asked. */
@@ -472,6 +496,19 @@ function chooseFolder(title: string, startIn: string | null): Promise<string | n
     defaultPath: startIn ?? app.getPath('downloads'),
     properties: ['openDirectory'],
   });
+}
+
+/** Opens the computer's mail app on a new email. Only a mailto: link is ever opened here. */
+async function openMailApp(mailto: string): Promise<boolean> {
+  if (!/^mailto:/i.test(mailto)) return false;
+  try {
+    await shell.openExternal(mailto);
+    log('opened the mail app');
+    return true;
+  } catch {
+    log('could not open the mail app');
+    return false;
+  }
 }
 
 function chooseOneFile(
@@ -499,17 +536,29 @@ function chooseSaveAs(
   });
 }
 
+function updateMainOnly(change: Parameters<SettingsFile['updateMainOnly']>[0]): void {
+  if (!settingsStore?.updateMainOnly(change)) log('could not save settings');
+}
+
+/** The app's one email account (Settings > Email): the weekly reports and the route sheets. */
+const emailAccount = new EmailAccount({
+  settings: () => settings.email,
+  mainOnly: () => settingsStore!.getMainOnly(),
+  updateMainOnly,
+  sealer: safeStorage,
+  transport: nodemailerTransport,
+  log,
+});
+services.emailAccount = emailAccount;
+
 const perfService = new PerfService({
   host: () => stateHost!.perf,
   performance: () => settings.performance,
   demo: () => settings.demoMode,
   mainOnly: () => settingsStore!.getMainOnly(),
-  updateMainOnly: (change) => {
-    if (!settingsStore?.updateMainOnly(change)) log('could not save settings');
-  },
+  updateMainOnly,
   dialogs: { chooseFolder, chooseFile: chooseOneFile, chooseSaveFile: chooseSaveAs },
-  sealer: safeStorage,
-  transport: nodemailerTransport,
+  account: emailAccount,
   report,
   openFile,
   folders: {
@@ -593,10 +642,15 @@ if (!app.requestSingleInstanceLock()) {
     });
     stateHost = new StateHost(dataSource, undefined, {
       demoPerformanceFolder: fixturePerformanceFolder(),
+      demoFixturesFolder: fixturesFolder(),
       onAsyncChange: () => {
         if (stateHost) announceChange();
       },
       log,
+      lastRouteSheetRun: {
+        get: () => settingsStore?.getMainOnly().lastRunId ?? null,
+        set: (id) => updateMainOnly((kept) => ({ ...kept, lastRunId: id })),
+      },
     });
     stateHost.perfStatus = () => perfService.status();
     openDataSource(false);

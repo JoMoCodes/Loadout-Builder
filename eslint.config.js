@@ -13,6 +13,8 @@ export default tseslint.config(
       'legacy/**',
       '.private/**',
       '.claude/**',
+      // The old Route Sheet Distributor core, copied as it was for the parity harness
+      'scripts/parity/rsd/core/**',
     ],
   },
 

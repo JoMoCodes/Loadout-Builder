@@ -19,6 +19,9 @@ scripts/parity/actual
 scripts/parity/print/expected
 scripts/parity/print/python-out
 scripts/parity/print/ts-out
+scripts/parity/rsd/core
+scripts/parity/rsd/expected
+scripts/parity/rsd/actual
 
 # Plan and checklist documents are written for people and kept as written
 *.md

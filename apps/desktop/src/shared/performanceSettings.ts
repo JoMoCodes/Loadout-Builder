@@ -58,7 +58,10 @@ export const DEFAULT_REPORT_COLOURS: ReportColours = {
   podRejectForeground: '#991B1B',
 };
 
-/** How the reports are emailed. The app password is not here (see the top of this file). */
+/**
+ * The app's one email setup (Settings > Email), used by the weekly reports and the route sheets.
+ * The app password is not here (see the top of this file).
+ */
 export interface EmailSettings {
   smtpHost: string;
   smtpPort: number;
@@ -105,6 +108,10 @@ export interface PerformanceSettings {
   /** Flag a driver who failed the same category this many weeks running. */
   recurringCategoryWeeks: number;
   colours: ReportColours;
+  /**
+   * A copy of the app's Email settings (AppSettings.email), kept equal to it by mergeSettings so
+   * the pages that still read it here see the same thing. The Email settings live at the top.
+   */
   email: EmailSettings;
   weekRange: WeekRangeChoice;
   /** The Drivers tab's filter chips, by name ("status:ACTIVE", "tier:Bronze"). */
@@ -154,6 +161,23 @@ function cleanList(value: unknown, max: number, shape: RegExp): string[] | undef
   return kept.length === value.length ? [...new Set(kept)] : undefined;
 }
 
+/** Keeps only the valid fields of an email patch, merged onto `current` (a new object). */
+export function mergeEmail(current: EmailSettings, raw: unknown): EmailSettings {
+  const e: EmailSettings = { ...current };
+  const email = record(raw);
+  if (email) {
+    e.smtpHost = textUpTo(email.smtpHost, 200)?.trim() ?? e.smtpHost;
+    e.smtpPort = intIn(email.smtpPort, 1, 65535) ?? e.smtpPort;
+    e.fromAddress = textUpTo(email.fromAddress, 200)?.trim() ?? e.fromAddress;
+    e.fromName = textUpTo(email.fromName, 200) ?? e.fromName;
+    e.username = textUpTo(email.username, 200)?.trim() ?? e.username;
+    e.bccAddress = textUpTo(email.bccAddress, 200)?.trim() ?? e.bccAddress;
+    e.subjectTemplate = textUpTo(email.subjectTemplate, 300) ?? e.subjectTemplate;
+    e.bodyTemplate = textUpTo(email.bodyTemplate, 5000) ?? e.bodyTemplate;
+  }
+  return e;
+}
+
 /** Keeps only the valid fields of a performance patch, merged onto `current`. */
 export function mergePerformance(current: PerformanceSettings, raw: unknown): PerformanceSettings {
   const input = record(raw);
@@ -184,18 +208,7 @@ export function mergePerformance(current: PerformanceSettings, raw: unknown): Pe
     }
   }
 
-  const email = record(input.email);
-  if (email) {
-    const e = next.email;
-    e.smtpHost = textUpTo(email.smtpHost, 200)?.trim() ?? e.smtpHost;
-    e.smtpPort = intIn(email.smtpPort, 1, 65535) ?? e.smtpPort;
-    e.fromAddress = textUpTo(email.fromAddress, 200)?.trim() ?? e.fromAddress;
-    e.fromName = textUpTo(email.fromName, 200) ?? e.fromName;
-    e.username = textUpTo(email.username, 200)?.trim() ?? e.username;
-    e.bccAddress = textUpTo(email.bccAddress, 200)?.trim() ?? e.bccAddress;
-    e.subjectTemplate = textUpTo(email.subjectTemplate, 300) ?? e.subjectTemplate;
-    e.bodyTemplate = textUpTo(email.bodyTemplate, 5000) ?? e.bodyTemplate;
-  }
+  next.email = mergeEmail(current.email, input.email);
 
   const range = record(input.weekRange);
   if (range) {

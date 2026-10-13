@@ -20,7 +20,7 @@ one pull request. Nobody waits at the keyboard.
 ## 1. Why
 
 Route Sheet Distributor (`github.com/JoMoCodes/Route-Sheets-Distributor`, Electron, v1.5.2, about
-4,700 lines of plain JavaScript, 34 tests) takes the day's route sheet PDF, works out which driver
+4,700 lines of plain JavaScript, 35 tests) takes the day's route sheet PDF, works out which driver
 each page belongs to by exact Transporter ID, and turns each page into an email the driver can read
 on a phone. It works and it is in daily use. But it is a second program with a second window, a
 second driver list to import, a second email setup, and a second place to type the pads.
@@ -158,7 +158,7 @@ the parity harness (section 6) raises no privacy question; the harness copy is n
 | `renderer/app.js`: Distribute, Route Sheets, History views | the **Route Sheets** page with its three tabs, built on `DataGrid`, the page parts and dialogs the other pages use | `apps/desktop/src/renderer/pages/routeSheets/` |
 | `renderer/app.js`: `viewHelp`, import "?" help | a How to use section and `whereToGet` entries (the old help pictures are only Cortex and Slack menus with no names; they can be reused) | `apps/desktop/src/renderer/help/`, `pages/HowToUsePage.tsx` |
 | `display.js`, `updater.js`, `releaseNotes.js`, History's output folder | not ported | - |
-| `test/core.test.js` (34 tests), `test/fixtures.js` | every test gets a vitest twin with the same name and the same assertions; the synthetic PDF builder becomes the fixture generator | `packages/route-sheets/src/**/*.test.ts`, `packages/fixtures/make-route-sheets.mjs` |
+| `test/core.test.js` (35 tests), `test/fixtures.js` | every test gets a vitest twin with the same name and the same assertions; the synthetic PDF builder becomes the fixture generator | `packages/route-sheets/src/**/*.test.ts`, `packages/fixtures/make-route-sheets.mjs` |
 
 ## 5. Non-negotiables (every phase)
 
@@ -235,7 +235,7 @@ phase below says so. These rules keep the speed without the drift:
 4. **No product decisions in a subagent.** Anything that is not covered by section 2 or section 3
    is written as a "Needs Jonathan" line in the subagent's report and left undone. The orchestrator
    collects those lines into the PR. Nobody asks Jonathan mid-task.
-5. **The old app's tests are the spec for the core.** Each of the 34 tests is ported by name. A
+5. **The old app's tests are the spec for the core.** Each of the 35 tests is ported by name. A
    subagent may not delete, weaken or skip a twin; a twin that cannot pass is a "stuck" report.
 6. **Review is one pass, by script first.** The parity diff, the twins, lint, typecheck, scan,
    the Playwright page tests and the smoke check run first. One Opus review pass per phase reads
@@ -283,7 +283,7 @@ package skeleton (`packages/route-sheets`, `@loadout/route-sheets`, copied from 
   `src/email/**`, `src/export/**`, `src/runs/**`.
 - **Orchestrator, after both:** vendor the old core under `scripts/parity/rsd/`, write
   `dump.mjs` and `diff.mjs`, run the dump, commit the expected files, run the diff.
-- **Done when:** every one of the 34 old tests has a passing twin; the parity diff is empty for
+- **Done when:** every one of the 35 old tests has a passing twin; the parity diff is empty for
   both fixture days and both PDF layouts; `docs/PARITY-ROUTE-SHEETS.md` exists with a checkbox
   per line of section 2, grouped (bringing files in, the number check, Distribute, Sheets, email,
   Export all, History, settings, help) and the core rows are ticked with the test named.

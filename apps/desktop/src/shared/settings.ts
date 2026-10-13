@@ -1,8 +1,13 @@
 // The few choices the app remembers between runs, and the rules for what is allowed.
 // Used by both the main process (which saves them) and the screens (which show them).
 
-import { DEFAULT_PERFORMANCE, mergePerformance } from './performanceSettings';
-import type { PerformanceSettings } from './performanceSettings';
+import {
+  DEFAULT_EMAIL,
+  DEFAULT_PERFORMANCE,
+  mergeEmail,
+  mergePerformance,
+} from './performanceSettings';
+import type { EmailSettings, PerformanceSettings } from './performanceSettings';
 
 export const THEMES = ['light', 'dark', 'high-contrast'] as const;
 export type ThemeName = (typeof THEMES)[number];
@@ -42,14 +47,23 @@ export interface AppSettings {
   autoTours: boolean;
   /** The tours that have already run (or were skipped), by name ("home", "load-out-print"). */
   toursSeen: string[];
-  /** The weekly performance choices (rule numbers, report colours, email, the page's view). */
+  /** The Route Sheets page's note about the old Route Sheet Distributor was put away (Got it). */
+  routeSheetsNoteSeen: boolean;
+  /** The weekly performance choices (rule numbers, report colours, the page's view). */
   performance: PerformanceSettings;
+  /**
+   * The app's one email setup (Settings > Email), for the weekly reports and the route sheets.
+   * The app password is not here: the main process keeps it sealed.
+   */
+  email: EmailSettings;
 }
 
 /** What a screen may ask to change. Anything left out stays as it was. */
-export type SettingsPatch = Partial<Omit<AppSettings, 'performance'>> & {
+export type SettingsPatch = Partial<Omit<AppSettings, 'performance' | 'email'>> & {
   /** Only the fields given change; the rest of the performance choices stay. */
   performance?: DeepPartial<PerformanceSettings>;
+  /** Only the fields given change. (An older `performance.email` patch is read as this.) */
+  email?: Partial<EmailSettings>;
 };
 
 type DeepPartial<T> = {
@@ -73,7 +87,9 @@ export const DEFAULT_SETTINGS: AppSettings = {
   printedOnce: false,
   autoTours: true,
   toursSeen: [],
+  routeSheetsNoteSeen: false,
   performance: DEFAULT_PERFORMANCE,
+  email: DEFAULT_EMAIL,
 };
 
 /** A tour's name: lower case words with dashes. */
@@ -122,6 +138,9 @@ export function sanitizePatch(raw: unknown): SettingsPatch {
   }
   if (typeof input.printedOnce === 'boolean') patch.printedOnce = input.printedOnce;
   if (typeof input.autoTours === 'boolean') patch.autoTours = input.autoTours;
+  if (typeof input.routeSheetsNoteSeen === 'boolean') {
+    patch.routeSheetsNoteSeen = input.routeSheetsNoteSeen;
+  }
   if (Array.isArray(input.toursSeen) && input.toursSeen.length <= MAX_TOURS) {
     const names = input.toursSeen.filter(
       (name): name is string =>
@@ -134,13 +153,24 @@ export function sanitizePatch(raw: unknown): SettingsPatch {
   if (typeof input.performance === 'object' && input.performance !== null) {
     patch.performance = input.performance as SettingsPatch['performance'];
   }
+  // Checked field by field when it is merged (mergeEmail).
+  if (typeof input.email === 'object' && input.email !== null && !Array.isArray(input.email)) {
+    patch.email = input.email as SettingsPatch['email'];
+  }
   return patch;
 }
 
 export function mergeSettings(current: AppSettings, raw: unknown): AppSettings {
-  const { performance, ...rest } = sanitizePatch(raw);
+  const { performance, email, ...rest } = sanitizePatch(raw);
   const base = { ...current, ...rest };
   // Older settings files have no performance part; it starts from the defaults.
-  const now = mergePerformance(current.performance ?? DEFAULT_PERFORMANCE, performance);
-  return { ...base, performance: now };
+  const perf = mergePerformance(current.performance ?? DEFAULT_PERFORMANCE, performance);
+  // The email setup used to live under `performance`. A file (or a page) that still says it there
+  // and not at the top has it lifted up, so nothing anyone typed is lost.
+  const older = performance?.email;
+  const now = mergeEmail(
+    current.email ?? current.performance?.email ?? DEFAULT_EMAIL,
+    email ?? older,
+  );
+  return { ...base, email: now, performance: { ...perf, email: { ...now } } };
 }

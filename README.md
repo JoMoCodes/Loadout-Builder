@@ -28,6 +28,7 @@ The first time you open the app, the **Home** page shows a short checklist and e
 3. **Bring in today's load-out sheet.**
 4. **Bring over route data.**
 5. **Assign vans and print.**
+6. **Send the route sheets.**
 
 **Shortcut:** drag a file from your computer onto the page that uses it.
 
@@ -52,15 +53,34 @@ The first time you open the app, it looks for your old roster data. If it finds 
 
 **Where the files come from:** all ten are downloaded from Amazon's websites for delivery partners, once a week. Each card on the **Imports** tab says which file it wants, and so does **How to use**.
 
-**Emailing:** the reports go out from a Gmail address, using a Gmail **app password** (a special password just for this app). You set it up once in **Settings**, under **Weekly performance**. The password is kept sealed by the computer's own safe storage. The app never shows it again, and it never goes in a file you can read.
+**Emailing:** the reports go out from a Gmail address, using a Gmail **app password** (a special password just for this app). You set it up once in **Settings**, under **Email**. The password is kept sealed by the computer's own safe storage. The app never shows it again, and it never goes in a file you can read.
 
 **Used the old Weekly Performance App?** The first time you open this version, it offers to bring the old app's data over. Click **Yes**, or do it later from **Settings**. It never writes over data you already have.
 
 ---
 
+## Route sheets
+
+**What it does:** every day it takes the route sheet PDF, works out which driver each page belongs to by their Transporter ID, and turns each page into an email the driver can read on a phone. It used to be a separate app, Route Sheet Distributor. Now it is part of Loadout Builder, under **Load Out** in the left menu. It never guesses: when a route lists two drivers, or none it can confirm, it stops and asks you.
+
+**The daily routine.** Home has a last step for this, and the **Route Sheets** page has a short tour.
+
+1. **Bring in the PDF.** On the **Route Sheets** page, click **Bring in the route sheet PDF**, or drop the file on the page.
+2. **Look at the counts.** Green is ready to send. Amber and red need a choice: pick who gets the route sheet, or click **Accept all suggestions**. Check **People who won't get a route sheet** before you send.
+3. **Check and send.** On the **Sheets** tab, click a route to see the email the driver gets. Click **Email all** to send every ready one, or send them one at a time. **Export all** saves them into a folder you pick.
+4. **Come back to a day.** The **History** tab keeps each day for 30 days.
+
+**Where the files come from:** the route sheet PDF is downloaded from Slack. The driver list is the one on the **Associates** page, and the Routes file is the one on the **Route Data** page, so you don't bring them in twice. The PADs come from **Route Data** too. The **?** next to **Bring in the route sheet PDF** shows where to get the PDF, with a picture.
+
+**Emailing:** the route sheets go out from the same Gmail address as the weekly reports, using a Gmail **app password**. You set it up once in **Settings**, under **Email**.
+
+**Used the old Route Sheet Distributor?** Nothing is brought over. Enter your Gmail app password once in **Settings**, under **Email**, and you can uninstall the old app.
+
+---
+
 ## Where your data lives
 
-Everything stays **on your computer**, in `%APPDATA%\Loadout Builder\data`. Click **Open data folder** in **Settings** to see it. The app never uploads drivers, rosters or files anywhere. It only ever contacts GitHub, to check whether a newer version of the app is out, and Gmail, when you email the weekly reports.
+Everything stays **on your computer**, in `%APPDATA%\Loadout Builder\data`. Click **Open data folder** in **Settings** to see it. The app never uploads drivers, rosters or files anywhere. It only ever contacts GitHub, to check whether a newer version of the app is out, and Gmail, when you email the weekly reports or the route sheets.
 
 Printed rosters and exports go to the folder you choose when you save them.
 
@@ -68,7 +88,7 @@ Printed rosters and exports go to the folder you choose when you save them.
 
 ## Try it without your own data
 
-Turn on **Demo mode** in **Settings**. The app fills itself with made-up drivers, vans and weekly scorecards, so you can look around or train someone. Your real data is not touched, and nothing you do in demo mode is kept. The app always starts with demo mode off.
+Turn on **Demo mode** in **Settings**. The app fills itself with made-up drivers, vans, weekly scorecards and route sheets, so you can look around or train someone. Your real data is not touched, and nothing you do in demo mode is kept. The app always starts with demo mode off.
 
 ---
 

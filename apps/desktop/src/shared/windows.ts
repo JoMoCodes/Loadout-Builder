@@ -11,6 +11,7 @@ export const PAGE_IDS = [
   'home',
   'dashboard',
   'load-out',
+  'route-sheets',
   'route-data',
   'vehicle-data',
   'associates',
@@ -28,6 +29,7 @@ export const PAGE_LABELS: Record<PageId, string> = {
   home: 'Home',
   dashboard: 'Dashboard',
   'load-out': 'Load Out',
+  'route-sheets': 'Route Sheets',
   'route-data': 'Route Data',
   'vehicle-data': 'Vehicle Data',
   associates: 'Associates',
@@ -63,6 +65,11 @@ export const PAGE_TABS: Record<PageId, readonly TabItem[]> = {
   home: [],
   dashboard: [],
   'load-out': LOAD_OUT_TABS,
+  'route-sheets': [
+    { id: 'distribute', label: 'Distribute' },
+    { id: 'sheets', label: 'Sheets' },
+    { id: 'history', label: 'History' },
+  ],
   'route-data': [
     ...ROUTE_KINDS.map((kind) => ({ id: kind, label: ROUTE_LABELS[kind] })),
     { id: 'dwp', label: 'DWP' },

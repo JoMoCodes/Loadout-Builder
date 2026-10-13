@@ -34,27 +34,15 @@ import { ChannelRefusal } from '../channels';
 import type { MainOnlySettings } from '../settingsFile';
 import { filesAt, runSync } from './autoImport';
 import { takeDrop, useDrop, type PerfDrops } from './drops';
-import {
-  describeConnectProblem,
-  describeSendProblem,
-  sender,
-  setupProblem,
-  smtpConfig,
-  type MailTransport,
-  type TransportFactory,
-} from './mailer';
+import type { EmailAccount } from '../mail/emailAccount';
+import { describeConnectProblem, describeSendProblem, sender } from '../mail/mailer';
 import type { PerfHost, PerfStatus } from './perfHost';
 import { LEDGER_SOURCE, importExportFiles, type ExportFile } from './readExports';
 import type { ReportInput } from './report';
 import { reportFileName } from './report';
 import { resolveRange, type CardFolder } from './views';
 
-/** The computer's safe storage for the app password (Electron's safeStorage). */
-export interface Sealer {
-  isEncryptionAvailable(): boolean;
-  encryptString(plain: string): Buffer;
-  decryptString(sealed: Buffer): string;
-}
+export type { Sealer } from '../mail/emailAccount';
 
 /** The report maker (./report). */
 export interface ReportMaker {
@@ -104,8 +92,8 @@ export interface PerfServiceDeps {
   mainOnly(): MainOnlySettings;
   updateMainOnly(change: (current: MainOnlySettings) => MainOnlySettings): void;
   dialogs: PerfDialogs;
-  sealer: Sealer;
-  transport: TransportFactory;
+  /** The app's one email account (Settings > Email), shared with the route sheets. */
+  account: EmailAccount;
   report: ReportMaker;
   openFile(file: string): Promise<boolean>;
   folders: PerfFolderOpener;
@@ -563,95 +551,26 @@ export class PerfService {
 
   // ---- email ------------------------------------------------------------------------------
 
-  /** The saved app password, unsealed, or null (none saved, or sealed on another computer). */
-  private password(): string | null {
-    const sealed = this.deps.mainOnly().emailPasswordSealed;
-    if (!sealed) return null;
-    try {
-      if (!this.deps.sealer.isEncryptionAvailable()) return null;
-      const plain = this.deps.sealer.decryptString(Buffer.from(sealed, 'base64'));
-      return plain === '' ? null : plain;
-    } catch {
-      return null;
-    }
-  }
-
   emailStatus(): EmailStatus {
-    let canSeal: boolean;
-    try {
-      canSeal = this.deps.sealer.isEncryptionAvailable();
-    } catch {
-      canSeal = false;
-    }
-    return { passwordSaved: this.password() !== null, canSeal };
+    return this.deps.account.status();
   }
 
   private emailReady(): boolean {
-    return setupProblem(this.deps.performance().email, this.password()) === null;
+    return this.deps.account.ready();
   }
 
   setEmailPassword(password: string): EmailStatus {
-    if (password === '') {
-      this.deps.updateMainOnly((kept) => ({ ...kept, emailPasswordSealed: null }));
-      return this.emailStatus();
-    }
-    if (!this.emailStatus().canSeal) {
-      throw new ChannelRefusal(
-        'refused',
-        "This computer can't keep the password safe, so it was not saved.",
-      );
-    }
-    // Gmail shows the app password in groups of four; the spaces are not part of it.
-    const sealed = this.deps.sealer.encryptString(password.replace(/\s+/g, '')).toString('base64');
-    this.deps.updateMainOnly((kept) => ({ ...kept, emailPasswordSealed: sealed }));
-    this.deps.log('email: app password saved');
-    return this.emailStatus();
+    return this.deps.account.setPassword(password);
   }
 
-  private openTransport(): { transport: MailTransport; settings: PerformanceSettings['email'] } {
-    const settings = this.deps.performance().email;
-    const password = this.password();
-    const problem = setupProblem(settings, password);
-    if (problem !== null || password === null) {
-      throw new ChannelRefusal('refused', problem ?? 'Add the app password in Settings first.');
-    }
-    return { transport: this.deps.transport(smtpConfig(settings, password)), settings };
-  }
-
-  async emailTest(to: string | undefined): Promise<{ sent: boolean; problem: string | null }> {
-    const { transport, settings } = this.openTransport();
-    const address = to?.trim() || settings.fromAddress.trim();
-    try {
-      await transport.verify();
-    } catch (error) {
-      transport.close();
-      this.deps.log('email test: could not connect');
-      return { sent: false, problem: describeConnectProblem(error) };
-    }
-    try {
-      await transport.send({
-        from: sender(settings),
-        to: { name: '', address },
-        subject: 'Test email from Loadout Builder',
-        text:
-          'This is a test message to check that the email settings work.\n\n' +
-          'If you got it, the app can send the weekly reports from this account.',
-      });
-      this.deps.log('email test: sent');
-      return { sent: true, problem: null };
-    } catch (error) {
-      this.deps.log('email test: not sent');
-      const reason = describeSendProblem(error);
-      return { sent: false, problem: `The test email was not sent: ${reason}.` };
-    } finally {
-      transport.close();
-    }
+  emailTest(to: string | undefined): Promise<{ sent: boolean; problem: string | null }> {
+    return this.deps.account.sendTest(to);
   }
 
   async email(ids: readonly string[], range: WeekRange, dryRun: boolean): Promise<EmailOutcome> {
     const data = this.deps.host().data();
     const outcome: EmailOutcome = { dryRun, sent: 0, notSent: [], wouldSend: [] };
-    const settings = this.deps.performance().email;
+    const settings = this.deps.account.settings();
     const recipients: Array<{ id: string; name: string; to: string; input: ReportInput }> = [];
     for (const id of ids) {
       const driver = data.drivers.find((d) => d.transporterId === id);
@@ -697,7 +616,7 @@ export class PerfService {
         'Demo mode is on, so no emails are sent. Use the dry run to see who would get what.',
       );
     }
-    const { transport } = this.openTransport();
+    const { transport } = this.deps.account.open();
     if (recipients.length === 0) {
       transport.close();
       return outcome;

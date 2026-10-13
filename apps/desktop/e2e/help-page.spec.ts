@@ -18,6 +18,7 @@ test('has a jump-to button for every part, and each one scrolls to its part', as
     'see',
     'first',
     'daily',
+    'route-sheets',
     'weekly',
     'colors',
     'keys',
@@ -63,6 +64,66 @@ test('the weekly part walks through the routine and lists all ten exports', asyn
   await expect(weekly.locator('figure.help-shot')).toHaveCount(4);
   await weekly.getByRole('button', { name: 'Performance' }).first().click();
   await expect(page.locator('[data-page="performance"]')).toBeVisible();
+});
+
+test('the route sheets part walks through the day and names the buttons on the page', async ({
+  page,
+}) => {
+  const part = page.locator('#help-route-sheets');
+  await expect(part.locator('h2')).toHaveText('Sending the route sheets');
+  await expect(part.locator('h3')).toHaveText([
+    'Once, before the first day',
+    'Every day, step by step',
+    'What the colours mean',
+    'Making choices',
+    'Ways to send a route sheet',
+    "Yesterday's work",
+  ]);
+  for (const words of [
+    'Bring in the route sheet PDF',
+    'Pad for each wave',
+    'Accept all suggestions',
+    "People who won't get a route sheet",
+    'Send email',
+    'Open email draft',
+    'Mark as sent',
+    'Email all',
+    'Export all',
+    'Settings',
+    '30 days',
+    'Route Sheet Distributor',
+  ])
+    await expect(part).toContainText(words);
+  // It sits after the daily part and before the weekly one.
+  const order = await page
+    .locator('section.help-section')
+    .evaluateAll((items) => items.map((item) => item.id));
+  expect(order.indexOf('help-route-sheets')).toBe(order.indexOf('help-daily') + 1);
+  expect(order.indexOf('help-weekly')).toBe(order.indexOf('help-route-sheets') + 1);
+  // Its two pictures are in place, and a link in it opens the page.
+  await expect(part.locator('figure.help-shot')).toHaveCount(2);
+  await part.getByRole('button', { name: 'Route Sheets' }).first().click();
+  await expect(page.locator('[data-page="route-sheets"]')).toBeVisible();
+});
+
+test('the route sheet problems are folded up with the others', async ({ page }) => {
+  for (const id of [
+    'rs-nothing-ready',
+    'rs-not-in-list',
+    'rs-no-email',
+    'rs-missing-page',
+    'rs-number-check',
+    'rs-wont-send',
+    'rs-wrong-person',
+    'rs-wrong-file',
+    'rs-yesterday',
+  ]) {
+    await expect(page.locator(`details[data-problem="${id}"]`)).toHaveCount(1);
+  }
+  const email = page.locator('details[data-problem="rs-wont-send"]');
+  await email.locator('summary').click();
+  await expect(email).toContainText('App password');
+  await expect(email).toContainText('Email');
 });
 
 test('a link inside a problem opens that page', async ({ page }) => {

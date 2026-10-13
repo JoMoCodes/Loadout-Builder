@@ -1,5 +1,5 @@
-// Smoke checks for the Route Data, Vehicle Data and Associates pages, run inside smoke.mjs while
-// demo mode is on. Demo mode starts from the made-up saved data the old app's parity harness
+// Smoke checks for the Route Data, Vehicle Data, Associates and Route Sheets pages, run inside
+// smoke.mjs while demo mode is on. Demo mode starts from the made-up saved data the old app's parity harness
 // started from, so bringing in the same made-up files through the pages must land on the numbers
 // the harness wrote down (scripts/parity/expected/<day>/inputs.json, routes.json and dwp.json).
 //
@@ -9,7 +9,8 @@
 
 /* global window -- this runs inside the app's page */
 
-import { readFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 
 const DAYS = [
@@ -492,6 +493,129 @@ export async function otherPagesChecks({ app, page, check, assert, until, ask, g
     const after = (await snapshot()).counts.routeRows;
     assert(after.itineraries === before.itineraries, 'another export was touched');
   });
+
+  // ------------------------------------------------------------------ Route Sheets
+  // The fixture day's Routes export and driver list (Clear above emptied the Routes export), then
+  // the synthetic route sheet PDF, all through the real bridge with the file window answered.
+  let sheetRun = null;
+  await check('Route Sheets: the synthetic PDF comes in through the bridge', async () => {
+    const routeRows = await load('routes', ['routes', 'Routes_XXX1_2026-09-01_12_20 (CDT).xlsx']);
+    assert(routeRows > 0, 'the Routes export brought in no rows');
+    await load('associates', ['associates', 'AssociateData.csv']);
+    await choose(['route-sheets', '2026-09-01.pdf']);
+    const picked = await ask('files:pick', { kind: 'route-sheets' });
+    assert(picked.ok && picked.value.path, 'route sheets: the file window gave nothing');
+    const done = await ask('files:import', { kind: 'route-sheets', path: picked.value.path });
+    assert(done.ok, `route sheets: ${done.reason}`);
+    assert(done.value.rows === 29, `${done.value.rows} route sheets read, not 29`);
+    sheetRun = done.value.routeSheets.runId;
+    assert(sheetRun, 'no run was opened');
+    const state = await ask('routeSheets:state');
+    assert(state.ok && state.value.routeData?.kind === 'routes', 'the Routes export is not in use');
+    assert(state.value.run.sheetCount === 29, 'the run does not hold the route sheets');
+    return `${done.value.rows} route sheets`;
+  });
+
+  await check('Route Sheets: Accept all suggestions takes every suggestion', async () => {
+    const before = await ask('routeSheets:distribution');
+    assert(before.ok, 'the distribution could not be read');
+    const suggested = before.value.routes.filter(
+      (r) => r.state === 'needs-decision' && r.suggestion,
+    ).length;
+    assert(suggested > 0, 'no route had a suggestion');
+    const accepted = await ask('routeSheets:accept-suggestions');
+    assert(accepted.ok && accepted.value === suggested, `accepted ${accepted.value}`);
+    const again = await ask('routeSheets:accept-suggestions');
+    assert(again.ok && again.value === 0, 'a second Accept all took more');
+    return `${suggested} accepted`;
+  });
+
+  const temp = mkdtempSync(join(tmpdir(), 'loadout-smoke-route-sheets-'));
+  let readyRoute = null;
+  try {
+    await check('Route Sheets: a ready route sheet previews as the driver’s email', async () => {
+      const dist = await ask('routeSheets:distribution');
+      readyRoute = dist.value.routes.find((r) => r.state === 'ready' && r.hasSheet)?.routeCode;
+      assert(readyRoute, 'no route is ready');
+      const preview = await ask('routeSheets:preview', { routeCode: readyRoute });
+      assert(preview.ok, 'the preview was refused');
+      assert(preview.value.html.includes('Route Sheet'), 'the email does not say Route Sheet');
+      assert(preview.value.html.includes(readyRoute), 'the email does not name its route');
+      assert(preview.value.recipients.length === 1, 'the email has no driver to go to');
+    });
+
+    await check(
+      'Route Sheets: Save PDF page writes the page where the save window says',
+      async () => {
+        const file = join(temp, 'one page.pdf');
+        await app.evaluate(({ dialog }, chosen) => {
+          dialog.showSaveDialog = async () => ({ canceled: false, filePath: chosen });
+        }, file);
+        const saved = await ask('routeSheets:save-pdf-page', { routeCode: readyRoute });
+        assert(saved.ok && saved.value.saved === true, `not saved: ${JSON.stringify(saved)}`);
+        assert(existsSync(file), 'the PDF is not there');
+        assert(readFileSync(file).subarray(0, 5).toString() === '%PDF-', 'the file is not a PDF');
+      },
+    );
+
+    await check('Route Sheets: Export all writes drafts, PDFs and the summary', async () => {
+      await app.evaluate(({ dialog, shell }, folder) => {
+        dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [folder] });
+        // The folder is opened afterwards, as the old app did; do not open a file manager here.
+        shell.openPath = async () => '';
+      }, temp);
+      const done = await ask('routeSheets:export-all');
+      assert(done.ok && done.value, `Export all: ${JSON.stringify(done).slice(0, 120)}`);
+      assert(done.value.drafts > 0, 'no email drafts were written');
+      const root = join(temp, done.value.folder);
+      for (const name of ['Distribution summary.html', 'Distribution summary.csv']) {
+        assert(existsSync(join(root, name)), `${name} is missing`);
+      }
+      assert(existsSync(join(root, 'Email drafts')), 'no drafts folder');
+      assert(existsSync(join(root, 'Route sheet PDFs')), 'no PDFs folder');
+      return `${done.value.drafts} drafts`;
+    });
+  } finally {
+    rmSync(temp, { recursive: true, force: true });
+  }
+
+  await check(
+    'Route Sheets: the page shows the counts, the sheets and the run in History',
+    async () => {
+      const dist = (await ask('routeSheets:distribution')).value;
+      await goTo(page, 'route-sheets');
+      await page.click('[data-testid="route-sheets-tab-distribute"]');
+      await until(
+        async () =>
+          (await text('[data-testid="route-sheets-count-total"]')) ===
+          `${dist.counts.total} routes`,
+        'the counts do not show the routes',
+      );
+      const ready = await text('[data-testid="route-sheets-count-ready"]');
+      assert(ready === `${dist.counts.ready} ready to send`, `the ready count said "${ready}"`);
+      await page.click('[data-testid="route-sheets-tab-sheets"]');
+      await page.click(`[data-testid="route-sheets-pick-${readyRoute}"]`);
+      await until(
+        async () => (await text('[data-testid="route-sheets-subject"]')).includes(readyRoute),
+        'the Sheets tab does not show the route’s email',
+      );
+      // The Windows build machine is several times slower than a desktop, so these waits are long.
+      await until(
+        async () => (await page.$('[data-testid="route-sheets-preview"]')) !== null,
+        'the Sheets tab does not show the email preview',
+        30_000,
+      );
+      await page.click('[data-testid="route-sheets-tab-history"]');
+      await until(
+        async () =>
+          (await page.$(`[data-page="route-sheets"] [role="row"][data-row-id="${sheetRun}"]`)) !==
+          null,
+        'History does not list the run',
+        30_000,
+      );
+      return `${dist.counts.total} routes, ${dist.counts.ready} ready`;
+    },
+  );
 }
 
 function sortKeys(object) {

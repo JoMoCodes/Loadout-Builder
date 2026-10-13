@@ -1,7 +1,7 @@
 {
   "name": "@loadout/desktop",
   "productName": "Loadout Builder",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "Builds the daily load-out roster and van assignments for a delivery station.",
   "main": "dist/main/main.js",
   "private": true,
@@ -70,6 +70,14 @@
       {
         "from": "../../packages/fixtures/performance",
         "to": "fixtures/performance"
+      },
+      {
+        "from": "../../packages/fixtures/route-sheets",
+        "to": "fixtures/route-sheets"
+      },
+      {
+        "from": "../../packages/fixtures/routes",
+        "to": "fixtures/routes"
       }
     ]
   },
@@ -86,6 +94,7 @@
     "@electron/rebuild": "4.2.1",
     "@loadout/core": "*",
     "@loadout/performance": "*",
+    "@loadout/route-sheets": "*",
     "@loadout/storage": "*",
     "@playwright/test": "1.56.1",
     "@radix-ui/react-context-menu": "2.3.8",

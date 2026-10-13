@@ -1,0 +1,6 @@
+{
+  "name": "rsd-old-core",
+  "private": true,
+  "type": "commonjs",
+  "description": "The old Route Sheet Distributor core (src/core and test/fixtures.js at release 1.5.2), copied as it was so the parity harness can ask what the old app said. Not shipped, not linted, not edited."
+}

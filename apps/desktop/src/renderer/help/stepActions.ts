@@ -41,6 +41,11 @@ export const STEP_TARGETS: Record<StepAction | WeeklyStepAction, Target> = {
     press: '[data-page="load-out"] [data-action="assign-vans"]',
   },
   'open-print': { page: 'load-out', loadOutTab: 'print' },
+  'import-route-sheets': {
+    page: 'route-sheets',
+    press: '[data-page="route-sheets"] [data-testid="route-sheets-bring-in"]',
+  },
+  'open-route-sheets': { page: 'route-sheets' },
   // The weekly checklist.
   'perf-choose-roster': {
     page: 'performance',
