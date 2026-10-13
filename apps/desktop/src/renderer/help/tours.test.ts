@@ -11,6 +11,7 @@ describe('the page tours', () => {
       'load-out-available-vans',
       'load-out-previous-roster',
       'route-data',
+      'route-sheets',
       'vehicle-data',
       'associates',
       'performance-drivers',
@@ -49,6 +50,7 @@ describe('the page tours', () => {
     expect(tourNameFor('performance', null)).toBe('performance-drivers');
     expect(tourNameFor('performance', 'imports')).toBe('performance-imports');
     expect(tourNameFor('performance', 'nothing-like-this')).toBeNull();
+    expect(tourNameFor('route-sheets', null)).toBe('route-sheets');
     expect(tourNameFor('dashboard', null)).toBe('dashboard');
     expect(tourNameFor('how-to-use', null)).toBeNull();
     expect(tourNameFor('features-log', null)).toBeNull();
@@ -63,6 +65,15 @@ describe('the page tours', () => {
     for (const step of TOURS.dashboard!.steps) {
       expect(step.element).toContain('[data-page="dashboard"]');
     }
+  });
+
+  it('point the Route Sheets tour at the Route Sheets page, the same on every tab', () => {
+    for (const step of TOURS['route-sheets']!.steps) {
+      expect(step.element).toContain('[data-page="route-sheets"]');
+    }
+    // The Sheets and History tabs are pointed at by their tab buttons, which are on every tab.
+    const tabs = TOURS['route-sheets']!.steps.filter((step) => step.element?.includes('-tab-'));
+    expect(tabs).toHaveLength(2);
   });
 
   it('read the open Performance tab from the page', () => {

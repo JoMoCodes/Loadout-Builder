@@ -6,6 +6,7 @@ import {
   checklistFacts,
   currentStep,
   doneCount,
+  STEP_ORDER,
   stepAction,
   stepsDone,
   type ChecklistFacts,
@@ -17,6 +18,7 @@ function snapshotWith(options: {
   vehicles?: number;
   rows?: Partial<DriverRow>[];
   routeRows?: Record<string, number>;
+  routeSheets?: { runId: string | null; sheets: number; ready: number; unsent: number };
 }): AppSnapshot {
   const rows = (options.rows ?? []).map((values, index) => ({
     index,
@@ -24,6 +26,7 @@ function snapshotWith(options: {
   }));
   return {
     roster: { rows },
+    routeSheets: options.routeSheets,
     counts: {
       associates: options.associates ?? 0,
       vehicles: options.vehicles ?? 0,
@@ -35,6 +38,10 @@ function snapshotWith(options: {
 const nothing: ChecklistFacts = checklistFacts(snapshotWith({}), false);
 
 describe('the first-day checklist', () => {
+  it('comes last: the route sheets step follows Assign vans and print', () => {
+    expect(STEP_ORDER.slice(-2)).toEqual(['assign-print', 'route-sheets']);
+  });
+
   it('starts with nothing ticked, pointing at the driver list', () => {
     const done = stepsDone(nothing);
     expect(doneCount(done)).toBe(0);
@@ -78,6 +85,35 @@ describe('the first-day checklist', () => {
     expect(stepsDone(both)['assign-print']).toBe(true);
   });
 
+  it('ticks the route sheets step once every ready sheet has gone out', () => {
+    const run = 'XXX1_2026-09-01_CYCLE1';
+    const none = checklistFacts(snapshotWith({}), false);
+    expect(stepsDone(none)['route-sheets']).toBe(false);
+    const empty = checklistFacts(
+      snapshotWith({ routeSheets: { runId: null, sheets: 0, ready: 0, unsent: 0 } }),
+      false,
+    );
+    expect(stepsDone(empty)['route-sheets']).toBe(false);
+    // The PDF is in and sheets are still waiting to go out.
+    const waiting = checklistFacts(
+      snapshotWith({ routeSheets: { runId: run, sheets: 6, ready: 4, unsent: 3 } }),
+      false,
+    );
+    expect(waiting.routeSheets).toBe(6);
+    expect(stepsDone(waiting)['route-sheets']).toBe(false);
+    // Nothing is ready yet (everything waits for a choice): not done.
+    const undecided = checklistFacts(
+      snapshotWith({ routeSheets: { runId: run, sheets: 6, ready: 0, unsent: 0 } }),
+      false,
+    );
+    expect(stepsDone(undecided)['route-sheets']).toBe(false);
+    const sent = checklistFacts(
+      snapshotWith({ routeSheets: { runId: run, sheets: 6, ready: 4, unsent: 0 } }),
+      false,
+    );
+    expect(stepsDone(sent)['route-sheets']).toBe(true);
+  });
+
   it('is all done with every step ticked', () => {
     const facts = checklistFacts(
       snapshotWith({
@@ -85,11 +121,12 @@ describe('the first-day checklist', () => {
         vehicles: 2,
         rows: [{ waveTime: '10:20 AM', vehicle: 'Van 12' }],
         routeRows: { routes: 3 },
+        routeSheets: { runId: 'XXX1_2026-09-01_CYCLE1', sheets: 3, ready: 3, unsent: 0 },
       }),
       true,
     );
     const done = stepsDone(facts);
-    expect(doneCount(done)).toBe(5);
+    expect(doneCount(done)).toBe(6);
     expect(allDone(done)).toBe(true);
     expect(currentStep(done)).toBeNull();
   });
@@ -118,5 +155,10 @@ describe("what each step's button does", () => {
   it('gives out vans first, then opens the Print tab', () => {
     expect(stepAction('assign-print', nothing)).toBe('assign-vans');
     expect(stepAction('assign-print', { ...nothing, driversWithVan: 5 })).toBe('open-print');
+  });
+
+  it('brings in the route sheet PDF first, then opens Route Sheets', () => {
+    expect(stepAction('route-sheets', nothing)).toBe('import-route-sheets');
+    expect(stepAction('route-sheets', { ...nothing, routeSheets: 29 })).toBe('open-route-sheets');
   });
 });

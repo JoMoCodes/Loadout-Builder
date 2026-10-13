@@ -25,6 +25,7 @@ const LOAD_OUT = '[data-page="load-out"]';
 const ROUTE_DATA = '[data-page="route-data"]';
 const VEHICLE_DATA = '[data-page="vehicle-data"]';
 const ASSOCIATES = '[data-page="associates"]';
+const ROUTE_SHEETS = '[data-page="route-sheets"]';
 const SETTINGS = '[data-page="settings"]';
 const PERF = '[data-page="performance"]';
 const DASHBOARD = '[data-page="dashboard"]';
@@ -43,7 +44,7 @@ export const TOURS: Record<string, Tour> = {
       {
         element: '[data-testid="first-run-checklist"]',
         title: 'Your first day, step by step',
-        text: 'This list shows the five things to do. Each step ticks itself off when it is done.',
+        text: 'This list shows the six things to do. Each step ticks itself off when it is done.',
         side: 'left',
       },
       {
@@ -259,6 +260,49 @@ export const TOURS: Record<string, Tour> = {
       {
         title: 'Then go to Load Out',
         text: 'Click Bring Over Route Data on the Load Out page. That puts the times, PADs and DWP numbers on the roster.',
+      },
+    ],
+  },
+
+  'route-sheets': {
+    name: 'route-sheets',
+    label: 'Route Sheets',
+    steps: [
+      {
+        element: `${ROUTE_SHEETS} [data-testid="route-sheets-top"]`,
+        title: 'What the app reads',
+        text: 'These cards show the route data, driver list and email setup in use. They come from Route Data, Associates and Settings.',
+        side: 'bottom',
+      },
+      {
+        element: `${ROUTE_SHEETS} [data-testid="route-sheets-bring-in"]`,
+        title: 'Bring in the PDF',
+        text: 'Click here and pick the route sheet PDF, or drop it on the page. The ? next to it shows where to download it.',
+        side: 'bottom',
+      },
+      {
+        element: `${ROUTE_SHEETS} [role="group"][aria-label="Route sheet counts"]`,
+        title: 'The counts',
+        text: 'Green are ready to send. Amber need your decision. Red have no exact match, or no page in the PDF.',
+        side: 'bottom',
+      },
+      {
+        element: `${ROUTE_SHEETS} [data-testid="route-sheets-accept-suggestions"]`,
+        title: 'Choose who gets a route sheet',
+        text: "When a route lists more than one driver, choose one. Accept all suggestions takes the app's best guess for each.",
+        side: 'bottom',
+      },
+      {
+        element: `${ROUTE_SHEETS} [data-testid="route-sheets-tab-sheets"]`,
+        title: 'Check it, then send it',
+        text: 'Pick a route on the Sheets tab to see its email. Send email, Copy or Open email draft, then Mark as sent. Email all and Export all do every ready one.',
+        side: 'bottom',
+      },
+      {
+        element: `${ROUTE_SHEETS} [data-testid="route-sheets-tab-history"]`,
+        title: "Yesterday's work",
+        text: 'History keeps each day for 30 days. Click Open to go back to one, or New run to start fresh.',
+        side: 'bottom',
       },
     ],
   },

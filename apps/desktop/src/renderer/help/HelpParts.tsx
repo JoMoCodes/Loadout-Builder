@@ -13,6 +13,9 @@ import perfImports from './shot-perf-imports.png';
 import perfReports from './shot-perf-reports.png';
 import print from './shot-print.png';
 import routeData from './shot-route-data.png';
+import routeSheetsDistribute from './shot-route-sheets-distribute.png';
+import routeSheetsSheets from './shot-route-sheets-sheets.png';
+import slackDownloadPdf from './slack-download-pdf.png';
 import vehicles from './shot-vehicles.png';
 
 export const SHOTS = {
@@ -27,6 +30,9 @@ export const SHOTS = {
   'perf-drivers': perfDrivers,
   'perf-imports': perfImports,
   'perf-reports': perfReports,
+  'route-sheets-distribute': routeSheetsDistribute,
+  'route-sheets-sheets': routeSheetsSheets,
+  'slack-download-pdf': slackDownloadPdf,
 } as const;
 
 export type ShotName = keyof typeof SHOTS;

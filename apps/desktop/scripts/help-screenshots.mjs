@@ -3,7 +3,8 @@
 //
 // It builds the app, starts it with a throwaway data folder, turns on demo mode, and saves one
 // picture per place the help needs into src/renderer/help/ (1200 pixels wide, PNG): the first
-// day's pages, then the Performance page (Drivers, Imports, Reports) and the Dashboard with the
+// day's pages (with the Route Sheets page's two pictures, of the made-up route sheet day demo mode
+// loads), then the Performance page (Drivers, Imports, Reports) and the Dashboard with the
 // made-up weekly data. Run
 // `python3 scripts/shrink-help-shots.py` afterwards to keep each picture under 300 kB.
 //
@@ -89,6 +90,19 @@ try {
 
   await goTo('vehicle-data');
   await shot('vehicles');
+
+  // Route Sheets, on the made-up day demo mode loads (the fixture Routes export and PDF). It is
+  // taken before the Route Data picture below, which brings in a different Routes file.
+  await goTo('route-sheets');
+  await page.waitForSelector('[data-testid="route-sheets-count-total"]', { timeout: 60_000 });
+  await page.waitForTimeout(600);
+  await shot('route-sheets-distribute');
+  await page.click('[data-testid="route-sheets-tab-sheets"]');
+  await page.waitForSelector('[data-testid^="route-sheets-pick-"]', { timeout: 10_000 });
+  await page.locator('[data-testid^="route-sheets-pick-"]').first().click();
+  await page.waitForSelector('[data-testid="route-sheets-preview"]', { timeout: 10_000 });
+  await page.waitForTimeout(1200);
+  await shot('route-sheets-sheets');
 
   // A made-up Routes file from the fixtures, brought in the way a person would (the file window
   // is answered here). Any question it asks (which PAD each time goes to) is closed unanswered.

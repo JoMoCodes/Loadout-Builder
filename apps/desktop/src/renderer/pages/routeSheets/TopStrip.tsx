@@ -2,9 +2,11 @@
 // matching reads, the driver list, the email setup, and the button that brings the PDF in. Above
 // it, once, the note about the old Route Sheet Distributor.
 
-import { FileUp } from 'lucide-react';
+import { CircleHelp, FileUp } from 'lucide-react';
+import { useState } from 'react';
 import type { RouteSheetsStateView } from '../../../shared/routeSheets';
 import { Button } from '../../ui/button';
+import { WhereToGetDialog } from '../../help/whereToGet';
 import { Chip } from '../../ui/chip';
 import { plural } from '../dataPages/format';
 import type { PageId } from '../types';
@@ -41,6 +43,7 @@ export function TopStrip({ state, busy, onBringIn, goTo }: TopStripProps) {
   const { run, routeData, driverList, emailProblem } = state;
   const old = driverList.count > 0 && isOverdue(driverList.refreshDueAt);
   const failures = run.checkFailures.length;
+  const [helpOpen, setHelpOpen] = useState(false);
 
   return (
     <div
@@ -84,10 +87,23 @@ export function TopStrip({ state, busy, onBringIn, goTo }: TopStripProps) {
             <FileUp aria-hidden="true" />
             Bring in the route sheet PDF
           </Button>
+          <button
+            type="button"
+            className="checklist-help"
+            aria-label="Where do I get the route sheet PDF?"
+            title="Where do I get the route sheet PDF?"
+            onClick={() => setHelpOpen(true)}
+            data-testid="route-sheets-bring-in-help"
+          >
+            <CircleHelp aria-hidden="true" />
+          </button>
           <span className="text-muted" data-testid="route-sheets-drop-words">
             Or drop the PDF anywhere on this page.
           </span>
         </div>
+        {helpOpen ? (
+          <WhereToGetDialog step="route-sheets" onClose={() => setHelpOpen(false)} />
+        ) : null}
       </TopCard>
 
       <TopCard title="Route data" testId="route-sheets-route-data">

@@ -721,6 +721,35 @@ describe('every route sheets channel, through the real handlers', () => {
     expect(again.run.typedPads).toEqual({ '02:30 PM': 'B12' });
   });
 
+  it('drops a choice that no longer fits the Routes export, and keeps the rest', async () => {
+    const rig = makeRig();
+    await fixtureDay(rig);
+    const open = await rig.ok<RouteSheetsDistributionView>('routeSheets:distribution');
+    const [first, second] = open.routes.filter((r) => r.state === 'needs-decision' && r.suggestion);
+    expect(second).toBeDefined();
+    for (const route of [first!, second!]) {
+      await rig.ok('routeSheets:set-decision', {
+        routeCode: route.routeCode,
+        decision: { recipients: [route.suggestion] },
+      });
+    }
+    const chosen = async (routeCode: string) =>
+      (await rig.ok<RouteSheetsDistributionView>('routeSheets:distribution')).routes.find(
+        (r) => r.routeCode === routeCode,
+      )!;
+    expect(await chosen(first!.routeCode)).toMatchObject({ state: 'ready', source: 'decision' });
+
+    // The Routes export changes: the first route no longer lists anyone.
+    for (const row of rig.host.state.routeSet('routes').rows) {
+      if (row.routeCode === first!.routeCode) {
+        row.transporterId = '';
+        row.sharedIds = '';
+      }
+    }
+    expect((await chosen(first!.routeCode)).source).not.toBe('decision');
+    expect(await chosen(second!.routeCode)).toMatchObject({ state: 'ready', source: 'decision' });
+  });
+
   it('copies the email, opens the draft and the mail app, saves and shows the page', async () => {
     const rig = makeRig();
     await fixtureDay(rig);
@@ -1105,5 +1134,52 @@ describe('when the app opens', () => {
     rig.rebuild();
     expect((await snapshot(rig)).routeSheets.runs).toBe(0);
     expect(existsSync(path.join(pdfs, `${RUN_ID}.pdf`))).toBe(false);
+  });
+});
+
+describe('demo mode', () => {
+  it('brings the made-up route sheet day in: the Routes export, the driver list and the PDF', async () => {
+    const base = mkdtempSync(path.join(folder, 'demo-'));
+    const source = new DataSource({
+      dataFolder: path.join(base, 'data'),
+      fixtureDb: fixture('v1', 'loadout.db'),
+      tempFolder: base,
+    });
+    const logs: string[] = [];
+    let announced = 0;
+    const host = new StateHost(source, () => '2026-09-01', {
+      demoFixturesFolder: fixtures,
+      onAsyncChange: () => void announced++,
+      log: (line) => logs.push(line),
+    });
+    try {
+      // The real data is left alone: nothing is loaded until demo mode opens.
+      source.open(false);
+      host.rebuild();
+      await host.routeSheetsLoading;
+      expect(host.routeSheets.counts().sheets).toBe(0);
+
+      source.open(true);
+      host.rebuild();
+      await host.routeSheetsLoading;
+      const counts = host.routeSheets.counts();
+      expect(counts.sheets).toBe(29);
+      expect(counts.runId).toBe(RUN_ID);
+      expect(counts.ready).toBeGreaterThan(0);
+      expect(counts.needsDecision).toBeGreaterThan(0);
+      expect(host.state.routeSet('routes').rows.length).toBeGreaterThan(0);
+      expect(host.state.associates.rows.length).toBeGreaterThan(0);
+      expect(announced).toBe(1);
+      expect(logs).toContain('demo route sheets loaded: 29 sheets');
+      expect(logs.join('\n')).not.toMatch(/2026-09-01\.pdf|@example\.com/);
+
+      // Back to the real data: none of the made-up day is there.
+      source.open(false);
+      host.rebuild();
+      expect(host.routeSheets.counts().sheets).toBe(0);
+      expect(host.state.routeSet('routes').rows).toHaveLength(0);
+    } finally {
+      source.close();
+    }
   });
 });

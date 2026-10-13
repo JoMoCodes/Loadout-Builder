@@ -11,6 +11,27 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.3.0',
+    items: [
+      'Route Sheet Distributor is now part of Loadout Builder. You only need one app. You can uninstall the old one.',
+      'There is a new Route Sheets page, right under Load Out in the left menu.',
+      "Bring in the day's route sheet PDF. The app works out which driver each page belongs to, and shows you the email that driver will get.",
+      'It uses the driver list from the Associates page and the Routes file from the Route Data page. They are the ones you already have, so there is nothing new to bring in.',
+      'The PAD for each route comes from Route Data too. If a time on the PDF is not on the Routes file, the page lets you type its PAD.',
+      'The Distribute tab shows green, amber and red counts. Green is ready to send. Amber and red need you to choose.',
+      'Click Accept all suggestions to take the little green Suggested pick for every route in one go.',
+      'The Sheets tab shows the email each driver gets. Send it, copy it, open it as a draft, or mark it as sent.',
+      'Click Email all to send every ready route sheet. The app asks first, and tells you how many went.',
+      'Click Export all to save the emails and PDFs into a folder you pick.',
+      'The History tab keeps each day for 30 days, so you can open an older day. Older days clear by themselves.',
+      'Emails go out from the same Gmail address as the weekly reports. Set it up once in Settings, under Email.',
+      'Used the old Route Sheet Distributor? Nothing is brought over. Put your Gmail app password in Settings, under Email, once.',
+      'Home has a new last step, Send the route sheets. It ticks itself off when they are sent.',
+      'The Route Sheets page has a short tour. How to use has a new part called Sending the route sheets.',
+      'Demo mode has a made-up day of route sheets too, so you can practise safely.',
+    ],
+  },
+  {
     version: '2.2.1',
     items: [
       'Each window you open with Open in new window now remembers its size and place, so it opens the same way next time.',

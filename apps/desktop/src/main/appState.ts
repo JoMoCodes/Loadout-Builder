@@ -13,11 +13,17 @@ import type { AppSnapshot } from '../shared/snapshot';
 import type { GridLayoutRecord } from '../shared/channels/layout';
 import { loadDemoPerformance } from './performance/demo';
 import { NO_PERF_STATUS, PerfHost, type PerfStatus } from './performance/perfHost';
+import { loadDemoRouteSheets } from './routeSheets/demo';
 import { memoryLastRun, RouteSheetsHost, type LastRunMemory } from './routeSheets/host';
 
 export interface StateHostOptions {
   /** The made-up weekly performance exports, brought into the demo copy when demo mode opens. */
   demoPerformanceFolder?: string;
+  /**
+   * The made-up fixtures folder (it holds routes, associates and route-sheets). Demo mode brings
+   * in the made-up route sheet day from it when demo mode opens.
+   */
+  demoFixturesFolder?: string;
   /** Called when the data changed by itself (the demo weekly data finished loading). */
   onAsyncChange?: () => void;
   /** Counts only, for the log. */
@@ -42,6 +48,8 @@ export class StateHost {
   perfStatus: () => PerfStatus = () => NO_PERF_STATUS;
   /** Settles when the demo weekly data has been brought in (at once when there is none to load). */
   perfLoading: Promise<void> = Promise.resolve();
+  /** Settles when the demo route sheet day has been brought in (at once when there is none to load). */
+  routeSheetsLoading: Promise<void> = Promise.resolve();
   /** Goes up by one after every command and whenever the data is swapped. */
   revision = 0;
 
@@ -59,6 +67,7 @@ export class StateHost {
     this.currentPerf = null;
     this.currentRouteSheets = null;
     this.perfLoading = Promise.resolve();
+    this.routeSheetsLoading = Promise.resolve();
     const store = this.dataSource.getStore();
     if (store === null) {
       this.current = null;
@@ -83,6 +92,23 @@ export class StateHost {
       lastRun: demo ? this.demoLastRun : (this.options.lastRouteSheetRun ?? memoryLastRun()),
       log: this.options.log,
     });
+    const fixtures = this.options.demoFixturesFolder;
+    if (demo && fixtures) {
+      const sheets = this.currentRouteSheets;
+      this.routeSheetsLoading = loadDemoRouteSheets(state, sheets, fixtures, this.today())
+        .then((count) => {
+          if (this.currentRouteSheets !== sheets) return;
+          this.options.log?.(`demo route sheets loaded: ${count} sheets`);
+        })
+        .catch(() => {
+          if (this.currentRouteSheets === sheets) {
+            this.options.log?.('could not load the demo route sheets');
+          }
+        })
+        .finally(() => {
+          if (this.currentRouteSheets === sheets) this.options.onAsyncChange?.();
+        });
+    }
     const folder = this.options.demoPerformanceFolder;
     if (demo && folder) {
       perf.ready = false;

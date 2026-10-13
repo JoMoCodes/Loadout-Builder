@@ -26,7 +26,12 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
 - [ ] The "driver list is over a month old" reminder (amber, one calendar month after the import),
       on the Associates page and the Route Sheets page's driver-list card. Rule: `addMonth`.
       Test: 'Associate Data: due for a new import one calendar month after it was imported'
-      (`packages/route-sheets/src/runs/rules.test.ts`, the rule); the pages in phase 3.
+      (`packages/route-sheets/src/runs/rules.test.ts`, the rule). The Route Sheets page's card is
+      done: 'the cards name the route data in use, an old driver list and a ready email setup'
+      (`apps/desktop/e2e/route-sheets.spec.ts`) and 'says the driver list is over a month old once
+      its due time has come' (`apps/desktop/src/renderer/pages/routeSheets/words.test.ts`).
+      **Needs Jonathan:** the Associates page does not show the reminder yet. The brief for the
+      teaching phase did not allow changes to that page, so it is left undone until you say yes.
 - [x] **Changed (item 2).** The Routes export is not imported here. Matching reads the Route Data
       page's loaded Routes export, with every pipe-joined Transporter ID and name on a shared
       route; a title row above the header is skipped by the Route Data reader. Test: phase 2 host
@@ -178,9 +183,10 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
       quietly when the app opens. Rule: 'Runs: runs older than 30 days are the ones removed when
       the app opens' (`staleRunIds`). Phase 2 host ('reopens the last run only if it is for
       today, and quietly removes runs older than 30 days', `apps/desktop/src/main/routeSheets.test.ts`).
-- [ ] A re-import drops the decisions that no longer fit (a chosen driver who left the route);
+- [x] A re-import drops the decisions that no longer fit (a chosen driver who left the route);
       hand-made and skipped decisions stay. Rule: 'Runs: decisions that no longer fit the routes
-      file are dropped' (`pruneDecisions`).
+      file are dropped' (`pruneDecisions`). In the app: 'drops a choice that no longer fits the
+      Routes export, and keeps the rest' (`apps/desktop/src/main/routeSheets.test.ts`).
 - [x] **Changed (item 7).** Open and Change the output folder are gone; the data folder is in
       Settings and Export all asks for a folder. Nothing to test (the History page test checks no
       output folder is mentioned).
@@ -202,11 +208,32 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
 
 ## 7. Shell
 
-- [ ] **Changed (item 5).** Light or dark, High contrast, text size, What's new, Features log,
+- [x] **Changed (item 5).** Light or dark, High contrast, text size, What's new, Features log,
       How to use, "?" help pictures, Open data folder are the app's own. Phase 3 adds the How to
-      use section, the tour, the Home checklist step and the What's-new note.
-- [ ] **Changed (item 10).** Nothing is brought over from the old app; the first open of the Route
-      Sheets page says where the old app's work now lives when its folder exists. Phase 2 and 3.
+      use section ('the route sheets part walks through the day and names the buttons on the
+      page', 'the route sheet problems are folded up with the others',
+      `apps/desktop/e2e/help-page.spec.ts`), the tour ('the Route Sheets tour runs by itself the
+      first time and walks through the page', 'Help > Take the tour runs the Route Sheets tour
+      again', `apps/desktop/e2e/help-route-sheets.spec.ts`; 'point the Route Sheets tour at the
+      Route Sheets page, the same on every tab', `apps/desktop/src/renderer/help/tours.test.ts`),
+      the "?" on the PDF box with the picture ('the ? on the Bring in box says where to get the
+      PDF, with the picture', `apps/desktop/e2e/help-route-sheets.spec.ts`), the Home checklist
+      step ('the route sheets step ticks once the ready sheets are sent, and opens Route Sheets',
+      'the route sheets step button opens Route Sheets and presses Bring in the PDF', 'the ? on the
+      route sheets step says where to get the PDF, with a picture',
+      `apps/desktop/e2e/help-checklist.spec.ts`; 'ticks the route sheets step once every ready
+      sheet has gone out', `apps/desktop/src/renderer/help/checklist.test.ts`), the What's-new
+      note (`packages/core/src/releaseNotes.test.ts`) and demo mode's made-up day ('brings the
+      made-up route sheet day in: the Routes export, the driver list and the PDF',
+      `apps/desktop/src/main/routeSheets.test.ts`). The help pictures are taken in demo mode
+      (`apps/desktop/scripts/help-screenshots.mjs`).
+- [x] **Changed (item 10).** Nothing is brought over from the old app; the first open of the Route
+      Sheets page says where the old app's work now lives when its folder exists. Phase 2 ('reads
+      the open run, History, and the old app’s folder; opens, starts and deletes runs',
+      `apps/desktop/src/main/routeSheets.test.ts`) and phase 3 ('the note about the old app shows
+      until Got it, which is remembered', 'the note stays away once seen, and when the old app was
+      never here', `apps/desktop/e2e/route-sheets.spec.ts`; How to use says the same in 'Sending
+      the route sheets').
 
 ## 8. The old app's own tests
 
@@ -237,7 +264,7 @@ Every test in the old `test/core.test.js` (35 tests at release 1.5.2) and what b
 | Email all: a rejected login stops the batch before anything is sent | twin, `apps/desktop/src/main/routeSheets.test.ts` |
 | What's new: notes cover the running version and pick the versions in between | not ported (item 5): the app's own What's new and its release note test |
 | What's new: shown once after an update, never on a fresh install | not ported (item 5) |
-| Associate Data: due for a new import one calendar month after it was imported | the rule is a twin, `runs/rules.test.ts`; the reminder on the pages is phase 3 |
+| Associate Data: due for a new import one calendar month after it was imported | the rule is a twin, `runs/rules.test.ts`; the reminder is on the Route Sheets page's driver-list card (`route-sheets.spec.ts`); on the Associates page it is **Needs Jonathan** (see section 1) |
 | New day: asks once per day, clears only runs from earlier days, keeps the Associate Data | not ported (item 8); replaced by 'Runs: runs older than 30 days are the ones removed when the app opens' |
 | Output folder: changing it moves the saved runs, and the app keeps using it after a restart | not ported (item 7) |
 | Display: defaults, text size steps stop at the ends, unknown values are ignored | not ported (item 5) |

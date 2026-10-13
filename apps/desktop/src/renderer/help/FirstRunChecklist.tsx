@@ -1,4 +1,4 @@
-// The first-day checklist on the right of Home. Five steps that tick themselves off as the app
+// The first-day checklist on the right of Home. Six steps that tick themselves off as the app
 // sees them done, a button on each that does the step, and a "?" that says where to get the file.
 // It hides itself once every step is done; How to use can bring it back.
 
@@ -40,6 +40,10 @@ const STEP_WORDS: Record<StepId, { title: string; why: string }> = {
     title: 'Assign vans and print',
     why: 'Gives each driver a van, then makes the sheet you hand out.',
   },
+  'route-sheets': {
+    title: 'Send the route sheets',
+    why: "Emails each driver their own route sheet from today's PDF.",
+  },
 };
 
 const BUTTON_WORDS: Record<StepAction, string> = {
@@ -50,6 +54,8 @@ const BUTTON_WORDS: Record<StepAction, string> = {
   'bring-over': 'Bring over route data',
   'assign-vans': 'Assign vans',
   'open-print': 'Open the Print tab',
+  'import-route-sheets': 'Bring in route sheet PDF',
+  'open-route-sheets': 'Open Route Sheets',
 };
 
 interface ChecklistProps {
@@ -114,7 +120,7 @@ export function FirstRunChecklist({
       steps={steps}
       finished={
         <>
-          <strong>All five steps are done.</strong> You are ready for a normal day. Open{' '}
+          <strong>All six steps are done.</strong> You are ready for a normal day. Open{' '}
           <button type="button" className="link-button" onClick={() => goTo('how-to-use')}>
             How to use
           </button>{' '}

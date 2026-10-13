@@ -123,6 +123,13 @@ function fixturePerformanceFolder(): string {
     : path.resolve(__dirname, '..', '..', '..', '..', 'packages', 'fixtures', 'performance');
 }
 
+/** The made-up fixtures demo mode brings the route sheet day in from (routes, associates, route-sheets). */
+function fixturesFolder(): string {
+  return app.isPackaged
+    ? path.join(process.resourcesPath, 'fixtures')
+    : path.resolve(__dirname, '..', '..', '..', '..', 'packages', 'fixtures');
+}
+
 /**
  * The old app's data file. A test build (never the installed app) can point at another file
  * with LOADOUT_OLD_DB, so a check can try the whole thing on made-up data.
@@ -635,6 +642,7 @@ if (!app.requestSingleInstanceLock()) {
     });
     stateHost = new StateHost(dataSource, undefined, {
       demoPerformanceFolder: fixturePerformanceFolder(),
+      demoFixturesFolder: fixturesFolder(),
       onAsyncChange: () => {
         if (stateHost) announceChange();
       },

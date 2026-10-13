@@ -213,9 +213,8 @@ function problems(goTo: (id: PageId) => void): Problem[] {
       answer: (
         <ul>
           <li>
-            Open {go('settings', 'Settings')} and look under <strong>Weekly performance</strong>.
-            The send-from address must be filled in, and the app password must say{' '}
-            <strong>Saved</strong>.
+            Open {go('settings', 'Settings')} and look under <strong>Email</strong>. The send-from
+            address must be filled in, and the app password must say <strong>Saved</strong>.
           </li>
           <li>
             The app password is a special Gmail password, not your usual one. If you changed your
@@ -229,6 +228,153 @@ function problems(goTo: (id: PageId) => void): Problem[] {
             Drivers with no email address on the driver list are left out. The app lists them before
             it sends anything.
           </li>
+        </ul>
+      ),
+    },
+    {
+      id: 'rs-nothing-ready',
+      question: 'Route sheets: nothing is ready to send, or everything is red',
+      answer: (
+        <ul>
+          <li>
+            Look at the cards at the top of {go('route-sheets', 'Route Sheets')}. The{' '}
+            <strong>Route data</strong> card must name a Routes file, and the{' '}
+            <strong>Driver list</strong> card must say how many drivers are in it.
+          </li>
+          <li>
+            If one is missing, bring it in: the Routes file on {go('route-data', 'Route Data')} and
+            the driver list on {go('associates', 'Associates')}.
+          </li>
+          <li>
+            If the driver list says <strong>Over a month old</strong>, download a fresh one from
+            Cortex and bring it in.
+          </li>
+          <li>Make sure you picked today&apos;s files, not yesterday&apos;s.</li>
+        </ul>
+      ),
+    },
+    {
+      id: 'rs-not-in-list',
+      question: 'A route sheet says the driver is not on the list, or is INACTIVE',
+      answer: (
+        <ul>
+          <li>
+            They are probably new, or their status changed. Download a fresh driver list from Cortex
+            and bring it in on {go('associates', 'Associates')}.
+          </li>
+          <li>Still wrong? In Cortex, check they are Active and their Transporter ID is right.</li>
+          <li>
+            Need to send it today anyway? Use <strong>Send anyway</strong>, or pick the person with{' '}
+            <strong>Assign</strong>.
+          </li>
+        </ul>
+      ),
+    },
+    {
+      id: 'rs-no-email',
+      question: 'A driver has "No email on file"',
+      answer: (
+        <ul>
+          <li>
+            Add their email in Cortex. Then download the driver list again and bring it in on{' '}
+            {go('associates', 'Associates')}.
+          </li>
+          <li>
+            For today, use <strong>Copy for email</strong> and send it yourself, then click{' '}
+            <strong>Mark as sent</strong>.
+          </li>
+        </ul>
+      ),
+    },
+    {
+      id: 'rs-missing-page',
+      question: 'A route is "missing from the PDF"',
+      answer: (
+        <ul>
+          <li>
+            The PDF has no page for that route. Download the PDF again, or ask for the missing page.
+          </li>
+          <li>Bring the new PDF in. Your choices so far are kept.</li>
+        </ul>
+      ),
+    },
+    {
+      id: 'rs-number-check',
+      question: 'A route sheet "failed the number check"',
+      answer: (
+        <ul>
+          <li>
+            The bags and packages on that page do not add up, so the app will not send it on its
+            own.
+          </li>
+          <li>
+            Click <strong>View original page</strong> and compare. The PDF may be cut off. Download
+            it again and bring it in again.
+          </li>
+        </ul>
+      ),
+    },
+    {
+      id: 'rs-wont-send',
+      question: 'The route sheets will not email',
+      answer: (
+        <ul>
+          <li>
+            Open {go('settings', 'Settings')} and look under <strong>Email</strong>. The card at the
+            top of Route Sheets also says what is missing.
+          </li>
+          <li>
+            Use a Gmail <strong>App password</strong>, not your usual Gmail password.
+          </li>
+          <li>
+            Click <strong>Send test email</strong>. If it fails, make a new app password and paste
+            it in.
+          </li>
+          <li>Check the computer is online.</li>
+          <li>Gmail only lets you send about 500 emails a day.</li>
+          <li>Demo mode never sends emails. Turn it off to send for real.</li>
+        </ul>
+      ),
+    },
+    {
+      id: 'rs-wrong-person',
+      question: 'I sent a route sheet to the wrong person',
+      answer: (
+        <ul>
+          <li>An email cannot be unsent. Let that driver know to ignore it.</li>
+          <li>
+            On {go('route-sheets', 'Route Sheets')}, in <strong>All routes</strong>, click{' '}
+            <strong>Change</strong> and pick the right person. Then send it again.
+          </li>
+        </ul>
+      ),
+    },
+    {
+      id: 'rs-wrong-file',
+      question: 'I brought in the wrong route sheet PDF',
+      answer: (
+        <ul>
+          <li>
+            Just bring in the right one. It goes into the run for its own day, so nothing else is
+            lost.
+          </li>
+          <li>
+            Or open <strong>History</strong> and click <strong>New run</strong> to start over.
+          </li>
+          <li>The Routes file is not brought in here. Bring in the right one on Route Data.</li>
+        </ul>
+      ),
+    },
+    {
+      id: 'rs-yesterday',
+      question: "I can't find yesterday's route sheets",
+      answer: (
+        <ul>
+          <li>
+            Open {go('route-sheets', 'Route Sheets')}, then <strong>History</strong>, and click{' '}
+            <strong>Open</strong> next to that day.
+          </li>
+          <li>The app keeps each day for 30 days, then clears it by itself.</li>
         </ul>
       ),
     },
@@ -362,6 +508,191 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
       ),
     },
     {
+      id: 'route-sheets',
+      title: 'Sending the route sheets',
+      body: (
+        <>
+          <p>
+            Every day, the route sheet PDF has one page for each route. The app works out which
+            driver each page belongs to, shows you the email that driver will get, and sends it. It
+            matches by Transporter ID, and it never guesses. The driver list is the one on{' '}
+            {go('associates', 'Associates')}, and the Routes file is the one on{' '}
+            {go('route-data', 'Route Data')}, so you bring them in only once. The{' '}
+            <strong>Route Sheets</strong> page has three tabs: <strong>Distribute</strong>,{' '}
+            <strong>Sheets</strong> and <strong>History</strong>.
+          </p>
+
+          <h3>Once, before the first day</h3>
+          <ol className="help-steps">
+            <li>
+              Bring in your driver list on {go('associates', 'Associates')}. Do it again when
+              someone new starts or an email changes. The driver list card on Route Sheets turns
+              amber when it is over a month old.
+            </li>
+            <li>
+              Used the old Route Sheet Distributor? Its work now lives here. Enter your Gmail app
+              password once in {go('settings', 'Settings')}, under <strong>Email</strong>, and you
+              can uninstall the old app.
+            </li>
+            <li>
+              Want to email the sheets straight from the app? Open {go('settings', 'Settings')} and
+              fill in <strong>Email</strong>: your Gmail address and an{' '}
+              <strong>App password</strong>. It is the same setup the weekly reports use, so you
+              only do it once. Click <strong>Send test email</strong> and look in your inbox (and
+              spam folder).
+            </li>
+          </ol>
+
+          <h3>Every day, step by step</h3>
+          <ol className="help-steps">
+            <li>
+              Download today&apos;s <strong>route sheet PDF</strong> from Slack. The{' '}
+              <strong>?</strong> next to <strong>Bring in the route sheet PDF</strong> shows where.
+            </li>
+            <li>
+              Bring in today&apos;s <strong>Routes</strong> file on {go('route-data', 'Route Data')}
+              . You may have done this already for the roster. The PADs come from there too: each
+              route gets the PAD you gave its dispatch time.
+            </li>
+            <li>
+              Open {go('route-sheets', 'Route Sheets')}. Click{' '}
+              <strong>Bring in the route sheet PDF</strong> and pick the PDF. Or drop the PDF
+              anywhere on the page.
+            </li>
+            <li>
+              Is a time on the PDF missing from the Routes file? The page shows{' '}
+              <strong>Pad for each wave</strong>. Type the PAD next to each of those times. It goes
+              on every route sheet for that wave.
+            </li>
+            <li>Look at the coloured counts at the top. Green is good. Amber and red need you.</li>
+            <li>
+              Go down the page and make a choice for every amber and red route. See &quot;Making
+              choices&quot; below.
+            </li>
+            <li>
+              Check <strong>People who won&apos;t get a route sheet</strong>. Make sure nobody is
+              left out by mistake.
+            </li>
+            <li>
+              Open the <strong>Sheets</strong> tab and click <strong>Email all</strong> to send
+              every ready route sheet. Or click a route and send them one at a time.
+            </li>
+            <li>That is it. The app saves your work by itself.</li>
+          </ol>
+          <Shot
+            name="route-sheets-distribute"
+            caption="The Route Sheets page, with a made-up day"
+          />
+
+          <h3>What the colours mean</h3>
+          <ul className="help-chip-list">
+            <li>
+              <Example tone="ok">Ready to send</Example> The app found exactly one driver. Nothing
+              to do.
+            </li>
+            <li>
+              <Example tone="warn">Needs your decision</Example> More than one driver is listed for
+              this route. Pick who gets it.
+            </li>
+            <li>
+              <Example tone="bad">No exact match</Example> The app could not find the right driver.
+              Pick someone, or do not send it.
+            </li>
+            <li>
+              <Example tone="bad">No route sheet</Example> The route is on the Routes file, but
+              there is no page for it in the PDF.
+            </li>
+            <li>
+              <Example tone="neutral">Not sending</Example> You chose not to send it.
+            </li>
+            <li>
+              <Example tone="info">✓ Emailed</Example> You already sent, copied or opened this one.
+            </li>
+          </ul>
+
+          <h3>Making choices</h3>
+          <p>These buttons are on the Distribute tab, on each amber or red route.</p>
+          <ul>
+            <li>
+              <strong>Send to [name]</strong>: that person gets the route sheet.
+            </li>
+            <li>
+              <strong>Suggested</strong>: the app&apos;s best guess.{' '}
+              <strong>Accept all suggestions</strong> picks every guess in one click.
+            </li>
+            <li>
+              <strong>Send anyway</strong>: the person is on your list but is not marked ACTIVE.
+              Only use it if you are sure.
+            </li>
+            <li>
+              <strong>Send to someone else</strong>, then <strong>Assign</strong>: pick anyone from
+              the list, then click <strong>Assign</strong>.
+            </li>
+            <li>
+              <strong>Don&apos;t send</strong>: skip this route today.
+            </li>
+            <li>
+              Changed your mind? In <strong>All routes</strong> at the bottom of Distribute, click{' '}
+              <strong>Change</strong> next to the route.
+            </li>
+          </ul>
+
+          <h3>Ways to send a route sheet</h3>
+          <p>
+            Open the <strong>Sheets</strong> tab and click a route on the left. You see exactly what
+            the driver gets, and these buttons.
+          </p>
+          <ul>
+            <li>
+              <strong>Send email</strong>: sends it to the driver right now, with the PDF page
+              attached. It needs the email set up in Settings.
+            </li>
+            <li>
+              <strong>Copy for email</strong>: copies the sheet. Paste it into any email with
+              Ctrl+V.
+            </li>
+            <li>
+              <strong>Open email draft</strong>: opens a ready-to-go email in Outlook. You just
+              click Send.
+            </li>
+            <li>
+              <strong>Copy + open mail app</strong>: copies the sheet and opens your email app.
+              Paste it in.
+            </li>
+            <li>
+              <strong>Save PDF page</strong>: saves only this driver&apos;s page as a PDF.
+            </li>
+            <li>
+              <strong>View original page</strong>: shows the page from the original PDF, to
+              double-check.
+            </li>
+            <li>
+              <strong>Mark as sent</strong>: puts a ✓ on it if you sent it some other way, like a
+              text message.
+            </li>
+            <li>
+              <strong>Email all</strong> sends every ready route sheet that has not been sent yet,
+              each to its own driver. It asks first, and tells you at the end how many went. Routes
+              with no email address are left out, and it says so.
+            </li>
+            <li>
+              <strong>Export all</strong> asks you for a folder, then saves an email draft and a PDF
+              for every ready route, and a summary you can open in Excel.
+            </li>
+          </ul>
+          <Shot name="route-sheets-sheets" caption="The Sheets tab, with the email a driver gets" />
+
+          <h3>Yesterday&apos;s work</h3>
+          <p>
+            The <strong>History</strong> tab keeps each day&apos;s route sheets, with your choices
+            and what was sent. Click <strong>Open</strong> to go back to a day, or{' '}
+            <strong>New run</strong> to start fresh. The app clears days older than 30 days by
+            itself. If something goes wrong, see &quot;If something goes wrong&quot; below.
+          </p>
+        </>
+      ),
+    },
+    {
       id: 'weekly',
       title: 'Weekly performance',
       body: (
@@ -460,7 +791,7 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
               Builder&quot;, and copy the 16 letters.
             </li>
             <li>
-              In {go('settings', 'Settings')}, under <strong>Weekly performance</strong>, fill in{' '}
+              In {go('settings', 'Settings')}, under <strong>Email</strong>, fill in{' '}
               <strong>Send from</strong> and click <strong>Save email settings</strong>. Paste the
               app password and click <strong>Save password</strong>.
             </li>
@@ -601,7 +932,7 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
         <>
           <ul>
             <li>
-              The <strong>first-day checklist</strong> on Home shows the five steps of a day. It
+              The <strong>first-day checklist</strong> on Home shows the six steps of a day. It
               hides itself once they are all done.
             </li>
             <li>

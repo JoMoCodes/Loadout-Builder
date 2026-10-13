@@ -51,7 +51,7 @@ test('sits beside the first-day list, with nothing done, pointing at the driver 
   for (const id of ['perf-roster', 'perf-folders', 'perf-sync', 'perf-dashboard', 'perf-reports'])
     await expect(step(page, id)).toHaveAttribute('data-step-done', 'false');
   // The two lists keep their own counts.
-  await expect(page.getByTestId('checklist-count')).toHaveText('0 of 5 done');
+  await expect(page.getByTestId('checklist-count')).toHaveText('0 of 6 done');
 });
 
 test('ticks itself off as the weekly data changes', async ({ page }) => {
