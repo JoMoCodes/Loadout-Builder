@@ -174,7 +174,8 @@ export function unmatchedWaves(
 
 /**
  * The pad for each wave time on the route sheets: the route data's pad for the dispatch time with
- * the same clock value, else the pad typed for that wave, if any. Waves with no pad are left out.
+ * the same clock value. A typed pad counts only for a wave that matches no dispatch time in the
+ * route data (section 3, item 3). Waves with no pad are left out.
  */
 export function wavePadsFromRouteSet(
   waveTimes: readonly string[],
@@ -182,9 +183,10 @@ export function wavePadsFromRouteSet(
   typedPads: Readonly<Record<string, string>> = {},
 ): WavePads {
   const out: WavePads = {};
+  const typedWaves = new Set(unmatchedWaves(waveTimes, set));
   for (const wave of waveTimes) {
     const fromData = set ? routeDataPad(wave, set) : null;
-    const pad = fromData ?? (typedPads[wave] || null);
+    const pad = fromData ?? (typedWaves.has(wave) ? typedPads[wave] || null : null);
     if (pad) out[wave] = pad;
   }
   return out;

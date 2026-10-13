@@ -214,4 +214,11 @@ describe('wave times and pads', () => {
     expect(unmatchedWaves(waves, set)).toEqual(['11:00 AM']);
     expect(unmatchedWaves(waves, null)).toEqual(waves);
   });
+
+  it('never puts a typed pad on a wave the route data knows, even one with no pad there', () => {
+    const set = { rows: [row({ routeCode: 'CX4', dispatchTime: '2:30pm' })], pads: new Map() };
+    expect(
+      wavePadsFromRouteSet(['02:30 PM', '11:00 AM'], set, { '02:30 PM': '4', '11:00 AM': '5' }),
+    ).toEqual({ '11:00 AM': '5' });
+  });
 });

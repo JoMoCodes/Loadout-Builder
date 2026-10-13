@@ -125,13 +125,13 @@ export class EmailAccount {
         subject: 'Test email from Loadout Builder',
         text:
           'This is a test message to check that the email settings work.\n\n' +
-          'If you got it, the app can send the weekly reports from this account.',
+          'If you got it, the app can send email from this account.',
       });
       this.deps.log('email test: sent');
       return { sent: true, problem: null };
     } catch (error) {
       this.deps.log('email test: not sent');
-      const reason = describeSendProblem(error);
+      const reason = describeSendProblem(error).replace(/\.$/, '');
       return { sent: false, problem: `The test email was not sent: ${reason}.` };
     } finally {
       transport.close();

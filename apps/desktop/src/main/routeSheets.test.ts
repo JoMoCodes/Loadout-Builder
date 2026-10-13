@@ -669,19 +669,34 @@ describe('every route sheets channel, through the real handlers', () => {
       reason: 'bad-input',
     });
 
-    // A typed pad: the 2:30 pm wave has a dispatch time but no pad on the Route Data page, so the
-    // typed one is used; trimmed, and cleared with a blank.
+    // A wave the route data knows gets its pad from the Route Data page only, even with none
+    // there yet: the 2:30 pm wave has a dispatch time but no pad, and no box.
+    const fromRouteData = {
+      ok: false,
+      reason: 'refused',
+      message: 'That wave already gets its pad from the Route Data page.',
+    };
+    expect(await rig.call('routeSheets:set-wave-pad', { waveTime: '02:30 PM', pad: '4' })).toEqual(
+      fromRouteData,
+    );
+    // Take that dispatch time off the route data: now the wave matches none, and a typed pad is
+    // used; trimmed, and cleared with a blank.
+    for (const row of rig.host.state.routeSet('routes').rows) {
+      if (row.routeCode === 'AX13') row.dispatchTime = '';
+    }
     expect(await rig.ok('routeSheets:set-wave-pad', { waveTime: '02:30 PM', pad: '  4 ' })).toBe(
       '4',
     );
     dist = await rig.ok<RouteSheetsDistributionView>('routeSheets:distribution');
+    expect(dist.typedPadWaves).toEqual(['02:30 PM']);
     expect(dist.waves.find((w) => w.waveTime === '02:30 PM')!.pad).toBe('4');
     expect(
       (await rig.ok<RouteSheetsPreview>('routeSheets:preview', { routeCode: 'AX13' })).subject,
     ).toMatch(/Pad 4$/);
-    // A pad on the Route Data page wins over a typed one.
     await padsFromInputs(rig);
-    expect(await rig.ok('routeSheets:set-wave-pad', { waveTime: '10:20 AM', pad: '9' })).toBe('9');
+    expect(await rig.call('routeSheets:set-wave-pad', { waveTime: '10:20 AM', pad: '9' })).toEqual(
+      fromRouteData,
+    );
     dist = await rig.ok<RouteSheetsDistributionView>('routeSheets:distribution');
     expect(dist.waves.map((w) => w.pad)).toEqual(['1', '2', '4']);
     expect(
@@ -692,15 +707,18 @@ describe('every route sheets channel, through the real handlers', () => {
       reason: 'refused',
       message: 'That wave time is not in this run.',
     });
+    expect(await rig.ok('routeSheets:set-wave-pad', { waveTime: '02:30 PM', pad: 'B12' })).toBe(
+      'B12',
+    );
     state = await rig.ok<RouteSheetsStateView>('routeSheets:state');
-    expect(state.run.typedPads).toEqual({ '10:20 AM': '9' });
+    expect(state.run.typedPads).toEqual({ '02:30 PM': 'B12' });
 
     // Everything was saved at once: a fresh start on the same day reopens the same run.
     rig.rebuild();
     const again = await rig.ok<RouteSheetsStateView>('routeSheets:state');
     expect(again.run.id).toBe(RUN_ID);
     expect(again.run.decisions).toEqual(state.run.decisions);
-    expect(again.run.typedPads).toEqual({ '10:20 AM': '9' });
+    expect(again.run.typedPads).toEqual({ '02:30 PM': 'B12' });
   });
 
   it('copies the email, opens the draft and the mail app, saves and shows the page', async () => {
@@ -784,7 +802,7 @@ describe('every route sheets channel, through the real handlers', () => {
     expect(rig.opened.at(-1)).toBe(root);
   });
 
-  it('a run whose PDF is gone still shows its sheets, and says so where the PDF is needed', async () => {
+  it('a run whose PDF is gone still shows its sheets; only cutting a page needs the PDF', async () => {
     const rig = makeRig();
     await fixtureDay(rig);
     rmSync(path.join(rig.base, 'data', 'route-sheets', `${RUN_ID}.pdf`));
@@ -803,13 +821,27 @@ describe('every route sheets channel, through the real handlers', () => {
       'routeSheets:save-pdf-page',
       'routeSheets:view-original-page',
       'routeSheets:open-draft',
-      'routeSheets:send-one',
     ]) {
       expect(await rig.call(name, { routeCode: 'CX2' }), name).toEqual(refusal);
     }
-    expect(await rig.call('routeSheets:export-all'), 'export-all').toEqual(refusal);
-    expect(await rig.call('routeSheets:email-all'), 'email-all').toEqual(refusal);
-    expect(rig.transports).toHaveLength(0);
+    // Sending and Export all carry on, as the old app did: emails without the attachment, and
+    // drafts without the PDFs.
+    expect(await rig.ok<EmailRoutesResult>('routeSheets:send-one', { routeCode: 'CX2' })).toEqual({
+      sent: ['CX2'],
+      failed: [],
+      skipped: [],
+    });
+    expect(rig.transports[0]!.sent[0]!.attachments).toEqual([]);
+    const all = await rig.ok<EmailRoutesResult>('routeSheets:email-all');
+    expect(all.sent.length).toBeGreaterThan(10);
+    const target = path.join(rig.base, 'export');
+    mkdirSync(target);
+    rig.dialog.next.push(target);
+    const result = await rig.ok<ExportAllResult>('routeSheets:export-all');
+    expect(result!.drafts).toBeGreaterThan(10);
+    const root = path.join(target, result!.folder);
+    expect(readdirSync(path.join(root, 'Email drafts'))).toHaveLength(result!.drafts);
+    expect(readdirSync(path.join(root, 'Route sheet PDFs'))).toEqual([]);
   });
 
   it('nothing loaded: a new run refuses what needs a route sheet', async () => {
@@ -851,13 +883,24 @@ describe('every route sheets channel, through the real handlers', () => {
       ok: false,
       reason: 'refused',
       message:
-        "Email isn't set up yet: Add the from address and the app password in Settings first. " +
-        'Open Email settings to finish setting it up.',
+        "Email isn't set up yet. Add the from address and the app password in Settings first.",
     });
     setUpEmail(rig);
     expect((await rig.ok<RouteSheetsStateView>('routeSheets:state')).emailProblem).toBeNull();
     const one = await rig.ok<EmailRoutesResult>('routeSheets:send-one', { routeCode: 'CX2' });
     expect(one).toEqual({ sent: ['CX2'], failed: [], skipped: [] });
+    // A mailbox that turns it down: said in plain words, with what to do.
+    const cx3 = (await rig.ok<RouteSheetsPreview>('routeSheets:preview', { routeCode: 'CX3' }))
+      .recipients[0]!.email;
+    rig.mail.refuse.add(cx3);
+    expect(await rig.call('routeSheets:send-one', { routeCode: 'CX3' })).toEqual({
+      ok: false,
+      reason: 'refused',
+      message:
+        'CX3 was not sent. The email server refused this address. ' +
+        'Check the address on the Associates page, or use Open email draft.',
+    });
+    rig.mail.refuse.clear();
     expect(await rig.call('routeSheets:send-one', { routeCode: 'CX12' })).toEqual({
       ok: false,
       reason: 'refused',
@@ -876,6 +919,7 @@ describe('every route sheets channel, through the real handlers', () => {
     expect(rig.transports.map((t) => [t.verified, t.closed])).toEqual([
       [1, true],
       [1, true],
+      [1, true],
     ]);
     expect(rig.logs.join('\n')).not.toContain('@example.com');
   });
@@ -890,7 +934,8 @@ describe('every route sheets channel, through the real handlers', () => {
     expect(await rig.call('routeSheets:send-one', { routeCode: 'CX2' })).toEqual({
       ok: false,
       reason: 'refused',
-      message: 'Demo mode is on, so no emails are sent.',
+      message:
+        'Demo mode is on, so no emails are sent. Turn off demo mode in Settings to send them.',
     });
     expect(rig.transports).toHaveLength(0);
     // Demo mode never touches the remembered run.

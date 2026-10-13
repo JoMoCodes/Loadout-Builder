@@ -125,6 +125,45 @@ describe('Route Sheet Distributor’s mailer rules, in this app’s mailer', () 
     expect(describeSendProblem(new Error('odd'))).toBe('the email could not be sent');
   });
 
+  it('Mailer: the old setup checks, in order: the port, the from address, the BCC address', () => {
+    const ok = { ...DEFAULT_EMAIL, fromAddress: 'me@example.com' };
+    expect(setupProblem({ ...ok, smtpPort: 0 }, 'pw')).toBe('The mail server port is not valid.');
+    expect(setupProblem({ ...ok, smtpPort: 65536 }, 'pw')).toBe(
+      'The mail server port is not valid.',
+    );
+    expect(setupProblem({ ...ok, smtpPort: 65535 }, 'pw')).toBeNull();
+    expect(setupProblem({ ...ok, fromAddress: 'nope' }, 'pw')).toBe(
+      '"nope" is not a valid email address.',
+    );
+    // The port is checked before the address.
+    expect(setupProblem({ ...ok, fromAddress: 'nope', smtpPort: 0 }, 'pw')).toBe(
+      'The mail server port is not valid.',
+    );
+    expect(setupProblem({ ...ok, bccAddress: 'x' }, 'pw')).toBe(
+      'The BCC address "x" is not a valid email address.',
+    );
+    expect(setupProblem({ ...ok, bccAddress: 'lead@example.com' }, 'pw')).toBeNull();
+    // The earlier checks keep their words.
+    expect(setupProblem({ ...ok, fromAddress: '', smtpPort: 0 }, 'pw')).toBe(
+      'Add the from address and the app password in Settings first.',
+    );
+  });
+
+  it('Mailer: Gmail’s daily sending limit is said in plain words', () => {
+    const words =
+      'Gmail says this account hit its daily sending limit. Try again tomorrow, or send the rest with Export all.';
+    expect(
+      describeSendProblem({
+        responseCode: 550,
+        response: '550 5.4.5 Daily user sending limit exceeded',
+      }),
+    ).toBe(words);
+    expect(describeSendProblem(new Error('Message rejected: sending limit exceeded'))).toBe(words);
+    expect(describeConnectProblem({ response: '421 Daily user sending limit exceeded' })).toBe(
+      words,
+    );
+  });
+
   it('sends the HTML part, everyone on the To line, and attachments from a file or as bytes', async () => {
     const transport = nodemailerTransport({
       host: 'smtp.gmail.com',

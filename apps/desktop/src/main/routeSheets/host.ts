@@ -84,6 +84,18 @@ export const PDF_MISSING = 'The original route sheet PDF for this run is not ava
 /** A run id is used as a file name: the old app's rule for a run folder's name. */
 const SAFE_ID = /^[A-Za-z0-9_.-]+$/;
 
+/** Writes a file, or refuses in plain words when it cannot be written. */
+function writeOrRefuse(file: string, content: Uint8Array | string): void {
+  try {
+    writeFileSync(file, content);
+  } catch {
+    throw new ChannelRefusal(
+      'refused',
+      "The app can't write that file. Choose another place and try again.",
+    );
+  }
+}
+
 /** Where the open run's id is remembered between runs of the app (MainOnlySettings.lastRunId). */
 export interface LastRunMemory {
   get(): string | null;
@@ -152,7 +164,14 @@ export class RouteSheetsHost {
   constructor(private readonly options: RouteSheetsHostOptions) {
     this.runs = new RouteSheetsStore(options.store.db, { now: () => this.now() });
     this.lastRun = options.lastRun ?? memoryLastRun();
-    this.removeOldRuns();
+    try {
+      this.removeOldRuns();
+    } catch (error) {
+      // Old runs are only tidied away; a problem here must never stop the saved data opening.
+      this.log(
+        `route sheets: old runs not removed (${error instanceof Error ? error.name : 'unknown'})`,
+      );
+    }
     // Reopen the last run only if it is for today; older runs stay available under History.
     const last = this.lastRun.get();
     const run = last ? this.runs.loadRun(last) : null;
@@ -206,6 +225,8 @@ export class RouteSheetsHost {
 
   private persist(): void {
     if (!this.saved()) return;
+    const source = this.routeSource();
+    this.run.routesFileName = source ? path.basename(source.set.sourceFile) : null;
     this.run.updatedAt = this.runs.saveRun(this.run);
     this.lastRun.set(this.run.id);
   }
@@ -325,7 +346,7 @@ export class RouteSheetsHost {
       sheetCount: run.sheets.length,
       checkFailures: run.sheets.filter((s) => !s.check.ok).map((s) => s.routeCode ?? ''),
       sent: structuredClone(run.sent),
-      decisions: structuredClone(run.decisions),
+      decisions: structuredClone(this.decisions(this.routes())),
       typedPads: { ...run.wavePads },
       pdfMissing: this.pdfMissing(run.id, this.saved()),
     };
@@ -440,6 +461,19 @@ export class RouteSheetsHost {
     );
     const first = unique[0]!;
     const id = runIdFor(first);
+    // The PDF is saved first, so a failure leaves the open run as it was.
+    const file = this.pdfPath(id);
+    if (file === null) throw new ChannelRefusal('refused', PDF_MISSING);
+    try {
+      mkdirSync(this.options.pdfFolder, { recursive: true });
+      writeFileSync(file, bytes);
+    } catch {
+      this.log('route sheets: the PDF could not be saved');
+      throw new ChannelRefusal(
+        'refused',
+        "The app can't save the PDF in its data folder. Check there is space and try again.",
+      );
+    }
     if (this.run.id !== id) {
       // A PDF for a different day or cycle: continue that saved run if there is one.
       this.run = (this.runs.hasRun(id) ? this.runs.loadRun(id) : null) ?? {
@@ -459,13 +493,6 @@ export class RouteSheetsHost {
       pageCount,
       warnings,
     });
-    const source = this.routeSource();
-    this.run.routesFileName = source ? path.basename(source.set.sourceFile) : null;
-    const file = this.pdfPath(id);
-    if (file === null) throw new ChannelRefusal('refused', PDF_MISSING);
-    mkdirSync(this.options.pdfFolder, { recursive: true });
-    writeFileSync(file, bytes);
-    this.run.decisions = pruneDecisions(this.run.decisions, this.routes(source));
     this.persist();
     const failed = unique.filter((s) => !s.check.ok).length;
     this.log(
@@ -566,6 +593,12 @@ export class RouteSheetsHost {
     if (!wave || !this.waveTimes().includes(wave)) {
       throw new ChannelRefusal('refused', 'That wave time is not in this run.');
     }
+    if (!unmatchedWaves([wave], this.routeSource()?.set ?? null).length) {
+      throw new ChannelRefusal(
+        'refused',
+        'That wave already gets its pad from the Route Data page.',
+      );
+    }
     const value = pad.replace(/\s+/g, ' ').trim().slice(0, 10);
     const pads = { ...this.run.wavePads };
     if (value) pads[wave] = value;
@@ -601,9 +634,14 @@ export class RouteSheetsHost {
     const pdf = this.requirePdf();
     const e = await this.emailFor(routeCode, pdf);
     const file = path.join(io.tempFolder(), safeFileName(`${routeCode} route sheet.eml`));
-    writeFileSync(file, e.eml);
+    writeOrRefuse(file, e.eml);
     const opened = await io.openFile(file);
-    if (!opened) throw new ChannelRefusal('refused', 'Windows could not open the email draft.');
+    if (!opened) {
+      throw new ChannelRefusal(
+        'refused',
+        'Windows could not open the email draft. Use Copy for email instead.',
+      );
+    }
     return { opened };
   }
 
@@ -654,7 +692,7 @@ export class RouteSheetsHost {
   async viewOriginalPage(routeCode: string, io: RouteSheetsIo): Promise<{ opened: boolean }> {
     const { bytes } = await this.sheetPdf(routeCode);
     const file = path.join(io.tempFolder(), safeFileName(`${routeCode} original page.pdf`));
-    writeFileSync(file, bytes);
+    writeOrRefuse(file, bytes);
     return { opened: await io.openFile(file) };
   }
 
@@ -675,7 +713,10 @@ export class RouteSheetsHost {
     account: EmailAccount,
   ): Promise<EmailRoutesResult> {
     if (this.options.demo) {
-      throw new ChannelRefusal('refused', 'Demo mode is on, so no emails are sent.');
+      throw new ChannelRefusal(
+        'refused',
+        'Demo mode is on, so no emails are sent. Turn off demo mode in Settings to send them.',
+      );
     }
     if (this.sending) {
       throw new ChannelRefusal(
@@ -685,12 +726,9 @@ export class RouteSheetsHost {
     }
     const problem = account.problem();
     if (problem) {
-      throw new ChannelRefusal(
-        'refused',
-        `Email isn't set up yet: ${problem} Open Email settings to finish setting it up.`,
-      );
+      throw new ChannelRefusal('refused', `Email isn't set up yet. ${problem}`);
     }
-    const pdf = this.requirePdf();
+    const pdf = this.saved() ? this.readPdf() : null;
 
     this.sending = true;
     // Sent marks go to the run the emails came from, even if another run is opened meanwhile.
@@ -766,7 +804,12 @@ export class RouteSheetsHost {
     const out = await this.emailRoutes([routeCode], account);
     if (out.skipped.length) throw new ChannelRefusal('refused', out.skipped[0]!.reason);
     if (out.failed.length) {
-      throw new ChannelRefusal('refused', `${routeCode} was not sent: ${out.failed[0]!.error}`);
+      const reason = out.failed[0]!.error.replace(/\.$/, '');
+      throw new ChannelRefusal(
+        'refused',
+        `${routeCode} was not sent. ${reason.charAt(0).toUpperCase()}${reason.slice(1)}. ` +
+          'Check the address on the Associates page, or use Open email draft.',
+      );
     }
     return out;
   }
@@ -791,7 +834,7 @@ export class RouteSheetsHost {
 
   /** Writes drafts, single-page PDFs and a summary into a folder inside the one chosen. */
   async exportAll(io: RouteSheetsIo): Promise<ExportAllResult | null> {
-    const pdf = this.requirePdf();
+    const pdf = this.saved() ? this.readPdf() : null;
     const dir = await io.chooseFolder('Choose where to save the email drafts and PDFs', null);
     if (dir === null) return null;
     const plan = await planExportAll(runLabel(this.run), this.distribution(), (code) =>

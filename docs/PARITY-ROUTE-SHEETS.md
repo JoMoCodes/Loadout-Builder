@@ -51,6 +51,16 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
       not on the Routes file". Test: phase 2 host test ('says which route data it reads, and asks
       for the Routes export when none is loaded', `apps/desktop/src/main/routeSheets.test.ts`).
 
+- [ ] **Known difference, Needs Jonathan.** A Routes export row with a route code but no driver
+      is dropped by the Route Data page's reader. So for such a route the matcher says "Route is
+      in the PDF but not on the routes file" where the old app said "Routes file lists no driver
+      for this route", and such a route with no page is not listed under "On the Routes file but
+      missing from the PDF".
+- [ ] **Known difference, Needs Jonathan.** The Route Data page's reader drops blank parts in a
+      pipe-joined ID list and turns commas in names into spaces. So an ID list like "A||C" pairs
+      IDs and names differently, and the Name check warning's text can differ. Matching by ID is
+      unaffected.
+
 ## 2. The number check
 
 - [x] Bag rows match the "N bags" heading, rows are numbered 1..N, overflow rows add up to the
@@ -159,7 +169,8 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
       `apps/desktop/src/main/mail/emailAccount.test.ts`); the section's heading is phase 3.
 - [x] Plain-words explanations for every SMTP failure (wrong password, 2-Step off, no connection,
       daily limit). Phase 2 (the app's mailer: 'Mailer: explains what is missing and turns SMTP
-      errors into plain words', `apps/desktop/src/main/mail/mailer.test.ts`).
+      errors into plain words', 'Mailer: Gmail’s daily sending limit is said in plain words',
+      `apps/desktop/src/main/mail/mailer.test.ts`).
 
 ## 7. Shell
 

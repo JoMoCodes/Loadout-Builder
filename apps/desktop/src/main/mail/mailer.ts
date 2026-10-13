@@ -5,6 +5,7 @@
 // password. One connection is opened for a whole batch and closed at the end. The transport is
 // handed in, so the tests use a stand-in and nothing goes over the network.
 
+import { isEmail } from '@loadout/route-sheets';
 import nodemailer from 'nodemailer';
 import type { EmailSettings } from '../../shared/performanceSettings';
 
@@ -102,6 +103,12 @@ export function setupProblem(email: EmailSettings, password: string | null): str
   if (!email.smtpHost.trim()) {
     return 'Add the email server in Settings first (for Gmail it is smtp.gmail.com).';
   }
+  // Route Sheet Distributor's checks, in its words.
+  if (!(email.smtpPort > 0 && email.smtpPort < 65536)) return 'The mail server port is not valid.';
+  const from = email.fromAddress.trim();
+  if (!isEmail(from)) return `"${from}" is not a valid email address.`;
+  const bcc = email.bccAddress.trim();
+  if (bcc && !isEmail(bcc)) return `The BCC address "${bcc}" is not a valid email address.`;
   return null;
 }
 
@@ -125,6 +132,18 @@ function codeOf(error: unknown): string {
   return typeof error === 'object' && error !== null && 'code' in error
     ? String((error as { code: unknown }).code)
     : '';
+}
+
+const DAILY_LIMIT = /daily user sending limit|sending limit exceeded/i;
+
+/** Gmail's daily sending limit, in the old app's words (it can say so at login or per email). */
+export const DAILY_LIMIT_WORDS =
+  'Gmail says this account hit its daily sending limit. Try again tomorrow, or send the rest with Export all.';
+
+function hitDailyLimit(error: unknown): boolean {
+  if (typeof error !== 'object' || error === null) return false;
+  const { response, message } = error as { response?: unknown; message?: unknown };
+  return DAILY_LIMIT.test(`${String(response ?? '')} ${String(message ?? '')}`);
 }
 
 function responseCodeOf(error: unknown): number {
@@ -152,6 +171,7 @@ export function describeConnectProblem(error: unknown): string {
   if (code === 'ETIMEDOUT') {
     return 'The email server did not answer in time. Check that the computer is online and try again.';
   }
+  if (hitDailyLimit(error)) return DAILY_LIMIT_WORDS;
   return 'The app could not connect to the email server. Check the email settings and try again.';
 }
 
@@ -159,6 +179,7 @@ export function describeConnectProblem(error: unknown): string {
 export function describeSendProblem(error: unknown): string {
   const code = codeOf(error);
   const response = responseCodeOf(error);
+  if (hitDailyLimit(error)) return DAILY_LIMIT_WORDS;
   if (code === 'EENVELOPE' || response === 550 || response === 553 || response === 501) {
     return 'the email server refused this address';
   }
