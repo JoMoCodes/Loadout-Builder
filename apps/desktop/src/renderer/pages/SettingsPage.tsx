@@ -11,6 +11,7 @@ import {
 import { call } from '../lib/channels';
 import { Button } from '../ui/button';
 import { PerformanceSettingsSection } from './performance/PerformanceSettingsSection';
+import { EmailSettingsSection } from './settings/EmailSettingsSection';
 import type { PageProps } from './types';
 
 export function SettingsPage({
@@ -169,8 +170,11 @@ export function SettingsPage({
 
       <PerformanceSettingsSection
         performance={settings.performance}
+        email={settings.email}
         changeSettings={changeSettings}
       />
+
+      <EmailSettingsSection email={settings.email} changeSettings={changeSettings} />
 
       <div className="settings-group card" data-setting="version">
         <h2>About</h2>

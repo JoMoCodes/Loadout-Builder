@@ -57,6 +57,16 @@ describe('the settings file', () => {
     });
   });
 
+  it('remembers that the Route Sheets page’s note about the old app was put away', () => {
+    const io = memoryIo({ routeSheetsNoteSeen: 'yes' });
+    const file = new SettingsFile('settings.json', io);
+    const settings = file.load();
+    expect(settings.routeSheetsNoteSeen).toBe(false);
+    file.save({ ...settings, routeSheetsNoteSeen: true });
+    expect(io.saved).toMatchObject({ routeSheetsNoteSeen: true });
+    expect(new SettingsFile('settings.json', io).load().routeSheetsNoteSeen).toBe(true);
+  });
+
   it('drops anything odd in the main-only part', () => {
     expect(
       readMainOnly({

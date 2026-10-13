@@ -12,7 +12,7 @@
 
 import type { Page } from '@playwright/test';
 import { CHANNELS } from '../../src/shared/channels';
-import { DEFAULT_PERFORMANCE } from '../../src/shared/performanceSettings';
+import { DEFAULT_EMAIL, DEFAULT_PERFORMANCE } from '../../src/shared/performanceSettings';
 import type { AppSettings } from '../../src/shared/settings';
 import type { AppSnapshot } from '../../src/shared/snapshot';
 
@@ -37,7 +37,7 @@ declare global {
 export async function installFakeBridge(page: Page, options: FakeBridgeOptions = {}) {
   const channels = Object.values(CHANNELS).map((def) => ({ name: def.name, kind: def.kind }));
   await page.addInitScript(
-    ({ channels: declared, options: given, performance }) => {
+    ({ channels: declared, options: given, performance, email }) => {
       const settings: Record<string, unknown> = {
         theme: 'dark',
         fontScale: 1,
@@ -54,7 +54,9 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
         // turn it on.
         autoTours: false,
         toursSeen: [],
+        routeSheetsNoteSeen: false,
         performance,
+        email,
         ...given.settings,
       };
       const snapshot: Record<string, unknown> = {
@@ -191,6 +193,62 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
             };
           case 'layout:get':
             return { ok: true, value: { order: [], widths: {} } };
+          // The Route Sheets page with nothing brought in yet (route-sheets.spec.ts gives more).
+          case 'routeSheets:state':
+            return {
+              ok: true,
+              value: {
+                run: {
+                  id: 'draft',
+                  label: 'New run (no route sheet PDF yet)',
+                  saved: false,
+                  station: null,
+                  date: null,
+                  dateLabel: null,
+                  cycle: null,
+                  pdfFileName: null,
+                  importedAt: null,
+                  pageCount: 0,
+                  warnings: [],
+                  routesFileName: null,
+                  sheetCount: 0,
+                  checkFailures: [],
+                  sent: {},
+                  decisions: {},
+                  typedPads: {},
+                  pdfMissing: false,
+                },
+                runs: [],
+                routeData: null,
+                driverList: { count: 0, fileName: '', importedAt: null, refreshDueAt: null },
+                oldAppFolder: false,
+                emailProblem: 'Add the from address and the app password in Settings first.',
+                sending: false,
+                unsent: 0,
+              },
+            };
+          case 'routeSheets:distribution':
+            return {
+              ok: true,
+              value: {
+                routes: [],
+                people: { notReceiving: [], multiple: [] },
+                counts: {
+                  total: 0,
+                  missingEmail: 0,
+                  ready: 0,
+                  'needs-decision': 0,
+                  exception: 0,
+                  skipped: 0,
+                  'no-sheet': 0,
+                },
+                waves: [],
+                unsent: [],
+                typedPadWaves: [],
+              },
+            };
+          case 'routeSheets:runs':
+            return { ok: true, value: [] };
           default:
             return { ok: true, value: null };
         }
@@ -215,7 +273,7 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
       }
       (window as unknown as { loadout: unknown }).loadout = { calls, signals, events };
     },
-    { channels, options, performance: DEFAULT_PERFORMANCE },
+    { channels, options, performance: DEFAULT_PERFORMANCE, email: DEFAULT_EMAIL },
   );
 }
 

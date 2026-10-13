@@ -32,9 +32,12 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
       route; a title row above the header is skipped by the Route Data reader. Test: phase 2 host
       test proves the join gives the parity harness's distribution (the same test, `apps/desktop/src/main/routeSheets.test.ts`; 'the
       Routes export read by the app gives the old reader’s routes', `join.test.ts`).
-- [ ] **Changed (item 2).** When the loaded route data is the Itineraries or Weekly Schedule
+- [x] **Changed (item 2).** When the loaded route data is the Itineraries or Weekly Schedule
       export, it is used the same way when it carries Transporter IDs; the page says which file
-      it is using and asks for the Routes export when none is loaded. Test: phase 2 and 3.
+      it is using and asks for the Routes export when none is loaded. Test: phase 2 and 3 ('the
+      cards name the route data in use, an old driver list and a ready email setup', 'the cards
+      ask for the Routes export, the driver list and the email setup, and open those pages',
+      `apps/desktop/e2e/route-sheets.spec.ts`).
 - [x] Route sheet PDF: one route per page; a long route spills onto a second page; blank pages are
       skipped; a page with no route code is reported. Test: 'PDF: a long route whose tables spill
       onto the next page is read as one sheet, and blank pages are skipped'
@@ -42,8 +45,10 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
 - [x] Two PDF layouts: headings in one run or split into runs; the lost "fl" ligature in
       "overflow". Test: 'PDF: headings split into separate runs ("24" + "bags", "ETDT ·" + service)
       are still read'; parity for both `<day>` and `<day>-split-runs`.
-- [ ] Drag the PDF onto the window. **Changed (items 1 and 2):** only the PDF is dropped here; the
-      Routes export is dropped on the Route Data page. Test: phase 3 page test.
+- [x] Drag the PDF onto the window. **Changed (items 1 and 2):** only the PDF is dropped here; the
+      Routes export is dropped on the Route Data page. Test: phase 3 page test ('a PDF dropped on
+      the page is brought in, and a file of the wrong kind is refused',
+      `apps/desktop/e2e/route-sheets.spec.ts`).
 - [x] **Changed (items 1 and 2).** "PDFs are read first so a Routes file dropped with them lands
       in the same run" and "a Routes file that shares no route codes with the open PDF starts a
       new run" no longer apply: the route data is the Route Data page's. A PDF whose route codes
@@ -74,32 +79,41 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
 
 ## 3. Distribute
 
-- [ ] Counts along the top (ready, need a decision, no exact match, no route sheet, not sending,
+- [x] Counts along the top (ready, need a decision, no exact match, no route sheet, not sending,
       missing email). The numbers are proven (`countStates`; parity `distribution.json`). Page:
-      phase 3.
-- [ ] **Changed (item 3).** "Pad for each wave" is replaced by the pads the Route Data page knows,
+      phase 3 ('Distribute shows the counts and one route in each state, in the old order',
+      'drivers with no email address are counted on Distribute',
+      `apps/desktop/e2e/route-sheets.spec.ts`; smoke 'Route Sheets: the page shows the counts,
+      the sheets and the run in History').
+- [x] **Changed (item 3).** "Pad for each wave" is replaced by the pads the Route Data page knows,
       matched by clock value; the box stays only for a wave time that matches no dispatch time.
       Rule: 'Distribute: lists each wave time in clock order with its route count and pad'
-      (`waves`, `wavePadFor`); the join in phase 2; the page in phase 3.
+      (`waves`, `wavePadFor`); the join in phase 2; the page in phase 3 ('the pad box shows only
+      for a wave the route data does not know', `apps/desktop/e2e/route-sheets.spec.ts`).
 - [x] Ready to send. Test: 'Distribute: exact single match is ready; everything else needs a
       person to decide'; parity.
 - [x] A route listing two or more drivers waits for a choice; the green Suggested tag (only
       active match, or only one not listed elsewhere). Test: the same twin (`suggestion`,
       `suggestionReason`); parity (`distribution-undecided.json`, and the fixed choices accept
       the suggestions in `distribution.json`).
-- [ ] Choose who gets these route sheets on the page; Accept all suggestions. Phase 2 and 3.
+- [x] Choose who gets these route sheets on the page; Accept all suggestions. Phase 2 and 3
+      ('Choose, Accept all suggestions, Send to all and Don’t send set the choices',
+      `apps/desktop/e2e/route-sheets.spec.ts`; smoke 'Route Sheets: Accept all suggestions takes
+      every suggestion').
 - [x] No exact match, with the reason (not in the driver list, INACTIVE, no Transporter ID,
       numbers did not add up, page found but tables unreadable, in the PDF but not on the Routes
       file). Test: the same twin (`headline` for each case); parity (`inputs.json` adds a driver
       marked INACTIVE, one taken off the list and a route with no Transporter ID;
       `distribution-undecided.json` carries every headline before any choice is made).
-- [ ] Choose someone from a drop-down and Assign; Don't send. Test: 'Distribute: manual
-      assignment resolves an exception'; decisions in parity; the page in phase 3.
+- [x] Choose someone from a drop-down and Assign; Don't send. Test: 'Distribute: manual
+      assignment resolves an exception'; decisions in parity; the page in phase 3 ('No exact
+      match: Assign someone from the list, or Don’t send', `apps/desktop/e2e/route-sheets.spec.ts`).
 - [x] On the Routes file but missing from the PDF. Test: the exact-match twin (`no-sheet`); parity.
 - [x] People who won't get a route sheet, and why; anyone getting more than one. Test:
       'Distribute: explains who gets no route sheet and why; flags people getting several'; parity
       (`people`).
-- [ ] All routes in one table; Change undoes a choice. Page: phase 3.
+- [x] All routes in one table; Change undoes a choice. Page: phase 3 ('All routes: Change undoes
+      a choice, by button or by key', `apps/desktop/e2e/route-sheets.spec.ts`).
 - [x] The name check warns when the Routes file name and the driver list name disagree; matching
       is always by ID. Test: 'Name check tolerates middle names but catches a different person';
       parity (`inputs.json` gives one route another person's name; the `Name check:` warning is
@@ -116,29 +130,39 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
       white writing and a big, bold label', 'Email: the words in every box at the top are
       centered, side to side and top to bottom'; parity `emails.json` (same bytes, with and
       without a pad: the last wave has none).
-- [ ] Click a route on the Sheets tab to see its email. Phase 3.
+- [x] Click a route on the Sheets tab to see its email. Phase 3 ('Sheets lists every route with a
+      page and shows the email the driver gets', `apps/desktop/e2e/route-sheets.spec.ts`; smoke
+      'Route Sheets: a ready route sheet previews as the driver’s email').
 - [x] A note when the page could not be read, telling the driver to use the attached PDF. Test:
       'Email: when the page failed its number check, the email tells the driver to use the
       attached PDF'; parity.
-- [ ] Send email; Copy for email (rich clipboard); Open email draft (`.eml`, opens unsent, page
+- [x] Send email; Copy for email (rich clipboard); Open email draft (`.eml`, opens unsent, page
       attached); Copy + open mail app (`mailto:`); Save PDF page; View original page; Mark as
       sent; a tick after any of them. Rules: 'EML draft opens as unsent with recipients, HTML body
       and PDF attachment', 'Export: the PDF a driver gets carries both pages of a long route';
-      parity `eml/*.eml`. Buttons: phase 2 channels and phase 3 page.
+      parity `eml/*.eml`. Buttons: phase 2 channels and phase 3 page ('every way to send one route
+      sheet calls the app and puts a tick after it', 'Send email sends it, and asks first when it
+      was already sent', 'a run whose PDF is gone says so, and the buttons that cut a page wait',
+      `apps/desktop/e2e/route-sheets.spec.ts`; smoke 'Route Sheets: Save PDF page writes the page
+      where the save window says').
 - [x] Email all: asks first, one email per driver over one login, each success saved at once, a
       plain-words tally; routes with no address are left out and said so. Rules: 'Runs: Email all
       leaves out routes with no address and routes already sent' (`sendProblem`, `unsentRoutes`);
       parity (`inputs.json` gives one driver no email; the missing-email count and warning are in
       `distribution.json`); the sending in phase 2 ('Email all: sends one email per ready route
       with its PDF page, marks each sent, skips what it cannot send', 'Email all: a rejected login
-      stops the batch before anything is sent', `apps/desktop/src/main/routeSheets.test.ts`); asking first is the page's (phase 3).
-- [ ] Export all: a folder with an email draft and a PDF per ready route, every PDF, and a
+      stops the batch before anything is sent', `apps/desktop/src/main/routeSheets.test.ts`); asking first is the page's (phase 3: 'Email all asks
+      first, then gives the tally in plain words', `apps/desktop/e2e/route-sheets.spec.ts`).
+- [x] Export all: a folder with an email draft and a PDF per ready route, every PDF, and a
       summary as HTML and CSV. Rules: 'Service: import in any order, persist decisions, export
       drafts' (file names, `planExportAll`), 'Service: pads are saved with the run, trimmed,
       cleared with a blank, and put on the email and summary' (the summary columns); parity
       `export-files.json` (the folder and every file name the old Export all wrote),
       `summary.html`, `summary.csv`. Writing the folder: phase 2 ('Export all writes the same
       folder of drafts, PDFs and summary as the old app', `apps/desktop/src/main/routeSheets.test.ts`).
+      The button: phase 3 ('Export all says where it wrote, and nothing when the folder window was
+      closed', `apps/desktop/e2e/route-sheets.spec.ts`; smoke 'Route Sheets: Export all writes
+      drafts, PDFs and the summary').
 
 ## 5. History
 
@@ -148,7 +172,8 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
       short date and the cycle'); parity `run.json`. Storage: phase 2 ('reads a whole run back as
       it was saved', `packages/storage/src/routeSheets.test.ts`; 'previews, chooses, accepts the
       suggestions, marks sent and keeps typed pads', `apps/desktop/src/main/routeSheets.test.ts`).
-- [ ] Reopen an older day; New run; Delete a run (asks first). Phase 2 and 3.
+- [x] Reopen an older day; New run; Delete a run (asks first). Phase 2 and 3 ('History lists the
+      saved runs: Open, Delete (asking first) and New run', `apps/desktop/e2e/route-sheets.spec.ts`).
 - [x] **Changed (item 8).** No "clear earlier days?" question: runs older than 30 days are removed
       quietly when the app opens. Rule: 'Runs: runs older than 30 days are the ones removed when
       the app opens' (`staleRunIds`). Phase 2 host ('reopens the last run only if it is for
@@ -156,8 +181,9 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
 - [ ] A re-import drops the decisions that no longer fit (a chosen driver who left the route);
       hand-made and skipped decisions stay. Rule: 'Runs: decisions that no longer fit the routes
       file are dropped' (`pruneDecisions`).
-- [ ] **Changed (item 7).** Open and Change the output folder are gone; the data folder is in
-      Settings and Export all asks for a folder. Nothing to test.
+- [x] **Changed (item 7).** Open and Change the output folder are gone; the data folder is in
+      Settings and Export all asks for a folder. Nothing to test (the History page test checks no
+      output folder is mentioned).
 
 ## 6. Email settings
 
@@ -166,7 +192,9 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
       shared with Weekly performance. Phase 2 ('Email settings: App Password is stored encrypted,
       Gmail spaces removed, unreadable blobs count as not set', 'is the one setup: an older
       settings file’s weekly performance email comes up to the top',
-      `apps/desktop/src/main/mail/emailAccount.test.ts`); the section's heading is phase 3.
+      `apps/desktop/src/main/mail/emailAccount.test.ts`); the section's heading is phase 3 ('Email
+      is its own part of Settings, right after Weekly performance', and the field, password and
+      test email checks, `apps/desktop/e2e/email-settings.spec.ts`).
 - [x] Plain-words explanations for every SMTP failure (wrong password, 2-Step off, no connection,
       daily limit). Phase 2 (the app's mailer: 'Mailer: explains what is missing and turns SMTP
       errors into plain words', 'Mailer: Gmail’s daily sending limit is said in plain words',

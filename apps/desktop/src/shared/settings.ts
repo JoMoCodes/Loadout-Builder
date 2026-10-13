@@ -47,6 +47,8 @@ export interface AppSettings {
   autoTours: boolean;
   /** The tours that have already run (or were skipped), by name ("home", "load-out-print"). */
   toursSeen: string[];
+  /** The Route Sheets page's note about the old Route Sheet Distributor was put away (Got it). */
+  routeSheetsNoteSeen: boolean;
   /** The weekly performance choices (rule numbers, report colours, the page's view). */
   performance: PerformanceSettings;
   /**
@@ -85,6 +87,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   printedOnce: false,
   autoTours: true,
   toursSeen: [],
+  routeSheetsNoteSeen: false,
   performance: DEFAULT_PERFORMANCE,
   email: DEFAULT_EMAIL,
 };
@@ -135,6 +138,9 @@ export function sanitizePatch(raw: unknown): SettingsPatch {
   }
   if (typeof input.printedOnce === 'boolean') patch.printedOnce = input.printedOnce;
   if (typeof input.autoTours === 'boolean') patch.autoTours = input.autoTours;
+  if (typeof input.routeSheetsNoteSeen === 'boolean') {
+    patch.routeSheetsNoteSeen = input.routeSheetsNoteSeen;
+  }
   if (Array.isArray(input.toursSeen) && input.toursSeen.length <= MAX_TOURS) {
     const names = input.toursSeen.filter(
       (name): name is string =>

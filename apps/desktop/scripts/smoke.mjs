@@ -24,6 +24,9 @@
 //   - the Features log lists the note for this version
 //   - the theme (light, dark, high contrast) and the text size (A-, A+, reset) change and stick
 //   - Settings: version, "Open data folder", and Demo mode (made-up data loads, then goes away)
+//   - route sheets: in demo mode the synthetic route sheet PDF comes in through the real bridge,
+//     Accept all suggestions takes them, a ready route previews as its email, one page is saved
+//     as a PDF, Export all writes its folder, and the page's three tabs show the run
 //   - weekly performance: demo mode holds the made-up weekly data; on the real data every kind
 //     of fixture export comes in through the real bridge (the folder window replaced), the
 //     Performance page shows the drivers, one report is generated and previewed as a real PDF,
@@ -64,6 +67,7 @@ const EXPECTED_PAGES = [
   'home',
   'dashboard',
   'load-out',
+  'route-sheets',
   'route-data',
   'vehicle-data',
   'associates',
@@ -946,7 +950,8 @@ try {
     return (await windows()).join(', ');
   });
 
-  // Route Data, Vehicle Data and Associates, on the numbers the old app's harness wrote down.
+  // Route Data, Vehicle Data and Associates, on the numbers the old app's harness wrote down, then
+  // Route Sheets on the fixture day.
   await otherPagesChecks({ app, page, check, assert, until, ask, goTo, root });
 
   await check('a table layout is kept in the saved data', async () => {

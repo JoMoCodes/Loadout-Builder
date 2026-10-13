@@ -13,11 +13,12 @@ import {
 } from './windows';
 
 describe('the pages and their tabs', () => {
-  it('lists the eleven pages in menu order', () => {
+  it('lists the twelve pages in menu order', () => {
     expect(PAGE_IDS).toEqual([
       'home',
       'dashboard',
       'load-out',
+      'route-sheets',
       'route-data',
       'vehicle-data',
       'associates',
@@ -29,12 +30,17 @@ describe('the pages and their tabs', () => {
     ]);
   });
 
-  it('knows the tabs of the five tabbed pages, and that the others have none', () => {
+  it('knows the tabs of the six tabbed pages, and that the others have none', () => {
     expect(PAGE_TABS['load-out'].map((tab) => tab.id)).toEqual([
       'roster',
       'print',
       'available-vans',
       'previous-roster',
+    ]);
+    expect(PAGE_TABS['route-sheets'].map((tab) => tab.id)).toEqual([
+      'distribute',
+      'sheets',
+      'history',
     ]);
     expect(PAGE_TABS['route-data'].map((tab) => tab.id)).toEqual([
       'routes',

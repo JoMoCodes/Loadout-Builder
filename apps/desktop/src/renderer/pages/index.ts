@@ -9,6 +9,7 @@ import { LoadOutPage } from './LoadOutPage';
 import { PerformancePage } from './PerformancePage';
 import { PreviousRosterPage } from './PreviousRosterPage';
 import { RouteDataPage } from './RouteDataPage';
+import { RouteSheetsPage } from './RouteSheetsPage';
 import { SettingsPage } from './SettingsPage';
 import { VehicleDataPage } from './VehicleDataPage';
 import type { PageId, PageProps } from './types';
@@ -25,6 +26,7 @@ const COMPONENTS: Record<PageId, ComponentType<PageProps>> = {
   home: HomePage,
   dashboard: DashboardPage,
   'load-out': LoadOutPage,
+  'route-sheets': RouteSheetsPage,
   'route-data': RouteDataPage,
   'vehicle-data': VehicleDataPage,
   associates: AssociatesPage,
