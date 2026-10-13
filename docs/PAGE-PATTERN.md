@@ -194,7 +194,8 @@ async function bringIn() {
 }
 ```
 
-Kinds: `loadout`, `associates`, `tenure`, `vehicles`, `dwp`, `routes`, `itineraries`, `schedule`.
+Kinds: `loadout`, `associates`, `tenure`, `vehicles`, `dwp`, `routes`, `itineraries`, `schedule`,
+`route-sheets` (the route sheet PDF, read by the route sheets host rather than the core).
 `files:import` reads **only a file that `files:pick` returned in this run** (or the token of a
 file dropped on the page, below). A page cannot name
 any other path. The weekly schedule is read for the load-out day (`AppState.routeDay`). After an
@@ -359,6 +360,25 @@ the snapshot's `revision` and refuse when it has moved on.
 | `vehicles:clear-lmr` | command | none || Removes every Last Mile Rental approval. |
 | `associates:clear` | command | none | Empties the associate list. Lifetime route counts and the roster are kept. |
 | `associates:clear-tenure` | command | none | Forgets every lifetime route count. The associate list and the roster are kept. |
+| `routeSheets:state` | query | none | The open route sheet run, History's list, which route export the matcher reads, the driver list and its age, the old app's folder flag, the email setup problem. |
+| `routeSheets:distribution` | query | none | Who gets each route sheet (the matcher's answer), what Email all would send, and the wave times with no dispatch time (the typed-pad box). |
+| `routeSheets:preview` | query | `{ routeCode }` | The email one driver gets for this route, as it will look. |
+| `routeSheets:runs` | query | none | Every saved run, newest day first. |
+| `routeSheets:load-run` | command | `{ id }` | Opens a saved run. |
+| `routeSheets:new-run` | command | none | Starts a new run (nothing is saved until a route sheet PDF comes in). |
+| `routeSheets:delete-run` | command | `{ id }` | Removes a saved run and its PDF. Asking first is the page's job. |
+| `routeSheets:set-decision` | command | `{ routeCode, decision }` | Chooses who gets a route's sheet, or Don't send; null undoes the choice (Change). |
+| `routeSheets:accept-suggestions` | command | none | Accept all suggestions. Answers how many were accepted. |
+| `routeSheets:mark-sent` | command | `{ routeCode, how }` | Marks a route as sent (how), or not sent (null). |
+| `routeSheets:set-wave-pad` | command | `{ waveTime, pad }` | The pad for a wave time the route data does not know; empty clears it. |
+| `routeSheets:send-one` | command | `{ routeCode }` | Emails one route sheet to its driver. |
+| `routeSheets:email-all` | command | none | Emails every ready route sheet not sent yet, over one login. Asking first is the page's job. |
+| `routeSheets:export-all` | command (quiet) | none | Asks for a folder, then writes the email drafts, the PDFs and the summary into it. |
+| `routeSheets:copy-email` | command (quiet) | `{ routeCode }` | The email as HTML and text, for the page to put on the clipboard. |
+| `routeSheets:open-draft` | command (quiet) | `{ routeCode }` | Writes the email draft (.eml, with the page attached) and opens it in the mail app. |
+| `routeSheets:open-mail-app` | command (quiet) | `{ routeCode }` | Opens the mail app on a new email to the driver. |
+| `routeSheets:save-pdf-page` | command (quiet) | `{ routeCode }` | Asks where to save it, then saves this route's page(s) as a PDF. |
+| `routeSheets:view-original-page` | command (quiet) | `{ routeCode }` | Opens this route's page(s) of the original PDF. |
 
 ## Parts the data pages share (4c)
 
