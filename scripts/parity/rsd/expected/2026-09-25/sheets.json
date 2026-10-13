@@ -1,0 +1,1785 @@
+{
+  "sheets": [
+    {
+      "pageNumber": 2,
+      "pageNumbers": [
+        2
+      ],
+      "routeCode": "CX171",
+      "staging": "STG.A1.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:25 AM",
+      "bagCount": 4,
+      "overflowCount": 3,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "H-1.3D",
+          "bag": "Blue 8021",
+          "packages": 23
+        },
+        {
+          "index": 2,
+          "sortZone": "",
+          "bag": "Black 7553",
+          "packages": 10
+        },
+        {
+          "index": 3,
+          "sortZone": "D-3.4D",
+          "bag": "",
+          "packages": 25
+        },
+        {
+          "index": 4,
+          "sortZone": "F-3.9H",
+          "bag": "Green 3339",
+          "packages": 17
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "A-99.CW",
+          "packages": 3
+        }
+      ],
+      "totalPackages": 78,
+      "commercialPackages": 5,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [
+          "Bag #2 (Black 7553) has no Sort Zone printed on the sheet",
+          "Bag #3 (D-3.4D) has no Bag label printed on the sheet"
+        ],
+        "bagPackages": 75,
+        "overflowPackages": 3
+      }
+    },
+    {
+      "pageNumber": 3,
+      "pageNumbers": [
+        3,
+        4
+      ],
+      "routeCode": "CX178",
+      "staging": "STG.A2.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:20 AM",
+      "bagCount": 30,
+      "overflowCount": 6,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "H-5.2B",
+          "bag": "Green 2066",
+          "packages": 17
+        },
+        {
+          "index": 2,
+          "sortZone": "H-6.7F",
+          "bag": "Orange 9688",
+          "packages": 22
+        },
+        {
+          "index": 3,
+          "sortZone": "H-6.1D",
+          "bag": "Yellow 3189",
+          "packages": 7
+        },
+        {
+          "index": 4,
+          "sortZone": "G-10.5F",
+          "bag": "Blue 2238",
+          "packages": 11
+        },
+        {
+          "index": 5,
+          "sortZone": "E-5.2A",
+          "bag": "Green 8911",
+          "packages": 24
+        },
+        {
+          "index": 6,
+          "sortZone": "F-6.7H",
+          "bag": "Orange 0596",
+          "packages": 11
+        },
+        {
+          "index": 7,
+          "sortZone": "D-11.1C",
+          "bag": "Yellow 6191",
+          "packages": 10
+        },
+        {
+          "index": 8,
+          "sortZone": "G-10.6F",
+          "bag": "Blue 0488",
+          "packages": 15
+        },
+        {
+          "index": 9,
+          "sortZone": "H-12.3C",
+          "bag": "Yellow 6201",
+          "packages": 25
+        },
+        {
+          "index": 10,
+          "sortZone": "C-12.2C",
+          "bag": "Navy 5082",
+          "packages": 16
+        },
+        {
+          "index": 11,
+          "sortZone": "E-13.1C",
+          "bag": "Yellow 4452",
+          "packages": 22
+        },
+        {
+          "index": 12,
+          "sortZone": "D-12.8C",
+          "bag": "Blue 6481",
+          "packages": 17
+        },
+        {
+          "index": 13,
+          "sortZone": "E-1.6D",
+          "bag": "Navy 5612",
+          "packages": 19
+        },
+        {
+          "index": 14,
+          "sortZone": "C-1.9B",
+          "bag": "Blue 6471",
+          "packages": 10
+        },
+        {
+          "index": 15,
+          "sortZone": "E-3.7A",
+          "bag": "Black 6336",
+          "packages": 25
+        },
+        {
+          "index": 16,
+          "sortZone": "B-6.5C",
+          "bag": "Green 9447",
+          "packages": 4
+        },
+        {
+          "index": 17,
+          "sortZone": "H-12.8A",
+          "bag": "Orange 6820",
+          "packages": 19
+        },
+        {
+          "index": 18,
+          "sortZone": "B-14.5A",
+          "bag": "Blue 6965",
+          "packages": 7
+        },
+        {
+          "index": 19,
+          "sortZone": "B-4.6H",
+          "bag": "Navy 5216",
+          "packages": 13
+        },
+        {
+          "index": 20,
+          "sortZone": "F-11.1H",
+          "bag": "Green 3862",
+          "packages": 8
+        },
+        {
+          "index": 21,
+          "sortZone": "F-13.2E",
+          "bag": "Green 4958",
+          "packages": 13
+        },
+        {
+          "index": 22,
+          "sortZone": "D-1.9E",
+          "bag": "Blue 5698",
+          "packages": 3
+        },
+        {
+          "index": 23,
+          "sortZone": "H-2.3C",
+          "bag": "Yellow 2526",
+          "packages": 11
+        },
+        {
+          "index": 24,
+          "sortZone": "B-10.8A",
+          "bag": "Blue 9032",
+          "packages": 24
+        },
+        {
+          "index": 25,
+          "sortZone": "B-13.7D",
+          "bag": "Black 7685",
+          "packages": 4
+        },
+        {
+          "index": 26,
+          "sortZone": "F-2.3A",
+          "bag": "Blue 5897",
+          "packages": 21
+        },
+        {
+          "index": 27,
+          "sortZone": "A-3.6A",
+          "bag": "Orange 8264",
+          "packages": 10
+        },
+        {
+          "index": 28,
+          "sortZone": "D-5.4G",
+          "bag": "Navy 5259",
+          "packages": 24
+        },
+        {
+          "index": 29,
+          "sortZone": "H-13.9B",
+          "bag": "Navy 2421",
+          "packages": 9
+        },
+        {
+          "index": 30,
+          "sortZone": "C-4.9A",
+          "bag": "Blue 4662",
+          "packages": 7
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "C-99.CW",
+          "packages": 3
+        },
+        {
+          "index": 2,
+          "sortZone": "C-99.DW",
+          "packages": 3
+        }
+      ],
+      "totalPackages": 434,
+      "commercialPackages": 4,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 428,
+        "overflowPackages": 6
+      }
+    },
+    {
+      "pageNumber": 5,
+      "pageNumbers": [
+        5
+      ],
+      "routeCode": "CX179",
+      "staging": "STG.A3.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:25 AM",
+      "bagCount": 3,
+      "overflowCount": 3,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "B-13.9F",
+          "bag": "Orange 1746",
+          "packages": 24
+        },
+        {
+          "index": 2,
+          "sortZone": "G-1.1D",
+          "bag": "Navy 4962",
+          "packages": 5
+        },
+        {
+          "index": 3,
+          "sortZone": "H-7.4H",
+          "bag": "Green 0921",
+          "packages": 18
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "C-99.GW",
+          "packages": 2
+        },
+        {
+          "index": 2,
+          "sortZone": "B-99.FW",
+          "packages": 1
+        }
+      ],
+      "totalPackages": 100,
+      "commercialPackages": 4,
+      "check": {
+        "ok": false,
+        "problems": [
+          "Bags (47) + overflow (3) = 50, but Total Packages says 100"
+        ],
+        "notes": [],
+        "bagPackages": 47,
+        "overflowPackages": 3
+      }
+    },
+    {
+      "pageNumber": 6,
+      "pageNumbers": [
+        6
+      ],
+      "routeCode": "CX193",
+      "staging": "STG.A4.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:20 AM",
+      "bagCount": 4,
+      "overflowCount": 0,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "H-13.3H",
+          "bag": "Blue 0000",
+          "packages": 3
+        },
+        {
+          "index": 2,
+          "sortZone": "B-1.7B",
+          "bag": "Blue 2275",
+          "packages": 19
+        },
+        {
+          "index": 3,
+          "sortZone": "B-3.4B",
+          "bag": "Black 5284",
+          "packages": 25
+        },
+        {
+          "index": 4,
+          "sortZone": "A-8.5F",
+          "bag": "Orange 8240",
+          "packages": 17
+        }
+      ],
+      "overflow": [],
+      "totalPackages": 64,
+      "commercialPackages": 3,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 64,
+        "overflowPackages": 0
+      }
+    },
+    {
+      "pageNumber": 7,
+      "pageNumbers": [
+        7
+      ],
+      "routeCode": "CX176",
+      "staging": "STG.A5.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:25 AM",
+      "bagCount": 5,
+      "overflowCount": 4,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "E-5.6A",
+          "bag": "Navy 5471",
+          "packages": 6
+        },
+        {
+          "index": 2,
+          "sortZone": "F-10.5H",
+          "bag": "Orange 2372",
+          "packages": 5
+        },
+        {
+          "index": 3,
+          "sortZone": "D-5.4C",
+          "bag": "Blue 2431",
+          "packages": 8
+        },
+        {
+          "index": 4,
+          "sortZone": "G-2.7F",
+          "bag": "Yellow 5064",
+          "packages": 13
+        },
+        {
+          "index": 5,
+          "sortZone": "H-4.1C",
+          "bag": "Yellow 9577",
+          "packages": 17
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "C-99.CW",
+          "packages": 2
+        },
+        {
+          "index": 2,
+          "sortZone": "C-99.CW",
+          "packages": 2
+        }
+      ],
+      "totalPackages": 53,
+      "commercialPackages": 4,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 49,
+        "overflowPackages": 4
+      }
+    },
+    {
+      "pageNumber": 8,
+      "pageNumbers": [
+        8
+      ],
+      "routeCode": "CX173",
+      "staging": "STG.A6.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:25 AM",
+      "bagCount": 6,
+      "overflowCount": 2,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "B-11.9B",
+          "bag": "Green 3725",
+          "packages": 9
+        },
+        {
+          "index": 2,
+          "sortZone": "A-11.1G",
+          "bag": "Blue 2469",
+          "packages": 14
+        },
+        {
+          "index": 3,
+          "sortZone": "F-7.4E",
+          "bag": "Black 6794",
+          "packages": 14
+        },
+        {
+          "index": 4,
+          "sortZone": "E-11.8E",
+          "bag": "Yellow 9103",
+          "packages": 13
+        },
+        {
+          "index": 5,
+          "sortZone": "G-8.3E",
+          "bag": "Navy 2070",
+          "packages": 9
+        },
+        {
+          "index": 6,
+          "sortZone": "G-7.2B",
+          "bag": "Orange 9100",
+          "packages": 13
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "D-99.GW",
+          "packages": 2
+        }
+      ],
+      "totalPackages": 74,
+      "commercialPackages": 3,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 72,
+        "overflowPackages": 2
+      }
+    },
+    {
+      "pageNumber": 9,
+      "pageNumbers": [
+        9
+      ],
+      "routeCode": "CX174",
+      "staging": "STG.B1.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:20 AM",
+      "bagCount": 4,
+      "overflowCount": 7,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "G-3.3D",
+          "bag": "Yellow 9196",
+          "packages": 11
+        },
+        {
+          "index": 2,
+          "sortZone": "D-11.8E",
+          "bag": "Yellow 9782",
+          "packages": 23
+        },
+        {
+          "index": 3,
+          "sortZone": "H-9.4G",
+          "bag": "Black 1157",
+          "packages": 20
+        },
+        {
+          "index": 4,
+          "sortZone": "C-5.9D",
+          "bag": "Black 3142",
+          "packages": 13
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "G-99.GW",
+          "packages": 3
+        },
+        {
+          "index": 2,
+          "sortZone": "E-99.DW",
+          "packages": 1
+        },
+        {
+          "index": 3,
+          "sortZone": "B-99.GW",
+          "packages": 3
+        }
+      ],
+      "totalPackages": 74,
+      "commercialPackages": 4,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 67,
+        "overflowPackages": 7
+      }
+    },
+    {
+      "pageNumber": 10,
+      "pageNumbers": [
+        10
+      ],
+      "routeCode": "CX180",
+      "staging": "STG.B2.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:25 AM",
+      "bagCount": 5,
+      "overflowCount": 4,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "D-9.6E",
+          "bag": "Blue 7450",
+          "packages": 10
+        },
+        {
+          "index": 2,
+          "sortZone": "H-12.5C",
+          "bag": "Orange 9878",
+          "packages": 10
+        },
+        {
+          "index": 3,
+          "sortZone": "B-6.4A",
+          "bag": "Orange 8304",
+          "packages": 7
+        },
+        {
+          "index": 4,
+          "sortZone": "B-13.2D",
+          "bag": "Black 9965",
+          "packages": 9
+        },
+        {
+          "index": 5,
+          "sortZone": "F-2.6A",
+          "bag": "Yellow 7057",
+          "packages": 18
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "A-99.AW",
+          "packages": 1
+        },
+        {
+          "index": 2,
+          "sortZone": "A-99.CW",
+          "packages": 3
+        }
+      ],
+      "totalPackages": 58,
+      "commercialPackages": 0,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 54,
+        "overflowPackages": 4
+      }
+    },
+    {
+      "pageNumber": 11,
+      "pageNumbers": [
+        11
+      ],
+      "routeCode": "CX183",
+      "staging": "STG.B3.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:20 AM",
+      "bagCount": 6,
+      "overflowCount": 0,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "B-9.9F",
+          "bag": "Green 5704",
+          "packages": 13
+        },
+        {
+          "index": 2,
+          "sortZone": "C-12.3B",
+          "bag": "Green 7191",
+          "packages": 19
+        },
+        {
+          "index": 3,
+          "sortZone": "D-8.4B",
+          "bag": "Black 2667",
+          "packages": 13
+        },
+        {
+          "index": 4,
+          "sortZone": "H-8.3C",
+          "bag": "Yellow 4004",
+          "packages": 8
+        },
+        {
+          "index": 5,
+          "sortZone": "F-6.8C",
+          "bag": "Navy 9551",
+          "packages": 10
+        },
+        {
+          "index": 6,
+          "sortZone": "F-10.9H",
+          "bag": "Blue 4035",
+          "packages": 18
+        }
+      ],
+      "overflow": [],
+      "totalPackages": 81,
+      "commercialPackages": 1,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 81,
+        "overflowPackages": 0
+      }
+    },
+    {
+      "pageNumber": 12,
+      "pageNumbers": [
+        12
+      ],
+      "routeCode": "CX184",
+      "staging": "STG.B4.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:20 AM",
+      "bagCount": 3,
+      "overflowCount": 5,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "G-1.3H",
+          "bag": "Orange 1175",
+          "packages": 15
+        },
+        {
+          "index": 2,
+          "sortZone": "F-7.9H",
+          "bag": "Navy 7288",
+          "packages": 5
+        },
+        {
+          "index": 3,
+          "sortZone": "F-10.5D",
+          "bag": "Orange 7030",
+          "packages": 20
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "F-99.BW",
+          "packages": 2
+        },
+        {
+          "index": 2,
+          "sortZone": "D-99.BW",
+          "packages": 3
+        }
+      ],
+      "totalPackages": 45,
+      "commercialPackages": 3,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 40,
+        "overflowPackages": 5
+      }
+    },
+    {
+      "pageNumber": 13,
+      "pageNumbers": [
+        13
+      ],
+      "routeCode": "CX186",
+      "staging": "STG.B5.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian SMALL",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:25 AM",
+      "bagCount": 5,
+      "overflowCount": 2,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "D-7.6A",
+          "bag": "Blue 9429",
+          "packages": 18
+        },
+        {
+          "index": 2,
+          "sortZone": "A-8.7F",
+          "bag": "Green 4601",
+          "packages": 15
+        },
+        {
+          "index": 3,
+          "sortZone": "H-12.5F",
+          "bag": "Orange 4177",
+          "packages": 3
+        },
+        {
+          "index": 4,
+          "sortZone": "D-10.6B",
+          "bag": "Blue 4866",
+          "packages": 8
+        },
+        {
+          "index": 5,
+          "sortZone": "E-14.2F",
+          "bag": "Yellow 4538",
+          "packages": 20
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "H-99.FW",
+          "packages": 2
+        }
+      ],
+      "totalPackages": 66,
+      "commercialPackages": 1,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 64,
+        "overflowPackages": 2
+      }
+    },
+    {
+      "pageNumber": 14,
+      "pageNumbers": [
+        14
+      ],
+      "routeCode": "CX187",
+      "staging": "STG.B6.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:25 AM",
+      "bagCount": 6,
+      "overflowCount": 8,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "A-13.9B",
+          "bag": "Navy 4900",
+          "packages": 21
+        },
+        {
+          "index": 2,
+          "sortZone": "E-8.4E",
+          "bag": "Navy 4698",
+          "packages": 24
+        },
+        {
+          "index": 3,
+          "sortZone": "B-8.5H",
+          "bag": "Navy 8540",
+          "packages": 9
+        },
+        {
+          "index": 4,
+          "sortZone": "B-5.7A",
+          "bag": "Navy 1689",
+          "packages": 4
+        },
+        {
+          "index": 5,
+          "sortZone": "D-13.4H",
+          "bag": "Navy 7031",
+          "packages": 11
+        },
+        {
+          "index": 6,
+          "sortZone": "D-13.8E",
+          "bag": "Black 6185",
+          "packages": 19
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "C-99.FW",
+          "packages": 3
+        },
+        {
+          "index": 2,
+          "sortZone": "B-99.HW",
+          "packages": 3
+        },
+        {
+          "index": 3,
+          "sortZone": "A-99.EW",
+          "packages": 2
+        }
+      ],
+      "totalPackages": 96,
+      "commercialPackages": 1,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 88,
+        "overflowPackages": 8
+      }
+    },
+    {
+      "pageNumber": 15,
+      "pageNumbers": [
+        15
+      ],
+      "routeCode": "CX188",
+      "staging": "STG.C1.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:25 AM",
+      "bagCount": 3,
+      "overflowCount": 5,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "G-5.3D",
+          "bag": "Green 3154",
+          "packages": 19
+        },
+        {
+          "index": 2,
+          "sortZone": "H-9.1C",
+          "bag": "Blue 2010",
+          "packages": 14
+        },
+        {
+          "index": 3,
+          "sortZone": "D-10.5A",
+          "bag": "Yellow 2903",
+          "packages": 19
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "H-99.HW",
+          "packages": 3
+        },
+        {
+          "index": 2,
+          "sortZone": "A-99.GW",
+          "packages": 2
+        }
+      ],
+      "totalPackages": 57,
+      "commercialPackages": 5,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 52,
+        "overflowPackages": 5
+      }
+    },
+    {
+      "pageNumber": 16,
+      "pageNumbers": [
+        16
+      ],
+      "routeCode": "CX189",
+      "staging": "STG.C2.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:20 AM",
+      "bagCount": 4,
+      "overflowCount": 0,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "D-11.6E",
+          "bag": "Yellow 1409",
+          "packages": 22
+        },
+        {
+          "index": 2,
+          "sortZone": "C-9.7A",
+          "bag": "Yellow 2107",
+          "packages": 24
+        },
+        {
+          "index": 3,
+          "sortZone": "F-13.5C",
+          "bag": "Yellow 0051",
+          "packages": 25
+        },
+        {
+          "index": 4,
+          "sortZone": "G-2.1H",
+          "bag": "Green 9767",
+          "packages": 4
+        }
+      ],
+      "overflow": [],
+      "totalPackages": 75,
+      "commercialPackages": 4,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 75,
+        "overflowPackages": 0
+      }
+    },
+    {
+      "pageNumber": 17,
+      "pageNumbers": [
+        17
+      ],
+      "routeCode": "CX190",
+      "staging": "STG.C3.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:20 AM",
+      "bagCount": 6,
+      "overflowCount": 4,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "A-11.8F",
+          "bag": "Black 6879",
+          "packages": 24
+        },
+        {
+          "index": 2,
+          "sortZone": "G-4.4H",
+          "bag": "Orange 2204",
+          "packages": 10
+        },
+        {
+          "index": 3,
+          "sortZone": "H-9.5E",
+          "bag": "Green 4414",
+          "packages": 8
+        },
+        {
+          "index": 4,
+          "sortZone": "E-10.2G",
+          "bag": "Blue 6590",
+          "packages": 23
+        },
+        {
+          "index": 5,
+          "sortZone": "C-11.9F",
+          "bag": "Navy 4512",
+          "packages": 13
+        },
+        {
+          "index": 6,
+          "sortZone": "C-2.6C",
+          "bag": "Navy 8335",
+          "packages": 24
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "C-99.BW",
+          "packages": 3
+        },
+        {
+          "index": 2,
+          "sortZone": "A-99.FW",
+          "packages": 1
+        }
+      ],
+      "totalPackages": 106,
+      "commercialPackages": 3,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 102,
+        "overflowPackages": 4
+      }
+    },
+    {
+      "pageNumber": 18,
+      "pageNumbers": [
+        18
+      ],
+      "routeCode": "CX191",
+      "staging": "STG.C4.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian SMALL",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:25 AM",
+      "bagCount": 3,
+      "overflowCount": 1,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "F-3.2H",
+          "bag": "Green 5133",
+          "packages": 4
+        },
+        {
+          "index": 2,
+          "sortZone": "B-5.2F",
+          "bag": "Yellow 9517",
+          "packages": 19
+        },
+        {
+          "index": 3,
+          "sortZone": "B-11.5F",
+          "bag": "Yellow 8777",
+          "packages": 15
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "C-99.FW",
+          "packages": 1
+        }
+      ],
+      "totalPackages": 39,
+      "commercialPackages": 1,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 38,
+        "overflowPackages": 1
+      }
+    },
+    {
+      "pageNumber": 19,
+      "pageNumbers": [
+        19
+      ],
+      "routeCode": "CX192",
+      "staging": "STG.C5.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:25 AM",
+      "bagCount": 4,
+      "overflowCount": 6,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "D-9.5A",
+          "bag": "Orange 3388",
+          "packages": 7
+        },
+        {
+          "index": 2,
+          "sortZone": "E-5.8D",
+          "bag": "Orange 9614",
+          "packages": 6
+        },
+        {
+          "index": 3,
+          "sortZone": "D-13.5H",
+          "bag": "Blue 3140",
+          "packages": 21
+        },
+        {
+          "index": 4,
+          "sortZone": "A-13.5F",
+          "bag": "Navy 7452",
+          "packages": 23
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "B-99.BW",
+          "packages": 3
+        },
+        {
+          "index": 2,
+          "sortZone": "D-99.EW",
+          "packages": 2
+        },
+        {
+          "index": 3,
+          "sortZone": "A-99.EW",
+          "packages": 1
+        }
+      ],
+      "totalPackages": 63,
+      "commercialPackages": 3,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 57,
+        "overflowPackages": 6
+      }
+    },
+    {
+      "pageNumber": 20,
+      "pageNumbers": [
+        20
+      ],
+      "routeCode": "CX194",
+      "staging": "STG.C6.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:25 AM",
+      "bagCount": 5,
+      "overflowCount": 3,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "A-1.8B",
+          "bag": "Yellow 8858",
+          "packages": 9
+        },
+        {
+          "index": 2,
+          "sortZone": "H-6.6C",
+          "bag": "Green 6926",
+          "packages": 15
+        },
+        {
+          "index": 3,
+          "sortZone": "F-1.5B",
+          "bag": "Green 0287",
+          "packages": 8
+        },
+        {
+          "index": 4,
+          "sortZone": "G-7.6E",
+          "bag": "Green 1492",
+          "packages": 23
+        },
+        {
+          "index": 5,
+          "sortZone": "B-9.5D",
+          "bag": "Navy 1992",
+          "packages": 14
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "A-99.HW",
+          "packages": 1
+        },
+        {
+          "index": 2,
+          "sortZone": "G-99.HW",
+          "packages": 2
+        }
+      ],
+      "totalPackages": 72,
+      "commercialPackages": 0,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 69,
+        "overflowPackages": 3
+      }
+    },
+    {
+      "pageNumber": 21,
+      "pageNumbers": [
+        21
+      ],
+      "routeCode": "CX195",
+      "staging": "STG.D1.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:25 AM",
+      "bagCount": 3,
+      "overflowCount": 0,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "F-7.2D",
+          "bag": "Navy 7113",
+          "packages": 8
+        },
+        {
+          "index": 2,
+          "sortZone": "D-6.3A",
+          "bag": "Navy 7023",
+          "packages": 24
+        },
+        {
+          "index": 3,
+          "sortZone": "H-11.5D",
+          "bag": "Blue 4650",
+          "packages": 14
+        }
+      ],
+      "overflow": [],
+      "totalPackages": 46,
+      "commercialPackages": 1,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 46,
+        "overflowPackages": 0
+      }
+    },
+    {
+      "pageNumber": 22,
+      "pageNumbers": [
+        22
+      ],
+      "routeCode": "CX196",
+      "staging": "STG.D2.1",
+      "dsp": "XXXX",
+      "serviceType": "Nursery Route Level 2 - Electric Vehicle",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:20 AM",
+      "bagCount": 4,
+      "overflowCount": 5,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "C-7.5E",
+          "bag": "Green 2583",
+          "packages": 11
+        },
+        {
+          "index": 2,
+          "sortZone": "G-1.9G",
+          "bag": "Black 4336",
+          "packages": 10
+        },
+        {
+          "index": 3,
+          "sortZone": "B-13.5E",
+          "bag": "Green 9013",
+          "packages": 20
+        },
+        {
+          "index": 4,
+          "sortZone": "D-10.9D",
+          "bag": "Orange 2354",
+          "packages": 19
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "A-99.GW",
+          "packages": 3
+        },
+        {
+          "index": 2,
+          "sortZone": "D-99.HW",
+          "packages": 2
+        }
+      ],
+      "totalPackages": 65,
+      "commercialPackages": 1,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 60,
+        "overflowPackages": 5
+      }
+    },
+    {
+      "pageNumber": 23,
+      "pageNumbers": [
+        23
+      ],
+      "routeCode": "CX197",
+      "staging": "STG.D3.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:20 AM",
+      "bagCount": 5,
+      "overflowCount": 1,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "H-13.8F",
+          "bag": "Yellow 0838",
+          "packages": 13
+        },
+        {
+          "index": 2,
+          "sortZone": "B-2.7F",
+          "bag": "Navy 4433",
+          "packages": 24
+        },
+        {
+          "index": 3,
+          "sortZone": "D-2.5G",
+          "bag": "Black 6160",
+          "packages": 4
+        },
+        {
+          "index": 4,
+          "sortZone": "B-4.1C",
+          "bag": "Orange 6393",
+          "packages": 19
+        },
+        {
+          "index": 5,
+          "sortZone": "H-7.1A",
+          "bag": "Yellow 9473",
+          "packages": 15
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "H-99.EW",
+          "packages": 1
+        }
+      ],
+      "totalPackages": 76,
+      "commercialPackages": 2,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 75,
+        "overflowPackages": 1
+      }
+    },
+    {
+      "pageNumber": 24,
+      "pageNumbers": [
+        24
+      ],
+      "routeCode": "CX198",
+      "staging": "STG.D4.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:25 AM",
+      "bagCount": 3,
+      "overflowCount": 6,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "F-5.2H",
+          "bag": "Black 9092",
+          "packages": 16
+        },
+        {
+          "index": 2,
+          "sortZone": "E-2.3D",
+          "bag": "Black 1746",
+          "packages": 10
+        },
+        {
+          "index": 3,
+          "sortZone": "F-4.5A",
+          "bag": "Blue 0523",
+          "packages": 10
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "H-99.CW",
+          "packages": 1
+        },
+        {
+          "index": 2,
+          "sortZone": "A-99.CW",
+          "packages": 3
+        },
+        {
+          "index": 3,
+          "sortZone": "C-99.CW",
+          "packages": 2
+        }
+      ],
+      "totalPackages": 42,
+      "commercialPackages": 5,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 36,
+        "overflowPackages": 6
+      }
+    },
+    {
+      "pageNumber": 25,
+      "pageNumbers": [
+        25
+      ],
+      "routeCode": "CX199",
+      "staging": "STG.D5.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:20 AM",
+      "bagCount": 4,
+      "overflowCount": 4,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "C-11.5A",
+          "bag": "Navy 4562",
+          "packages": 19
+        },
+        {
+          "index": 2,
+          "sortZone": "A-3.1B",
+          "bag": "Yellow 1842",
+          "packages": 19
+        },
+        {
+          "index": 3,
+          "sortZone": "H-14.5C",
+          "bag": "Black 4886",
+          "packages": 20
+        },
+        {
+          "index": 4,
+          "sortZone": "F-7.4B",
+          "bag": "Green 7255",
+          "packages": 15
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "G-99.EW",
+          "packages": 3
+        },
+        {
+          "index": 2,
+          "sortZone": "E-99.CW",
+          "packages": 1
+        }
+      ],
+      "totalPackages": 77,
+      "commercialPackages": 3,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 73,
+        "overflowPackages": 4
+      }
+    },
+    {
+      "pageNumber": 26,
+      "pageNumbers": [
+        26
+      ],
+      "routeCode": "CX200",
+      "staging": "STG.D6.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:20 AM",
+      "bagCount": 5,
+      "overflowCount": 0,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "H-3.8B",
+          "bag": "Orange 2817",
+          "packages": 17
+        },
+        {
+          "index": 2,
+          "sortZone": "D-4.7A",
+          "bag": "Orange 1939",
+          "packages": 6
+        },
+        {
+          "index": 3,
+          "sortZone": "B-2.5D",
+          "bag": "Black 2033",
+          "packages": 3
+        },
+        {
+          "index": 4,
+          "sortZone": "D-2.5A",
+          "bag": "Black 4078",
+          "packages": 15
+        },
+        {
+          "index": 5,
+          "sortZone": "G-13.7G",
+          "bag": "Yellow 6953",
+          "packages": 17
+        }
+      ],
+      "overflow": [],
+      "totalPackages": 58,
+      "commercialPackages": 3,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 58,
+        "overflowPackages": 0
+      }
+    },
+    {
+      "pageNumber": 27,
+      "pageNumbers": [
+        27
+      ],
+      "routeCode": "CX900",
+      "staging": "STG.E2.1",
+      "dsp": "XXXX",
+      "serviceType": "Standard Parcel Electric - Rivian MEDIUM",
+      "station": "XXX1",
+      "weekday": "FRI",
+      "date": "2026-09-25",
+      "dateLabel": "FRI, SEP 25, 2026",
+      "cycle": "CYCLE_1",
+      "waveTime": "10:25 AM",
+      "bagCount": 4,
+      "overflowCount": 3,
+      "bags": [
+        {
+          "index": 1,
+          "sortZone": "C-9.5E",
+          "bag": "Navy 6542",
+          "packages": 22
+        },
+        {
+          "index": 2,
+          "sortZone": "C-13.2E",
+          "bag": "Yellow 9349",
+          "packages": 24
+        },
+        {
+          "index": 3,
+          "sortZone": "F-6.5H",
+          "bag": "Navy 0760",
+          "packages": 15
+        },
+        {
+          "index": 4,
+          "sortZone": "A-12.8H",
+          "bag": "Yellow 2156",
+          "packages": 11
+        }
+      ],
+      "overflow": [
+        {
+          "index": 1,
+          "sortZone": "F-99.CW",
+          "packages": 3
+        }
+      ],
+      "totalPackages": 75,
+      "commercialPackages": 0,
+      "check": {
+        "ok": true,
+        "problems": [],
+        "notes": [],
+        "bagPackages": 72,
+        "overflowPackages": 3
+      }
+    }
+  ],
+  "pageErrors": [
+    {
+      "pageNumber": 1,
+      "message": "Page 1 does not look like a route sheet (no route code found)."
+    },
+    {
+      "pageNumber": 28,
+      "message": "Page 28 is blank and was skipped."
+    }
+  ],
+  "pageCount": 28
+}

@@ -493,6 +493,26 @@
       "path": "vehicles/VehiclesData.xlsx",
       "kind": "vehicles",
       "how": "synthesised from the vehicles table of the old database; no real vehicle export was used"
+    },
+    {
+      "path": "route-sheets/2026-09-01.pdf",
+      "kind": "route-sheets",
+      "how": "drawn from scratch from the fixture Routes export; no real PDF was used"
+    },
+    {
+      "path": "route-sheets/2026-09-01-split-runs.pdf",
+      "kind": "route-sheets",
+      "how": "drawn from scratch from the fixture Routes export; no real PDF was used"
+    },
+    {
+      "path": "route-sheets/2026-09-25.pdf",
+      "kind": "route-sheets",
+      "how": "drawn from scratch from the fixture Routes export; no real PDF was used"
+    },
+    {
+      "path": "route-sheets/2026-09-25-split-runs.pdf",
+      "kind": "route-sheets",
+      "how": "drawn from scratch from the fixture Routes export; no real PDF was used"
     }
   ],
   "people": [

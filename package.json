@@ -25,7 +25,9 @@
     "fixtures:performance": "node packages/fixtures/anonymise-performance.mjs",
     "parity:python": "python3 -I scripts/parity/python_dump.py",
     "parity:ts": "tsx scripts/parity/ts/dump.ts",
-    "parity:diff": "node scripts/parity/diff.mjs"
+    "parity:diff": "node scripts/parity/diff.mjs",
+    "parity:rsd:dump": "node scripts/parity/rsd/dump.mjs",
+    "parity:rsd:diff": "node scripts/parity/rsd/diff.mjs"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

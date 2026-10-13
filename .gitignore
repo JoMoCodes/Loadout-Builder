@@ -30,6 +30,8 @@ legacy/python/data/
 # The old Weekly Performance App's reference outputs for the fixtures (made up; see docs/WPA-MIGRATION-PLAN.md)
 !scripts/parity/wpa/expected/**/*.csv
 !scripts/parity/wpa/expected/**/*.pdf
+# The old Route Sheet Distributor's answers for the synthetic route sheets (made up; see docs/RSD-MIGRATION-PLAN.md)
+!scripts/parity/rsd/expected/**/*.csv
 
 # Secrets and shortcuts
 .env
@@ -61,6 +63,7 @@ playwright-report/
 
 # The new core's side of the parity check (the old app's side, expected/, is committed: it is made up)
 scripts/parity/actual/
+scripts/parity/rsd/actual/
 
 # Editors and operating system
 .DS_Store
