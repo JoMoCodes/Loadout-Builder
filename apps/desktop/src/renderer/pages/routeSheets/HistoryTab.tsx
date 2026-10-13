@@ -186,7 +186,9 @@ export function HistoryTab({ state, revision, messages, ask, onDistribute }: His
   );
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
+    // The tab scrolls as a whole, and the table keeps a height of its own, so a short window (a
+    // small screen) still shows the saved runs instead of an empty table.
+    <div className="flex min-h-0 flex-1 flex-col overflow-auto">
       <h2 className="m-0 border-b border-line bg-surface px-6 pt-3 pb-1 text-[1.15rem] font-semibold">
         Saved runs
       </h2>
@@ -199,7 +201,7 @@ export function HistoryTab({ state, revision, messages, ask, onDistribute }: His
           again. Runs older than 30 days are cleared when the app opens.
         </span>
       </ButtonStrip>
-      <div className="min-h-0 flex-1">
+      <div className="min-h-64 flex-1">
         <DataGrid
           view="route-sheets-history"
           label="Saved runs"
