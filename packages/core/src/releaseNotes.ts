@@ -16,7 +16,7 @@ export const RELEASE_NOTES: readonly ReleaseNote[] = [
       'Route Sheet Distributor is now part of Loadout Builder. You only need one app. You can uninstall the old one.',
       'There is a new Route Sheets page, right under Load Out in the left menu.',
       "Bring in the day's route sheet PDF. The app works out which driver each page belongs to, and shows you the email that driver will get.",
-      'It uses the driver list from the Associates page and the Routes file from the Route Data page. They are the ones you already have, so there is nothing new to bring in.',
+      "It uses the driver list from the Associates page and the Routes file from the Route Data page. They are the ones you already have, so you don't bring them in twice.",
       'The PAD for each route comes from Route Data too. If a time on the PDF is not on the Routes file, the page lets you type its PAD.',
       'The Distribute tab shows green, amber and red counts. Green is ready to send. Amber and red need you to choose.',
       'Click Accept all suggestions to take the little green Suggested pick for every route in one go.',
@@ -29,6 +29,7 @@ export const RELEASE_NOTES: readonly ReleaseNote[] = [
       'Home has a new last step, Send the route sheets. It ticks itself off when they are sent.',
       'The Route Sheets page has a short tour. How to use has a new part called Sending the route sheets.',
       'Demo mode has a made-up day of route sheets too, so you can practise safely.',
+      'Hid the Home checklist before? Open How to use to bring it back and see the new step.',
     ],
   },
   {

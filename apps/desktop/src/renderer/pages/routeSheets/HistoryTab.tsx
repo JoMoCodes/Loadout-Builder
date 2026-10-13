@@ -85,14 +85,14 @@ export function HistoryTab({ state, revision, messages, ask, onDistribute }: His
     () => [
       {
         id: 'day',
-        header: 'Day',
+        header: 'Run',
         value: (run) => run.label,
         cell: (run) => (
           <span className="flex items-center gap-2 truncate">
             <span className="truncate font-semibold">{run.label}</span>
             {run.id === openId ? (
               <Chip tone="info" icon={null}>
-                Open now
+                Open
               </Chip>
             ) : null}
           </span>
@@ -187,6 +187,9 @@ export function HistoryTab({ state, revision, messages, ask, onDistribute }: His
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
+      <h2 className="m-0 border-b border-line bg-surface px-6 pt-3 pb-1 text-[1.15rem] font-semibold">
+        Saved runs
+      </h2>
       <ButtonStrip label="Saved runs">
         <Button onClick={() => void newRun()} data-testid="route-sheets-new-run">
           New run

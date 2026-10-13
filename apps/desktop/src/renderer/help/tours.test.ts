@@ -71,9 +71,9 @@ describe('the page tours', () => {
     for (const step of TOURS['route-sheets']!.steps) {
       expect(step.element).toContain('[data-page="route-sheets"]');
     }
-    // The Sheets and History tabs are pointed at by their tab buttons, which are on every tab.
+    // The Sheets and History tabs are pointed at by their tab buttons, which are on every tab (so the first tour never skips a step).
     const tabs = TOURS['route-sheets']!.steps.filter((step) => step.element?.includes('-tab-'));
-    expect(tabs).toHaveLength(2);
+    expect(new Set(tabs.map((step) => step.element)).size).toBe(3);
   });
 
   it('read the open Performance tab from the page', () => {

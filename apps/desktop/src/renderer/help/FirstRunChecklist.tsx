@@ -54,7 +54,7 @@ const BUTTON_WORDS: Record<StepAction, string> = {
   'bring-over': 'Bring over route data',
   'assign-vans': 'Assign vans',
   'open-print': 'Open the Print tab',
-  'import-route-sheets': 'Bring in route sheet PDF',
+  'import-route-sheets': 'Bring in the route sheet PDF',
   'open-route-sheets': 'Open Route Sheets',
 };
 

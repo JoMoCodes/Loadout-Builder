@@ -9,7 +9,7 @@ import { STATE_INFO } from './words';
 
 /** Why the buttons that cut a page out of the PDF are off. */
 export const PDF_MISSING_WORDS =
-  'The original route sheet PDF for this run is no longer beside the saved data, so single pages cannot be cut out of it.';
+  "The route sheet PDF for this day is no longer in the app's data folder. You can still see the emails, but you can't save or attach single pages.";
 
 export function StateChip({ state }: { state: RouteState }) {
   const info = STATE_INFO[state];

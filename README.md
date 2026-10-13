@@ -70,7 +70,7 @@ The first time you open the app, it looks for your old roster data. If it finds 
 3. **Check and send.** On the **Sheets** tab, click a route to see the email the driver gets. Click **Email all** to send every ready one, or send them one at a time. **Export all** saves them into a folder you pick.
 4. **Come back to a day.** The **History** tab keeps each day for 30 days.
 
-**Where the files come from:** the route sheet PDF is downloaded from Slack. The driver list is the one on the **Associates** page, and the Routes file is the one on the **Route Data** page, so you bring them in only once. The PADs come from **Route Data** too. The **?** next to **Bring in the route sheet PDF** shows where to get the PDF, with a picture.
+**Where the files come from:** the route sheet PDF is downloaded from Slack. The driver list is the one on the **Associates** page, and the Routes file is the one on the **Route Data** page, so you don't bring them in twice. The PADs come from **Route Data** too. The **?** next to **Bring in the route sheet PDF** shows where to get the PDF, with a picture.
 
 **Emailing:** the route sheets go out from the same Gmail address as the weekly reports, using a Gmail **app password**. You set it up once in **Settings**, under **Email**.
 

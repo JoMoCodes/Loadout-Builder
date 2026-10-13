@@ -281,21 +281,21 @@ export const TOURS: Record<string, Tour> = {
         side: 'bottom',
       },
       {
-        element: `${ROUTE_SHEETS} [role="group"][aria-label="Route sheet counts"]`,
+        element: `${ROUTE_SHEETS} [data-testid="route-sheets-tab-distribute"]`,
         title: 'The counts',
-        text: 'Green are ready to send. Amber need your decision. Red have no exact match, or no page in the PDF.',
+        text: 'The Distribute tab counts the routes. Green are ready to send. Amber need your decision. Red have no exact match, or no page in the PDF.',
         side: 'bottom',
       },
       {
-        element: `${ROUTE_SHEETS} [data-testid="route-sheets-accept-suggestions"]`,
+        element: `${ROUTE_SHEETS} [data-testid="route-sheets-tab-distribute"]`,
         title: 'Choose who gets a route sheet',
-        text: "When a route lists more than one driver, choose one. Accept all suggestions takes the app's best guess for each.",
+        text: "Here, when a route lists more than one driver, choose one. Accept all suggestions takes the app's best guess for each.",
         side: 'bottom',
       },
       {
         element: `${ROUTE_SHEETS} [data-testid="route-sheets-tab-sheets"]`,
         title: 'Check it, then send it',
-        text: 'Pick a route on the Sheets tab to see its email. Send email, Copy or Open email draft, then Mark as sent. Email all and Export all do every ready one.',
+        text: 'Pick a route on the Sheets tab to see its email. Send email, Copy for email or Open email draft each put a ✓ on it. Email all and Export all do every ready one.',
         side: 'bottom',
       },
       {

@@ -19,14 +19,14 @@ describe('the Route Sheets page’s words', () => {
       /^No Routes export is loaded\. Bring in the Routes export/,
     );
     expect(routeDataWords({ kind: 'routes', label: 'Routes', fileName: 'Routes_XXX1.xlsx' })).toBe(
-      'Using the Routes export Routes_XXX1.xlsx',
+      'Matching with the Routes export: Routes_XXX1.xlsx.',
     );
     expect(
       routeDataWords({ kind: 'itineraries', label: 'Itineraries', fileName: 'Itin.xlsx' }),
-    ).toBe('Using the Itineraries export Itin.xlsx');
+    ).toBe('Matching with the Itineraries export: Itin.xlsx.');
     expect(
       routeDataWords({ kind: 'schedule', label: 'Weekly Schedule', fileName: 'Week-38.xlsx' }),
-    ).toBe('Using the Weekly Schedule Week-38.xlsx');
+    ).toBe('Matching with the Weekly Schedule: Week-38.xlsx.');
   });
 
   it('says the driver list is over a month old once its due time has come', () => {

@@ -376,12 +376,13 @@ export class RouteSheetsHost {
         ? {
             kind: source.kind,
             label: routeDataLabel(source.set),
-            fileName: path.basename(source.set.sourceFile),
+            // Only the file's name reaches the page; a stored path may use either slash.
+            fileName: path.win32.basename(source.set.sourceFile),
           }
         : null,
       driverList: {
         count: book.rows.length,
-        fileName: path.basename(book.sourceFile),
+        fileName: path.win32.basename(book.sourceFile),
         importedAt,
         refreshDueAt: importedAt ? addMonth(importedAt) : null,
       },

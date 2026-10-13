@@ -31,7 +31,7 @@ export interface ChecklistFacts {
   /** Route sheets read from the PDF in the open run. */
   routeSheets: number;
   /**
-   * Every route sheet that can be emailed has been sent (and at least one is ready). The
+   * Every route sheet is settled: none waits for a choice or has no match, and every ready one has been sent (at least one is ready). The
    * snapshot gives the ready count and what Email all would still send, not the sent marks.
    */
   routeSheetsSent: boolean;
@@ -56,7 +56,12 @@ export function checklistFacts(snapshot: AppSnapshot, printed: boolean): Checkli
     printed,
     routeSheets: sheets?.sheets ?? 0,
     routeSheetsSent:
-      sheets != null && sheets.runId !== null && sheets.ready > 0 && sheets.unsent === 0,
+      sheets != null &&
+      sheets.runId !== null &&
+      sheets.ready > 0 &&
+      sheets.unsent === 0 &&
+      sheets.needsDecision === 0 &&
+      sheets.exceptions === 0,
   };
 }
 

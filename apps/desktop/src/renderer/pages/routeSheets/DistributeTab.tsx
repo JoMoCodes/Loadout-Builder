@@ -116,7 +116,9 @@ export function DistributeTab({ state, dist, snapshot, messages, openSheet }: Di
     if (done.ok) messages.setStatus(acceptedWords(done.value));
   }
 
-  if (dist.routes.length === 0) {
+  // A new run with no route sheet PDF yet: even with route data loaded, there is nothing to
+  // decide (every route would read as missing from the PDF).
+  if (state.run.pdfFileName === null) {
     return (
       <div className="px-6 py-6" data-testid="route-sheets-start">
         <h2 className="m-0 text-[1.15rem] font-semibold">Start a run</h2>
@@ -289,6 +291,12 @@ function Counts({ dist }: { dist: RouteSheetsDistributionView }) {
       {chip('exception', c.exception, 'no exact match', 'bad')}
       {chip('no-sheet', c['no-sheet'], 'missing from the PDF', 'bad')}
       {chip('skipped', c.skipped, 'not sending', 'neutral')}
+      {chip(
+        'people',
+        dist.people.notReceiving.length,
+        `${dist.people.notReceiving.length === 1 ? 'person' : 'people'} not getting a sheet`,
+        'warn',
+      )}
       {c.missingEmail > 0
         ? chip('missing-email', c.missingEmail, 'without an email address', 'warn')
         : null}
@@ -299,11 +307,23 @@ function Counts({ dist }: { dist: RouteSheetsDistributionView }) {
 // ---------------------------------------------------------------------- the pad for a wave
 
 function WavePads({ dist, messages }: { dist: RouteSheetsDistributionView; messages: Messages }) {
+  // Waves the route data knows but has no PAD for yet (the old app's "N waves without a pad").
+  const noPad = dist.waves.filter((w) => !w.pad && !dist.typedPadWaves.includes(w.waveTime));
+  const missing =
+    noPad.length > 0 ? (
+      <p className="m-0 mt-1 text-sm text-warn" data-testid="route-sheets-pads-missing">
+        {plural(noPad.length, 'wave')} {noPad.length === 1 ? 'has' : 'have'} no pad yet. Set{' '}
+        {noPad.length === 1 ? 'it' : 'them'} with Assign PADs on the Route Data page.
+      </p>
+    ) : null;
   if (dist.typedPadWaves.length === 0) {
     return (
-      <p className="m-0 mt-3 text-sm text-muted" data-testid="route-sheets-pads-note">
-        The pad for each wave comes from the Route Data page.
-      </p>
+      <>
+        <p className="m-0 mt-3 text-sm text-muted" data-testid="route-sheets-pads-note">
+          The pad for each wave comes from the Route Data page.
+        </p>
+        {missing}
+      </>
     );
   }
   return (
@@ -326,6 +346,7 @@ function WavePads({ dist, messages }: { dist: RouteSheetsDistributionView; messa
           );
         })}
       </div>
+      {missing}
     </Section>
   );
 }
@@ -682,6 +703,18 @@ function ExceptionCard({
   onOpen: (routeCode: string) => void;
   messages: Messages;
 }) {
+  async function viewOriginal() {
+    const done = await command(messages, 'routeSheets:view-original-page', {
+      routeCode: route.routeCode,
+    });
+    if (done.ok && !done.value.opened) {
+      messages.setProblem({
+        title: 'That did not go through',
+        message: 'The page could not be opened. Try Save PDF page on the Sheets tab instead.',
+      });
+    }
+  }
+
   return (
     <div
       className="rounded-lg border border-bad/60 bg-surface px-4 py-3"
@@ -725,6 +758,16 @@ function ExceptionCard({
         >
           Don&apos;t send
         </Button>
+        {route.hasSheet ? (
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => void viewOriginal()}
+            data-testid={`route-sheets-view-original-${route.routeCode}`}
+          >
+            View original PDF page
+          </Button>
+        ) : null}
         <Button
           size="sm"
           variant="ghost"

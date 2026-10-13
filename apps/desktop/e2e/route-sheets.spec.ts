@@ -464,7 +464,7 @@ test('the cards name the route data in use, an old driver list and a ready email
     '2026-09-01.pdf - 5 route sheets, 1 failed the number check (CX103)',
   );
   await expect(page.getByTestId('route-sheets-route-data-words')).toHaveText(
-    'Using the Itineraries export Itineraries_XXX1.xlsx',
+    'Matching with the Itineraries export: Itineraries_XXX1.xlsx.',
   );
   await expect(page.getByTestId('route-sheets-open-route-data')).toHaveCount(0);
   await expect(page.getByTestId('route-sheets-driver-count')).toHaveText(
@@ -488,7 +488,7 @@ test('the cards name the route data in use, an old driver list and a ready email
     },
   });
   await expect(page.getByTestId('route-sheets-route-data-words')).toHaveText(
-    'Using the Weekly Schedule Week-36-Schedule.xlsx',
+    'Matching with the Weekly Schedule: Week-36-Schedule.xlsx.',
   );
   await expect(page.getByTestId('route-sheets-driver-list-old')).toHaveCount(0);
 });
@@ -530,6 +530,8 @@ test('Distribute shows the counts and one route in each state, in the old order'
   await expect(count('no-sheet')).toHaveText('1 missing from the PDF');
   await expect(count('no-sheet')).toHaveAttribute('data-tone', 'bad');
   await expect(count('skipped')).toHaveText('1 not sending');
+  await expect(count('people')).toHaveText('1 person not getting a sheet');
+  await expect(count('people')).toHaveAttribute('data-tone', 'warn');
   await expect(count('missing-email')).toHaveCount(0);
 
   const headings = await page.locator('[data-testid^="route-sheets-section-"] h2').allInnerTexts();
@@ -761,7 +763,8 @@ test('Bring in the route sheet PDF picks it and says what was read', async ({ pa
   );
   await page.getByTestId('route-sheets-bring-in').click();
   await expect(problem(page)).toContainText('No route sheets were found in notes.pdf.');
-  await expect(status(page)).toHaveText('Import failed.');
+  await expect(problem(page)).toContainText('Could not bring the PDF in');
+  await expect(status(page)).toHaveText('The PDF did not come in.');
 });
 
 /** Drags a made-up file over the page and lets go, the way a file from the computer arrives. */
@@ -817,7 +820,7 @@ test('a PDF dropped on the page is brought in, and a file of the wrong kind is r
   await expect(problem(page)).toContainText(
     "That file doesn't look like a route sheet PDF. It should end in .pdf.",
   );
-  await expect(status(page)).toHaveText('Import failed.');
+  await expect(status(page)).toHaveText('The PDF did not come in.');
   expect(await callsTo(page, 'files:import')).toHaveLength(1);
 });
 
@@ -934,7 +937,7 @@ test('every way to send one route sheet calls the app and puts a tick after it',
   const at = new Date(2026, 8, 1, 9, 5).toISOString();
   await change(page, { state: { run: run({ sent: { CX101: { how: 'copied', at } } }) } });
   await expect(page.getByTestId('route-sheets-sent-mark')).toHaveText('✓ Copied Sep 1, 9:05 AM');
-  await expect(page.getByTestId('route-sheets-mark-sent')).toHaveText('Mark as not sent');
+  await expect(page.getByTestId('route-sheets-mark-sent')).toHaveText('Undo');
   await page.getByTestId('route-sheets-mark-sent').click();
   expect((await callsTo(page, 'routeSheets:mark-sent')).at(-1)).toEqual({
     routeCode: 'CX101',
@@ -1049,18 +1052,18 @@ test('Export all says where it wrote, and nothing when the folder window was clo
 test('a run whose PDF is gone says so, and the buttons that cut a page wait', async ({ page }) => {
   await openRouteSheets(page, { tab: 'sheets', state: { run: run({ pdfMissing: true }) } });
   await expect(page.getByTestId('route-sheets-pdf-missing')).toContainText(
-    'The original route sheet PDF for this run is no longer beside the saved data',
+    "The route sheet PDF for this day is no longer in the app's data folder. You can still see the emails, but you can't save or attach single pages.",
   );
   for (const id of ['save-pdf', 'view-original', 'open-draft']) {
     const button = page.getByTestId(`route-sheets-${id}`);
     await expect(button, id).toBeDisabled();
-    await expect(button, id).toHaveAttribute('title', /no longer beside the saved data/);
+    await expect(button, id).toHaveAttribute('title', /no longer in the app's data folder/);
   }
   // Sending and Export all carry on without the PDF page, as the old app did, and say so.
   for (const id of ['send', 'export-all']) {
     const button = page.getByTestId(`route-sheets-${id}`);
     await expect(button, id).toBeEnabled();
-    await expect(button, id).toHaveAttribute('title', /no longer beside the saved data/);
+    await expect(button, id).toHaveAttribute('title', /no longer in the app's data folder/);
   }
   // Copying and marking as sent still work, and the email still shows.
   await expect(page.getByTestId('route-sheets-copy')).toBeEnabled();
@@ -1074,9 +1077,9 @@ test('History lists the saved runs: Open, Delete (asking first) and New run', as
   await openRouteSheets(page, { tab: 'history' });
   const grid = page.getByRole('grid', { name: 'Saved runs' });
   await expect(grid.locator('[role="rowgroup"] [role="row"]')).toHaveCount(2);
-  await expect(grid.locator(`[data-row-id="${RUN_ID}"] [data-col-id="day"]`)).toContainText(
-    'Open now',
-  );
+  await expect(page.getByRole('heading', { level: 2, name: 'Saved runs' })).toBeVisible();
+  await expect(grid.locator('[role="columnheader"][data-col-id="day"]')).toContainText('Run');
+  await expect(grid.locator(`[data-row-id="${RUN_ID}"] [data-col-id="day"]`)).toContainText('Open');
   await expect(page.getByTestId(`route-sheets-run-pdf-missing-${OLDER_RUN}`)).toHaveText(
     'PDF missing',
   );
@@ -1166,4 +1169,169 @@ test('a change announced from outside is read again', async ({ page }) => {
   });
   await emit(page, 'state:changed', { revision: 7 });
   await expect(page.getByTestId('route-sheets-count-ready')).toHaveText('3 ready to send');
+});
+
+// ------------------------------------------------------------ after the phase 3 review
+
+test('with route data loaded but no PDF yet, Distribute says how to start, not that everything is missing', async ({
+  page,
+}) => {
+  const missing = routes()
+    .filter((r) => r.routeCode !== 'CX103')
+    .map((r) => ({
+      ...r,
+      hasSheet: false,
+      sheet: null,
+      kind: 'no-sheet',
+      state: 'no-sheet',
+      headline: 'No page for this route in the route sheet PDF',
+    }));
+  await openRouteSheets(page, {
+    state: {
+      run: run({
+        id: 'draft',
+        label: 'New run (no route sheet PDF yet)',
+        saved: false,
+        pdfFileName: null,
+        sheetCount: 0,
+        checkFailures: [],
+        warnings: [],
+      }),
+    },
+    dist: { routes: missing, typedPadWaves: [], waves: [] },
+  });
+  await expect(page.getByTestId('route-sheets-route-data-words')).toHaveText(
+    'Matching with the Routes export: Routes_XXX1_2026-09-01.xlsx.',
+  );
+  await expect(page.getByTestId('route-sheets-start')).toContainText('Start a run');
+  await expect(page.locator('[data-testid^="route-sheets-section-"]')).toHaveCount(0);
+  await expect(page.getByTestId('route-sheets-count-no-sheet')).toHaveCount(0);
+});
+
+test('Distribute says how many waves still have no pad from Route Data', async ({ page }) => {
+  await openRouteSheets(page, {
+    dist: {
+      typedPadWaves: [],
+      waves: [
+        { waveTime: '10:20 AM', routes: 4, pad: null },
+        { waveTime: '02:30 PM', routes: 1, pad: null },
+        { waveTime: '03:00 PM', routes: 1, pad: '3' },
+      ],
+    },
+  });
+  await expect(page.getByTestId('route-sheets-pads-missing')).toHaveText(
+    '2 waves have no pad yet. Set them with Assign PADs on the Route Data page.',
+  );
+  await change(page, {
+    dist: {
+      waves: [{ waveTime: '10:20 AM', routes: 4, pad: '1' }],
+    },
+  });
+  await expect(page.getByTestId('route-sheets-pads-missing')).toHaveCount(0);
+});
+
+test('No exact match: View original PDF page opens the page', async ({ page }) => {
+  await openRouteSheets(page);
+  await page.getByTestId('route-sheets-view-original-CX103').click();
+  await expect
+    .poll(() => callsTo(page, 'routeSheets:view-original-page'))
+    .toEqual([{ routeCode: 'CX103' }]);
+});
+
+test('the Sheets search narrows the list by route, staging or driver', async ({ page }) => {
+  await openRouteSheets(page, { tab: 'sheets' });
+  const picks = page.locator('[data-testid^="route-sheets-pick-"]');
+  const search = page.getByTestId('route-sheets-search');
+  await expect(search).toHaveAttribute('placeholder', 'Search route, staging, or driver');
+  await expect(picks).toHaveCount(5);
+  await search.fill('cx103');
+  await expect(picks).toHaveCount(1);
+  await expect(picks.first()).toHaveAttribute('data-route', 'CX103');
+  await search.fill('stg.d4');
+  await expect(picks).toHaveText([/^CX106/]);
+  await search.fill(COLTON.name.split(' ')[1]!);
+  await expect(picks).toHaveText([/^CX102/]);
+  await search.fill('nobody at all');
+  await expect(picks).toHaveCount(0);
+  await expect(page.getByText('No route matches that search.')).toBeVisible();
+  await search.fill('');
+  await expect(picks).toHaveCount(5);
+});
+
+test('the Sheets tab shows the route sheet and the Transporter ID match under the email', async ({
+  page,
+}) => {
+  await openRouteSheets(page, { tab: 'sheets' });
+  const sheetPanel = page.getByTestId('route-sheets-panel-sheet');
+  await expect(sheetPanel.getByRole('heading')).toHaveText('Route sheet');
+  for (const words of [
+    'RouteCX101',
+    'StagingSTG.A1',
+    'Wave10:20 AM',
+    'Pad #1',
+    'DateTue, Sep 1, 2026',
+    'Service typeStandard Parcel',
+    'Bags20',
+    'Overflow packages10',
+    'Total packages210',
+    'PDF page1',
+  ]) {
+    await expect(sheetPanel).toContainText(words);
+  }
+  await expect(page.getByTestId('route-sheets-verified')).toHaveText(
+    '✓ Verified: 20 bags, 10 overflow packages, 210 total all add up',
+  );
+  const match = page.getByTestId('route-sheets-panel-match');
+  await expect(match.getByRole('heading')).toHaveText('Transporter ID match');
+  await expect(match).toContainText(CARMEN.name);
+  await expect(match).toContainText('ACTIVE');
+  await expect(page.getByTestId('route-sheets-exact-match')).toHaveText(
+    '✓ Exact match, nothing to review',
+  );
+
+  // A page that failed its check lists the problems and the notes, and the match its issues.
+  await change(page, {
+    dist: {
+      routes: (
+        await page.evaluate(
+          () => (window as unknown as { __rs: { dist: { routes: unknown[] } } }).__rs.dist.routes,
+        )
+      ).map((r) =>
+        (r as { routeCode: string }).routeCode === 'CX103'
+          ? {
+              ...(r as object),
+              sheet: sheet('STG.C3', '02:30 PM', null, {
+                checkOk: false,
+                checkProblems: ['18 bag rows but the heading says 20 bags'],
+                notes: ['Bag 4 has no Sort Zone on the route sheet'],
+              }),
+            }
+          : r,
+      ),
+    },
+  });
+  await page.getByTestId('route-sheets-pick-CX103').click();
+  await expect(page.getByTestId('route-sheets-check-problems')).toHaveText(
+    '18 bag rows but the heading says 20 bags',
+  );
+  await expect(page.getByTestId('route-sheets-sheet-notes')).toHaveText(
+    'Bag 4 has no Sort Zone on the route sheet',
+  );
+  await expect(page.getByTestId('route-sheets-panel-match')).toContainText(
+    'Not on the routes file',
+  );
+  await expect(page.getByTestId('route-sheets-match-issues')).toContainText(
+    'CX103 has a route sheet page but is not on the routes file',
+  );
+});
+
+test('a ready route with no email address is tagged No email in the Sheets list', async ({
+  page,
+}) => {
+  const list = routes().map((r) =>
+    r.routeCode === 'CX101' ? { ...r, recipients: [person(CARMEN, '')] } : r,
+  );
+  await openRouteSheets(page, { tab: 'sheets', dist: { routes: list } });
+  await expect(page.getByTestId('route-sheets-no-email-CX101')).toHaveText('No email');
+  await expect(page.getByTestId('route-sheets-no-email-CX106')).toHaveCount(0);
 });

@@ -221,8 +221,8 @@ export const WHERE_TO_GET: Record<StepId, Note> = {
         text: (
           <>
             The driver list and the Routes file are the ones already in the app. Click the{' '}
-            <strong>?</strong> on <strong>Bring in your driver list</strong> and{' '}
-            <strong>Bring over route data</strong> to see where to get them.
+            <strong>?</strong> on those steps in the checklist on <strong>Home</strong> to see where
+            to get them.
           </>
         ),
       },

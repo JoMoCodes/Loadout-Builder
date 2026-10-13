@@ -517,7 +517,7 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
             driver each page belongs to, shows you the email that driver will get, and sends it. It
             matches by Transporter ID, and it never guesses. The driver list is the one on{' '}
             {go('associates', 'Associates')}, and the Routes file is the one on{' '}
-            {go('route-data', 'Route Data')}, so you bring them in only once. The{' '}
+            {go('route-data', 'Route Data')}, so you don't bring them in twice. The{' '}
             <strong>Route Sheets</strong> page has three tabs: <strong>Distribute</strong>,{' '}
             <strong>Sheets</strong> and <strong>History</strong>.
           </p>
@@ -525,9 +525,9 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
           <h3>Once, before the first day</h3>
           <ol className="help-steps">
             <li>
-              Bring in your driver list on {go('associates', 'Associates')}. Do it again when
-              someone new starts or an email changes. The driver list card on Route Sheets turns
-              amber when it is over a month old.
+              Bring in your driver list on {go('associates', 'Associates')}: click{' '}
+              <strong>Import Associates</strong>. Do it again when someone new starts or an email
+              changes. The driver list card on Route Sheets turns amber when it is over a month old.
             </li>
             <li>
               Used the old Route Sheet Distributor? Its work now lives here. Enter your Gmail app
@@ -551,8 +551,9 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
             </li>
             <li>
               Bring in today&apos;s <strong>Routes</strong> file on {go('route-data', 'Route Data')}
-              . You may have done this already for the roster. The PADs come from there too: each
-              route gets the PAD you gave its dispatch time.
+              : click <strong>Import Routes</strong>. You may have done this already for the roster.
+              The PADs come from there too: click <strong>Assign PADs</strong> and put each time on
+              its PAD. Each route gets the PAD you gave its dispatch time.
             </li>
             <li>
               Open {go('route-sheets', 'Route Sheets')}. Click{' '}
@@ -686,8 +687,10 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
           <p>
             The <strong>History</strong> tab keeps each day&apos;s route sheets, with your choices
             and what was sent. Click <strong>Open</strong> to go back to a day, or{' '}
-            <strong>New run</strong> to start fresh. The app clears days older than 30 days by
-            itself. If something goes wrong, see &quot;If something goes wrong&quot; below.
+            <strong>New run</strong> to start fresh. Click <strong>Delete</strong> to remove a day.
+            The app asks first. The app clears days older than 30 days by itself. There is no output
+            folder any more: <strong>Export all</strong> asks where to save. If something goes
+            wrong, see &quot;If something goes wrong&quot; below.
           </p>
         </>
       ),

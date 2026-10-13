@@ -18,7 +18,14 @@ function snapshotWith(options: {
   vehicles?: number;
   rows?: Partial<DriverRow>[];
   routeRows?: Record<string, number>;
-  routeSheets?: { runId: string | null; sheets: number; ready: number; unsent: number };
+  routeSheets?: {
+    runId: string | null;
+    sheets: number;
+    ready: number;
+    unsent: number;
+    needsDecision: number;
+    exceptions: number;
+  };
 }): AppSnapshot {
   const rows = (options.rows ?? []).map((values, index) => ({
     index,
@@ -85,30 +92,95 @@ describe('the first-day checklist', () => {
     expect(stepsDone(both)['assign-print']).toBe(true);
   });
 
-  it('ticks the route sheets step once every ready sheet has gone out', () => {
+  it('ticks the route sheets step once every sheet is decided and every ready one has gone out', () => {
     const run = 'XXX1_2026-09-01_CYCLE1';
     const none = checklistFacts(snapshotWith({}), false);
     expect(stepsDone(none)['route-sheets']).toBe(false);
     const empty = checklistFacts(
-      snapshotWith({ routeSheets: { runId: null, sheets: 0, ready: 0, unsent: 0 } }),
+      snapshotWith({
+        routeSheets: {
+          runId: null,
+          sheets: 0,
+          ready: 0,
+          unsent: 0,
+          needsDecision: 0,
+          exceptions: 0,
+        },
+      }),
       false,
     );
     expect(stepsDone(empty)['route-sheets']).toBe(false);
     // The PDF is in and sheets are still waiting to go out.
     const waiting = checklistFacts(
-      snapshotWith({ routeSheets: { runId: run, sheets: 6, ready: 4, unsent: 3 } }),
+      snapshotWith({
+        routeSheets: {
+          runId: run,
+          sheets: 6,
+          ready: 4,
+          unsent: 3,
+          needsDecision: 0,
+          exceptions: 0,
+        },
+      }),
       false,
     );
     expect(waiting.routeSheets).toBe(6);
     expect(stepsDone(waiting)['route-sheets']).toBe(false);
     // Nothing is ready yet (everything waits for a choice): not done.
     const undecided = checklistFacts(
-      snapshotWith({ routeSheets: { runId: run, sheets: 6, ready: 0, unsent: 0 } }),
+      snapshotWith({
+        routeSheets: {
+          runId: run,
+          sheets: 6,
+          ready: 0,
+          unsent: 0,
+          needsDecision: 0,
+          exceptions: 0,
+        },
+      }),
       false,
     );
     expect(stepsDone(undecided)['route-sheets']).toBe(false);
+    // Everything ready has gone out, but a route still waits for a choice: not done.
+    const choosing = checklistFacts(
+      snapshotWith({
+        routeSheets: {
+          runId: run,
+          sheets: 6,
+          ready: 4,
+          unsent: 0,
+          needsDecision: 1,
+          exceptions: 0,
+        },
+      }),
+      false,
+    );
+    expect(stepsDone(choosing)['route-sheets']).toBe(false);
+    const noMatch = checklistFacts(
+      snapshotWith({
+        routeSheets: {
+          runId: run,
+          sheets: 6,
+          ready: 4,
+          unsent: 0,
+          needsDecision: 0,
+          exceptions: 2,
+        },
+      }),
+      false,
+    );
+    expect(stepsDone(noMatch)['route-sheets']).toBe(false);
     const sent = checklistFacts(
-      snapshotWith({ routeSheets: { runId: run, sheets: 6, ready: 4, unsent: 0 } }),
+      snapshotWith({
+        routeSheets: {
+          runId: run,
+          sheets: 6,
+          ready: 4,
+          unsent: 0,
+          needsDecision: 0,
+          exceptions: 0,
+        },
+      }),
       false,
     );
     expect(stepsDone(sent)['route-sheets']).toBe(true);
@@ -121,7 +193,14 @@ describe('the first-day checklist', () => {
         vehicles: 2,
         rows: [{ waveTime: '10:20 AM', vehicle: 'Van 12' }],
         routeRows: { routes: 3 },
-        routeSheets: { runId: 'XXX1_2026-09-01_CYCLE1', sheets: 3, ready: 3, unsent: 0 },
+        routeSheets: {
+          runId: 'XXX1_2026-09-01_CYCLE1',
+          sheets: 3,
+          ready: 3,
+          unsent: 0,
+          needsDecision: 0,
+          exceptions: 0,
+        },
       }),
       true,
     );

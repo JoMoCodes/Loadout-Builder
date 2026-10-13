@@ -1169,6 +1169,9 @@ describe('demo mode', () => {
       expect(counts.needsDecision).toBeGreaterThan(0);
       expect(host.state.routeSet('routes').rows.length).toBeGreaterThan(0);
       expect(host.state.associates.rows.length).toBeGreaterThan(0);
+      // The demo day's dispatch times carry PADs 1, 2, 3..., so its emails show a pad box.
+      expect([...host.state.routeSet('routes').pads.values()].slice(0, 3)).toEqual([1, 2, 3]);
+      expect(host.routeSheets.distribution().waves.some((w) => w.pad !== null)).toBe(true);
       expect(announced).toBe(1);
       expect(logs).toContain('demo route sheets loaded: 29 sheets');
       expect(logs.join('\n')).not.toMatch(/2026-09-01\.pdf|@example\.com/);

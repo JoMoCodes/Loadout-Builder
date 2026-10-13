@@ -81,7 +81,7 @@ export function routeDataWords(routeData: RouteSheetsStateView['routeData']): st
     itineraries: 'the Itineraries export',
     schedule: 'the Weekly Schedule',
   };
-  return `Using ${what[routeData.kind]} ${routeData.fileName}`.trim();
+  return `Matching with ${what[routeData.kind]}: ${routeData.fileName}.`;
 }
 
 /** True once the driver list is due for a newer copy (one calendar month after it came in). */

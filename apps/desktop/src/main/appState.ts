@@ -100,9 +100,11 @@ export class StateHost {
           if (this.currentRouteSheets !== sheets) return;
           this.options.log?.(`demo route sheets loaded: ${count} sheets`);
         })
-        .catch(() => {
+        .catch((error: unknown) => {
           if (this.currentRouteSheets === sheets) {
-            this.options.log?.('could not load the demo route sheets');
+            // The kind of error only (a code), never its message: it can hold a path.
+            const kind = error instanceof Error ? error.name : 'unknown';
+            this.options.log?.(`could not load the demo route sheets (${kind})`);
           }
         })
         .finally(() => {

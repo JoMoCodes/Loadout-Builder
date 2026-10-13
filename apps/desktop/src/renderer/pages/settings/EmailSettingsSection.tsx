@@ -159,10 +159,10 @@ export function EmailSettingsSection({
     <div className="settings-group card" data-setting="email">
       <h2>Email</h2>
       <p className="hint mb-3">
-        The reports are sent from a Gmail address. To let the app send from it, Gmail needs an app
-        password (not your usual password): sign in to your Google Account, turn on 2-Step
-        Verification, then search for <strong>App passwords</strong>, make one for “Loadout
-        Builder”, and paste the 16 letters below.
+        The weekly reports and the route sheets are sent from a Gmail address. To let the app send
+        from it, Gmail needs an app password (not your usual password): sign in to your Google
+        Account, turn on 2-Step Verification, then search for <strong>App passwords</strong>, make
+        one for “Loadout Builder”, and paste the 16 letters below.
       </p>
       <div className="grid gap-x-4 md:grid-cols-2">
         <Field label="Send from (email address)">

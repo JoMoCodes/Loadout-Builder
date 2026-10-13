@@ -9,7 +9,7 @@ import { PAGE_TABS, isTabOf } from '../../shared/windows';
 import { FileDrop } from '../components/FileDrop';
 import { call, explain } from '../lib/channels';
 import { useAppSnapshot } from '../lib/useAppSnapshot';
-import { chooseFile, dropRefused } from './dataPages/bringIn';
+import { chooseFile } from './dataPages/bringIn';
 import { ProblemBanner, StatusLine, useMessages } from './dataPages/PageParts';
 import { TabPanel, Tabs } from './dataPages/Tabs';
 import { useDialogs } from './dataPages/useDialogs';
@@ -20,6 +20,9 @@ import { OldAppNote, TopStrip } from './routeSheets/TopStrip';
 import type { PageProps } from './types';
 
 const TABS = PAGE_TABS['route-sheets'];
+
+/** The banner's title when the PDF did not come in (the button's own word). */
+const FAILED = 'Could not bring the PDF in';
 
 interface View {
   state: RouteSheetsStateView;
@@ -91,8 +94,8 @@ export function RouteSheetsPage({ settings, changeSettings, goTo, startTab }: Pa
       if (path === null) return;
       const done = await call('files:import', { kind: 'route-sheets', path });
       if (!done.ok) {
-        setProblem({ title: 'Import failed', message: explain(done) });
-        setStatus('Import failed.');
+        setProblem({ title: FAILED, message: explain(done) });
+        setStatus('The PDF did not come in.');
         return;
       }
       const read = done.value.routeSheets;
@@ -116,7 +119,10 @@ export function RouteSheetsPage({ settings, changeSettings, goTo, startTab }: Pa
         page="route-sheets"
         kind="route-sheets"
         onDropped={(token) => void bringIn(token)}
-        onProblem={(words) => dropRefused(messages, words)}
+        onProblem={(words) => {
+          setProblem({ title: FAILED, message: words });
+          setStatus('The PDF did not come in.');
+        }}
       >
         <div className="border-b border-line bg-surface px-6 pt-3 pb-1">
           <h1 id="title-route-sheets" className="text-[1.6rem] leading-tight font-semibold">

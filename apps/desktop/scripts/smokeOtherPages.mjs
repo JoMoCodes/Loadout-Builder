@@ -599,13 +599,19 @@ export async function otherPagesChecks({ app, page, check, assert, until, ask, g
         async () => (await text('[data-testid="route-sheets-subject"]')).includes(readyRoute),
         'the Sheets tab does not show the route’s email',
       );
-      await page.waitForSelector('[data-testid="route-sheets-preview"]', { timeout: 10_000 });
+      // The Windows build machine is several times slower than a desktop, so these waits are long.
+      await until(
+        async () => (await page.$('[data-testid="route-sheets-preview"]')) !== null,
+        'the Sheets tab does not show the email preview',
+        30_000,
+      );
       await page.click('[data-testid="route-sheets-tab-history"]');
-      await page.waitForSelector(
-        `[data-page="route-sheets"] [role="row"][data-row-id="${sheetRun}"]`,
-        {
-          timeout: 10_000,
-        },
+      await until(
+        async () =>
+          (await page.$(`[data-page="route-sheets"] [role="row"][data-row-id="${sheetRun}"]`)) !==
+          null,
+        'History does not list the run',
+        30_000,
       );
       return `${dist.counts.total} routes, ${dist.counts.ready} ready`;
     },

@@ -76,7 +76,7 @@ export function TopStrip({ state, busy, onBringIn, goTo }: TopStripProps) {
             </ul>
           </details>
         ) : null}
-        <div className="mt-2 flex flex-wrap items-center gap-2">
+        <div className="mt-2">
           <Button
             size="sm"
             variant={run.pdfFileName ? 'default' : 'primary'}
@@ -87,6 +87,13 @@ export function TopStrip({ state, busy, onBringIn, goTo }: TopStripProps) {
             <FileUp aria-hidden="true" />
             Bring in the route sheet PDF
           </Button>
+        </div>
+        {/* The "?" sits on the sentence under the button: the card is too narrow for both on a line. */}
+        <p
+          className="m-0 mt-1 flex flex-wrap items-center gap-1 text-muted"
+          data-testid="route-sheets-drop-words"
+        >
+          <span>Or drop the PDF anywhere on this page.</span>
           <button
             type="button"
             className="checklist-help"
@@ -97,10 +104,7 @@ export function TopStrip({ state, busy, onBringIn, goTo }: TopStripProps) {
           >
             <CircleHelp aria-hidden="true" />
           </button>
-          <span className="text-muted" data-testid="route-sheets-drop-words">
-            Or drop the PDF anywhere on this page.
-          </span>
-        </div>
+        </p>
         {helpOpen ? (
           <WhereToGetDialog step="route-sheets" onClose={() => setHelpOpen(false)} />
         ) : null}

@@ -20,7 +20,7 @@ import type { Messages } from '../dataPages/PageParts';
 import type { Asker } from '../dataPages/useDialogs';
 import { ButtonStrip } from '../dataPages/PageParts';
 import { plural } from '../dataPages/format';
-import { PDF_MISSING_WORDS, StateChip } from './parts';
+import { PDF_MISSING_WORDS, StateChip, StatusChip } from './parts';
 import { emailAllWords, exportWords, sendOneWords, sentWords } from './words';
 
 interface SheetsTabProps {
@@ -144,7 +144,7 @@ export function SheetsTab({
           disabled={busy || dist.counts.ready === 0}
           title={
             pdfMissing
-              ? 'Save an email draft for every route that is ready, plus a summary (no PDFs: the original PDF is no longer beside the saved data)'
+              ? "Save an email draft for every route that is ready, plus a summary. The route sheet PDF for this day is no longer in the app's data folder, so no PDFs are saved with them."
               : 'Save an email draft and a PDF for every route that is ready, plus a summary'
           }
           onClick={() => void exportAll()}
@@ -213,10 +213,13 @@ function SheetList({
   onPick: (routeCode: string) => void;
 }) {
   const list = useRef<HTMLDivElement>(null);
-  const ordered = GROUPS.flatMap(([, test]) => routes.filter(test));
+  const [query, setQuery] = useState('');
+  const shownRoutes = routes.filter((r) => matchesSearch(r, query));
+  const ordered = GROUPS.flatMap(([, test]) => shownRoutes.filter(test));
 
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+    if ((event.target as HTMLElement).tagName === 'INPUT') return;
     const at = ordered.findIndex((r) => r.routeCode === chosen);
     const step = event.key === 'ArrowDown' ? 1 : -1;
     const next = ordered[Math.min(ordered.length - 1, Math.max(0, at + step))];
@@ -237,8 +240,22 @@ function SheetList({
       onKeyDown={onKeyDown}
       data-testid="route-sheets-list"
     >
+      <div className="px-3 pb-2">
+        <input
+          type="search"
+          value={query}
+          placeholder="Search route, staging, or driver"
+          aria-label="Search route, staging, or driver"
+          onChange={(event) => setQuery(event.target.value)}
+          className="h-8 w-full min-w-0 rounded-md border border-line-strong bg-sunken px-2.5 text-sm text-fg placeholder:text-faint focus-visible:border-focus"
+          data-testid="route-sheets-search"
+        />
+      </div>
+      {ordered.length === 0 ? (
+        <p className="m-0 px-4 py-2 text-sm text-muted">No route matches that search.</p>
+      ) : null}
       {GROUPS.map(([label, test]) => {
-        const shown = routes.filter(test);
+        const shown = shownRoutes.filter(test);
         if (!shown.length) return null;
         return (
           <div key={label} className="mb-2">
@@ -269,6 +286,10 @@ function SheetList({
                       <span className="text-info" aria-label="Sent">
                         ✓
                       </span>
+                    ) : r.state === 'ready' && r.recipients.some((p) => !p.email) ? (
+                      <Chip tone="warn" data-testid={`route-sheets-no-email-${r.routeCode}`}>
+                        No email
+                      </Chip>
                     ) : null}
                   </span>
                   <span className="flex flex-wrap items-center gap-2">
@@ -440,7 +461,7 @@ function SheetDetail({
       : emailProblem
         ? emailProblem
         : pdfMissing
-          ? 'Sends this route sheet without its PDF page (the original PDF is no longer beside the saved data)'
+          ? "Sends this route sheet without its PDF page: the route sheet PDF for this day is no longer in the app's data folder."
           : 'Sends this route sheet with its PDF page';
   const readyTitle = ready ? undefined : NEED_READY;
 
@@ -554,7 +575,7 @@ function SheetDetail({
             }
             data-testid="route-sheets-mark-sent"
           >
-            {sent ? 'Mark as not sent' : 'Mark as sent'}
+            {sent ? 'Undo' : 'Mark as sent'}
           </Button>
         ) : null}
         {sent ? (
@@ -589,6 +610,130 @@ function SheetDetail({
       ) : (
         <p className="text-sm text-muted">{preview ? 'This route has no page to show.' : ''}</p>
       )}
+      <div className="mt-4 grid gap-3 lg:grid-cols-2">
+        <SheetPanel route={route} />
+        <MatchPanel route={route} />
+      </div>
     </div>
+  );
+}
+
+// ------------------------------------------------------------------- the two side panels
+
+/** The search on the list: the route code, the staging, or a driver's name or ID. */
+function matchesSearch(r: RouteResult, query: string): boolean {
+  const q = query.trim().toLowerCase();
+  if (!q) return true;
+  return [
+    r.routeCode,
+    r.sheet?.staging ?? '',
+    ...r.recipients.map((p) => p.name),
+    ...r.listed.map((c) => `${c.rosterName ?? ''} ${c.routesName} ${c.transporterId}`),
+  ]
+    .join(' ')
+    .toLowerCase()
+    .includes(q);
+}
+
+function Fact({ label, value }: { label: string; value: string | number | null | undefined }) {
+  const shown = value === null || value === undefined || value === '' ? '-' : String(value);
+  return (
+    <div className="flex justify-between gap-3 border-b border-line/60 py-1">
+      <dt className="text-muted">{label}</dt>
+      <dd className="m-0 text-right">{shown}</dd>
+    </div>
+  );
+}
+
+function SheetPanel({ route }: { route: RouteResult }) {
+  const s = route.sheet;
+  if (!s) return null;
+  const pages = s.pageNumbers.length ? s.pageNumbers : [s.pageNumber];
+  return (
+    <section
+      className="rounded-lg border border-line bg-surface px-4 py-3 text-sm"
+      aria-labelledby="route-sheets-panel-sheet-title"
+      data-testid="route-sheets-panel-sheet"
+    >
+      <h3 id="route-sheets-panel-sheet-title" className="m-0 mb-1 text-base font-semibold">
+        Route sheet
+      </h3>
+      <dl className="m-0">
+        <Fact label="Route" value={route.routeCode} />
+        <Fact label="Staging" value={s.staging} />
+        <Fact label="Wave" value={s.waveTime} />
+        <Fact label="Pad #" value={s.pad} />
+        <Fact label="Date" value={s.dateLabel} />
+        <Fact label="Service type" value={s.serviceType} />
+        <Fact label="Bags" value={s.bagCount} />
+        <Fact label="Overflow packages" value={s.overflowCount} />
+        <Fact label="Total packages" value={s.totalPackages} />
+        <Fact label="Commercial packages" value={s.commercialPackages} />
+        <Fact label={pages.length > 1 ? 'PDF pages' : 'PDF page'} value={pages.join(', ')} />
+      </dl>
+      {s.checkOk ? (
+        <p className="m-0 mt-2 text-ok" data-testid="route-sheets-verified">
+          ✓ Verified: {s.bagCount} bags, {s.overflowCount} overflow packages, {s.totalPackages}{' '}
+          total all add up
+        </p>
+      ) : (
+        <ul className="m-0 mt-2 list-disc pl-5 text-bad" data-testid="route-sheets-check-problems">
+          {s.checkProblems.map((line) => (
+            <li key={line}>{line}</li>
+          ))}
+        </ul>
+      )}
+      {s.notes.length ? (
+        <ul className="m-0 mt-2 list-disc pl-5 text-warn" data-testid="route-sheets-sheet-notes">
+          {s.notes.map((line) => (
+            <li key={line}>{line}</li>
+          ))}
+        </ul>
+      ) : null}
+    </section>
+  );
+}
+
+const ISSUE_TONE = { error: 'text-bad', warn: 'text-warn', info: 'text-muted' } as const;
+
+function MatchPanel({ route }: { route: RouteResult }) {
+  return (
+    <section
+      className="rounded-lg border border-line bg-surface px-4 py-3 text-sm"
+      aria-labelledby="route-sheets-panel-match-title"
+      data-testid="route-sheets-panel-match"
+    >
+      <h3 id="route-sheets-panel-match-title" className="m-0 mb-1 text-base font-semibold">
+        Transporter ID match
+      </h3>
+      {route.listed.length ? (
+        <ul className="m-0 list-none p-0">
+          {route.listed.map((c) => (
+            <li key={`${c.transporterId}-${c.routesName}`} className="py-1">
+              <p className="m-0 font-semibold">{c.rosterName || c.routesName || '(no name)'}</p>
+              <p className="m-0 mt-0.5 flex flex-wrap items-center gap-2">
+                <span className="font-mono text-muted">{c.transporterId || 'no ID'}</span>
+                <StatusChip found={c.found} status={c.status} />
+              </p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="m-0 text-muted">Not on the routes file</p>
+      )}
+      {route.issues.length ? (
+        <ul className="m-0 mt-2 list-disc pl-5" data-testid="route-sheets-match-issues">
+          {route.issues.map((issue, index) => (
+            <li key={`${index}-${issue.text}`} className={ISSUE_TONE[issue.level]}>
+              {issue.text}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="m-0 mt-2 text-ok" data-testid="route-sheets-exact-match">
+          ✓ Exact match, nothing to review
+        </p>
+      )}
+    </section>
   );
 }

@@ -190,7 +190,7 @@ test('the route sheets step ticks once the ready sheets are sent, and opens Rout
   await expect(row).toContainText('Send the route sheets');
   await expect(row).toContainText("Emails each driver their own route sheet from today's PDF.");
   await expect(row).toHaveAttribute('data-step-done', 'false');
-  await expect(row.locator('[data-step-do]')).toHaveText('Bring in route sheet PDF');
+  await expect(row.locator('[data-step-do]')).toHaveText('Bring in the route sheet PDF');
 
   // The PDF is in, with sheets still waiting to go out: the button now just opens the page.
   await change(
@@ -200,7 +200,14 @@ test('the route sheets step ticks once the ready sheets are sent, and opens Rout
   await expect(row).toHaveAttribute('data-step-done', 'false');
   await expect(row.locator('[data-step-do]')).toHaveText('Open Route Sheets');
 
-  // Every ready sheet has gone out.
+  // Everything ready has gone out, but a route still waits for a choice.
+  await change(
+    page,
+    `(s) => { s.routeSheets = ${JSON.stringify({ ...SHEETS_SENT, needsDecision: 1 })}; }`,
+  );
+  await expect(row).toHaveAttribute('data-step-done', 'false');
+
+  // Every route is settled and every ready sheet has gone out.
   await change(page, `(s) => { s.routeSheets = ${JSON.stringify(SHEETS_SENT)}; }`);
   await expect(row).toHaveAttribute('data-step-done', 'true');
   await expect(page.getByTestId('checklist-count')).toHaveText('1 of 6 done');
