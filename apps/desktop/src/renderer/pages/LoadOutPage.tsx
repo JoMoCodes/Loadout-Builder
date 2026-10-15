@@ -10,6 +10,7 @@ import { useAppSnapshot } from '../lib/useAppSnapshot';
 import { cn } from '../ui/cn';
 import { AvailableVansTab } from './loadOut/AvailableVansTab';
 import { LinksTab } from './loadOut/LinksTab';
+import { LoadOutSettingsButton, LoadOutSettingsDialog } from './loadOut/LoadOutSettings';
 import { PreviousRosterTab } from './loadOut/PreviousRosterTab';
 import { PrintTab } from './loadOut/print';
 import { RosterTab } from './loadOut/RosterTab';
@@ -33,11 +34,19 @@ function rememberedTab(): LoadOutTab {
   }
 }
 
-export function LoadOutPage({ request, takeRequest, ownWindow, startTab }: PageProps) {
+export function LoadOutPage({
+  request,
+  takeRequest,
+  ownWindow,
+  startTab,
+  settings,
+  changeSettings,
+}: PageProps) {
   const { snapshot, loading, error } = useAppSnapshot();
   const [tab, setTab] = useState<LoadOutTab>(() => (isTab(startTab) ? startTab : rememberedTab()));
   const [status, setStatus] = useState('');
   const [pendingPrint, setPendingPrint] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const printTaken = useCallback(() => setPendingPrint(false), []);
 
   const choose = useCallback(
@@ -112,6 +121,9 @@ export function LoadOutPage({ request, takeRequest, ownWindow, startTab }: PageP
             </OpenInNewWindow>
           ))}
         </div>
+        <div className="ml-auto pb-2">
+          <LoadOutSettingsButton onClick={() => setSettingsOpen(true)} />
+        </div>
       </div>
 
       <div
@@ -132,6 +144,8 @@ export function LoadOutPage({ request, takeRequest, ownWindow, startTab }: PageP
             say={setStatus}
             pendingImport={pendingImport}
             onImportTaken={importTaken}
+            settings={settings}
+            changeSettings={changeSettings}
           />
         ) : shown === 'print' ? (
           <div data-tab="print" className="flex min-h-0 flex-1 flex-col">
@@ -153,6 +167,13 @@ export function LoadOutPage({ request, takeRequest, ownWindow, startTab }: PageP
       >
         {status}
       </div>
+      {settingsOpen ? (
+        <LoadOutSettingsDialog
+          settings={settings}
+          changeSettings={changeSettings}
+          onDone={() => setSettingsOpen(false)}
+        />
+      ) : null}
     </section>
   );
 }

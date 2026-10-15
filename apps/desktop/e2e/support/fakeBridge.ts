@@ -58,6 +58,8 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
         performance,
         email,
         routeSheetsEmail,
+        rememberKeepVans: true,
+        keepVans: null,
         ...given.settings,
       };
       const snapshot: Record<string, unknown> = {

@@ -17,6 +17,7 @@ export const RELEASE_NOTES: readonly ReleaseNote[] = [
       'It only gives vans to drivers who still need one. A van someone already has is never handed to another driver.',
       'When some drivers already have a van, Assign Vans first asks which ones to keep. There is one box for vans given by hand and one for vans from the load-out sheet. Both start ticked.',
       'Untick a box to have Assign Vans give those drivers a van again, like everyone else.',
+      'Your answer is remembered, so it only asks once. To change it, or to have it ask every time, use the new Load Out settings button next to the page title.',
     ],
   },
   {

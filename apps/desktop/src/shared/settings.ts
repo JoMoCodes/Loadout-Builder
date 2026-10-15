@@ -45,6 +45,12 @@ export const FONT_SCALE_MAX = 1.5;
 export const FONT_SCALE_STEP = 0.1;
 export const FONT_SCALE_DEFAULT = 1;
 
+/** Which vans drivers already have Assign Vans keeps: given by hand, and from the load-out sheet. */
+export interface KeepVansChoice {
+  byHand: boolean;
+  fromSheet: boolean;
+}
+
 export interface AppSettings {
   theme: ThemeName;
   /** 1 is normal size. The A- and A+ buttons move it by one step. */
@@ -80,6 +86,13 @@ export interface AppSettings {
   email: EmailSettings;
   /** The subject and opening lines of the route sheet emails. */
   routeSheetsEmail: RouteSheetsEmailWording;
+  /**
+   * Load Out settings: Assign Vans remembers the answer to "Keep the vans drivers already have?"
+   * and stops asking. Off, it asks every time.
+   */
+  rememberKeepVans: boolean;
+  /** That remembered answer. Null until it is first given. */
+  keepVans: KeepVansChoice | null;
 }
 
 /** What a screen may ask to change. Anything left out stays as it was. */
@@ -119,6 +132,8 @@ export const DEFAULT_SETTINGS: AppSettings = {
   performance: DEFAULT_PERFORMANCE,
   email: DEFAULT_EMAIL,
   routeSheetsEmail: DEFAULT_ROUTE_SHEETS_EMAIL,
+  rememberKeepVans: true,
+  keepVans: null,
 };
 
 /** A tour's name: lower case words with dashes. */
@@ -169,6 +184,18 @@ export function sanitizePatch(raw: unknown): SettingsPatch {
   if (typeof input.autoTours === 'boolean') patch.autoTours = input.autoTours;
   if (typeof input.routeSheetsNoteSeen === 'boolean') {
     patch.routeSheetsNoteSeen = input.routeSheetsNoteSeen;
+  }
+  if (typeof input.rememberKeepVans === 'boolean') {
+    patch.rememberKeepVans = input.rememberKeepVans;
+  }
+  if (input.keepVans === null) patch.keepVans = null;
+  else if (
+    typeof input.keepVans === 'object' &&
+    typeof (input.keepVans as Record<string, unknown>).byHand === 'boolean' &&
+    typeof (input.keepVans as Record<string, unknown>).fromSheet === 'boolean'
+  ) {
+    const keep = input.keepVans as KeepVansChoice;
+    patch.keepVans = { byHand: keep.byHand, fromSheet: keep.fromSheet };
   }
   if (Array.isArray(input.toursSeen) && input.toursSeen.length <= MAX_TOURS) {
     const names = input.toursSeen.filter(

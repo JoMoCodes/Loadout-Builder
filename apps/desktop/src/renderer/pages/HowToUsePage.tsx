@@ -511,7 +511,8 @@ export function HowToUsePage({
             <li>
               Click <strong>Assign Vans</strong>. A window shows who got which van, and anyone who
               did not, with the reason. If some drivers already have a van, from the load-out sheet
-              or given by hand, it first asks whether to keep those vans.
+              or given by hand, it first asks whether to keep those vans. It remembers your answer;
+              change it with <strong>Load Out settings</strong> next to the page title.
             </li>
             <li>
               Look down the <strong>Check</strong> column. Sort out anything red. See "What the

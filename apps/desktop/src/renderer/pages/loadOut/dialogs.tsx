@@ -334,13 +334,15 @@ export function AssignDialog({
 interface KeepVansDialogProps {
   byHand: number;
   fromSheet: number;
+  /** The answer is saved and used from now on (Load Out settings, Remember my answer). */
+  remember: boolean;
   onAnswer: (keep: KeepVans | null) => void;
 }
 
 const vans = (count: number) => (count === 1 ? '1 van' : `${count} vans`);
 
 /** Before Assign Vans: keep the vans drivers already have, or work them out again. */
-export function KeepVansDialog({ byHand, fromSheet, onAnswer }: KeepVansDialogProps) {
+export function KeepVansDialog({ byHand, fromSheet, remember, onAnswer }: KeepVansDialogProps) {
   const [keepByHand, setKeepByHand] = useState(true);
   const [keepFromSheet, setKeepFromSheet] = useState(true);
   const go = () => onAnswer({ byHand: keepByHand, fromSheet: keepFromSheet });
@@ -385,6 +387,9 @@ export function KeepVansDialog({ byHand, fromSheet, onAnswer }: KeepVansDialogPr
           </label>
         ) : null}
       </fieldset>
+      {remember ? (
+        <Subtitle text="Your answer is remembered for next time. Change it in Load Out settings, next to the page title." />
+      ) : null}
     </Modal>
   );
 }
