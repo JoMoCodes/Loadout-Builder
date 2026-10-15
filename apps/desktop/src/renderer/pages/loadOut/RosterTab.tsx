@@ -381,7 +381,7 @@ export function RosterTab({ snapshot, say, pendingImport, onImportTaken }: Roste
         'Replace the previous roster?',
         `The Previous Roster tab already holds ${kept} drivers ` +
           `(${rosterDateLabel(now.previousRoster)}).\n\nReplace it with today's ` +
-          `${now.roster.rows.length}?`,
+          `${now.roster.rows.length}?\n\nToday's roster is then cleared, ready for the next sheet.`,
       );
       if (!replace) {
         say('Previous roster kept as it was.');
@@ -393,7 +393,7 @@ export function RosterTab({ snapshot, say, pendingImport, onImportTaken }: Roste
     const withVans = now.roster.rows.filter((view) => view.row.vehicle).length;
     say(
       `Copied ${reply.value} drivers to the Previous Roster, ${withVans} of them holding a van. ` +
-        "Today's roster is unchanged.",
+        "Today's roster is now clear, ready for the next sheet.",
     );
   }, [snapshot, confirm, failed, say]);
 

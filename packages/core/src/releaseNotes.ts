@@ -11,6 +11,13 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.10.0',
+    items: [
+      "On Load Out, Move Data to Previous Roster now also clears today's roster. You no longer need to press Clear Roster afterwards.",
+      'Your associates and the links you made by hand are kept.',
+    ],
+  },
+  {
     version: '2.9.0',
     items: [
       'On Scorecards, the Performance tab now has a Lifetime Routes column. It sits right after the Status column.',

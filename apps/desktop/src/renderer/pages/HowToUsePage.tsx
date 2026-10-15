@@ -523,7 +523,7 @@ export function HowToUsePage({
             <li>
               Before you bring in tomorrow's sheet, click{' '}
               <strong>Move Data to Previous Roster</strong>. Then drivers get the same van again
-              tomorrow.
+              tomorrow. It also clears today's roster, so you don't have to.
             </li>
           </ol>
           <Shot name="load-out-roster" caption="The Load Out page with a made-up roster" />
