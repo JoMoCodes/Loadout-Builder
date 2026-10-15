@@ -46,7 +46,7 @@ export function printRows(state: AppState, today: IsoDate): PrintRow[] {
         transporter_id: associate ? associate.transporterId : '',
         tenure: associate ? tenureLabel(associate) : '',
         vans: state.vanBadges(associate),
-        check: state.checkText(row, today),
+        check: state.rowCheck(row, today),
         routes: row.routes,
         wave_time: row.waveTime,
         // The heading already says PAD, so the cell carries the number on its own.

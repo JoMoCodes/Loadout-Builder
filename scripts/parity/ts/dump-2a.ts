@@ -440,6 +440,9 @@ export default async function dump2a(days: Day[] = loadDays()): Promise<void> {
   for (const day of days) {
     const { ctx, modules } = await mainRun(day);
     try {
+      // The old app worked every van out again. Assign Vans now keeps the vans on the load-out
+      // sheet, so clearing them first gives the old app's run.
+      ctx.state.clearVans();
       ctx.state.assignVans();
       modules.rows = rowsModule(ctx.state, day.date);
     } finally {

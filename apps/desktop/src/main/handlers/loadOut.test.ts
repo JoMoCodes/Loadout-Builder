@@ -491,6 +491,9 @@ describe('a whole fixture day, done as a person would on the Load Out page', () 
     // The page's buttons: Bring Over Route Data (Routes), the DWP after it, then Assign Vans.
     expect((await rig.call('loadOut:bring-over-route-data', { kind: 'routes' })).ok).toBe(true);
     expect((await rig.call('loadOut:bring-over-dwp')).ok).toBe(true);
+    // The old app worked every van out again. Assign Vans now keeps the vans on the load-out
+    // sheet, so Clear Vans first gives the old app's run.
+    expect((await rig.call('loadOut:clear-vans')).ok).toBe(true);
     const assigned = await rig.call('loadOut:assign-vans');
     const result = assigned.value as AssignmentResult;
 

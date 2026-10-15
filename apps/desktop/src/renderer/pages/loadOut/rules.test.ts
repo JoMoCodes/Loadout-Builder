@@ -14,6 +14,7 @@ import {
   type Vehicle,
 } from '@loadout/core';
 import { describe, expect, it } from 'vitest';
+import { vehicleView } from '../vehicleViewForTest';
 import type { AppSnapshot, RosterRowView, VehicleView } from '../../../shared/snapshot';
 import {
   ALL_SHIFTS,
@@ -28,6 +29,7 @@ import {
   dwpDayProblem,
   dwpSummary,
   holdingText,
+  heldVans,
   importedAtLabel,
   linkCandidates,
   linkLines,
@@ -205,6 +207,7 @@ describe('status lines', () => {
     const result: AssignmentResult = {
       considered: 3,
       vansAvailable: 24,
+      kept: 0,
       assignments: [
         { driver: 'Gideon Whitaker', vehicle: van('51'), method: 'affinity-primary', reason: '' },
         { driver: 'Colton Alderman', vehicle: van('52'), method: 'qualified-only', reason: '' },
@@ -226,8 +229,45 @@ describe('status lines', () => {
     ]);
     expect(assignLines(result)[0]!.detail).toBe('No van free');
     expect(assignLines(result)[2]!.detail).toBe(`${ELECTRIC}  -  Branded Van`);
-    expect(assignSummary({ considered: 4, vansAvailable: 0, assignments: [] })).toBe(
+    expect(assignSummary({ considered: 4, vansAvailable: 0, kept: 0, assignments: [] })).toBe(
       'No vans assigned - none of the 4 drivers could be matched to a free van.',
+    );
+  });
+
+  it('counts the vans given by hand and the vans from the load-out sheet', () => {
+    expect(
+      heldVans([
+        createDriverRow({ vehicle: '51', assignMethod: 'by-hand' }),
+        createDriverRow({ vehicle: '52' }),
+        createDriverRow({ vin: 'VIN53' }),
+        createDriverRow({ vehicle: '54', assignMethod: 'service-type' }),
+        createDriverRow({ assignMethod: 'by-hand' }),
+      ]),
+    ).toEqual({ byHand: 1, fromSheet: 2 });
+  });
+
+  it('says how many drivers kept the van they already had', () => {
+    const kept: AssignmentResult = {
+      considered: 3,
+      vansAvailable: 24,
+      kept: 2,
+      assignments: [
+        {
+          driver: 'Gideon Whitaker',
+          vehicle: createVehicle({ name: '51', vin: 'VIN51' }),
+          method: 'service-type',
+          reason: '',
+        },
+      ],
+    };
+    expect(assignSummary(kept)).toBe(
+      'Assigned 1 of 3 drivers from 24 operational vans. 2 drivers kept the van they already had.',
+    );
+    expect(assignHeading(kept).summary).toBe(
+      '1 by service type. 2 drivers kept the van they already had.  24 operational vans in the fleet.',
+    );
+    expect(assignSummary({ considered: 0, vansAvailable: 24, kept: 1, assignments: [] })).toBe(
+      'Nothing to assign - every driver with a route already has a van. 1 driver kept the van they already had.',
     );
   });
 });
@@ -321,20 +361,33 @@ describe('the pickers', () => {
     ];
     const row = createDriverRow({ driver: 'Gideon Whitaker', serviceType: ELECTRIC });
     expect(
-      vanChoices(row, associate, fleet, new Set()).map((c) => [c.vehicle.name, c.fit]),
+      vanChoices(
+        row,
+        associate,
+        fleet.map((v) => vehicleView(v)),
+        new Set(),
+      ).map((c) => [c.vehicle.name, c.fit]),
     ).toEqual([
       ['60', 'Matches the route'],
       ['61', 'Qualified, other service type'],
       ['80', 'Not approved for LMR'],
       ['70', 'Not Step Van qualified'],
     ]);
-    expect(vanChoices(row, associate, fleet, new Set(['A1E4CRQE9TMGKN']))[1]!.fit).toBe(
-      'Matches the route',
-    );
     expect(
-      vanChoices(row, null, fleet, new Set()).every(
-        (c) => c.severity === 'bad' || c.vehicle.name === '80' || c.fit.startsWith('Not'),
-      ),
+      vanChoices(
+        row,
+        associate,
+        fleet.map((v) => vehicleView(v)),
+        new Set(['A1E4CRQE9TMGKN']),
+      )[1]!.fit,
+    ).toBe('Matches the route');
+    expect(
+      vanChoices(
+        row,
+        null,
+        fleet.map((v) => vehicleView(v)),
+        new Set(),
+      ).every((c) => c.severity === 'bad' || c.vehicle.name === '80' || c.fit.startsWith('Not')),
     ).toBe(true);
   });
 
@@ -406,14 +459,9 @@ describe('bringing data over', () => {
 describe('Available Vans', () => {
   const fleet = (overrides: Partial<VehicleView>[]): VehicleView[] =>
     overrides.map((o, i) => ({
-      vehicle: createVehicle({ name: String(50 + i), vin: `V${i}`, serviceType: ELECTRIC }),
-      operational: true,
-      overridden: false,
-      priority: '',
-      affinity: {},
-      rental: false,
-      inUse: false,
-      available: true,
+      ...vehicleView(
+        o.vehicle ?? createVehicle({ name: String(50 + i), vin: `V${i}`, serviceType: ELECTRIC }),
+      ),
       ...o,
     }));
 

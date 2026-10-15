@@ -4,6 +4,7 @@
 
 import type { Page } from '@playwright/test';
 import { installFakeBridge, onCall, type FakeBridgeOptions } from './fakeBridge';
+import { typeFields } from './vanType';
 
 export const CARMEN = { name: 'Carmen Abernathy', id: 'A047LNAN5VQIQR' };
 export const BARRETT = { name: 'Barrett Ainsworth', id: 'A083QLD1CI9YSZ' };
@@ -41,7 +42,15 @@ export function associate(who: { name: string; id: string }, values: Json = {}):
 
 export function van(vin: string, name: string, values: Json = {}): Json {
   const { vehicle, ...rest } = values;
+  const fields = {
+    vin,
+    name,
+    serviceType: 'Electric Vehicle',
+    ownership: 'LEASED',
+    ...((vehicle as Json | undefined) ?? {}),
+  };
   return {
+    ...typeFields(fields),
     vehicle: {
       vin,
       name,

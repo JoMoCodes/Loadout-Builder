@@ -108,6 +108,27 @@ describe('old data question', () => {
   });
 });
 
+describe('Load Out settings', () => {
+  it('start remembering the answer about vans drivers already have, with no answer yet', () => {
+    expect(DEFAULT_SETTINGS.rememberKeepVans).toBe(true);
+    expect(DEFAULT_SETTINGS.keepVans).toBeNull();
+  });
+
+  it('keeps the switch and a full answer, and refuses anything odd', () => {
+    expect(
+      sanitizePatch({ rememberKeepVans: false, keepVans: { byHand: true, fromSheet: false } }),
+    ).toEqual({ rememberKeepVans: false, keepVans: { byHand: true, fromSheet: false } });
+    expect(sanitizePatch({ keepVans: null })).toEqual({ keepVans: null });
+    expect(sanitizePatch({ rememberKeepVans: 'yes', keepVans: { byHand: true } })).toEqual({});
+  });
+
+  it('fills them in for a settings file saved before they existed', () => {
+    const older = mergeSettings(DEFAULT_SETTINGS, { theme: 'light' });
+    expect(older.rememberKeepVans).toBe(true);
+    expect(older.keepVans).toBeNull();
+  });
+});
+
 describe('help settings', () => {
   it('start with the checklist showing and the tours on', () => {
     expect(DEFAULT_SETTINGS.checklistHidden).toBe(false);

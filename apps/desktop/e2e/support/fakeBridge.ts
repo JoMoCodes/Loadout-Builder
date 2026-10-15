@@ -15,6 +15,7 @@ import { CHANNELS } from '../../src/shared/channels';
 import { DEFAULT_EMAIL, DEFAULT_PERFORMANCE } from '../../src/shared/performanceSettings';
 import { DEFAULT_ROUTE_SHEETS_EMAIL, type AppSettings } from '../../src/shared/settings';
 import type { AppSnapshot } from '../../src/shared/snapshot';
+import { snapshotTypes } from './vanType';
 
 export interface FakeBridgeOptions {
   settings?: Partial<AppSettings>;
@@ -37,7 +38,14 @@ declare global {
 export async function installFakeBridge(page: Page, options: FakeBridgeOptions = {}) {
   const channels = Object.values(CHANNELS).map((def) => ({ name: def.name, kind: def.kind }));
   await page.addInitScript(
-    ({ channels: declared, options: given, performance, email, routeSheetsEmail }) => {
+    ({
+      channels: declared,
+      options: given,
+      performance,
+      email,
+      routeSheetsEmail,
+      vehicleTypes,
+    }) => {
       const settings: Record<string, unknown> = {
         theme: 'dark',
         fontScale: 1,
@@ -58,6 +66,8 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
         performance,
         email,
         routeSheetsEmail,
+        rememberKeepVans: true,
+        keepVans: null,
         ...given.settings,
       };
       const snapshot: Record<string, unknown> = {
@@ -86,6 +96,9 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
           routeSource: '',
         },
         lmrApproved: [],
+        vehicleTypes,
+        vehicleTypeOverrides: {},
+        unknownOwnership: [],
         affinity: {},
         links: new Map(),
         linkList: [],
@@ -295,6 +308,7 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
       performance: DEFAULT_PERFORMANCE,
       email: DEFAULT_EMAIL,
       routeSheetsEmail: DEFAULT_ROUTE_SHEETS_EMAIL,
+      vehicleTypes: snapshotTypes(),
     },
   );
 }

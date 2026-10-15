@@ -11,6 +11,25 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.11.0',
+    items: [
+      'On Load Out, Assign Vans now keeps the vans drivers already have. That means vans you gave by hand, and vans that were already on the load-out sheet.',
+      'It only gives vans to drivers who still need one. A van someone already has is never handed to another driver.',
+      'When some drivers already have a van, Assign Vans first asks which ones to keep. There is one box for vans given by hand and one for vans from the load-out sheet. Both start ticked.',
+      'Untick a box to have Assign Vans give those drivers a van again, like everyone else.',
+      'Your answer is remembered, so it only asks once. To change it, or to have it ask every time, use the new Load Out settings button next to the page title.',
+      'Vehicle Data has a new Vehicle Types tab. It shows what kind each van is: Branded Van, Rental Van, LMR Rental or Self-Owned.',
+      'Plain rentals and LMR rentals are now told apart. Anyone qualified can take a plain rental. Only LMR approved drivers can take an LMR rental.',
+      'If the vehicle file has a van wrong, set the right type on the Vehicle Types tab. Your choice is kept when you bring in a new file.',
+      'You can make your own types. For each one, pick who may drive it and where it comes when Assign Vans hands out vans.',
+      'The Vehicle Types tab shows the order Assign Vans hands vans out in, and you can move a type up or down.',
+      'Before a change moves any van, the app says which vans and who has them today. Every change has an Undo button.',
+      'When you bring in a vehicle file with an ownership word the app does not know, it says so. One click tells it what the word means.',
+      'The Check column on the Roster now goes red when a driver has a grounded van, or an LMR rental they are not approved for.',
+      'Assign Vans never keeps a grounded van. That driver gets another one.',
+    ],
+  },
+  {
     version: '2.10.0',
     items: [
       "On Load Out, Move Data to Previous Roster now also clears today's roster. You no longer need to press Clear Roster afterwards.",

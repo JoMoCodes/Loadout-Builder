@@ -6,9 +6,20 @@
 // Python's `state.assign_vans()`. LMR approval, van affinity and the van badges live on
 // `AppState` itself.
 
-import { BY_HAND, methodLabel, plan, type AssignmentResult, type Candidate } from '../assignment';
+import {
+  BY_HAND,
+  KEEP_ALL_VANS,
+  methodLabel,
+  plan,
+  vanSource,
+  type AssignmentResult,
+  type Candidate,
+  type KeepVans,
+} from '../assignment';
 import { needsVan, type DriverRow } from '../models/roster';
-import { isRental, manualOnly, type Vehicle } from '../models/vehicles';
+import type { Vehicle } from '../models/vehicles';
+import { kindOf, vanTypeOf } from './vanTypes';
+import { vanCategory } from '../models/vehicleTypes';
 import { pyStrip } from '../models/text';
 import type { AppState } from './appState';
 import { rosterToStored } from './store';
@@ -50,9 +61,9 @@ export function operationalVehicles(state: AppState): Vehicle[] {
   return state.vehicles.rows.filter((v) => isOperational(state, v));
 }
 
-/** What auto-assignment may draw on. Self-owned vans are always handed out by hand. */
+/** What auto-assignment may draw on. A van whose type is hand-only is always handed out by hand. */
 export function assignableVehicles(state: AppState): Vehicle[] {
-  return operationalVehicles(state).filter((v) => !manualOnly(v));
+  return operationalVehicles(state).filter((v) => vanTypeOf(state, v).type.drive !== 'hand');
 }
 
 /**
@@ -67,7 +78,7 @@ export function availableVehicles(state: AppState): Vehicle[] {
 }
 
 export function lmrVehicles(state: AppState): Vehicle[] {
-  return state.vehicles.rows.filter((v) => isRental(v));
+  return state.vehicles.rows.filter((v) => vanTypeOf(state, v).type.drive === 'lmr');
 }
 
 export function overriddenCount(state: AppState): number {
@@ -91,24 +102,60 @@ export function setVehiclePriority(state: AppState, vehicle: Vehicle, priority: 
 // ------------------------------------------------------- van assignment
 
 /**
- * Fill the roster's Vehicle and VIN columns from the fleet. A full recompute rather than a top-up:
- * every route driver's van is worked out again.
+ * A van Assign Vans leaves where it is: one given by hand, or one that was already on the load-out
+ * sheet, unless the person asked for that kind to be worked out again. A van Assign Vans gave out
+ * itself is always worked out again.
  */
-export function assignVans(state: AppState): AssignmentResult {
+export function keepsVan(row: DriverRow, keep: KeepVans = KEEP_ALL_VANS): boolean {
+  const source = vanSource(row);
+  if (source === 'by-hand') return keep.byHand;
+  if (source === 'sheet') return keep.fromSheet;
+  return false;
+}
+
+/**
+ * Fill the roster's Vehicle and VIN columns from the fleet. Vans kept by `keep` stay put and are
+ * kept out of the pool; every other route driver's van is worked out again.
+ */
+export function assignVans(state: AppState, keep: KeepVans = KEEP_ALL_VANS): AssignmentResult {
+  // A grounded van is never kept: its driver needs another one.
+  const kept = new Set(
+    state.roster.rows.filter((row) => {
+      if (!keepsVan(row, keep)) return false;
+      const vehicle = state.heldVehicle(row);
+      return vehicle === null || isOperational(state, vehicle);
+    }),
+  );
+  const held = new Set<string>();
+  for (const row of kept) {
+    if (row.vin) held.add(row.vin);
+    if (row.vehicle) held.add(row.vehicle);
+  }
+  const fleet = assignableVehicles(state);
+  const free = fleet.filter((v) => !held.has(v.vin) && !held.has(v.name));
   const candidates: Candidate[] = state.roster.rows
-    .filter((row) => needsVan(row))
+    .filter((row) => needsVan(row) && !kept.has(row))
     .map((row) => ({ row, associate: state.associateFor(row) }));
   const result = plan(
     candidates,
-    assignableVehicles(state),
+    free,
     state.affinity,
     state.lmrApproved,
     state.previousVans(),
     state.vehiclePriorities,
+    kindOf(state),
   );
+  result.vansAvailable = fleet.length;
+  for (const item of result.assignments) {
+    if (item.vehicle)
+      item.category = vanCategory(item.vehicle, vanTypeOf(state, item.vehicle).type);
+  }
+  result.kept = kept.size;
 
-  // Every row, not just the ones in scope: a driver who loses their route loses the van with it.
+  // Every other row, not just the ones in scope: a driver who loses their route loses the van
+  // Assign Vans gave them.
   for (const row of state.roster.rows) {
+    if (kept.has(row)) continue;
     row.vehicle = '';
     row.vin = '';
     row.assignMethod = '';

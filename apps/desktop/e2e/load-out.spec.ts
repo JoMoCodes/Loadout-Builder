@@ -529,7 +529,7 @@ test('Available Vans lists the free vans, marks hand-assign-only ones Manual, an
     'Auto',
     'Manual',
   ]);
-  await page.getByTestId('category-filter').selectOption('Step Van');
+  await page.getByTestId('category-filter').selectOption('Step Van, Self-Owned');
   await expect(page.getByText('Showing 1 of 2')).toBeVisible();
 });
 

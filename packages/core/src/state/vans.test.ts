@@ -113,20 +113,93 @@ describe('handing vans out by hand', () => {
     ]);
   });
 
-  it('assigns afresh, clearing every row first', () => {
+  it('works out again the vans it gave out, and takes one off a driver with no route', () => {
     const rows = [
       createDriverRow({ driver: 'Barrett Ainsworth', serviceType: RM }),
-      createDriverRow({ driver: 'Ariana Nethercott', vehicle: '619002', assignMethod: 'by-hand' }),
+      createDriverRow({
+        driver: 'Ariana Nethercott',
+        vehicle: '655071 (LMR)',
+        vin: V[2],
+        assignMethod: 'service-type',
+      }),
     ];
     const { state, store } = makeState(rows, [barrett()]);
     const result = state.assignVans();
     expect(result.considered).toBe(1);
     expect(result.vansAvailable).toBe(1);
+    expect(result.kept).toBe(0);
     expect(rows.map((r) => [r.vehicle, r.vin, r.assignMethod])).toEqual([
       ['619001', V[0], 'service-type'],
       ['', '', ''],
     ]);
     expect(store.loadRoster().rows.map((r) => r.vehicle)).toEqual(['619001', '']);
+  });
+
+  it('keeps a van given by hand or on the load-out sheet, and gives it to nobody else', () => {
+    const rows = [
+      createDriverRow({ driver: 'Barrett Ainsworth', serviceType: RM }),
+      // On the load-out sheet as it came in: a van, and no method recorded.
+      createDriverRow({ driver: 'Ariana Nethercott', vehicle: '619001' }),
+      createDriverRow({
+        driver: 'Archer Camila Yardley',
+        serviceType: RM,
+        vin: V[1],
+        assignMethod: 'by-hand',
+      }),
+    ];
+    const { state } = makeState(rows, [barrett()]);
+    const result = state.assignVans();
+    expect(result.considered).toBe(1);
+    expect(result.kept).toBe(2);
+    expect(result.vansAvailable).toBe(1);
+    expect(result.assignments.map((a) => [a.driver, a.vehicle, a.reason])).toEqual([
+      ['Barrett Ainsworth', null, 'No van left in the fleet'],
+    ]);
+    expect(rows.map((r) => [r.vehicle, r.vin, r.assignMethod])).toEqual([
+      ['', '', ''],
+      ['619001', '', ''],
+      ['', V[1], 'by-hand'],
+    ]);
+  });
+});
+
+describe('choosing which vans to keep', () => {
+  const held = () => [
+    createDriverRow({ driver: 'Barrett Ainsworth', serviceType: RM, vehicle: '619001' }),
+    createDriverRow({
+      driver: 'Ariana Nethercott',
+      serviceType: RM,
+      vin: V[1],
+      assignMethod: 'by-hand',
+    }),
+  ];
+
+  it('works out again a van from the load-out sheet when told not to keep those', () => {
+    const rows = held();
+    const { state } = makeState(rows, [barrett()]);
+    const result = state.assignVans({ byHand: true, fromSheet: false });
+    expect(result.considered).toBe(1);
+    expect(result.kept).toBe(1);
+    expect(rows.map((r) => [r.vehicle, r.vin, r.assignMethod])).toEqual([
+      ['619001', V[0], 'service-type'],
+      ['', V[1], 'by-hand'],
+    ]);
+  });
+
+  it('works out again a van given by hand when told not to keep those', () => {
+    const rows = held();
+    const { state } = makeState(rows, [barrett()]);
+    const result = state.assignVans({ byHand: false, fromSheet: true });
+    expect(result.considered).toBe(1);
+    expect(result.kept).toBe(1);
+    // The self-owned van is only ever handed out by hand, so Ariana is left without one.
+    expect(result.assignments.map((a) => [a.driver, a.vehicle])).toEqual([
+      ['Ariana Nethercott', null],
+    ]);
+    expect(rows.map((r) => [r.vehicle, r.vin, r.assignMethod])).toEqual([
+      ['619001', '', ''],
+      ['', '', ''],
+    ]);
   });
 });
 

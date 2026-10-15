@@ -137,8 +137,10 @@ try {
   for (let i = 0; i < 5; i++) {
     await page.waitForSelector('dialog[open]', { timeout: 10_000 });
     if (await page.locator('dialog[open][data-testid="assign-dialog"]').count()) break;
+    const keep = page.locator('dialog[open] [data-testid="keep-vans-go"]');
     const yes = page.locator('dialog[open] [data-testid="confirm-yes"]');
-    if (await yes.count()) await yes.click();
+    if (await keep.count()) await keep.click();
+    else if (await yes.count()) await yes.click();
     else await page.locator('dialog[open] [data-testid="inform-ok"]').click();
     await page.waitForTimeout(400);
   }

@@ -120,7 +120,7 @@ function problems(goTo: (id: PageId) => void): Problem[] {
               driver does not have. Check their skills on {go('associates', 'Associates')}.
             </li>
             <li>
-              <strong>Only LMR vans left, and not on the approved list</strong>: only rental vans
+              <strong>Only LMR vans left, and not on the approved list</strong>: only LMR rentals
               are free. Tick the driver on <strong>LMR Approved Drivers</strong> on{' '}
               {go('vehicle-data', 'Vehicle Data')} if they may take one.
             </li>
@@ -472,7 +472,9 @@ export function HowToUsePage({
             </li>
             <li>
               Bring in your vans on {go('vehicle-data', 'Vehicle Data')}: click{' '}
-              <strong>Import Vehicles</strong>.
+              <strong>Import Vehicles</strong>. If it says some vans have an ownership type the app
+              doesn&apos;t know, open the <strong>Vehicle Types</strong> tab and say what the word
+              means.
             </li>
             <li>
               The first-day checklist at the top of this page walks you through it. Click the{' '}
@@ -510,7 +512,9 @@ export function HowToUsePage({
             </li>
             <li>
               Click <strong>Assign Vans</strong>. A window shows who got which van, and anyone who
-              did not, with the reason.
+              did not, with the reason. If some drivers already have a van, from the load-out sheet
+              or given by hand, it first asks whether to keep those vans. It remembers your answer;
+              change it with <strong>Load Out settings</strong> next to the page title.
             </li>
             <li>
               Look down the <strong>Check</strong> column. Sort out anything red. See "What the
@@ -869,8 +873,10 @@ export function HowToUsePage({
             <li>
               <Example tone="bad">No associate found</Example>
               <Example tone="bad">Not CDV qualified</Example>
-              <Example tone="bad">ID expired 3d ago</Example> Red needs you before the driver goes
-              out.
+              <Example tone="bad">ID expired 3d ago</Example>
+              <Example tone="bad">Van is grounded</Example>
+              <Example tone="bad">Not LMR approved for this van</Example> Red needs you before the
+              driver goes out.
             </li>
           </ul>
           <p>The whole row is tinted amber or red to match, so problems stand out.</p>
@@ -878,7 +884,7 @@ export function HowToUsePage({
           <ul>
             <li>
               The <strong>Vans</strong> column shows the kinds of van a driver may drive.{' '}
-              <strong>LMR</strong> means they may take a rental van.
+              <strong>LMR</strong> means they may take an LMR rental.
             </li>
             <li>
               On the DWP tab, <Example tone="ok">Matches the roster's day</Example> is good.{' '}

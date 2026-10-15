@@ -3,12 +3,13 @@
 // command, and the core does the work.
 
 import {
-  BY_HAND,
   isActive,
+  KEEP_ALL_VANS,
   needsVan,
   rosterDateLabel,
   type Associate,
   type DriverRow,
+  type KeepVans,
 } from '@loadout/core';
 import {
   ArrowLeftRight,
@@ -21,6 +22,7 @@ import {
 } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { AppSnapshot, RosterRowView } from '../../../shared/snapshot';
+import type { AppSettings, SettingsPatch } from '../../../shared/settings';
 import { DataGrid, type RowAction } from '../../components/DataGrid';
 import { FileDrop } from '../../components/FileDrop';
 import { call, explain, type Failure } from '../../lib/channels';
@@ -37,6 +39,7 @@ import {
 import { Badges, checkTone, ROSTER_COLUMNS, VAN_COLUMNS } from './columns';
 import {
   AssignDialog,
+  KeepVansDialog,
   LinkDialog,
   RosterPickDialog,
   SourceDialog,
@@ -52,6 +55,7 @@ import {
   baseName,
   dwpDayProblem,
   dwpSummary,
+  heldVans,
   matchesShift,
   rosterHeader,
   routeTakers,
@@ -74,12 +78,22 @@ interface RosterTabProps {
   /** Ctrl+O was pressed (maybe on another tab): bring in a sheet, then call `onImportTaken`. */
   pendingImport: boolean;
   onImportTaken: () => void;
+  /** Load Out settings: whether Assign Vans remembers which vans drivers already have to keep. */
+  settings: Pick<AppSettings, 'rememberKeepVans' | 'keepVans'>;
+  changeSettings(patch: SettingsPatch): Promise<void>;
 }
 
 const needsAttention = (view: RosterRowView) => checkSeverity(view.check) !== '';
 const rowTone = (view: RosterRowView) => checkSeverity(view.check) || undefined;
 
-export function RosterTab({ snapshot, say, pendingImport, onImportTaken }: RosterTabProps) {
+export function RosterTab({
+  snapshot,
+  say,
+  pendingImport,
+  onImportTaken,
+  settings,
+  changeSettings,
+}: RosterTabProps) {
   const { ask, confirm, inform, dialog } = useAsk();
   const [shift, setShift] = useState(ALL_SHIFTS);
   // Remounting the table clears its search, filters and sort, as the old Reset did after an
@@ -310,26 +324,35 @@ export function RosterTab({ snapshot, say, pendingImport, onImportTaken }: Roste
       say('Nothing to assign - no service types on the roster.');
       return;
     }
-    // Assign Vans works every van out again, so a van given by hand would be lost.
-    if (
-      now.roster.rows.some(
-        (view) => view.row.assignMethod === BY_HAND && (view.row.vehicle || view.row.vin),
-      )
-    ) {
-      const yes = await confirm(
-        'Replace vans given by hand?',
-        'Some vans were given by hand. Assign Vans will replace them. Go ahead?',
-      );
-      if (!yes) {
-        say('Vans left as they were.');
-        return;
+    // Vans given by hand or on the load-out sheet stay put unless the person says otherwise. With
+    // Remember my answer on (Load Out settings), the first answer is saved and used from then on.
+    const held = heldVans(now.roster.rows.map((view) => view.row));
+    let keep: KeepVans = KEEP_ALL_VANS;
+    if (held.byHand || held.fromSheet) {
+      const saved = settings.rememberKeepVans ? settings.keepVans : null;
+      if (saved) keep = saved;
+      else {
+        const answer = await ask<KeepVans | null>((done) => (
+          <KeepVansDialog
+            byHand={held.byHand}
+            fromSheet={held.fromSheet}
+            remember={settings.rememberKeepVans}
+            onAnswer={done}
+          />
+        ));
+        if (answer === null) {
+          say('Vans left as they were.');
+          return;
+        }
+        keep = answer;
+        if (settings.rememberKeepVans) void changeSettings({ keepVans: answer });
       }
     }
-    const reply = await call('loadOut:assign-vans');
+    const reply = await call('loadOut:assign-vans', keep);
     if (failed(reply)) return;
     say(assignSummary(reply.value));
     await ask<void>((done) => <AssignDialog result={reply.value} onClose={() => done()} />);
-  }, [snapshot, ask, confirm, inform, failed, say]);
+  }, [snapshot, ask, inform, failed, say, settings, changeSettings]);
 
   const clearVans = useCallback(async () => {
     const holding = snapshot.roster.rows.filter((view) => view.row.vehicle || view.row.vin).length;
@@ -650,7 +673,7 @@ export function RosterTab({ snapshot, say, pendingImport, onImportTaken }: Roste
       const choices = vanChoices(
         view.row,
         associateOf(view),
-        now.vehicles.filter((v) => v.available).map((v) => v.vehicle),
+        now.vehicles.filter((v) => v.available),
         new Set(now.lmrApproved),
       );
       if (choices.length === 0) {

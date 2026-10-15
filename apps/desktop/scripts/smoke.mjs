@@ -853,7 +853,9 @@ try {
       await page.click('[data-testid="confirm-yes"]');
       await until(async () => /DWP: \d+ staging/.test(await status()), 'the DWP did not come over');
 
-      // Assign Vans, and its read-out.
+      // Assign Vans, and its read-out. The old app worked every van out again; Assign Vans now
+      // keeps the vans on the load-out sheet, so clearing them first gives the old app's run.
+      assert((await ask('loadOut:clear-vans')).ok, 'the vans were not cleared');
       await page.click('[data-action="assign-vans"]');
       const readout = page.locator('[data-testid="assign-dialog"]');
       await readout.waitFor({ state: 'visible', timeout: 10_000 });

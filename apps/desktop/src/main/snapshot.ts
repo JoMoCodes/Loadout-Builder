@@ -13,6 +13,11 @@ import {
   daysUntilIdExpiry,
   idState,
   isAmbiguous,
+  looksLikeLmr,
+  typeRanks,
+  unknownWords,
+  vanCategory,
+  vanKind,
   type AppState,
   type IsoDate,
   type Match,
@@ -61,9 +66,9 @@ export function buildSnapshot(state: AppState, options: SnapshotOptions): AppSna
       associateName: associate?.name ?? '',
       vanBadges: state.vanBadges(associate),
       tenure: associate?.tenure ?? null,
-      check: state.checkText(row, today),
+      check: state.rowCheck(row, today),
       assignMethodLabel: state.assignMethodLabel(row),
-      issues: state.driverIssues(row, today),
+      issues: [...state.driverIssues(row, today), ...state.vanIssues(row)],
     };
   });
 
@@ -83,16 +88,35 @@ export function buildSnapshot(state: AppState, options: SnapshotOptions): AppSna
     if (row.vin) held.add(row.vin);
     if (row.vehicle) held.add(row.vehicle);
   }
-  const rentals = new Set(state.lmrVehicles().map((v) => v.vin));
-  const vehicles: VehicleView[] = state.vehicles.rows.map((vehicle) => ({
-    vehicle,
-    operational: state.isOperational(vehicle),
-    overridden: state.isOverridden(vehicle),
-    priority: state.vehiclePriority(vehicle),
-    affinity: Object.fromEntries(state.affinity.slots.get(vehicle.vin) ?? []),
-    rental: rentals.has(vehicle.vin),
-    inUse: held.has(vehicle.vin) || held.has(vehicle.name),
-    available: available.has(vehicle.vin),
+  const ranks = typeRanks(state.vehicleTypes);
+  const typeCounts = new Map<string, number>();
+  const vehicles: VehicleView[] = state.vehicles.rows.map((vehicle) => {
+    const { type, source } = state.vanType(vehicle);
+    const kind = vanKind(vehicle, type, ranks);
+    typeCounts.set(type.id, (typeCounts.get(type.id) ?? 0) + 1);
+    return {
+      vehicle,
+      operational: state.isOperational(vehicle),
+      overridden: state.isOverridden(vehicle),
+      priority: state.vehiclePriority(vehicle),
+      affinity: Object.fromEntries(state.affinity.slots.get(vehicle.vin) ?? []),
+      rental: kind.lmrOnly,
+      typeId: type.id,
+      typeName: type.name,
+      category: vanCategory(vehicle, type),
+      typeSource: source,
+      handOnly: kind.handOnly,
+      rank: kind.rank,
+      looksLikeLmr: looksLikeLmr(vehicle, type),
+      inUse: held.has(vehicle.vin) || held.has(vehicle.name),
+      available: available.has(vehicle.vin),
+    };
+  });
+  const vehicleTypes = state.vehicleTypes.map((type) => ({
+    ...type,
+    words: [...type.words],
+    vans: typeCounts.get(type.id) ?? 0,
+    place: type.drive === 'hand' ? null : (ranks.get(type.id) ?? 0) + 1,
   }));
 
   const routeSets = ROUTE_SOURCES.map(([kind, label]) => ({ ...state.routeSet(kind), label }));
@@ -130,6 +154,9 @@ export function buildSnapshot(state: AppState, options: SnapshotOptions): AppSna
     },
     previousRoster: state.previousRoster,
     lmrApproved: [...state.lmrApproved],
+    vehicleTypes,
+    vehicleTypeOverrides: Object.fromEntries(state.vehicleTypeOverrides),
+    unknownOwnership: unknownWords(state.vehicles.rows, state.vehicleTypes),
     affinity: Object.fromEntries(
       [...state.affinity.slots].map(([vin, held]) => [vin, Object.fromEntries(held)]),
     ),

@@ -82,7 +82,7 @@ The page has four tabs.
       button, for when the DWP arrives after the route data is already over.
       Proved by `apps/desktop/e2e/load-out.spec.ts`: "Bring Over DWP on its own can be stopped at the day check", and `apps/desktop/src/main/handlers/loadOut.test.ts`: "brings route data and the DWP over, assigns vans, and clears them again".
 - [x] **Assign Vans** fills the Vehicle and VIN columns from the fleet.
-      Proved by the parity diff `vans` on all three days (`roster_after`) and `state/vans.test.ts`: "assigns afresh, clearing every row first".
+      Proved by the parity diff `vans` on all three days (`roster_after`) and `state/vans.test.ts`: "works out again the vans it gave out, and takes one off a driver with no route".
 - [x] **Clear Roster** empties the roster but keeps associate data and manual links.
       Proved by `apps/desktop/src/main/handlers/loadOut.test.ts`: "clears the roster but keeps the associates and the manual links", and `apps/desktop/e2e/load-out.spec.ts`: "Clear Roster asks first; the More menu clears vans and manual links".
 - [x] Filter by shift type.
@@ -818,12 +818,22 @@ The Amazon exports that say who has scheduled work and when they dispatch.
 
 ### 4.4 The run
 
-- [x] It is a full recompute: every row is emptied before the run.
-      Proved by the parity diff `vans` on all three days (`roster_after`) and `state/vans.test.ts`: "assigns afresh, clearing every row first".
-- [x] Grounding a van moves its driver.
+- [x] Every van Assign Vans gave out is worked out again: those rows are emptied before the run.
+      Proved by the parity diff `vans` on all three days (`roster_after`, run after Clear Van
+      Assignments) and `state/vans.test.ts`: "works out again the vans it gave out, and takes one
+      off a driver with no route".
+- [x] Changed from the old app: a van given by hand, or already on the load-out sheet, stays put
+      and is given to nobody else, unless the person unticks that kind in the question Assign
+      Vans asks first. The old app emptied every row.
+      Proved by `state/vans.test.ts`: "keeps a van given by hand or on the load-out sheet, and
+      gives it to nobody else" and "choosing which vans to keep", and
+      `apps/desktop/e2e/shortcuts-and-drops.spec.ts`: "Assign Vans works out again the vans whose
+      box is unticked".
+- [x] Grounding a van moves its driver, when Assign Vans gave out that van.
       Proved by the parity diff `vans` on all three days (grounded vans in the fixture database stay out of the run).
-- [x] A driver who loses their route loses the van with it.
-      Proved by `state/vans.test.ts`: "assigns afresh, clearing every row first".
+- [x] A driver who loses their route loses the van Assign Vans gave them.
+      Proved by `state/vans.test.ts`: "works out again the vans it gave out, and takes one off a
+      driver with no route".
 - [x] **File > Clear Van Assignments** empties the Vehicle and VIN columns.
       _The rule is checked by `state/vans.test.ts`: "swaps a route, van and DWP numbers together, and marks both by hand". The menu comes in phase 4._
       Proved by `apps/desktop/src/main/handlers/loadOut.test.ts`: "brings route data and the DWP over, assigns vans, and clears them again" and `apps/desktop/e2e/load-out.spec.ts`: "Clear Roster asks first; the More menu clears vans and manual links". The new app has no menu bar, so it sits in the Roster tab's More menu.
@@ -1276,11 +1286,11 @@ each one and said keep it on 2026-10-08.
       Proved by `apps/desktop/e2e/print-tab.spec.ts`: "Ctrl+P on the Load Out page runs Print Page
       from any tab, and says so on the one status line".
 - [x] **Questions before taking something away**: Clear Van Assignments and Unassign this van ask
-      first, and Assign Vans asks first when a van was given by hand. Every red question starts
+      first. Assign Vans asks which vans drivers already have to keep, with Cancel leaving them all. Every red question starts
       on No, so Enter never clears anything by accident.
       Proved by `apps/desktop/e2e/load-out.spec.ts` ("Unassign this van...", "Clear Roster asks
       first...", "Remove from the roster asks first..."), `apps/desktop/e2e/shortcuts-and-drops.spec.ts`
-      ("Assign Vans asks first when a van was given by hand"), `page-pattern.spec.ts`,
+      ("Assign Vans asks which vans to keep, and Cancel leaves every van alone"), `page-pattern.spec.ts`,
       `associates.spec.ts` and `vehicle-data.spec.ts` (Clear Previous Roster, Clear Associates
       and Clear Vehicles start on No).
 - [x] **Clear Lifetime Routes** (section 6.1).

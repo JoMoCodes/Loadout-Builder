@@ -3,13 +3,12 @@
 // headings, same columns, same order, same buttons.
 
 import {
-  category,
   isActive,
   makeModel,
-  manualOnly,
   vanBadges,
   type Associate,
   type AssignmentResult,
+  type KeepVans,
 } from '@loadout/core';
 import { useMemo, useState } from 'react';
 import type { RosterRowView, RouteSetView } from '../../../shared/snapshot';
@@ -221,8 +220,8 @@ const VAN_PICK_COLUMNS: PickColumn<VanChoice>[] = [
   { id: 'name', header: 'Vehicle', value: (c) => c.vehicle.name },
   { id: 'fit', header: 'Fit', value: (c) => c.fit },
   { id: 'service_type', header: 'Service Type', value: (c) => c.vehicle.serviceType },
-  { id: 'category', header: 'Category', value: (c) => category(c.vehicle) },
-  { id: 'assign', header: 'Assign', value: (c) => (manualOnly(c.vehicle) ? 'Manual' : 'Auto') },
+  { id: 'category', header: 'Category', value: (c) => c.category },
+  { id: 'assign', header: 'Assign', value: (c) => (c.handOnly ? 'Manual' : 'Auto') },
   { id: 'make_model', header: 'Make / Model', value: (c) => makeModel(c.vehicle) },
   { id: 'plate', header: 'Plate', value: (c) => c.vehicle.plate },
   { id: 'vin', header: 'VIN', value: (c) => c.vehicle.vin, mono: true },
@@ -324,6 +323,71 @@ export function AssignDialog({
         tone={(l) => l.severity}
         testId="assign-lines"
       />
+    </Modal>
+  );
+}
+
+// ------------------------------------------------------- keep vans
+
+interface KeepVansDialogProps {
+  byHand: number;
+  fromSheet: number;
+  /** The answer is saved and used from now on (Load Out settings, Remember my answer). */
+  remember: boolean;
+  onAnswer: (keep: KeepVans | null) => void;
+}
+
+const vans = (count: number) => (count === 1 ? '1 van' : `${count} vans`);
+
+/** Before Assign Vans: keep the vans drivers already have, or work them out again. */
+export function KeepVansDialog({ byHand, fromSheet, remember, onAnswer }: KeepVansDialogProps) {
+  const [keepByHand, setKeepByHand] = useState(true);
+  const [keepFromSheet, setKeepFromSheet] = useState(true);
+  const go = () => onAnswer({ byHand: keepByHand, fromSheet: keepFromSheet });
+  return (
+    <Modal
+      title="Keep the vans drivers already have?"
+      onCancel={() => onAnswer(null)}
+      onEnter={go}
+      testId="keep-vans-dialog"
+      footer={
+        <>
+          <Button onClick={() => onAnswer(null)}>Cancel</Button>
+          <Button variant="primary" onClick={go} data-testid="keep-vans-go">
+            Assign Vans
+          </Button>
+        </>
+      }
+    >
+      <Subtitle text="A ticked box keeps those vans with their drivers. Untick it to have Assign Vans give those drivers a van again, like everyone else." />
+      <fieldset className="flex flex-col gap-2 text-sm">
+        <legend className="sr-only">Vans to keep</legend>
+        {byHand > 0 ? (
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={keepByHand}
+              onChange={(event) => setKeepByHand(event.target.checked)}
+              data-testid="keep-by-hand"
+            />
+            Keep the {vans(byHand)} given by hand
+          </label>
+        ) : null}
+        {fromSheet > 0 ? (
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={keepFromSheet}
+              onChange={(event) => setKeepFromSheet(event.target.checked)}
+              data-testid="keep-from-sheet"
+            />
+            Keep the {vans(fromSheet)} from the load-out sheet
+          </label>
+        ) : null}
+      </fieldset>
+      {remember ? (
+        <Subtitle text="Your answer is remembered for next time. Change it in Load Out settings, next to the page title." />
+      ) : null}
     </Modal>
   );
 }

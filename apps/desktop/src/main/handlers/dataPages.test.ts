@@ -524,6 +524,80 @@ describe('Vehicle Data commands', () => {
     expect(back).toMatchObject({ operational: false, overridden: true, priority: '4' });
     expect(back.affinity).toEqual({ primary_1: driver });
   });
+
+  it('sets a van to a type, makes and moves a type, and puts it all back', async () => {
+    const snap = await withFleet();
+    const vin = snap.vehicles[0]!.vehicle.vin;
+    const before = snap.vehicleTypes.map((type) => ({
+      id: type.id,
+      name: type.name,
+      drive: type.drive,
+      position: type.position,
+      words: type.words,
+      builtIn: type.builtIn,
+    }));
+    expect(await call('vehicles:set-types', { changes: [{ vin, typeId: 'lmr-rental' }] })).toEqual({
+      ok: true,
+      value: { changed: 1 },
+    });
+    let now = await snapshot();
+    expect(now.vehicles[0]).toMatchObject({
+      typeName: 'LMR Rental',
+      typeSource: 'set-here',
+      rental: true,
+    });
+
+    const made = await call('vehicles:save-type', {
+      id: null,
+      name: 'Loaner',
+      drive: 'hand',
+      words: ['loaner'],
+      place: 1,
+    });
+    expect(made).toEqual({ ok: true, value: { id: 'loaner' } });
+    expect(
+      await call('vehicles:save-type', {
+        id: null,
+        name: 'LOANER',
+        drive: 'anyone',
+        words: [],
+        place: 1,
+      }),
+    ).toMatchObject({
+      ok: false,
+      reason: 'refused',
+      message: 'There is already a type called Loaner.',
+    });
+    await call('vehicles:move-type', { id: 'lmr-rental', direction: 'earlier' });
+    now = await snapshot();
+    expect(now.vehicleTypes.map((type) => [type.name, type.place])).toEqual([
+      ['Branded Van', 2],
+      ['LMR Rental', 3],
+      ['Rental Van', 4],
+      ['Self-Owned', null],
+      ['Loaner', null],
+    ]);
+    expect(await call('vehicles:delete-type', { id: 'branded', moveTo: 'rental' })).toMatchObject({
+      ok: false,
+      message: "Branded Van is built in, so it can't be deleted.",
+    });
+
+    await call('vehicles:restore-types', { types: before, overrides: {} });
+    now = await snapshot();
+    expect(now.vehicleTypes.map((type) => type.name)).toEqual(before.map((type) => type.name));
+    expect(now.vehicles[0]!.typeSource).not.toBe('set-here');
+  });
+
+  it('refuses a type or a van that is not there', async () => {
+    await withFleet();
+    expect(
+      await call('vehicles:set-types', { changes: [{ vin: 'NOT-A-VIN', typeId: 'rental' }] }),
+    ).toMatchObject({ ok: false, reason: 'refused' });
+    expect(await call('vehicles:move-type', { id: 'gone', direction: 'later' })).toMatchObject({
+      ok: false,
+      reason: 'refused',
+    });
+  });
 });
 
 describe('Associates commands', () => {

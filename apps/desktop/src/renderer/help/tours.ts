@@ -88,7 +88,7 @@ export const TOURS: Record<string, Tour> = {
       {
         element: `${LOAD_OUT} [data-action="assign-vans"]`,
         title: 'Give out the vans',
-        text: 'Assign Vans gives each driver a van they are qualified for. A window then shows who got which van, and who did not and why.',
+        text: 'Assign Vans gives each driver a van they are qualified for. It asks first about vans drivers already have. A window then shows who got which van and who did not.',
         side: 'bottom',
       },
       {
@@ -302,7 +302,13 @@ export const TOURS: Record<string, Tour> = {
       {
         element: `${VEHICLE_DATA} [data-testid="vehicle-data-tab-lmr"]`,
         title: 'Rental vans',
-        text: 'Only drivers ticked on LMR Approved Drivers are given a rental van.',
+        text: 'Only drivers ticked on LMR Approved Drivers are given an LMR rental.',
+        side: 'bottom',
+      },
+      {
+        element: `${VEHICLE_DATA} [data-testid="vehicle-data-tab-types"]`,
+        title: 'What kind of van',
+        text: 'On Vehicle Types, fix a van the vehicle file has wrong, make your own types, and see the order Assign Vans gives them out in.',
         side: 'bottom',
       },
     ],

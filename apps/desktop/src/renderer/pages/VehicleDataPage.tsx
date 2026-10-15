@@ -1,5 +1,5 @@
 // Vehicle Data: the fleet, and who belongs on which van. One tab each for Vehicle Management, Van
-// Affinity and the LMR Approved Drivers. Ported from the old app's Vehicle Data page.
+// Affinity, the LMR Approved Drivers and Vehicle Types. Ported from the old app's Vehicle Data page.
 
 import { useState } from 'react';
 import { PAGE_TABS, isTabOf } from '../../shared/windows';
@@ -10,6 +10,7 @@ import type { PageProps } from './types';
 import { AffinityTab } from './vehicleData/AffinityTab';
 import { LmrTab } from './vehicleData/LmrTab';
 import { ManagementTab } from './vehicleData/ManagementTab';
+import { TypesTab } from './vehicleData/TypesTab';
 
 const TABS = PAGE_TABS['vehicle-data'];
 
@@ -60,9 +61,10 @@ export function VehicleDataPage({ startTab }: PageProps) {
           {tab === 'management' ? <ManagementTab snapshot={snapshot} messages={messages} /> : null}
           {tab === 'affinity' ? <AffinityTab snapshot={snapshot} messages={messages} /> : null}
           {tab === 'lmr' ? <LmrTab snapshot={snapshot} messages={messages} /> : null}
+          {tab === 'types' ? <TypesTab snapshot={snapshot} messages={messages} /> : null}
         </TabPanel>
       )}
-      <StatusLine text={messages.status} name="vehicle-data" />
+      <StatusLine text={messages.status} name="vehicle-data" action={messages.statusAction} />
     </section>
   );
 }

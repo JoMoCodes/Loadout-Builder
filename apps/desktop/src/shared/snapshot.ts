@@ -15,6 +15,7 @@ import type {
   Roster,
   RouteDataSet,
   Vehicle,
+  VehicleType,
   printing,
 } from '@loadout/core';
 
@@ -78,12 +79,32 @@ export interface VehicleView {
   priority: string;
   /** Slot name to Transporter ID, for the associates tied to this van. */
   affinity: Record<string, string>;
-  /** A Last Mile Rental (only approved drivers may take one). */
+  /** Only LMR approved drivers may take it (its type says so). */
   rental: boolean;
+  /** Its ownership type, by id and by name. */
+  typeId: string;
+  typeName: string;
+  /** Its kind as the pages name it: its type, or a step van and its type. */
+  category: string;
+  /** Why it has that type: set here, from the list, or a list word no type knows (or none). */
+  typeSource: 'set-here' | 'list' | 'unknown' | 'blank';
+  /** Never handed out by Assign Vans. */
+  handOnly: boolean;
+  /** Its place in the Assign Vans order: step vans 0, then each type in turn. */
+  rank: number;
+  /** Its name says LMR, but its type is not LMR. */
+  looksLikeLmr: boolean;
   /** Held by someone on today's roster. */
   inUse: boolean;
   /** In service and not held: what the Available Vans list shows. */
   available: boolean;
+}
+
+export interface VehicleTypeView extends VehicleType {
+  /** Vans in the fleet that are this type now. */
+  vans: number;
+  /** Its place in the Assign Vans order (step vans are 1), or null for a hand-only type. */
+  place: number | null;
 }
 
 export interface RouteSetView extends RouteDataSet {
@@ -163,6 +184,12 @@ export interface AppSnapshot {
   previousRoster: Roster;
   /** Transporter IDs approved for Last Mile Rentals. */
   lmrApproved: string[];
+  /** The ownership types, in Assign Vans order (hand-only ones last). */
+  vehicleTypes: VehicleTypeView[];
+  /** VIN to the type id somebody set that van to here. */
+  vehicleTypeOverrides: Record<string, string>;
+  /** Words in the vehicle list's Ownership Type column that no type knows. */
+  unknownOwnership: Array<{ word: string; vans: number }>;
   /**
    * Van affinity in full: VIN to slot to Transporter ID. Includes vans that are no longer in the
    * fleet (affinity is kept when the fleet is cleared), which `vehicles[].affinity` cannot show.

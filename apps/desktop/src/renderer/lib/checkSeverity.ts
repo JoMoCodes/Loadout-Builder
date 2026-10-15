@@ -3,7 +3,14 @@
 
 export type Severity = 'bad' | 'warn' | '';
 
-const BAD_MARKERS = ['No associate', 'Ambiguous', 'Not ', 'expired', 'Not an associate'];
+const BAD_MARKERS = [
+  'No associate',
+  'Ambiguous',
+  'Not ',
+  'expired',
+  'Not an associate',
+  'grounded',
+];
 const WARN_MARKERS = ['expires in', 'Inactive', 'Verify', 'No qualifications'];
 
 export function checkSeverity(check: string): Severity {

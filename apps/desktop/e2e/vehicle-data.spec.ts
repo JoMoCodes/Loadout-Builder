@@ -77,12 +77,13 @@ async function openFleet(page: Page, over: Record<string, unknown> = {}) {
   });
 }
 
-test('has the three tabs, and an empty fleet says what to import', async ({ page }) => {
+test('has the four tabs, and an empty fleet says what to import', async ({ page }) => {
   await openPage(page, 'vehicle-data');
   await expect(page.getByRole('tab')).toHaveText([
     'Vehicle Management',
     'Van Affinity',
     'LMR Approved Drivers',
+    'Vehicle Types',
   ]);
   await expect(page.getByTestId('fleet-title')).toHaveText('No vehicles loaded');
   await expect(page.getByTestId('fleet-metric')).toHaveText('0 vehicles');
@@ -102,7 +103,7 @@ test('shows the fleet with the old columns, status words, and colours with words
   await expect(page.getByTestId('fleet-title')).toHaveText('Fleet');
   await expect(page.getByTestId('fleet-sub')).toContainText('VehiclesData.xlsx');
   await expect(page.getByTestId('fleet-metric')).toHaveText('3 vehicles  -  2 operational');
-  await expect(page.getByTestId('fleet-detail-0')).toHaveText('Branded Van: 1   Rental Van: 1');
+  await expect(page.getByTestId('fleet-detail-0')).toHaveText('Branded Van: 1   LMR Rental: 1');
   await expect(page.getByTestId('fleet-detail-1')).toHaveText(
     'registration expired: 1   expiring soon: 1   status set here: 1',
   );
@@ -138,7 +139,7 @@ test('shows the fleet with the old columns, status words, and colours with words
 
   const rental = row(page, '103');
   await expect(rental.locator('[data-col-id="ownership"]')).toHaveText('Amazon Rental');
-  await expect(rental.locator('[data-col-id="category"]')).toHaveText('Rental Van');
+  await expect(rental.locator('[data-col-id="category"]')).toHaveText('LMR Rental');
   await expect(rental.locator('[data-col-id="registration"]')).toHaveText('2026-10-11  (30d left)');
   await expect(rental.locator('[data-col-id="note"]')).toHaveText('until 2026-10-20');
   await expect(rental).toHaveAttribute('data-tone', 'warn');

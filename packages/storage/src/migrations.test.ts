@@ -24,18 +24,18 @@ describe('migration runner', () => {
   it('creates every table on a blank database', () => {
     const db = new Database(':memory:');
     expect(schemaVersion(db)).toBe(0);
-    expect(runMigrations(db)).toEqual([1, 2, 3, 4]);
+    expect(runMigrations(db)).toEqual([1, 2, 3, 4, 5]);
     expect(tableNames(db)).toEqual(
       [...DATA_TABLES, ...PERF_TABLES, ...RS_TABLES, 'schema_version'].sort(),
     );
     // The 23 tables of the old schema, plus the old hand-typed tenure table it left behind.
-    expect(DATA_TABLES).toHaveLength(24);
+    expect(DATA_TABLES).toHaveLength(26);
     // The 13 tables of the old weekly performance app, less its drivers table (step 4 folded it
     // into the associates table).
     expect(PERF_TABLES).toHaveLength(12);
     // The four route sheet tables.
     expect(RS_TABLES).toHaveLength(4);
-    expect(schemaVersion(db)).toBe(4);
+    expect(schemaVersion(db)).toBe(5);
   });
 
   it('changes nothing when run again', () => {
@@ -176,8 +176,8 @@ describe('step 3: the route sheet tables', () => {
     const db = new Database(':memory:');
     runMigrations(db, MIGRATIONS.slice(0, 2));
     db.prepare("INSERT INTO lmr_approved (transporter_id) VALUES ('A02V4L9HIELIDL')").run();
-    expect(runMigrations(db)).toEqual([3, 4]);
-    expect(schemaVersion(db)).toBe(4);
+    expect(runMigrations(db)).toEqual([3, 4, 5]);
+    expect(schemaVersion(db)).toBe(5);
     expect(db.prepare('SELECT COUNT(*) AS n FROM lmr_approved').get()).toEqual({ n: 1 });
   });
 });
@@ -224,7 +224,7 @@ describe('step 4: one driver list', () => {
 
   it('moves the drivers the associate list does not have onto it, and drops the old table', () => {
     const db = openV3();
-    expect(runMigrations(db)).toEqual([4]);
+    expect(runMigrations(db)).toEqual([4, 5]);
     expect(tableNames(db)).not.toContain('perf_drivers');
     const rows = db.prepare('SELECT * FROM associates ORDER BY position_index').all() as Record<
       string,
@@ -295,7 +295,7 @@ describe('step 4: one driver list', () => {
   it('runs on an empty database and on one with no drivers to move', () => {
     const db = new Database(':memory:');
     runMigrations(db, MIGRATIONS.slice(0, 3));
-    expect(runMigrations(db)).toEqual([4]);
+    expect(runMigrations(db)).toEqual([4, 5]);
     expect(db.prepare('SELECT COUNT(*) AS n FROM associates').get()).toEqual({ n: 0 });
   });
 });

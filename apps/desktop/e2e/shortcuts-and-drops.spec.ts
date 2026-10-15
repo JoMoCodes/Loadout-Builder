@@ -5,7 +5,7 @@
 // a real file is dropped in the Electron smoke check.
 
 import { expect, test, type Locator, type Page } from '@playwright/test';
-import { callsTo, installFakeBridge, onCall } from './support/fakeBridge';
+import { callsTo, installFakeBridge, onCall, type FakeBridgeOptions } from './support/fakeBridge';
 import { loadOutDay, withMaps } from './support/loadOutDay';
 import {
   BARRETT,
@@ -326,37 +326,130 @@ test('How to use lists the shortcuts', async ({ page }) => {
 
 // ------------------------------------------------------------- questions first
 
-test('Assign Vans asks first when a van was given by hand', async ({ page }) => {
+/** The Load Out day, with van 51 given by hand and van 52 off the load-out sheet. */
+async function openWithHeldVans(
+  page: Page,
+  settings: FakeBridgeOptions['settings'] = {},
+): Promise<void> {
   const day = loadOutDay();
   const rows = day.roster!.rows;
-  rows[0]!.row.assignMethod = 'by-hand';
-  await installFakeBridge(page, { snapshot: day });
+  rows.find((view) => view.row.vehicle === '51')!.row.assignMethod = 'by-hand';
+  rows.find((view) => view.row.vehicle === '52')!.row.assignMethod = '';
+  await installFakeBridge(page, { snapshot: day, settings });
   await withMaps(page);
   await page.addInitScript(() => {
     window.localStorage.setItem('loadout.page', 'load-out');
     window.localStorage.setItem('loadout.load-out-tab', 'roster');
   });
   await page.goto('/');
+}
+
+const NOTHING_TO_ASSIGN = `() => ({ ok: true, value: { considered: 0, vansAvailable: 4, kept: 1, assignments: [] } })`;
+
+test('Assign Vans remembers the answer, and uses it next time without asking', async ({ page }) => {
+  await openWithHeldVans(page);
+  await onCall(page, 'loadOut:assign-vans', NOTHING_TO_ASSIGN);
   await page.getByRole('button', { name: 'Assign Vans' }).click();
-  await expect(page.getByTestId('confirm-dialog')).toContainText(
-    'Some vans were given by hand. Assign Vans will replace them. Go ahead?',
-  );
-  await page.getByTestId('confirm-no').click();
+  const dialog = page.getByTestId('keep-vans-dialog');
+  await expect(dialog).toContainText('Your answer is remembered for next time.');
+  await page.getByTestId('keep-from-sheet').uncheck();
+  await page.getByTestId('keep-vans-go').click();
+  await page.getByTestId('assign-dialog').getByRole('button', { name: 'Close' }).click();
+  expect(await callsTo(page, 'settings:set')).toContainEqual({
+    keepVans: { byHand: true, fromSheet: false },
+  });
+
+  await page.getByRole('button', { name: 'Assign Vans' }).click();
+  await expect(page.getByTestId('assign-dialog')).toBeVisible();
+  await expect(page.getByTestId('keep-vans-dialog')).toHaveCount(0);
+  expect(await callsTo(page, 'loadOut:assign-vans')).toEqual([
+    { byHand: true, fromSheet: false },
+    { byHand: true, fromSheet: false },
+  ]);
+});
+
+test('with Remember my answer off, Assign Vans asks every time and saves nothing', async ({
+  page,
+}) => {
+  await openWithHeldVans(page, {
+    rememberKeepVans: false,
+    keepVans: { byHand: false, fromSheet: false },
+  });
+  await onCall(page, 'loadOut:assign-vans', NOTHING_TO_ASSIGN);
+  await page.getByRole('button', { name: 'Assign Vans' }).click();
+  const dialog = page.getByTestId('keep-vans-dialog');
+  await expect(dialog).not.toContainText('remembered');
+  await page.getByTestId('keep-vans-go').click();
+  expect(await callsTo(page, 'loadOut:assign-vans')).toEqual([{ byHand: true, fromSheet: true }]);
+  expect(await callsTo(page, 'settings:set')).toEqual([]);
+});
+
+test('Load Out settings turns Remember my answer off, and changes or forgets the answer', async ({
+  page,
+}) => {
+  await openWithHeldVans(page, { keepVans: { byHand: true, fromSheet: true } });
+  await page.getByTestId('load-out-settings').click();
+  const dialog = page.getByRole('dialog', { name: 'Load Out settings' });
+  await expect(page.getByTestId('remember-keep-vans')).toBeChecked();
+  await page.getByTestId('saved-keep-from-sheet').uncheck();
+  await page.getByTestId('forget-keep-vans').click();
+  await expect(page.getByTestId('no-saved-keep-vans')).toBeVisible();
+  await page.getByTestId('remember-keep-vans').uncheck();
+  await expect(page.getByTestId('no-saved-keep-vans')).toHaveCount(0);
+  expect(await callsTo(page, 'settings:set')).toEqual([
+    { keepVans: { byHand: true, fromSheet: false } },
+    { keepVans: null },
+    { rememberKeepVans: false },
+  ]);
+  await dialog.getByRole('button', { name: 'Close' }).click();
+  await expect(dialog).toHaveCount(0);
+});
+
+test('Assign Vans asks which vans to keep, and Cancel leaves every van alone', async ({ page }) => {
+  await openWithHeldVans(page);
+  await page.getByRole('button', { name: 'Assign Vans' }).click();
+  const dialog = page.getByTestId('keep-vans-dialog');
+  await expect(dialog).toContainText('Keep the vans drivers already have?');
+  await expect(dialog).toContainText('Keep the 1 van given by hand');
+  await expect(dialog).toContainText('Keep the 1 van from the load-out sheet');
+  await expect(page.getByTestId('keep-by-hand')).toBeChecked();
+  await expect(page.getByTestId('keep-from-sheet')).toBeChecked();
+  await dialog.getByRole('button', { name: 'Cancel' }).click();
   await expect(page.getByTestId('load-out-status')).toHaveText('Vans left as they were.');
   expect(await callsTo(page, 'loadOut:assign-vans')).toEqual([]);
 });
 
-test('Assign Vans goes straight ahead when no van was given by hand', async ({ page }) => {
+test('Assign Vans works out again the vans whose box is unticked', async ({ page }) => {
+  await openWithHeldVans(page);
+  await onCall(
+    page,
+    'loadOut:assign-vans',
+    `() => ({ ok: true, value: { considered: 0, vansAvailable: 4, kept: 1, assignments: [] } })`,
+  );
+  await page.getByRole('button', { name: 'Assign Vans' }).click();
+  await page.getByTestId('keep-by-hand').uncheck();
+  await page.getByTestId('keep-vans-go').click();
+  await expect(page.getByTestId('assign-dialog')).toBeVisible();
+  await expect(page.getByTestId('load-out-status')).toHaveText(
+    'Nothing to assign - every driver with a route already has a van. ' +
+      '1 driver kept the van they already had.',
+  );
+  expect(await callsTo(page, 'loadOut:assign-vans')).toEqual([{ byHand: false, fromSheet: true }]);
+});
+
+test('Assign Vans goes straight ahead when nobody holds a van by hand or off the sheet', async ({
+  page,
+}) => {
   await openLoadOut(page);
   await onCall(
     page,
     'loadOut:assign-vans',
-    `() => ({ ok: true, value: { considered: 0, vansAvailable: 4, assignments: [] } })`,
+    `() => ({ ok: true, value: { considered: 0, vansAvailable: 4, kept: 0, assignments: [] } })`,
   );
   await page.getByRole('button', { name: 'Assign Vans' }).click();
   await expect(page.getByTestId('assign-dialog')).toBeVisible();
-  await expect(page.getByTestId('confirm-dialog')).toHaveCount(0);
-  expect(await callsTo(page, 'loadOut:assign-vans')).toHaveLength(1);
+  await expect(page.getByTestId('keep-vans-dialog')).toHaveCount(0);
+  expect(await callsTo(page, 'loadOut:assign-vans')).toEqual([{ byHand: true, fromSheet: true }]);
 });
 
 test('Clear Lifetime Routes asks first, starting on No, and keeps the associate list', async ({

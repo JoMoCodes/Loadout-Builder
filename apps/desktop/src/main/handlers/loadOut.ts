@@ -61,7 +61,7 @@ export const loadOutHandlers: HandlersFor<typeof loadOutChannels> = {
 
   'loadOut:bring-over-dwp': (_input, ctx) => ctx.state.applyDwp(),
 
-  'loadOut:assign-vans': (_input, ctx) => ctx.state.assignVans(),
+  'loadOut:assign-vans': (keep, ctx) => ctx.state.assignVans(keep),
 
   'loadOut:clear-vans': (_input, ctx) => ctx.state.clearVans(),
 
