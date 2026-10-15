@@ -4,8 +4,9 @@
 //
 // The made-up weekly files name a different set of made-up drivers from the demo's own associate
 // list, so that set's driver list (the roster folder) is folded into the demo's Associates list
-// first, the way a person brings it in: then the scorecards, reports and emails have names and
-// addresses to work with. The two sets share no names, so the Load Out side is unaffected.
+// first: then the scorecards, reports and emails have names and addresses to work with. They are
+// added only (nobody already on the demo list is marked offboarded), and the two sets share no
+// names, so the Load Out side is unaffected.
 
 import { join } from 'node:path';
 import type { AppState } from '@loadout/core';
@@ -25,7 +26,8 @@ export async function loadDemoPerformance(
   if (rosterFile && !host.closed) {
     const book = await importAssociateData(rosterFile.path);
     if (host.closed) return rows;
-    state.importAssociates(book);
+    // Add these people only: the demo's own drivers stay as they are, not marked offboarded.
+    state.importAssociates(book, { offboardMissing: false });
     rows += book.rows.length;
   }
   for (const kind of PERF_KINDS) {

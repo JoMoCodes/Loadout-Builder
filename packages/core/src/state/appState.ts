@@ -20,6 +20,7 @@ import {
   type Associate,
   type AssociateBook,
   type AssociateMergeCounts,
+  type MergeOptions,
 } from '../models/associates';
 import {
   affinityClear,
@@ -208,8 +209,8 @@ export class AppState {
    * added or updated; anyone with a Transporter ID the file no longer lists is kept and marked
    * offboarded (see `mergeAssociateBooks`). The counts say what happened.
    */
-  importAssociates(file: AssociateBook): AssociateMergeCounts {
-    const { book, counts } = mergeAssociateBooks(this.associates, file);
+  importAssociates(file: AssociateBook, options: MergeOptions = {}): AssociateMergeCounts {
+    const { book, counts } = mergeAssociateBooks(this.associates, file, options);
     this.store.saveAssociates(associatesToStored(book));
     this.associates = book;
     this.applyTenure();

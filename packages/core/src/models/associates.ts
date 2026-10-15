@@ -170,10 +170,21 @@ export interface AssociateMergeCounts {
  * (everything else about them kept). Rows with no Transporter ID (people the app made up from
  * route data) are kept as they are. The file's source and time become the list's.
  */
+export interface MergeOptions {
+  /**
+   * Mark people the file no longer lists as offboarded (the default: the file is the whole
+   * current list). Off when the file only adds to the list, as demo mode's made-up weekly
+   * drivers do: nobody already on the list is touched.
+   */
+  offboardMissing?: boolean;
+}
+
 export function mergeAssociateBooks(
   kept: AssociateBook,
   file: AssociateBook,
+  options: MergeOptions = {},
 ): { book: AssociateBook; counts: AssociateMergeCounts } {
+  const offboardMissing = options.offboardMissing ?? true;
   const counts: AssociateMergeCounts = { added: 0, updated: 0, offboarded: 0 };
   const known = byTransporterId(kept);
   const inFile = new Set<string>();
@@ -198,6 +209,10 @@ export function mergeAssociateBooks(
       continue;
     }
     if (inFile.has(row.transporterId)) continue;
+    if (!offboardMissing) {
+      rows.push(row);
+      continue;
+    }
     if (!isOffboarded(row)) counts.offboarded += 1;
     rows.push({ ...row, status: STATUS_OFFBOARDED });
   }

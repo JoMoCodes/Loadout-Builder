@@ -985,7 +985,7 @@ try {
     const ask = page.locator('dialog[data-dialog="confirm"]');
     await ask.waitFor({ state: 'visible', timeout: 5_000 });
     assert(
-      (await ask.innerText()).includes('Replace the associate list?'),
+      (await ask.innerText()).includes('Update the associate list?'),
       'Ctrl+I did not ask before replacing the list',
     );
     await ask.getByRole('button', { name: 'No, keep the list' }).click();

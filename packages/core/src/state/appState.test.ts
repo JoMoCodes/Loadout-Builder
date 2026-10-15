@@ -297,6 +297,28 @@ describe('bringing in the associate export', () => {
       importedAt: new Date(2026, 8, 11),
     });
 
+  it('can add a file without offboarding anyone (demo mode folds in the weekly drivers)', () => {
+    const store = new Store(':memory:', { now: () => new Date(2000, 0, 1) });
+    const st = new AppState(store);
+    st.importAssociates(
+      file([
+        createAssociate({ name: 'Carmen Abernathy', transporterId: IDS.carmen, status: 'ACTIVE' }),
+      ]),
+    );
+    const counts = st.importAssociates(
+      file([
+        createAssociate({ name: 'Colton Alderman', transporterId: IDS.colton, status: 'ACTIVE' }),
+      ]),
+      { offboardMissing: false },
+    );
+    expect(counts).toEqual({ added: 1, updated: 0, offboarded: 0 });
+    expect(st.associates.rows.map((a) => [a.name, a.status])).toEqual([
+      ['Colton Alderman', 'ACTIVE'],
+      ['Carmen Abernathy', 'ACTIVE'],
+    ]);
+    expect(store.loadAssociates().rows.map((a) => a.status)).toEqual(['ACTIVE', 'ACTIVE']);
+  });
+
   it('adds and updates everyone in the file, and keeps the rest as offboarded', () => {
     const store = new Store(':memory:', { now: () => new Date(2000, 0, 1) });
     const st = new AppState(store);

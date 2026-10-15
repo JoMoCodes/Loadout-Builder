@@ -308,7 +308,7 @@ export async function otherPagesChecks({ app, page, check, assert, until, ask, g
       const ask1 = page.locator('dialog[data-dialog="confirm"]');
       await ask1.waitFor({ state: 'visible', timeout: 5_000 });
       assert(
-        (await ask1.innerText()).includes('Replace the associate list?'),
+        (await ask1.innerText()).includes('Update the associate list?'),
         'no question was asked',
       );
       await choose(['associates', 'AssociateData.csv']);
