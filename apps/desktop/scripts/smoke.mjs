@@ -61,7 +61,22 @@ const WAIT_MS = Number(process.env.SMOKE_TIMEOUT_MS ?? 120_000);
 // Stop everything if the run hangs.
 setTimeout(() => {
   console.log('Smoke check FAILED: it took too long.');
-  process.exit(1);
+  // Say what was done so far and what the app itself logged, so a stall is not a mystery.
+  for (const r of results) {
+    console.log(`  ${r.ok ? 'ok  ' : 'FAIL'} ${r.name}${r.detail ? ` - ${r.detail}` : ''}`);
+  }
+  const open = first ?? second ?? third;
+  const done = () => process.exit(1);
+  if (!open) {
+    done();
+    return;
+  }
+  Promise.race([
+    open.mainLog().then((lines) => {
+      for (const line of lines.slice(-40)) console.log(`  [main] ${line}`);
+    }),
+    new Promise((r) => setTimeout(r, 5_000)),
+  ]).then(done, done);
 }, WAIT_MS).unref();
 
 const EXPECTED_PAGES = [
@@ -82,8 +97,10 @@ const EXPECTED_PAGES = [
 const results = [];
 const problems = [];
 
+// Each result is printed as it happens too, so a run that stalls still shows how far it got.
 function pass(name, detail = '') {
   results.push({ ok: true, name, detail });
+  console.log(`  ok   ${name}${detail ? ` - ${detail}` : ''}`);
 }
 
 async function check(name, work) {
@@ -91,7 +108,9 @@ async function check(name, work) {
     const detail = await work();
     pass(name, detail ?? '');
   } catch (error) {
-    results.push({ ok: false, name, detail: String(error.message ?? error).split('\n')[0] });
+    const detail = String(error.message ?? error).split('\n')[0];
+    results.push({ ok: false, name, detail });
+    console.log(`  FAIL ${name} - ${detail}`);
   }
 }
 
@@ -130,6 +149,7 @@ if (process.env.ELECTRON_DISABLE_SANDBOX) args.push('--no-sandbox');
 
 /** Starts the app and keeps a record of everything it prints. */
 async function launch(folder = dataDir, extraEnv = {}) {
+  console.log('  starting the app...');
   const app = await electron.launch({
     args,
     cwd: root,
@@ -145,14 +165,18 @@ async function launch(folder = dataDir, extraEnv = {}) {
   };
   app.process().stdout?.on('data', take);
   app.process().stderr?.on('data', (chunk) => {
-    // Linux prints harmless graphics and message-bus notes on stderr. Only real errors count.
+    // Linux prints harmless graphics and message-bus notes on stderr. Only real errors count,
+    // but every line is echoed so a startup failure can be read in the log.
     for (const line of chunk.toString().split(/\r?\n/)) {
+      if (line.trim()) console.log(`  [app stderr] ${line.trim().slice(0, 200)}`);
       if (/Uncaught|TypeError|ReferenceError|SqliteError|Cannot find module/.test(line)) {
         problems.push(`main process: ${line.trim().slice(0, 160)}`);
       }
     }
   });
+  console.log('  app started, waiting for its window...');
   const page = await app.firstWindow();
+  console.log('  window is up, waiting for the page...');
   page.on('console', (message) => {
     if (message.type() === 'error')
       problems.push(`page console error: ${message.text().slice(0, 160)}`);
