@@ -43,13 +43,11 @@ test('sits after Associates in the menu, with three tabs, and says where to star
   await expect(page.getByTestId('scorecards-tab-imports')).toHaveAttribute('aria-selected', 'true');
 });
 
-test('shows Lifetime Routes right after Status, blank when a driver has no count', async ({
-  page,
-}) => {
+test('shows Lifetime Routes right after Status, with each driver’s count', async ({ page }) => {
   await openPerformance(page);
   const names = (await page.locator('[role="columnheader"]').allInnerTexts()) as string[];
   const at = names.findIndex((name) => name.trim() === 'Status');
-  expect(names[at + 1].trim()).toBe('Lifetime Routes');
+  expect(names[at + 1]?.trim()).toBe('Lifetime Routes');
   await expect(row(page, ARCHER.name)).toContainText('412');
   await expect(row(page, DESMOND.name)).toContainText('57');
 });
