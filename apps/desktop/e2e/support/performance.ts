@@ -204,7 +204,18 @@ export async function openPerformance(page: Page, options: OpenPerformance = {})
       hooks['settings:set'] = (input) => {
         const settings = w.__fake.settings;
         const { performance, ...rest } = (input ?? {}) as Record<string, unknown>;
-        Object.assign(settings, rest);
+        for (const [key, value] of Object.entries(rest)) {
+          const now = settings[key];
+          // The email setup and the route sheet wording change field by field.
+          settings[key] =
+            value &&
+            typeof value === 'object' &&
+            !Array.isArray(value) &&
+            now &&
+            typeof now === 'object'
+              ? { ...(now as object), ...(value as object) }
+              : value;
+        }
         if (performance && typeof performance === 'object') {
           const now = settings.performance as Record<string, unknown>;
           const next: Record<string, unknown> = { ...now };

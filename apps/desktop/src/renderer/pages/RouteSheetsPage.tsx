@@ -174,6 +174,8 @@ export function RouteSheetsPage({ settings, changeSettings, goTo, startTab }: Pa
                   picked={picked}
                   onPick={setPicked}
                   onDistribute={() => choose('distribute')}
+                  wording={settings.routeSheetsEmail}
+                  changeSettings={changeSettings}
                 />
               ) : null}
               {tab === 'history' ? (

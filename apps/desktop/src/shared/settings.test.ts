@@ -1,5 +1,7 @@
+import { DEFAULT_ROUTE_SHEET_WORDING } from '@loadout/route-sheets';
 import { describe, expect, it } from 'vitest';
 import {
+  DEFAULT_ROUTE_SHEETS_EMAIL,
   DEFAULT_SETTINGS,
   FONT_SCALE_MAX,
   FONT_SCALE_MIN,
@@ -50,6 +52,44 @@ describe('saved choices', () => {
   it('leaves unchanged fields alone when merging', () => {
     const merged = mergeSettings({ ...DEFAULT_SETTINGS, theme: 'dark' }, { fontScale: 1.4 });
     expect(merged).toEqual({ ...DEFAULT_SETTINGS, theme: 'dark', fontScale: 1.4 });
+  });
+});
+
+describe('route sheet email wording', () => {
+  it('starts as the old app’s words, the same words the route sheets package renders with', () => {
+    expect(DEFAULT_SETTINGS.routeSheetsEmail).toEqual(DEFAULT_ROUTE_SHEET_WORDING);
+    expect(DEFAULT_ROUTE_SHEETS_EMAIL).toEqual(DEFAULT_ROUTE_SHEET_WORDING);
+  });
+
+  it('keeps a subject and message of a sensible length, field by field', () => {
+    const merged = mergeSettings(DEFAULT_SETTINGS, {
+      routeSheetsEmail: { subjectTemplate: 'Your sheet for {date}' },
+    });
+    expect(merged.routeSheetsEmail).toEqual({
+      subjectTemplate: 'Your sheet for {date}',
+      bodyTemplate: DEFAULT_ROUTE_SHEETS_EMAIL.bodyTemplate,
+    });
+    const long = mergeSettings(merged, {
+      routeSheetsEmail: { subjectTemplate: 'x'.repeat(301), bodyTemplate: 'y'.repeat(5001) },
+    });
+    expect(long.routeSheetsEmail).toEqual(merged.routeSheetsEmail);
+    const edge = mergeSettings(merged, {
+      routeSheetsEmail: { subjectTemplate: 'x'.repeat(300), bodyTemplate: 'y'.repeat(5000) },
+    });
+    expect(edge.routeSheetsEmail.subjectTemplate).toHaveLength(300);
+    expect(edge.routeSheetsEmail.bodyTemplate).toHaveLength(5000);
+    expect(sanitizePatch({ routeSheetsEmail: 'words' })).toEqual({});
+    expect(sanitizePatch({ routeSheetsEmail: ['a'] })).toEqual({});
+    expect(
+      mergeSettings(merged, { routeSheetsEmail: { bodyTemplate: 7 } }).routeSheetsEmail,
+    ).toEqual(merged.routeSheetsEmail);
+  });
+
+  it('fills in the wording for a settings file saved before it existed', () => {
+    const older = { ...DEFAULT_SETTINGS } as Record<string, unknown>;
+    delete older.routeSheetsEmail;
+    const merged = mergeSettings(older as never, { theme: 'light' });
+    expect(merged.routeSheetsEmail).toEqual(DEFAULT_ROUTE_SHEETS_EMAIL);
   });
 });
 

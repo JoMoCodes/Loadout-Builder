@@ -1,9 +1,9 @@
 // The Email part of Settings on the stand-in bridge: the app's one email setup, used by the weekly
 // reports and the route sheets. The fields save through settings:set as `email`, the app password
 // is kept by the main process (never shown), and Send test email saves first. The subject and
-// message of the weekly reports stay in the Weekly performance part. Moved here from
-// performance-settings.spec.ts when the email setup became its own part (migration plan, section 3,
-// item 4).
+// message of the weekly reports are behind Settings on the Scorecards page
+// (performance-settings.spec.ts). Moved here from performance-settings.spec.ts when the email
+// setup became its own part (migration plan, section 3, item 4).
 
 import { expect, test, type Page } from '@playwright/test';
 import { DEFAULT_EMAIL } from '../src/shared/performanceSettings';
@@ -141,28 +141,9 @@ test('Send test email saves first, then says whether it went', async ({ page }) 
   await expect(page.getByTestId('email-test-note')).toHaveText('Test email sent. Check the inbox.');
 });
 
-test('the weekly reports’ subject and message stay in Weekly performance, saved with the email setup', async ({
-  page,
-}) => {
+test('the weekly reports’ subject and message are not in Settings any more', async ({ page }) => {
   await openPerformance(page, { page: 'settings' });
-  await expect(performance(page)).toContainText('{name} becomes the driver’s name');
-  await expect(page.getByTestId('perf-email-subject')).toHaveValue(DEFAULT_EMAIL.subjectTemplate);
-  await expect(page.getByTestId('perf-email-save')).toBeDisabled();
-  await expect(section(page).getByTestId('perf-email-subject')).toHaveCount(0);
-
-  await page.getByTestId('perf-email-subject').fill('Your report ({from} to {to})');
-  await page.getByTestId('perf-email-undo').click();
-  await expect(page.getByTestId('perf-email-subject')).toHaveValue(DEFAULT_EMAIL.subjectTemplate);
-
-  await page.getByTestId('perf-email-subject').fill('Your report ({from} to {to})');
-  await page.getByTestId('perf-email-body').fill('Hi {name}, your report is attached.');
-  await page.getByTestId('perf-email-save').click();
-  await expect(page.getByTestId('perf-email-note')).toHaveText('Email settings saved.');
-  expect(await patches(page)).toContainEqual({
-    email: {
-      ...DEFAULT_EMAIL,
-      subjectTemplate: 'Your report ({from} to {to})',
-      bodyTemplate: 'Hi {name}, your report is attached.',
-    },
-  });
+  await expect(performance(page)).not.toContainText('Emailing the reports');
+  await expect(page.getByTestId('perf-email-subject')).toHaveCount(0);
+  await expect(section(page)).not.toContainText('Subject');
 });

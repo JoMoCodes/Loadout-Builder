@@ -371,8 +371,8 @@ export const WEEKLY_WHERE_TO_GET: Record<WeeklyStepId, Note> = {
       {
         text: (
           <>
-            Want to see a report first? Double-click a driver, or use{' '}
-            <strong>Preview a driver</strong> on the <strong>Reports</strong> tab.
+            Want to see a report first? Double-click a driver, or look at the preview in{' '}
+            <strong>Report colours</strong> on the <strong>Reports</strong> tab.
           </>
         ),
         shot: { name: 'perf-reports', caption: 'The Reports tab: colours and a preview' },

@@ -1,14 +1,17 @@
-// The Weekly performance part of Settings, and the question about the old Weekly Performance
-// App's data, on the stand-in bridge: auto-import, the rule numbers, and bringing the old data
-// over on a first run or from Settings. The email setup is the Email part of Settings now
-// (email-settings.spec.ts).
+// The Weekly performance part of Settings, the report emails' wording behind the Settings button
+// on the Scorecards page, and the question about the old Weekly Performance App's data, on the
+// stand-in bridge: auto-import, the rule numbers, the subject and message of the report emails,
+// and bringing the old data over on a first run or from Settings. The email setup is the Email
+// part of Settings (email-settings.spec.ts).
 
 import { expect, test, type Page } from '@playwright/test';
+import { DEFAULT_EMAIL } from '../src/shared/performanceSettings';
 import { callsTo, installFakeBridge, onCall } from './support/fakeBridge';
 import { openPerformance } from './support/performance';
 
 const section = (page: Page) => page.locator('[data-setting="performance"]');
 const perfDialog = (page: Page) => page.locator('dialog[data-dialog="perf-old-data"]');
+const wording = (page: Page) => page.locator('dialog[data-dialog="perf-email-wording"]');
 
 async function patches(page: Page) {
   return (await callsTo(page, 'settings:set')) as Array<Record<string, unknown>>;
@@ -40,6 +43,83 @@ test('auto-import and the rule numbers save as they change, and odd numbers are 
   await page.getByTestId('perf-rule-recurringCategoryWeeks').blur();
   expect(await patches(page)).toContainEqual({ performance: { topN: 8 } });
   expect(await patches(page)).toContainEqual({ performance: { recurringCategoryWeeks: 4 } });
+});
+
+// ------------------------------------------------------------ the report emails' wording
+
+test('Settings on the Performance tab opens the report emails’ wording; Save keeps it', async ({
+  page,
+}) => {
+  await openPerformance(page);
+  await expect(section(page)).toHaveCount(0);
+  const button = page.getByTestId('scorecards-settings');
+  await expect(button).toHaveText('Settings');
+  // At the right end of the button row.
+  const strip = page.getByRole('toolbar', { name: 'Driver actions' });
+  await expect(strip.locator('button').last()).toHaveAttribute(
+    'data-testid',
+    'scorecards-settings',
+  );
+  await button.click();
+  await expect(wording(page).getByRole('heading')).toHaveText('Email wording');
+  await expect(wording(page)).toContainText(
+    'What each driver gets with their report. The address and server come from Settings.',
+  );
+  await expect(wording(page)).toContainText('Placeholders: {name} {from} {to}');
+  const subject = page.getByTestId('perf-email-subject');
+  await expect(subject).toHaveValue(DEFAULT_EMAIL.subjectTemplate);
+  await expect(page.getByTestId('perf-email-body')).toHaveValue(DEFAULT_EMAIL.bodyTemplate);
+  await expect(page.getByTestId('perf-email-save')).toBeDisabled();
+  await expect(page.getByTestId('perf-email-undo')).toBeDisabled();
+
+  // Undo throws the changes away.
+  await subject.fill('Your report ({from} to {to})');
+  await expect(page.getByTestId('perf-email-save')).toBeEnabled();
+  await page.getByTestId('perf-email-undo').click();
+  await expect(subject).toHaveValue(DEFAULT_EMAIL.subjectTemplate);
+
+  await subject.fill('Your report ({from} to {to})');
+  await page.getByTestId('perf-email-body').fill('Hi {name}, your report is attached.');
+  await page.getByTestId('perf-email-save').click();
+  await expect(page.getByTestId('perf-email-note')).toHaveText('Email wording saved.');
+  expect(await patches(page)).toContainEqual({
+    email: {
+      subjectTemplate: 'Your report ({from} to {to})',
+      bodyTemplate: 'Hi {name}, your report is attached.',
+    },
+  });
+  // Nothing else about the email setup is touched.
+  expect(JSON.stringify(await patches(page))).not.toContain('smtpHost');
+  await expect(page.getByTestId('perf-email-save')).toBeDisabled();
+  await wording(page).getByRole('button', { name: 'Close' }).click();
+  await expect(wording(page)).toHaveCount(0);
+
+  // The Reports tab opens the same window, with the saved wording; Esc closes it.
+  await page.getByTestId('scorecards-tab-reports').click();
+  await page.getByTestId('scorecards-settings').click();
+  await expect(page.getByTestId('perf-email-subject')).toHaveValue('Your report ({from} to {to})');
+  await expect(page.getByTestId('perf-email-body')).toHaveValue(
+    'Hi {name}, your report is attached.',
+  );
+  await page.keyboard.press('Escape');
+  await expect(wording(page)).toHaveCount(0);
+});
+
+test('a subject or message that is too long is refused in plain words', async ({ page }) => {
+  await openPerformance(page, { tab: 'reports' });
+  await page.getByTestId('scorecards-settings').click();
+  await page.getByTestId('perf-email-subject').fill('x'.repeat(301));
+  await page.getByTestId('perf-email-save').click();
+  await expect(page.getByTestId('perf-email-note')).toHaveText(
+    'The subject can be up to 300 letters long.',
+  );
+  await page.getByTestId('perf-email-subject').fill('Your report');
+  await page.getByTestId('perf-email-body').fill('y'.repeat(5001));
+  await page.getByTestId('perf-email-save').click();
+  await expect(page.getByTestId('perf-email-note')).toHaveText(
+    'The message can be up to 5000 letters long.',
+  );
+  expect((await patches(page)).some((patch) => 'email' in patch)).toBe(false);
 });
 
 // ---------------------------------------------------------------- the old app's data

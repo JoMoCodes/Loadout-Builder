@@ -20,6 +20,7 @@ import {
   type RouteDataSet,
 } from '@loadout/core';
 import {
+  DEFAULT_ROUTE_SHEET_WORDING,
   DRAFT_ID,
   STATES,
   addMonth,
@@ -49,6 +50,7 @@ import {
   type RouteInput,
   type RouteResult,
   type RouteSheet,
+  type RouteSheetWording,
   type SheetWithPad,
 } from '@loadout/route-sheets';
 import { parseRouteSheetPdf } from '@loadout/route-sheets/pdf-items';
@@ -125,6 +127,8 @@ export interface RouteSheetsHostOptions {
   /** Demo mode: nothing is emailed. */
   demo: boolean;
   lastRun?: LastRunMemory;
+  /** The subject and opening lines of the emails, as set now (AppSettings.routeSheetsEmail). */
+  wording?: () => RouteSheetWording;
   /** Counts and codes only. */
   log?: (message: string) => void;
 }
@@ -184,6 +188,11 @@ export class RouteSheetsHost {
 
   private log(message: string): void {
     this.options.log?.(message);
+  }
+
+  /** The email wording as set now; the old app's words when none is given. */
+  private wording(): RouteSheetWording {
+    return this.options.wording?.() ?? DEFAULT_ROUTE_SHEET_WORDING;
   }
 
   /** Quietly removes the runs (and their PDFs) older than KEEP_DAYS days. */
@@ -424,11 +433,12 @@ export class RouteSheetsHost {
     if (!sheet && !route) throw new ChannelRefusal('refused', 'That route is not in this run.');
     if (!sheet) return { routeCode, subject: null, html: null, text: null, recipients: [], route };
     const recipient = route ? route.recipients[0] : undefined;
+    const wording = this.wording();
     return {
       routeCode,
-      subject: subjectFor(sheet),
-      html: renderEmailHtml(sheet, recipient),
-      text: renderEmailText(sheet, recipient),
+      subject: subjectFor(sheet, recipient, wording),
+      html: renderEmailHtml(sheet, recipient, wording),
+      text: renderEmailText(sheet, recipient, wording),
       recipients: route && route.state === STATES.READY ? route.recipients : [],
       route,
     };
@@ -617,7 +627,7 @@ export class RouteSheetsHost {
     if (!sheet) throw new ChannelRefusal('refused', `${routeCode} has no route sheet page.`);
     const route = this.routeResult(routeCode);
     const recipients = route && route.state === STATES.READY ? route.recipients : [];
-    return buildRouteEmail(sheet, recipients, pdf);
+    return buildRouteEmail(sheet, recipients, pdf, undefined, this.wording());
   }
 
   private recipientsOf(routeCode: string): string[] {
@@ -747,7 +757,13 @@ export class RouteSheetsHost {
           result.skipped.push({ routeCode: code, reason: why ?? 'That route is not in this run.' });
           continue;
         }
-        const e = await buildRouteEmail(this.sheet(code)!, route.recipients, pdf);
+        const e = await buildRouteEmail(
+          this.sheet(code)!,
+          route.recipients,
+          pdf,
+          undefined,
+          this.wording(),
+        );
         const to = route.recipients.map((p) => ({ name: p.name, address: p.email }));
         jobs.push({
           routeCode: code,

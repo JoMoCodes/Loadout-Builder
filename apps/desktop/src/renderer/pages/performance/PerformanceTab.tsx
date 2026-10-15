@@ -34,6 +34,7 @@ import { ButtonStrip, type Messages, type StatusAction } from '../dataPages/Page
 import { useDialogs } from '../dataPages/useDialogs';
 import type { PageId } from '../types';
 import { EmailDryRunDialog, EmailResultDialog } from './EmailDialogs';
+import { EmailWordingDialog, WordingSettingsButton } from './EmailWordingDialog';
 import { ExplainScoreDialog } from './ExplainScoreDialog';
 import {
   ACTIVITY_CHOICES,
@@ -517,6 +518,24 @@ export function PerformanceTab({
     ));
   }
 
+  /** The subject and message of the report emails (the Reports tab has the same window). */
+  async function openWording() {
+    await ask<boolean>((done) => (
+      <EmailWordingDialog
+        name="perf-email-wording"
+        lead="What each driver gets with their report. The address and server come from Settings."
+        placeholders="{name} {from} {to}"
+        subject={settings.email.subjectTemplate}
+        body={settings.email.bodyTemplate}
+        testPrefix="perf-email"
+        onSave={(subjectTemplate, bodyTemplate) =>
+          changeSettings({ email: { subjectTemplate, bodyTemplate } })
+        }
+        onDone={() => done(true)}
+      />
+    ));
+  }
+
   /** Selects and shows a driver's row, switching off a filter chip that hides them. */
   function showDriver(id: string) {
     const row = rows.find((one) => one.transporterId === id);
@@ -913,6 +932,11 @@ export function PerformanceTab({
             ? `${plural(tickedCount, 'driver')} ticked.`
             : 'Tick drivers in the first column to act on them.'}
         </span>
+        <WordingSettingsButton
+          onClick={() => void openWording()}
+          testId="scorecards-settings"
+          className="ml-auto"
+        />
       </ButtonStrip>
       <div
         className="min-h-0 flex-1"

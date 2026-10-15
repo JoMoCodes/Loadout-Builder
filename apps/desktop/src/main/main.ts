@@ -655,6 +655,7 @@ if (!app.requestSingleInstanceLock()) {
         get: () => settingsStore?.getMainOnly().lastRunId ?? null,
         set: (id) => updateMainOnly((kept) => ({ ...kept, lastRunId: id })),
       },
+      routeSheetsWording: () => settings.routeSheetsEmail,
     });
     stateHost.perfStatus = () => perfService.status();
     openDataSource(false);

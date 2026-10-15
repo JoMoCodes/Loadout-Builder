@@ -11,6 +11,14 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.6.0',
+    items: [
+      'The wording of the report emails is now behind a Settings button on the Scorecards page, on both the Performance and Reports tabs. The address and server stay in Settings.',
+      'The route sheet emails have their own wording now. Click Settings on the Route Sheets page, Sheets tab, to change the subject and the message. Until you do, they read as they always have.',
+      'On the Reports tab, Thresholds is at the top, and the colours card previews the real report of the driver you pick instead of a sample page. The sample page only shows when there is no driver to show.',
+    ],
+  },
+  {
     version: '2.5.0',
     items: [
       'The Performance page is now called Scorecards. Its first tab is called Performance.',

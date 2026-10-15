@@ -1,6 +1,7 @@
 // Everything needed to send one route sheet to its recipients.
 
 import { renderEmailHtml, renderEmailText, subjectFor } from '../email/render';
+import { DEFAULT_ROUTE_SHEET_WORDING, type RouteSheetWording } from '../email/template';
 import type { SheetWithPad } from '../types';
 import { buildEml, safeFileName, type EmlAttachment } from './eml';
 import { extractPages } from './pages';
@@ -26,11 +27,13 @@ export async function buildRouteEmail(
   recipients: EmailRecipientInfo[],
   pdf: Uint8Array | null | undefined,
   boundaries?: { mixed: string; alt: string },
+  /** The subject and opening lines; the old app's words when left out. */
+  wording: RouteSheetWording = DEFAULT_ROUTE_SHEET_WORDING,
 ): Promise<RouteEmail> {
   const primary = recipients[0];
-  const html = renderEmailHtml(sheet, primary);
-  const text = renderEmailText(sheet, primary);
-  const subject = subjectFor(sheet);
+  const html = renderEmailHtml(sheet, primary, wording);
+  const text = renderEmailText(sheet, primary, wording);
+  const subject = subjectFor(sheet, primary, wording);
   const pdfName = safeFileName(`${sheet.routeCode} ${sheet.staging || ''} route sheet.pdf`);
   const attachments: EmlAttachment[] = [];
   if (pdf)

@@ -5,6 +5,7 @@
 
 import path from 'node:path';
 import { AppState, todayDate, type IsoDate } from '@loadout/core';
+import type { RouteSheetWording } from '@loadout/route-sheets';
 import type { Store } from '@loadout/storage';
 import type { DataSource } from './dataSource';
 import { ChannelRefusal } from './channels';
@@ -33,6 +34,8 @@ export interface StateHostOptions {
    * file's main-only part). Demo mode never uses it. Without it, it is kept in memory.
    */
   lastRouteSheetRun?: LastRunMemory;
+  /** The route sheet emails' subject and opening lines, as set now. The old app's words without it. */
+  routeSheetsWording?: () => RouteSheetWording;
   /** The clock for the route sheet runs' times. Defaults to the computer's. */
   now?: () => Date;
 }
@@ -96,6 +99,7 @@ export class StateHost {
       now: this.options.now,
       demo,
       lastRun: demo ? this.demoLastRun : (this.options.lastRouteSheetRun ?? memoryLastRun()),
+      wording: this.options.routeSheetsWording,
       log: this.options.log,
     });
     const fixtures = this.options.demoFixturesFolder;

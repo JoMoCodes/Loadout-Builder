@@ -27,7 +27,7 @@ import type {
   RouteSheetsRunListing,
   RouteSheetsStateView,
 } from '../shared/routeSheets';
-import { mergeSettings, type AppSettings } from '../shared/settings';
+import { DEFAULT_SETTINGS, mergeSettings, type AppSettings } from '../shared/settings';
 import type { AppSnapshot } from '../shared/snapshot';
 import { StateHost } from './appState';
 import type { ChannelEnv, ChannelEvent, IpcLike } from './channels';
@@ -123,6 +123,7 @@ function makeRig(today = '2026-09-01'): Rig {
       get: () => file.getMainOnly().lastRunId ?? null,
       set: (id) => void file.updateMainOnly((kept) => ({ ...kept, lastRunId: id })),
     },
+    routeSheetsWording: () => settings.routeSheetsEmail,
   });
   source.open(false);
   host.rebuild();
@@ -612,6 +613,27 @@ describe('every route sheets channel, through the real handlers', () => {
       ok: false,
       reason: 'bad-input',
     });
+
+    // The wording set on the Sheets tab reaches the preview, the copy and the draft.
+    rig.setSettings({
+      routeSheetsEmail: {
+        subjectTemplate: '{route} for {name} on {date}',
+        bodyTemplate: 'Morning {name}! Route {route} is at {staging}.',
+      },
+    });
+    const worded = await rig.ok<RouteSheetsPreview>('routeSheets:preview', { routeCode: 'CX2' });
+    expect(worded.subject).toMatch(/^CX2 for \w+ on \w{3}, /);
+    expect(worded.html).toContain('Route CX2 is at ');
+    expect(worded.text).toMatch(/^Morning \w+! Route CX2 is at /);
+    const copy = await rig.ok<{ subject: string; text: string }>('routeSheets:copy-email', {
+      routeCode: 'CX2',
+    });
+    expect(copy.subject).toBe(worded.subject);
+    expect(copy.text).toBe(worded.text);
+    rig.setSettings({ routeSheetsEmail: DEFAULT_SETTINGS.routeSheetsEmail });
+    expect(
+      (await rig.ok<RouteSheetsPreview>('routeSheets:preview', { routeCode: 'CX2' })).subject,
+    ).toBe(preview.subject);
 
     // Choose someone, Don't send, and Change (undo).
     const suggested = (

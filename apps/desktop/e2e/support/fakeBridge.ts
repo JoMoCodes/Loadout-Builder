@@ -13,7 +13,7 @@
 import type { Page } from '@playwright/test';
 import { CHANNELS } from '../../src/shared/channels';
 import { DEFAULT_EMAIL, DEFAULT_PERFORMANCE } from '../../src/shared/performanceSettings';
-import type { AppSettings } from '../../src/shared/settings';
+import { DEFAULT_ROUTE_SHEETS_EMAIL, type AppSettings } from '../../src/shared/settings';
 import type { AppSnapshot } from '../../src/shared/snapshot';
 
 export interface FakeBridgeOptions {
@@ -37,7 +37,7 @@ declare global {
 export async function installFakeBridge(page: Page, options: FakeBridgeOptions = {}) {
   const channels = Object.values(CHANNELS).map((def) => ({ name: def.name, kind: def.kind }));
   await page.addInitScript(
-    ({ channels: declared, options: given, performance, email }) => {
+    ({ channels: declared, options: given, performance, email, routeSheetsEmail }) => {
       const settings: Record<string, unknown> = {
         theme: 'dark',
         fontScale: 1,
@@ -57,6 +57,7 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
         routeSheetsNoteSeen: false,
         performance,
         email,
+        routeSheetsEmail,
         ...given.settings,
       };
       const snapshot: Record<string, unknown> = {
@@ -171,10 +172,24 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
             return { ok: true, value: '2.1.0' };
           case 'settings:get':
             return { ok: true, value: { ...settings } };
-          case 'settings:set':
-            Object.assign(settings, input);
+          case 'settings:set': {
+            // A patch of a part (the email setup, the route sheet wording) changes only the
+            // fields it names, as the app's own merge does.
+            const patch = (input ?? {}) as Record<string, unknown>;
+            for (const [key, value] of Object.entries(patch)) {
+              const now = settings[key];
+              settings[key] =
+                value &&
+                typeof value === 'object' &&
+                !Array.isArray(value) &&
+                now &&
+                typeof now === 'object'
+                  ? { ...(now as object), ...(value as object) }
+                  : value;
+            }
             snapshot.mode = settings.demoMode ? 'demo' : 'real';
             return { ok: true, value: { ...settings } };
+          }
           case 'data:get-source-info':
             return {
               ok: true,
@@ -273,7 +288,13 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
       }
       (window as unknown as { loadout: unknown }).loadout = { calls, signals, events };
     },
-    { channels, options, performance: DEFAULT_PERFORMANCE, email: DEFAULT_EMAIL },
+    {
+      channels,
+      options,
+      performance: DEFAULT_PERFORMANCE,
+      email: DEFAULT_EMAIL,
+      routeSheetsEmail: DEFAULT_ROUTE_SHEETS_EMAIL,
+    },
   );
 }
 

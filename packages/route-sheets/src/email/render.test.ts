@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { SHEETS } from '../matcher/testkit';
 import type { SheetWithPad } from '../types';
 import { renderEmailHtml, renderEmailText, subjectFor } from './render';
+import { DEFAULT_ROUTE_SHEET_WORDING } from './template';
 
 const first = SHEETS[0]!;
 
@@ -123,6 +124,41 @@ describe('email', () => {
     // "Date" is as big and bold as "Pad #"
     expect(labelStyle('Date')).toBe(labelStyle('Pad #'));
     expect(labelStyle('Date')).not.toBe(labelStyle('Wave'));
+  });
+
+  it('Email: the wording can be changed; the default is the old wording', () => {
+    const who = { name: 'Abigail Gresham' };
+    expect(subjectFor(first, who, DEFAULT_ROUTE_SHEET_WORDING)).toBe(subjectFor(first));
+    expect(renderEmailHtml(first, who, DEFAULT_ROUTE_SHEET_WORDING)).toBe(
+      renderEmailHtml(first, who),
+    );
+
+    const wording = {
+      subjectTemplate: '{name}: {route} on {date} ({staging}) · Pad {pad}',
+      bodyTemplate:
+        "Morning {name} <3,\nRoute {route} is at {staging} on {date}.\n\nDon't be late!",
+    };
+    expect(subjectFor(first, who, wording)).toBe('Abigail: CX101 on Thu, Sep 24, 2026 (STG.A1.1)');
+    expect(subjectFor({ ...first, pad: '7' }, who, wording)).toBe(
+      'Abigail: CX101 on Thu, Sep 24, 2026 (STG.A1.1) · Pad 7',
+    );
+    const html = renderEmailHtml(first, who, wording);
+    // The wording is escaped as typed, the values as filled in, and the date never wraps.
+    expect(html).toContain(
+      '<p style="margin:0 0 14px;font-size:15px;color:#1b2430;">Morning Abigail &lt;3,<br>Route CX101 is at STG.A1.1 on <span style="white-space:nowrap;">Thursday, Sep 24, 2026.</span></p>' +
+        '<p style="margin:0 0 14px;font-size:15px;color:#1b2430;">Don&#39;t be late!</p>',
+    );
+    expect(html).toContain('<title>Abigail: CX101 on Thu, Sep 24, 2026 (STG.A1.1)</title>');
+    expect(
+      renderEmailText(first, who, wording).startsWith(
+        "Morning Abigail <3,\r\nRoute CX101 is at STG.A1.1 on Thursday, Sep 24, 2026.\r\n\r\nDon't be late!\r\n\r\nROUTE: ",
+      ),
+    ).toBe(true);
+    // Nobody to greet: the lines that name them go, the rest stays.
+    expect(renderEmailText(first, null, wording).startsWith('Route CX101 is at')).toBe(true);
+    expect(renderEmailHtml(first, null, { ...wording, bodyTemplate: 'Hi {name}' })).not.toContain(
+      'margin:0 0 14px',
+    );
   });
 
   it('Email: the words in every box at the top are centered, side to side and top to bottom', () => {

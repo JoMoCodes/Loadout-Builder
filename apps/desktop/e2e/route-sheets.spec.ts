@@ -6,6 +6,7 @@
 // addresses are at example.com.
 
 import { expect, test, type Page } from '@playwright/test';
+import { DEFAULT_ROUTE_SHEETS_EMAIL } from '../src/shared/settings';
 import { callsTo, emit, installFakeBridge, onCall } from './support/fakeBridge';
 import { BARRETT, CARMEN, COLTON, ZANE, associate, emptyRouteSets } from './support/pageData';
 
@@ -1047,6 +1048,57 @@ test('Export all says where it wrote, and nothing when the folder window was clo
   await expect(status(page)).toHaveText(
     'Wrote 2 email drafts and the PDFs into Route sheets XXX1 Tue Sep 1 2026.',
   );
+});
+
+test('Settings on the Sheets tab changes the emails’ wording, and the preview follows it', async ({
+  page,
+}) => {
+  await openRouteSheets(page, { tab: 'sheets' });
+  await expect(page.getByTestId('route-sheets-subject')).toHaveText(
+    'Route Sheet: CX101 · Tue, Sep 1',
+  );
+  const asked = (await callsTo(page, 'routeSheets:preview')).length;
+  // At the right end of the button strip.
+  const strip = page.getByRole('toolbar', { name: 'Send every route sheet' });
+  await expect(strip.locator('button')).toHaveText(['Email all (2)', 'Export all (2)', 'Settings']);
+  await page.getByTestId('route-sheets-settings').click();
+  const window = dialog(page, 'route-sheets-email-wording');
+  await expect(window.getByRole('heading')).toHaveText('Email wording');
+  await expect(window).toContainText(
+    'What each driver gets with their route sheet. One wording for every route. The address and server come from Settings.',
+  );
+  await expect(window).toContainText('Placeholders: {name} {route} {date} {staging} {wave} {pad}');
+  const subject = page.getByTestId('route-sheets-email-subject');
+  const body = page.getByTestId('route-sheets-email-body');
+  await expect(subject).toHaveValue(DEFAULT_ROUTE_SHEETS_EMAIL.subjectTemplate);
+  await expect(body).toHaveValue(DEFAULT_ROUTE_SHEETS_EMAIL.bodyTemplate);
+  await expect(page.getByTestId('route-sheets-email-save')).toBeDisabled();
+
+  await subject.fill('Sheet {route}');
+  await page.getByTestId('route-sheets-email-undo').click();
+  await expect(subject).toHaveValue(DEFAULT_ROUTE_SHEETS_EMAIL.subjectTemplate);
+
+  await subject.fill('Sheet {route} for {name}');
+  await body.fill('Hi {name}, {route} is at {staging}.');
+  await page.getByTestId('route-sheets-email-save').click();
+  await expect(page.getByTestId('route-sheets-email-note')).toHaveText('Email wording saved.');
+  expect(await callsTo(page, 'settings:set')).toContainEqual({
+    routeSheetsEmail: {
+      subjectTemplate: 'Sheet {route} for {name}',
+      bodyTemplate: 'Hi {name}, {route} is at {staging}.',
+    },
+  });
+  // The preview is asked for again, so it shows the new wording.
+  await expect
+    .poll(async () => (await callsTo(page, 'routeSheets:preview')).length)
+    .toBeGreaterThan(asked);
+  await window.getByRole('button', { name: 'Close' }).click();
+  await expect(window).toHaveCount(0);
+  // Opened again, it starts from what was saved.
+  await page.getByTestId('route-sheets-settings').click();
+  await expect(subject).toHaveValue('Sheet {route} for {name}');
+  await page.keyboard.press('Escape');
+  await expect(window).toHaveCount(0);
 });
 
 test('a run whose PDF is gone says so, and the buttons that cut a page wait', async ({ page }) => {
