@@ -184,7 +184,11 @@ const oldWpaData = new OldWpaData({
   demo: () => settings.demoMode,
   pickFile: pickOldWpaDb,
   perfEmpty: () => stateHost?.perf.store.isPerfEmpty() ?? false,
-  reload: () => stateHost?.perf.invalidate(),
+  // Its drivers land on the associate list, so the day's data reads that list back too.
+  reload: () => {
+    stateHost?.perf.invalidate();
+    stateHost?.state.reloadAssociates();
+  },
 });
 
 /** The app's icon for the window (the installer and the .exe carry the .ico). */

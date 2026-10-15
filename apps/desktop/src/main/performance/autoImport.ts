@@ -1,5 +1,5 @@
 // Auto-import and Sync now, ported from the old app's AutoImporter.cs. Each kind's remembered
-// folder (or, for the driver list and thresholds, file) is looked at, and only files that are new
+// folder (or, for the thresholds, file) is looked at, and only files that are new
 // or changed since they were last brought in are read: the record of imported files compares
 // the file's name, size and last-change time. Every reader replaces a week's data on re-import,
 // so reading a changed file again is safe.

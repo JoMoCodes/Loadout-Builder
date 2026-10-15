@@ -245,13 +245,7 @@ export function importWords(summary: PerfImportSummary): string {
   const weeks = [...summary.weeks].sort();
   if (weeks.length === 1) bits.push(`week ${weeks[0]}`);
   else if (weeks.length > 1) bits.push(`weeks ${weeks[0]} to ${weeks[weeks.length - 1]}`);
-  const done = `Brought in ${plural(summary.filesRead, 'file')}: ${bits.join(', ')}.`;
-  const roster = summary.roster;
-  if (!roster) return done;
-  return (
-    `${done} ${plural(roster.updated, 'driver')} updated. ` +
-    `${roster.active} active, ${roster.inactive} inactive.`
-  );
+  return `Brought in ${plural(summary.filesRead, 'file')}: ${bits.join(', ')}.`;
 }
 
 /** "Saved the check file "x.csv": 3 drivers, 10 weeks, 30 rows." */
@@ -408,7 +402,6 @@ export function whenWords(iso: string | null): string {
 
 /** Short names for the missing-weeks warning ("No DSB file for 2026-W33"). */
 const SHORT: Record<PerfKind, string> = {
-  roster: 'driver list',
   thresholds: 'thresholds',
   scorecards: 'scorecard',
   pod: 'POD',

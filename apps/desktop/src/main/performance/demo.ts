@@ -1,15 +1,35 @@
 // Demo mode's made-up weekly performance data: every kind of export in packages/fixtures/
 // performance (shipped with the installed app), brought in through the usual readers into the
 // throwaway demo copy of the database. The person's real data is never touched.
+//
+// The made-up weekly files name a different set of made-up drivers from the demo's own associate
+// list, so that set's driver list (the roster folder) is folded into the demo's Associates list
+// first: then the scorecards, reports and emails have names and addresses to work with. They are
+// added only (nobody already on the demo list is marked offboarded), and the two sets share no
+// names, so the Load Out side is unaffected.
 
 import { join } from 'node:path';
+import type { AppState } from '@loadout/core';
+import { importAssociateData } from '@loadout/core/importers';
 import { PERF_KINDS } from '../../shared/performance';
 import type { PerfHost } from './perfHost';
-import { importExportFiles, kindFilesInFolder } from './readExports';
+import { exportFile, importExportFiles, kindFilesInFolder } from './readExports';
 
-/** Brings in every fixture file, kind by kind. Rows written (a count, for the log). */
-export async function loadDemoPerformance(host: PerfHost, folder: string): Promise<number> {
+/** Brings in the driver list, then every fixture file, kind by kind. Rows written (for the log). */
+export async function loadDemoPerformance(
+  host: PerfHost,
+  folder: string,
+  state: AppState,
+): Promise<number> {
   let rows = 0;
+  const rosterFile = exportFile(join(folder, 'roster', 'AssociateData.csv'));
+  if (rosterFile && !host.closed) {
+    const book = await importAssociateData(rosterFile.path);
+    if (host.closed) return rows;
+    // Add these people only: the demo's own drivers stay as they are, not marked offboarded.
+    state.importAssociates(book, { offboardMissing: false });
+    rows += book.rows.length;
+  }
   for (const kind of PERF_KINDS) {
     if (host.closed) break;
     const files = kindFilesInFolder(kind, join(folder, kind));

@@ -147,6 +147,39 @@ describe('matchDriver', () => {
     expect(matchRoster(rows, [], links).size).toBe(0);
   });
 
+  it('never matches an offboarded associate by name, only by a hand-made link', () => {
+    const gone = createAssociate({
+      name: 'Carmen Abernathy',
+      transporterId: 'A047LNAN5VQIQR',
+      status: 'OFFBOARDED',
+    });
+    const here = createAssociate({
+      name: 'Carmen Abernathy',
+      transporterId: 'A083QLD1CI9YSZ',
+      status: 'ACTIVE',
+    });
+    const index = AssociateIndex.build([gone, here]);
+    // The current one wins outright: the same name is not ambiguous.
+    const match = matchDriver('Carmen Abernathy', index);
+    expect(match.method).toBe('exact');
+    expect(match.associate).toBe(here);
+    expect(isAmbiguous(match)).toBe(false);
+    expect(matchDriver('Carmen J Abernathy', index).associate).toBe(here);
+    // With nobody current, the name finds no one rather than the offboarded person.
+    const onlyGone = matchDriver('Carmen Abernathy', AssociateIndex.build([gone]));
+    expect(onlyGone.associate).toBeNull();
+    expect(onlyGone.candidates).toEqual([]);
+    // A link by Transporter ID still holds.
+    const linked = matchDriver(
+      'Carmen Abernathy',
+      index,
+      new Map([['carmen abernathy', gone.transporterId]]),
+    );
+    expect(linked.method).toBe('manual');
+    expect(linked.associate).toBe(gone);
+    expect(index.collisions()).toEqual([]);
+  });
+
   it('lists first + last names shared by more than one associate', () => {
     expect(
       index.collisions().map(([key, group]) => [key, group.map((a) => a.transporterId)]),

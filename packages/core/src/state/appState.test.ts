@@ -289,6 +289,130 @@ describe('the day state, against the old app', () => {
   });
 });
 
+describe('bringing in the associate export', () => {
+  const file = (rows: ReturnType<typeof createAssociate>[]) =>
+    createAssociateBook({
+      rows,
+      sourceFile: 'AssociateData.csv',
+      importedAt: new Date(2026, 8, 11),
+    });
+
+  it('can add a file without offboarding anyone (demo mode folds in the weekly drivers)', () => {
+    const store = new Store(':memory:', { now: () => new Date(2000, 0, 1) });
+    const st = new AppState(store);
+    st.importAssociates(
+      file([
+        createAssociate({ name: 'Carmen Abernathy', transporterId: IDS.carmen, status: 'ACTIVE' }),
+      ]),
+    );
+    const counts = st.importAssociates(
+      file([
+        createAssociate({ name: 'Colton Alderman', transporterId: IDS.colton, status: 'ACTIVE' }),
+      ]),
+      { offboardMissing: false },
+    );
+    expect(counts).toEqual({ added: 1, updated: 0, offboarded: 0 });
+    expect(st.associates.rows.map((a) => [a.name, a.status])).toEqual([
+      ['Colton Alderman', 'ACTIVE'],
+      ['Carmen Abernathy', 'ACTIVE'],
+    ]);
+    expect(store.loadAssociates().rows.map((a) => a.status)).toEqual(['ACTIVE', 'ACTIVE']);
+  });
+
+  it('adds and updates everyone in the file, and keeps the rest as offboarded', () => {
+    const store = new Store(':memory:', { now: () => new Date(2000, 0, 1) });
+    const st = new AppState(store);
+    st.importAssociates(
+      file([
+        createAssociate({ name: 'Carmen Abernathy', transporterId: IDS.carmen, status: 'ACTIVE' }),
+        createAssociate({ name: 'Nadine Abernathy', transporterId: IDS.nadine, status: 'ACTIVE' }),
+        createAssociate({ name: 'Colton Alderman', transporterId: IDS.colton, status: 'INACTIVE' }),
+      ]),
+    );
+    // Someone the app made up from route data: no Transporter ID, never touched by an import.
+    st.associates.rows.push(createAssociate({ name: 'Nolan Abernathy', qualifications: ['CDV'] }));
+    st.importTenure({
+      records: new Map([[IDS.carmen, { routes: 40, year: 2026, week: 30 }]]),
+      sourceFile: 'tenure.csv',
+      importedAt: null,
+    });
+
+    const counts = st.importAssociates(
+      file([
+        createAssociate({ name: 'Elodie Alderman', transporterId: IDS.elodie, status: 'ACTIVE' }),
+        createAssociate({
+          name: 'Carmen J Abernathy',
+          transporterId: IDS.carmen,
+          status: 'INACTIVE',
+          qualifications: ['EDV'],
+          email: 'driver001@example.com',
+        }),
+      ]),
+    );
+    expect(counts).toEqual({ added: 1, updated: 1, offboarded: 2 });
+    const names = st.associates.rows.map((a) => [a.name, a.status, a.transporterId]);
+    expect(names).toEqual([
+      ['Elodie Alderman', 'ACTIVE', IDS.elodie], // the file's order first
+      ['Carmen J Abernathy', 'INACTIVE', IDS.carmen],
+      ['Nadine Abernathy', 'OFFBOARDED', IDS.nadine], // then the rest, in the order they were
+      ['Colton Alderman', 'OFFBOARDED', IDS.colton],
+      ['Nolan Abernathy', '', ''], // no ID: left alone
+    ]);
+    // Every column comes from the file, and the lifetime route count is kept.
+    const carmen = st.associates.rows[1]!;
+    expect(carmen).toMatchObject({ qualifications: ['EDV'], email: 'driver001@example.com' });
+    expect(carmen.tenure).toBe(40);
+    expect(st.associates.sourceFile).toBe('AssociateData.csv');
+    // Saved that way too, and an offboarded person stays offboarded next time (not counted again).
+    expect(store.loadAssociates().rows.map((a) => a.status)).toEqual([
+      'ACTIVE',
+      'INACTIVE',
+      'OFFBOARDED',
+      'OFFBOARDED',
+      '',
+    ]);
+    const again = st.importAssociates(
+      file([createAssociate({ name: 'Elodie Alderman', transporterId: IDS.elodie })]),
+    );
+    expect(again).toEqual({ added: 0, updated: 1, offboarded: 1 });
+
+    // Clear still wipes everything.
+    st.clearAssociates();
+    expect(st.associates.rows).toEqual([]);
+    expect(store.loadAssociates().rows).toEqual([]);
+  });
+
+  it('reads the list back after another part of the app wrote to it', () => {
+    const store = new Store(':memory:', { now: () => new Date(2000, 0, 1) });
+    const st = new AppState(store);
+    st.importAssociates(
+      file([createAssociate({ name: 'Carmen Abernathy', transporterId: IDS.carmen })]),
+    );
+    store.saveAssociates({
+      ...store.loadAssociates(),
+      rows: [
+        ...store.loadAssociates().rows,
+        {
+          name: 'Nadine Abernathy',
+          transporter_id: IDS.nadine,
+          position: '',
+          qualifications: [],
+          id_expiration: null,
+          personal_phone: '',
+          work_phone: '',
+          email: '',
+          status: 'OFFBOARDED',
+        },
+      ],
+    });
+    let told = 0;
+    st.subscribe(() => told++);
+    st.reloadAssociates();
+    expect(st.associates.rows.map((a) => a.name)).toEqual(['Carmen Abernathy', 'Nadine Abernathy']);
+    expect(told).toBe(1);
+  });
+});
+
 describe('saved data', () => {
   it('pins links and saves new associates and the roster when route data adds someone', () => {
     const store = new Store(':memory:', { now: () => new Date(2000, 0, 1) });

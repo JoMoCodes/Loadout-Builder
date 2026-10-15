@@ -61,7 +61,22 @@ const WAIT_MS = Number(process.env.SMOKE_TIMEOUT_MS ?? 120_000);
 // Stop everything if the run hangs.
 setTimeout(() => {
   console.log('Smoke check FAILED: it took too long.');
-  process.exit(1);
+  // Say what was done so far and what the app itself logged, so a stall is not a mystery.
+  for (const r of results) {
+    console.log(`  ${r.ok ? 'ok  ' : 'FAIL'} ${r.name}${r.detail ? ` - ${r.detail}` : ''}`);
+  }
+  const open = first ?? second ?? third;
+  const done = () => process.exit(1);
+  if (!open) {
+    done();
+    return;
+  }
+  Promise.race([
+    open.mainLog().then((lines) => {
+      for (const line of lines.slice(-40)) console.log(`  [main] ${line}`);
+    }),
+    new Promise((r) => setTimeout(r, 5_000)),
+  ]).then(done, done);
 }, WAIT_MS).unref();
 
 const EXPECTED_PAGES = [
@@ -82,8 +97,10 @@ const EXPECTED_PAGES = [
 const results = [];
 const problems = [];
 
+// Each result is printed as it happens too, so a run that stalls still shows how far it got.
 function pass(name, detail = '') {
   results.push({ ok: true, name, detail });
+  console.log(`  ok   ${name}${detail ? ` - ${detail}` : ''}`);
 }
 
 async function check(name, work) {
@@ -91,7 +108,9 @@ async function check(name, work) {
     const detail = await work();
     pass(name, detail ?? '');
   } catch (error) {
-    results.push({ ok: false, name, detail: String(error.message ?? error).split('\n')[0] });
+    const detail = String(error.message ?? error).split('\n')[0];
+    results.push({ ok: false, name, detail });
+    console.log(`  FAIL ${name} - ${detail}`);
   }
 }
 
@@ -130,6 +149,7 @@ if (process.env.ELECTRON_DISABLE_SANDBOX) args.push('--no-sandbox');
 
 /** Starts the app and keeps a record of everything it prints. */
 async function launch(folder = dataDir, extraEnv = {}) {
+  console.log('  starting the app...');
   const app = await electron.launch({
     args,
     cwd: root,
@@ -145,14 +165,18 @@ async function launch(folder = dataDir, extraEnv = {}) {
   };
   app.process().stdout?.on('data', take);
   app.process().stderr?.on('data', (chunk) => {
-    // Linux prints harmless graphics and message-bus notes on stderr. Only real errors count.
+    // Linux prints harmless graphics and message-bus notes on stderr. Only real errors count,
+    // but every line is echoed so a startup failure can be read in the log.
     for (const line of chunk.toString().split(/\r?\n/)) {
+      if (line.trim()) console.log(`  [app stderr] ${line.trim().slice(0, 200)}`);
       if (/Uncaught|TypeError|ReferenceError|SqliteError|Cannot find module/.test(line)) {
         problems.push(`main process: ${line.trim().slice(0, 160)}`);
       }
     }
   });
+  console.log('  app started, waiting for its window...');
   const page = await app.firstWindow();
+  console.log('  window is up, waiting for the page...');
   page.on('console', (message) => {
     if (message.type() === 'error')
       problems.push(`page console error: ${message.text().slice(0, 160)}`);
@@ -961,7 +985,7 @@ try {
     const ask = page.locator('dialog[data-dialog="confirm"]');
     await ask.waitFor({ state: 'visible', timeout: 5_000 });
     assert(
-      (await ask.innerText()).includes('Replace the associate list?'),
+      (await ask.innerText()).includes('Update the associate list?'),
       'Ctrl+I did not ask before replacing the list',
     );
     await ask.getByRole('button', { name: 'No, keep the list' }).click();
@@ -1010,7 +1034,6 @@ try {
   const perfFixtures = join(root, '..', '..', 'packages', 'fixtures', 'performance');
   const perfOut = mkdtempSync(join(tmpdir(), 'loadout-smoke-perf-'));
   const PERF_KINDS = [
-    'roster',
     'thresholds',
     'scorecards',
     'pod',
@@ -1023,10 +1046,13 @@ try {
   ];
   const perfPlace = (kind) => {
     const folder = join(perfFixtures, kind);
-    if (kind !== 'roster' && kind !== 'thresholds') return folder;
+    if (kind !== 'thresholds') return folder;
     const name = readdirSync(folder).find((n) => n.endsWith('.csv'));
     return join(folder, name);
   };
+  // The driver list is brought in on Associates (one list for the whole app); the Performance
+  // page reads it. This is the made-up list the old app's expected numbers come from.
+  const perfRoster = join(perfFixtures, 'roster', 'AssociateData.csv');
   /** The next folder, file and save windows answer these, in order. */
   const answerWindows = (open, save = []) =>
     app.evaluate(
@@ -1046,6 +1072,19 @@ try {
   let perfIds = [];
   let perfNoScoreIds = [];
 
+  await check('the driver list comes in on Associates, once for the whole app', async () => {
+    await answerWindows([perfRoster]);
+    const picked = await ask('files:pick', { kind: 'associates' });
+    assert(picked.ok && picked.value.path === perfRoster, 'the driver list was not picked');
+    const done = await ask('files:import', { kind: 'associates', path: perfRoster });
+    assert(done.ok, `the driver list was not brought in: ${done.reason}`);
+    assert(done.value.rows === 76, `${done.value.rows} drivers read, not 76`);
+    assert(done.value.associates, 'the import did not say how many were new or offboarded');
+    const snap = await ask('state:snapshot');
+    assert(snap.ok && snap.value.performance.drivers === 76, 'Performance does not see the list');
+    return `${done.value.associates.added} new, ${done.value.associates.offboarded} offboarded`;
+  });
+
   await check('every kind of weekly export comes in through the bridge', async () => {
     await answerWindows(PERF_KINDS.map(perfPlace));
     let rows = 0;
@@ -1057,8 +1096,10 @@ try {
       rows += reply.value.rows;
     }
     const snap = await ask('state:snapshot');
+    // 76 from the driver list, plus the 16 only the scorecards name (added as offboarded).
     assert(snap.ok && snap.value.performance.drivers === 92, 'not 92 drivers in the snapshot');
-    assert(snap.value.performance.foldersChosen === 10, 'the folders were not remembered');
+    assert(snap.value.counts.associates === 92, 'the scorecard-only drivers are not on Associates');
+    assert(snap.value.performance.foldersChosen === 9, 'the folders were not remembered');
     const onDisk = settingsOnDisk();
     assert(onDisk.performanceFolders?.scorecards, 'the folders are not in the settings file');
     const pageSettings = await ask('settings:get');

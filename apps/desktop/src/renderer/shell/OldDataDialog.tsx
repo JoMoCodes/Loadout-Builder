@@ -17,7 +17,7 @@ export type OldApp = 'roster' | 'performance';
 // How each kind of weekly performance row is named to a person. Bookkeeping tables (which files
 // were read, which weeks had a PSB file) are left out on purpose: they are not "things".
 const PERF_WORDS: ReadonlyArray<readonly [table: string, one: string, many: string]> = [
-  ['perf_drivers', 'driver', 'drivers'],
+  ['associates', 'driver', 'drivers'],
   ['perf_weekly_scorecards', 'weekly scorecard', 'weekly scorecards'],
   ['perf_metric_entries', 'metric value', 'metric values'],
   ['perf_metric_thresholds', 'threshold', 'thresholds'],

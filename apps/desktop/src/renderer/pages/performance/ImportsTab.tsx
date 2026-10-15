@@ -222,6 +222,10 @@ export function ImportsTab({
             Choose a folder for each kind of export once. After that, Sync now brings in whatever is
             new. You can also drop files or a whole folder anywhere on this tab.
           </p>
+          <p className="m-0 mt-1 text-sm text-muted" data-testid="perf-driver-list-hint">
+            The driver list is not brought in here. Bring in the driver list on Associates; this
+            page uses the same list.
+          </p>
           {result ? (
             <div
               className="mt-3 rounded-md border border-line bg-sunken px-3 py-2"

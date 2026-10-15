@@ -134,6 +134,9 @@ async function loadDay(day: Day, withPads = true): Promise<{ host: StateHost; sn
   importV1Database(fixture('v1', 'loadout.db'), source.getStore()!);
   host.rebuild();
   const { state } = host;
+  // The old app replaced the list on import; this one folds the file in and keeps anyone it no
+  // longer lists as offboarded. The saved list is emptied first, so the day replays as it did.
+  state.clearAssociates();
   state.importAssociates(await importAssociateData(fixture('associates', 'AssociateData.csv')));
   for (const name of [
     'Tenured_Workforce_DA_1756800000.csv',

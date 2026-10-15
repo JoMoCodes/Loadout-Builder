@@ -54,12 +54,14 @@ test('the problems are folded up and open one at a time', async ({ page }) => {
   await expect(noVan).not.toHaveAttribute('open', '');
 });
 
-test('the weekly part walks through the routine and lists all ten exports', async ({ page }) => {
+test('the weekly part walks through the routine and lists all nine weekly exports', async ({
+  page,
+}) => {
   const weekly = page.locator('#help-weekly');
   await expect(weekly.locator('h2')).toHaveText('Weekly performance');
   for (const words of ['Sync now', 'Dashboard', 'Email selected', 'App password', 'check file'])
     await expect(weekly).toContainText(words);
-  await expect(weekly.locator('[data-export]')).toHaveCount(10);
+  await expect(weekly.locator('[data-export]')).toHaveCount(9);
   await expect(weekly.locator('[data-export="safety"]')).toContainText('safety dashboard export');
   await expect(weekly.locator('figure.help-shot')).toHaveCount(4);
   await weekly.getByRole('button', { name: 'Performance' }).first().click();

@@ -19,23 +19,23 @@ export interface PerfTableSpec {
 
 const c = (...pairs: Array<readonly [string, string]>) => pairs;
 
+/**
+ * The old app's Drivers table has no table of its own here: its rows go to `associates` (the
+ * one driver list). These are its columns, as the old app named them, for bringing old data over.
+ */
+export const LEGACY_DRIVER_COLUMNS = [
+  'TransporterId',
+  'Name',
+  'Status',
+  'Position',
+  'Qualifications',
+  'IdExpiration',
+  'PersonalPhone',
+  'WorkPhone',
+  'Email',
+] as const;
+
 export const PERF_TABLE_SPECS: readonly PerfTableSpec[] = [
-  {
-    table: 'perf_drivers',
-    legacy: 'Drivers',
-    autoId: false,
-    columns: c(
-      ['transporter_id', 'transporterId'],
-      ['name', 'name'],
-      ['status', 'status'],
-      ['position', 'position'],
-      ['qualifications', 'qualifications'],
-      ['id_expiration', 'idExpiration'],
-      ['personal_phone', 'personalPhone'],
-      ['work_phone', 'workPhone'],
-      ['email', 'email'],
-    ),
-  },
   {
     table: 'perf_weekly_scorecards',
     legacy: 'WeeklyScorecards',

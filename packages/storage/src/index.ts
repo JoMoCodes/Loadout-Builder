@@ -34,7 +34,6 @@ export {
   ticksFromMs,
 } from './performance';
 export type {
-  AssociatesApplyCounts,
   LedgerEntry,
   PerformanceStoreOptions,
   PsbApplyCounts,

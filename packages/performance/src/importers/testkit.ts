@@ -5,8 +5,8 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { weekFromFileName } from '../models';
-import type { ImportFile } from './csv';
+import { weekFromFileName, type DriverRecord } from '../models';
+import { readCsv, type ImportFile } from './csv';
 import type { WeekFileResult } from './weekFiles';
 
 const FIXTURES = new URL('../../../fixtures/performance/', import.meta.url);
@@ -29,6 +29,39 @@ export function fixtureFiles(kind: string, extension = '.csv'): ImportFile[] {
       fileName,
       text: readFileSync(fileURLToPath(new URL(fileName, folder)), 'utf8'),
     }));
+}
+
+/**
+ * The made-up roster (fixtures/performance/roster) read the way the old app's AssociateImporter
+ * read it: each cell trimmed, the status in upper case, the last row for an ID winning. Tests
+ * only: the app itself reads the associate export once, with @loadout/core's reader, into the
+ * Associates list, and the performance side reads that list.
+ */
+export function parseFixtureRoster(
+  files: readonly ImportFile[] = fixtureFiles('roster'),
+): DriverRecord[] {
+  const byId = new Map<string, DriverRecord>();
+  for (const file of files) {
+    const sheet = readCsv(file.text, { trimHeaders: false });
+    for (const row of sheet.rows) {
+      const transporterId = sheet.get(row, 'TransporterID').trim();
+      if (transporterId === '') continue;
+      const name = sheet.get(row, 'Name and ID').trim();
+      byId.delete(transporterId);
+      byId.set(transporterId, {
+        transporterId,
+        name: name === '' ? transporterId : name,
+        status: sheet.get(row, 'Status').trim().toUpperCase(),
+        position: sheet.get(row, 'Position').trim(),
+        qualifications: sheet.get(row, 'Qualifications').trim(),
+        idExpiration: sheet.get(row, 'ID expiration').trim(),
+        personalPhone: sheet.get(row, 'Personal Phone Number').trim(),
+        workPhone: sheet.get(row, 'Work Phone Number').trim(),
+        email: sheet.get(row, 'Email').trim(),
+      });
+    }
+  }
+  return [...byId.values()];
 }
 
 function readExpected<T>(path: string): T {

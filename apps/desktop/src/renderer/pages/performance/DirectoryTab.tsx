@@ -136,7 +136,7 @@ export function DirectoryTab({ revision, messages }: { revision: number; message
           loadingText="Getting the directory..."
           empty={{
             title: 'No driver list yet',
-            body: 'Bring in the driver list (AssociateData.csv) on the Imports tab, and everyone shows up here.',
+            body: 'Bring in the driver list (AssociateData.csv) on Associates, and everyone shows up here.',
           }}
         />
       </div>

@@ -8,7 +8,6 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { basename, extname, join } from 'node:path';
 import {
-  parseAssociates,
   parseCdf,
   parseDcr,
   parseDcrTotals,
@@ -38,7 +37,6 @@ export const MAX_EXPORT_BYTES = 50 * 1024 * 1024;
 
 /** The name each kind had in the old app's record of auto-imported files (kept, so it carries over). */
 export const LEDGER_SOURCE: Record<PerfKind, string> = {
-  roster: 'Roster',
   thresholds: 'Thresholds',
   scorecards: 'Scorecard',
   pod: 'POD',
@@ -103,8 +101,8 @@ function filesIn(folder: string): ExportFile[] {
 
 /**
  * The files of one kind in a folder. For a folder kind, every file with its ending (the folder
- * is that kind's own). For the driver list and thresholds, which often sit in Downloads with other
- * files, only files named the way that export is named, newest name last.
+ * is that kind's own). For the thresholds, which often sit in Downloads with other files, only
+ * files named the way that export is named, newest name last.
  */
 export function kindFilesInFolder(kind: PerfKind, folder: string): ExportFile[] {
   const files = filesIn(folder).filter((file) => hasEnding(kind, file.fileName));
@@ -171,7 +169,6 @@ interface OneFile {
   driversAdded: number;
   weeks: string[];
   problems: string[];
-  roster?: PerfImportSummary['roster'];
 }
 
 /** Reads one file of one kind and writes it. */
@@ -201,22 +198,6 @@ async function importOne(
     return { filesRead: 0, rows: 0, driversAdded: 0, weeks: [], problems: [text] };
   }
   switch (kind) {
-    case 'roster': {
-      const result = parseAssociates(text, store.knownDriverIds());
-      const applied = store.applyAssociates(result);
-      return {
-        filesRead: result.filesProcessed,
-        rows: result.rowsImported,
-        driversAdded: applied.driversAdded,
-        weeks: [],
-        problems: result.errors,
-        roster: {
-          updated: applied.driversUpdated,
-          active: result.activeCount,
-          inactive: result.inactiveCount,
-        },
-      };
-    }
     case 'thresholds': {
       const result = parseThresholds(text);
       const applied = store.applyThresholds(result);
@@ -316,12 +297,12 @@ export async function importExportFiles(
     } finally {
       host.invalidate();
     }
+    if (one.driversAdded > 0) host.driversChanged();
     summary.filesRead += one.filesRead;
     summary.rows += one.rows;
     summary.driversAdded += one.driversAdded;
     for (const week of one.weeks) if (!summary.weeks.includes(week)) summary.weeks.push(week);
     summary.problems.push(...one.problems);
-    if (one.roster) summary.roster = one.roster;
     if (one.filesRead > 0) {
       taken.push(file);
       host.store.ledgerRecord(LEDGER_SOURCE[kind], file.fileName, file.size, file.modifiedMs);

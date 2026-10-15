@@ -308,7 +308,7 @@ export async function otherPagesChecks({ app, page, check, assert, until, ask, g
       const ask1 = page.locator('dialog[data-dialog="confirm"]');
       await ask1.waitFor({ state: 'visible', timeout: 5_000 });
       assert(
-        (await ask1.innerText()).includes('Replace the associate list?'),
+        (await ask1.innerText()).includes('Update the associate list?'),
         'no question was asked',
       );
       await choose(['associates', 'AssociateData.csv']);
@@ -336,7 +336,10 @@ export async function otherPagesChecks({ app, page, check, assert, until, ask, g
         snap.tenure.records === inputs.tenure.record_count,
         'the kept counts differ from the harness',
       );
-      const withCount = snap.associates.filter((view) => view.associate.tenure !== null).length;
+      // Current people only: the earlier day's drivers are on the list now, marked offboarded.
+      const withCount = snap.associates.filter(
+        (view) => view.associate.status !== 'OFFBOARDED' && view.associate.tenure !== null,
+      ).length;
       assert(withCount === inputs.associates.with_tenure, `${withCount} associates have a count`);
 
       // The Lifetime Routes tab says the same.

@@ -107,7 +107,6 @@ export interface PerfServiceDeps {
 }
 
 const WINDOW_TITLES: Record<PerfKind, string> = {
-  roster: 'Choose the driver list (AssociateData.csv)',
   thresholds: 'Choose the thresholds file',
   scorecards: 'Choose the folder with the weekly scorecards',
   pod: 'Choose the folder with the POD report PDFs',

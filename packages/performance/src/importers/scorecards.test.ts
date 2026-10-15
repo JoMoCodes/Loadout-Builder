@@ -3,7 +3,6 @@
 
 import { describe, expect, it } from 'vitest';
 import type { DriverRecord } from '../models';
-import { parseAssociates } from './associates';
 import { parseScorecards, type ScorecardRow } from './scorecards';
 import {
   expectedImport,
@@ -11,6 +10,7 @@ import {
   fixtureFiles,
   numbered,
   otherCountsOf,
+  parseFixtureRoster,
   rowsFromFile,
   sortLikeHarness,
   toColumns,
@@ -18,7 +18,7 @@ import {
   type Row,
 } from './testkit';
 
-const roster = parseAssociates(fixtureFiles('roster'));
+const roster = { drivers: parseFixtureRoster() };
 const files = fixtureFiles('scorecards');
 const result = parseScorecards(
   files,

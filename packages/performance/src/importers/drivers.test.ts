@@ -4,16 +4,22 @@
 
 import { describe, expect, it } from 'vitest';
 import { impactsDcr } from '../models';
-import { parseAssociates } from './associates';
 import { parseCdf } from './cdf';
 import { parseDcr } from './dcr';
 import { parseDcrTotals } from './dcrTotals';
 import { parseDsb } from './dsb';
 import { parsePsb } from './psb';
 import { parseScorecards } from './scorecards';
-import { expectedDriver, expectedRange, fixtureFiles, numbered, ordinal } from './testkit';
+import {
+  expectedDriver,
+  expectedRange,
+  fixtureFiles,
+  numbered,
+  ordinal,
+  parseFixtureRoster,
+} from './testkit';
 
-const roster = parseAssociates(fixtureFiles('roster'));
+const roster = { drivers: parseFixtureRoster() };
 const scorecards = parseScorecards(
   fixtureFiles('scorecards'),
   roster.drivers.map((driver) => driver.transporterId),

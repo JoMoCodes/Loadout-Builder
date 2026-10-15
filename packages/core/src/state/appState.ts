@@ -14,10 +14,13 @@ import {
   hasQualification,
   idState,
   isActive,
+  mergeAssociateBooks,
   missingForShift,
   vanBadges as associateVanBadges,
   type Associate,
   type AssociateBook,
+  type AssociateMergeCounts,
+  type MergeOptions,
 } from '../models/associates';
 import {
   affinityClear,
@@ -201,19 +204,36 @@ export class AppState {
     this.notify();
   }
 
-  /** Store an associate export read by `importAssociateData`. Replaces the book. */
-  importAssociates(book: AssociateBook): AssociateBook {
+  /**
+   * Fold an associate export read by `importAssociateData` into the list. Everyone in the file is
+   * added or updated; anyone with a Transporter ID the file no longer lists is kept and marked
+   * offboarded (see `mergeAssociateBooks`). The counts say what happened.
+   */
+  importAssociates(file: AssociateBook, options: MergeOptions = {}): AssociateMergeCounts {
+    const { book, counts } = mergeAssociateBooks(this.associates, file, options);
     this.store.saveAssociates(associatesToStored(book));
     this.associates = book;
     this.applyTenure();
     this.rematch();
     this.notify();
-    return book;
+    return counts;
   }
 
   clearAssociates(): void {
     this.store.clearAssociates();
     this.associates = createAssociateBook();
+    this.rematch();
+    this.notify();
+  }
+
+  /**
+   * Read the associate list back from the saved data. For when another part of the app wrote
+   * to it (the weekly scorecards add a driver they name and the list does not know; the old
+   * Weekly Performance App's data brings its drivers over), so the list here is not stale.
+   */
+  reloadAssociates(): void {
+    this.associates = associatesFromStored(this.store.loadAssociates());
+    this.applyTenure();
     this.rematch();
     this.notify();
   }

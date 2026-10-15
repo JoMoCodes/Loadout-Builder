@@ -4,7 +4,15 @@
 
 import { readFile } from 'node:fs/promises';
 import { basename } from 'node:path';
-import { newestWeek, weekLabel, type AppState, type IsoDate, type TenureBook } from '@loadout/core';
+import {
+  currentCount,
+  newestWeek,
+  tenureCount,
+  weekLabel,
+  type AppState,
+  type IsoDate,
+  type TenureBook,
+} from '@loadout/core';
 import {
   AssociateImportError,
   DwpImportError,
@@ -42,7 +50,8 @@ async function read(
     case 'loadout':
       return state.importRoster(await importLoadoutSheet(path)).rows.length;
     case 'associates':
-      return state.importAssociates(await importAssociateData(path)).rows.length;
+      // Reached through readAssociates below.
+      throw new ChannelRefusal('not-allowed');
     case 'tenure':
       return state.importTenure(await importTenureExport(path)).records.size;
 
@@ -85,15 +94,28 @@ async function readTenure(state: AppState, path: string): Promise<ImportSummary>
     keptWeek: weekLabel(kept),
     older,
     fileWeek: weekLabel(book),
-    covered: state.associates.rows.filter((associate) => associate.tenure !== null).length,
-    associates: state.associates.rows.length,
+    // Current people only: someone marked offboarded is not on the list to cover.
+    covered: tenureCount(state.associates),
+    associates: currentCount(state.associates),
   };
   return { kind: 'tenure', rows: book.records.size, tenure };
 }
 
 /**
- * Brings the file in, replacing what the state held for that kind. When the reader refuses the
- * file, nothing changes and the reader's own words come back as a refusal.
+ * An associate export, folded into the one driver list: everyone in the file is added or
+ * updated, and anyone with a Transporter ID the file no longer lists is marked offboarded. The
+ * rows are the file's; the counts say what changed.
+ */
+async function readAssociates(state: AppState, path: string): Promise<ImportSummary> {
+  const book = await importAssociateData(path);
+  const associates = state.importAssociates(book);
+  return { kind: 'associates', rows: book.rows.length, associates };
+}
+
+/**
+ * Brings the file in, replacing what the state held for that kind (the associate export is
+ * folded in, see readAssociates). When the reader refuses the file, nothing changes and the
+ * reader's own words come back as a refusal.
  */
 export async function importFile(
   state: AppState,
@@ -103,6 +125,7 @@ export async function importFile(
 ): Promise<ImportSummary> {
   try {
     if (kind === 'tenure') return await readTenure(state, path);
+    if (kind === 'associates') return await readAssociates(state, path);
     return { kind, rows: await read(state, kind, path, today) };
   } catch (error) {
     if (READER_ERRORS.some((reader) => error instanceof reader)) {

@@ -141,6 +141,9 @@ export async function fresh(day: Day): Promise<Ctx> {
   importV1Database(DB_FILE, store);
   const state = new AppState(store);
   state.loadAll();
+  // The old app replaced the list on import; this one folds the file in and keeps anyone it no
+  // longer lists as offboarded. The saved list is emptied first, so the day replays as it did.
+  state.clearAssociates();
   state.importAssociates(await readers.associates());
   for (const path of TENURE_FILES) state.importTenure(await readers.tenure(path));
   state.importVehicles(await readers.vehicles());

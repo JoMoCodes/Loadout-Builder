@@ -17,7 +17,7 @@ export const WEEKLY_STEP_ORDER: readonly WeeklyStepId[] = [
 
 /** What the weekly checklist needs to know (counts and yes/no only, never names). */
 export interface WeeklyFacts {
-  /** Drivers on the weekly driver list. */
+  /** People on the Associates list (the one driver list; the Performance page reads it too). */
   drivers: number;
   /** Kinds of export with a remembered folder (or file). */
   foldersChosen: number;
@@ -32,9 +32,14 @@ export interface WeeklyFacts {
   reportsEmailed: boolean;
 }
 
-export function weeklyFacts(perf: PerfSnapshot, dashboardSeen: boolean): WeeklyFacts {
+export function weeklyFacts(
+  perf: PerfSnapshot,
+  dashboardSeen: boolean,
+  /** How many are on the Associates list. */
+  associates: number,
+): WeeklyFacts {
   return {
-    drivers: perf.drivers,
+    drivers: associates,
     foldersChosen: perf.foldersChosen,
     synced: perf.lastSync !== null,
     weeks: perf.weeks.length,
@@ -71,9 +76,12 @@ export function weeklyCurrentStep(done: Record<WeeklyStepId, boolean>): WeeklySt
   return WEEKLY_STEP_ORDER.find((id) => !done[id]) ?? null;
 }
 
-/** What a weekly step's button does (stepActions.ts says where each one goes). */
+/**
+ * What a weekly step's button does (stepActions.ts says where each one goes). The driver list
+ * step presses Import Associates on the Associates page, the same button as the first-day list.
+ */
 export type WeeklyStepAction =
-  | 'perf-choose-roster'
+  | 'import-associates'
   | 'perf-open-imports'
   | 'perf-sync-now'
   | 'perf-choose-scorecards'
@@ -84,7 +92,7 @@ export type WeeklyStepAction =
 export function weeklyStepAction(id: WeeklyStepId, facts: WeeklyFacts): WeeklyStepAction {
   switch (id) {
     case 'perf-roster':
-      return 'perf-choose-roster';
+      return 'import-associates';
     case 'perf-folders':
       return 'perf-open-imports';
     case 'perf-sync':

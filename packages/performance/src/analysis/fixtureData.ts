@@ -6,7 +6,6 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import type { DriverRecord, PerfData } from '../models';
-import { parseAssociates } from '../importers/associates';
 import { parseCdf } from '../importers/cdf';
 import { parseDcr } from '../importers/dcr';
 import { parseDcrTotals } from '../importers/dcrTotals';
@@ -17,7 +16,7 @@ import { parsePsb } from '../importers/psb';
 import { parseSafety } from '../importers/safety';
 import { parseScorecards } from '../importers/scorecards';
 import { parseThresholds } from '../importers/thresholds';
-import { fixtureFiles, numbered, ordinal } from '../importers/testkit';
+import { fixtureFiles, numbered, ordinal, parseFixtureRoster } from '../importers/testkit';
 
 const FIXTURES = new URL('../../../fixtures/performance/', import.meta.url);
 const EXPECTED = new URL('../../../../scripts/parity/wpa/expected/', import.meta.url);
@@ -69,7 +68,7 @@ async function readPodFixtures(): Promise<PdfWords[]> {
 }
 
 async function build(): Promise<PerfData> {
-  const roster = parseAssociates(fixtureFiles('roster'));
+  const roster = { drivers: parseFixtureRoster() };
   const thresholdFile = fixtureFiles('thresholds')[0];
   if (!thresholdFile) throw new Error('No made-up thresholds file');
   const thresholds = parseThresholds(thresholdFile);

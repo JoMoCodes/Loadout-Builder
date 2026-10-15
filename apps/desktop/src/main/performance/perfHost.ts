@@ -31,6 +31,12 @@ export class PerfHost {
   ready = true;
   /** Set when the database this was built on has been closed (demo mode switched). */
   closed = false;
+  /**
+   * Called after a write that added someone to the driver list (the `associates` table): a
+   * scorecard naming a driver the list did not know. The StateHost reads the list back into the
+   * day's data from it.
+   */
+  driversChanged: () => void = () => {};
 
   constructor(db: Store, options: { now?: () => Date } = {}) {
     this.store = new PerformanceStore(db.db, options);

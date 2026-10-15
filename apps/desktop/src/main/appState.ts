@@ -80,6 +80,12 @@ export class StateHost {
     this.currentStore = store;
     const perf = new PerfHost(store);
     this.currentPerf = perf;
+    // The Performance page reads the Associates list for its drivers, so any change to the
+    // day's data (an associate import or clear, a route export that adds someone) means its
+    // next read starts over.
+    state.subscribe(() => perf.invalidate());
+    // And the other way: a scorecard import can add a name-only driver to that list.
+    perf.driversChanged = () => state.reloadAssociates();
     const demo = this.dataSource.getInfo().mode === 'demo';
     if (demo) this.demoLastRun = memoryLastRun();
     this.currentRouteSheets = new RouteSheetsHost({
@@ -114,7 +120,7 @@ export class StateHost {
     const folder = this.options.demoPerformanceFolder;
     if (demo && folder) {
       perf.ready = false;
-      this.perfLoading = loadDemoPerformance(perf, folder)
+      this.perfLoading = loadDemoPerformance(perf, folder, state)
         .then((rows) => {
           if (perf.closed) return;
           this.options.log?.(`demo weekly performance data loaded: ${rows} rows`);

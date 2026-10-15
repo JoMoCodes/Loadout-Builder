@@ -9,6 +9,7 @@ import {
   ROUTE_SOURCES,
   activeCount,
   affinitySize,
+  tenureCount,
   daysUntilIdExpiry,
   idState,
   isAmbiguous,
@@ -99,7 +100,7 @@ export function buildSnapshot(state: AppState, options: SnapshotOptions): AppSna
   for (const set of routeSets) routeRows[set.kind] = set.rows.length;
 
   const matchSummary = state.matchSummary();
-  const withCount = state.associates.rows.filter((a) => a.tenure !== null).length;
+  const withCount = tenureCount(state.associates);
 
   return {
     revision: options.revision,

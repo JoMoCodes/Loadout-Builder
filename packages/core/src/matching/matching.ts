@@ -12,7 +12,7 @@
 // Anything below `exact` is worth showing the user, and ambiguous cases are never guessed: they
 // are reported with their candidates so the user decides.
 
-import type { Associate } from '../models/associates';
+import { isOffboarded, type Associate } from '../models/associates';
 import type { DriverRow } from '../models/roster';
 import { sequenceRatio } from './sequenceMatcher';
 
@@ -106,7 +106,10 @@ export function matchLabel(match: Match): string {
   return MATCH_LABELS[match.method] ?? match.method;
 }
 
-/** Lookup tables built once per associate import. */
+/**
+ * Lookup tables built once per associate import. An offboarded associate is found by Transporter
+ * ID only (a hand-made link still holds), never by name: the name belongs to whoever is current.
+ */
 export class AssociateIndex {
   readonly byId = new Map<string, Associate>();
   readonly byFull = new Map<string, Associate[]>();
@@ -119,6 +122,7 @@ export class AssociateIndex {
     const index = new AssociateIndex();
     for (const associate of associates) {
       if (associate.transporterId) index.byId.set(associate.transporterId, associate);
+      if (isOffboarded(associate)) continue;
       push(index.byFull, normalizeName(associate.name), associate);
       const key = nameKey(associate.name);
       index.keys.set(keyText(key), key);

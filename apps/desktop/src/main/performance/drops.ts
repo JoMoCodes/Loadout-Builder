@@ -50,7 +50,7 @@ function folderFiles(kind: PerfKind | null, folder: string): Map<PerfKind, Expor
     if (files.length === 0) {
       refuse(`There are no files for ${PERF_KIND_WORDS[kind].the} in that folder.`);
     }
-    // The driver list and thresholds are one file: the newest name wins.
+    // The thresholds are one file: the newest name wins.
     const kept = SINGLE_FILE_KINDS.includes(kind) ? files.slice(-1) : files;
     return new Map([[kind, kept]]);
   }
