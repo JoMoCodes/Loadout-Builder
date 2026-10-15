@@ -322,7 +322,7 @@ the snapshot's `revision` and refuse when it has moved on.
 | `layout:get` | query | `{ view }` || A table's saved column order and widths. |
 | `layout:set` | command (quiet) | `{ view, order, widths }` | Replaces the table's layout. Quiet: moving a column is not a change to the day's data. |
 | `loadOut:clear-previous-roster` | command | none | Forgets the previous roster (the one kept from the last run). |
-| `loadOut:move-to-previous-roster` | command | none | Copies today's roster to the Previous Roster. Today's roster is untouched. Rows copied. |
+| `loadOut:move-to-previous-roster` | command | none | Copies today's roster to the Previous Roster, then empties today's roster. Rows copied. |
 | `loadOut:clear-roster` | command | none | Empties today's roster. Associate data and manual links are kept. |
 | `loadOut:bring-over-route-data` | command | `{ kind }` | Copies dispatch time, route code, service type and PAD from one route export. |
 | `loadOut:bring-over-dwp` | command | none | Copies staging, bags and OVS from the DWP sheet, matched on route code. |

@@ -23,7 +23,7 @@ export const loadOutChannels = [
   /** Forgets the previous roster (the one kept from the last run). */
   defineCommand('loadOut:clear-previous-roster', { input: nothing, result: as<null>() }),
 
-  /** Copies today's roster to the Previous Roster. Today's roster is untouched. Rows copied. */
+  /** Copies today's roster to the Previous Roster, then empties today's roster. Rows copied. */
   defineCommand('loadOut:move-to-previous-roster', { input: nothing, result: as<number>() }),
 
   /** Empties today's roster. Associate data and manual links are kept. */

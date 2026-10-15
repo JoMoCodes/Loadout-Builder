@@ -136,13 +136,16 @@ async function assignedDay(): Promise<AppSnapshot> {
 }
 
 describe('Load Out commands', () => {
-  it('copies today to the Previous Roster and leaves today alone, then clears it', async () => {
+  it('copies today to the Previous Roster and empties today, then clears it', async () => {
     const before = await snapshot();
+    expect(before.roster.rows.length).toBeGreaterThan(0);
     const moved = await rig.call('loadOut:move-to-previous-roster');
     expect(moved).toEqual({ ok: true, value: before.roster.rows.length });
     const after = await snapshot();
-    expect(after.previousRoster.rows.length).toBe(before.roster.rows.length);
-    expect(after.roster.rows.map((r) => r.row)).toEqual(before.roster.rows.map((r) => r.row));
+    expect(after.previousRoster.rows).toEqual(before.roster.rows.map((r) => r.row));
+    expect(after.roster.rows).toHaveLength(0);
+    expect(after.counts.associates).toBe(before.counts.associates);
+    expect(after.counts.links).toBe(before.counts.links);
     expect(await rig.call('loadOut:clear-previous-roster')).toEqual({ ok: true, value: null });
     expect((await snapshot()).counts.previousRosterRows).toBe(0);
   });
@@ -398,6 +401,8 @@ describe('Load Out commands', () => {
   it('counts who had a van last time and is on today too', async () => {
     await assignedDay();
     await rig.call('loadOut:move-to-previous-roster');
+    // The next day's sheet comes in (the same made-up day, so the same drivers are on it).
+    await morning();
     const snap = await snapshot();
     expect(snap.counts.previousOnToday).toBeGreaterThan(0);
     expect(snap.counts.previousOnToday).toBeLessThanOrEqual(

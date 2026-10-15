@@ -11,6 +11,13 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.10.0',
+    items: [
+      "On Load Out, Move Data to Previous Roster now also clears today's roster. You no longer need to press Clear Roster afterwards.",
+      'Your associates and the links you made by hand are kept.',
+    ],
+  },
+  {
     version: '2.8.1',
     items: [
       'On Scorecards, the In latest scorecard chip now shows only the drivers who are on the newest scorecard of the weeks you chose. Before, it also showed drivers whose last scorecard was an older week. Pick Everyone to see those drivers too.',

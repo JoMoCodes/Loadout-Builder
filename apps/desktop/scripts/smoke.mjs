@@ -932,7 +932,7 @@ try {
     },
   );
 
-  await check('Move Data to Previous Roster copies the day across', async () => {
+  await check('Move Data to Previous Roster copies the day across and clears today', async () => {
     const before = (await ask('state:snapshot')).value;
     await page.click('[data-action="move-to-previous"]');
     await answerUntil(async () => /^Copied \d+ drivers/.test(await status()), 'nothing was copied');
@@ -941,7 +941,7 @@ try {
       after.previousRoster.rows.length === before.roster.rows.length,
       'the previous roster does not hold today',
     );
-    assert(after.roster.rows.length === before.roster.rows.length, 'today changed');
+    assert(after.roster.rows.length === 0, "today's roster was not cleared");
     await page.click('[data-tab-button="previous-roster"]');
     const count = await page.locator('[data-testid="previous-roster-count"]').innerText();
     assert(count.startsWith(`${before.roster.rows.length} drivers`), 'the tab does not show it');

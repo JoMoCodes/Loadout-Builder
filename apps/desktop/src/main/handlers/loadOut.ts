@@ -45,7 +45,12 @@ export const loadOutHandlers: HandlersFor<typeof loadOutChannels> = {
     return null;
   },
 
-  'loadOut:move-to-previous-roster': (_input, ctx) => ctx.state.moveToPreviousRoster(),
+  // Keeps today as the Previous Roster, then empties today ready for the next sheet.
+  'loadOut:move-to-previous-roster': (_input, ctx) => {
+    const moved = ctx.state.moveToPreviousRoster();
+    ctx.state.clearRoster();
+    return moved;
+  },
 
   'loadOut:clear-roster': (_input, ctx) => {
     ctx.state.clearRoster();

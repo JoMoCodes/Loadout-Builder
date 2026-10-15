@@ -26,13 +26,14 @@ The page has four tabs.
 ### 1.1 Previous Roster tab
 
 - [x] The Previous Roster is yesterday's sheet, kept so drivers can stay in the same cab.
-      Proved by `apps/desktop/e2e/load-out.spec.ts`: "Previous Roster shows yesterday, greys out those without a van, and filters", and the smoke test: "Move Data to Previous Roster copies the day across".
+      Proved by `apps/desktop/e2e/load-out.spec.ts`: "Previous Roster shows yesterday, greys out those without a van, and filters", and the smoke test: "Move Data to Previous Roster copies the day across and clears today".
 - [x] **Move Data to Previous Roster** (on the Roster tab) copies today's roster across.
-      Proved by `apps/desktop/src/main/handlers/loadOut.test.ts`: "copies today to the Previous Roster and leaves today alone, then clears it", `apps/desktop/e2e/load-out.spec.ts`: "Move Data to Previous Roster asks before replacing the one kept", and the smoke test: "Move Data to Previous Roster copies the day across".
-- [x] Moving data across leaves today's roster untouched.
-      Proved by `apps/desktop/src/main/handlers/loadOut.test.ts`: "copies today to the Previous Roster and leaves today alone, then clears it", and the smoke test: "Move Data to Previous Roster copies the day across".
+      Proved by `apps/desktop/src/main/handlers/loadOut.test.ts`: "copies today to the Previous Roster and empties today, then clears it", `apps/desktop/e2e/load-out.spec.ts`: "Move Data to Previous Roster asks before replacing the one kept", and the smoke test: "Move Data to Previous Roster copies the day across and clears today".
+- [x] **Change from the old app:** moving data across now empties today's roster too, so the
+      next sheet can come straight in. Associates and manual links are kept.
+      Proved by `apps/desktop/src/main/handlers/loadOut.test.ts`: "copies today to the Previous Roster and empties today, then clears it", and the smoke test: "Move Data to Previous Roster copies the day across and clears today".
 - [x] **Clear Previous Roster** empties it.
-      Proved by `apps/desktop/src/main/handlers/loadOut.test.ts`: "copies today to the Previous Roster and leaves today alone, then clears it", `e2e/page-pattern.spec.ts`: "a command runs, and the page follows when the app says the data changed", and the smoke test: "Clear Previous Roster asks, clears it, and the page follows".
+      Proved by `apps/desktop/src/main/handlers/loadOut.test.ts`: "copies today to the Previous Roster and empties today, then clears it", `e2e/page-pattern.spec.ts`: "a command runs, and the page follows when the app says the data changed", and the smoke test: "Clear Previous Roster asks, clears it, and the page follows".
 - [x] Van assignment reads it: a driver who had a van last time and is working again gets that
       same van back, as long as it is free and suits today's route.
       Proved by the parity diff `vans` on all three days ("previous-day") and `assignment.test.ts`: "works through affinity, last time, service type, family and qualification in that order".

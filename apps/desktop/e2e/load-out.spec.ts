@@ -484,7 +484,7 @@ test('Move Data to Previous Roster asks before replacing the one kept', async ({
   );
   await page.getByTestId('confirm-yes').click();
   await expect(status(page)).toHaveText(
-    "Copied 5 drivers to the Previous Roster, 2 of them holding a van. Today's roster is unchanged.",
+    "Copied 5 drivers to the Previous Roster, 2 of them holding a van. Today's roster is now clear, ready for the next sheet.",
   );
 });
 
