@@ -629,6 +629,9 @@ test('Ctrl+O works from another tab, and not behind an open question', async ({ 
     `() => ({ ok: true, value: { path: 'C:\\\\Exports\\\\next_sheet.xlsx' } })`,
   );
   await page.getByRole('tab', { name: 'Print' }).click();
+  // Wait for the Print tab to be the one shown before pressing: on a busy machine the key could
+  // otherwise land before the tab change has been drawn.
+  await expect(page.getByRole('tab', { name: 'Print' })).toHaveAttribute('aria-selected', 'true');
   await page.locator('body').press('Control+o');
   await expect(page.getByRole('tab', { name: 'Roster', exact: true })).toHaveAttribute(
     'aria-selected',

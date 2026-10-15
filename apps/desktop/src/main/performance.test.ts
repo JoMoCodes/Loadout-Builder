@@ -525,6 +525,27 @@ describe('with every fixture brought in', () => {
     expect(view.rows.find((r) => r.latestWeek !== null)).toBeTruthy();
   });
 
+  it('says who is on the newest scorecard apart from who had any scorecard in the weeks', async () => {
+    const view = await rig.ok<PerfDriversView>('performance:drivers', { range: null });
+    const { newestWeek } = view.changes;
+    const onNewest = new Set(
+      rig.host.perf
+        .data()
+        .scorecards.filter((c) => c.week === newestWeek)
+        .map((c) => c.transporterId),
+    );
+    for (const row of view.rows) {
+      expect(row.inLatestWeek, row.transporterId).toBe(onNewest.has(row.transporterId));
+      // On the newest scorecard means in the weeks too, never the other way round.
+      if (row.inLatestWeek) expect(row.activeInRange).toBe(true);
+    }
+    // The made-up data has drivers whose last scorecard is an older week: in the weeks, but
+    // not in the latest scorecard, so the "In latest scorecard" chip leaves them out.
+    const older = view.rows.filter((r) => r.activeInRange && !r.inLatestWeek);
+    expect(older.length).toBeGreaterThan(0);
+    for (const row of older) expect(row.latestWeek! < newestWeek!).toBe(true);
+  });
+
   it('refuses a back-to-front week range in plain words', async () => {
     expect(
       await rig.call('performance:drivers', { range: { from: '2026-W40', to: '2026-W31' } }),

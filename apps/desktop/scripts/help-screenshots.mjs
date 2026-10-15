@@ -11,7 +11,7 @@
 // In this container: ELECTRON_DISABLE_SANDBOX=1 xvfb-run -a npm run help-shots -w @loadout/desktop
 // Options: --no-build   use what is already in dist/
 
-/* global window -- runs inside the app page */
+/* global window, document -- runs inside the app page */
 
 import { _electron as electron } from '@playwright/test';
 import { spawnSync } from 'node:child_process';
@@ -170,6 +170,10 @@ try {
 
   await page.click('[data-testid="scorecards-tab-reports"]');
   await page.waitForSelector('[data-testid="perf-preview-name"]', { timeout: 20_000 });
+  // The help shows this tab for its colours and preview, which sit below the Thresholds table.
+  await page.evaluate(() => {
+    document.getElementById('perf-colours-title')?.closest('section')?.scrollIntoView();
+  });
   await page.waitForTimeout(1500);
   await shot('perf-reports');
 

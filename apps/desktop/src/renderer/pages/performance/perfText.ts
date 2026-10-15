@@ -90,7 +90,7 @@ export interface DriverFilters {
   activity: string;
 }
 
-/** The activity chip each visit to the page starts on: the drivers in the chosen weeks' scorecards. */
+/** The activity chip each visit to the page starts on: the drivers on the newest scorecard shown. */
 export const START_ACTIVITY = 'in-range';
 
 /**
@@ -128,7 +128,7 @@ export function statusOf(row: { status: string }): string {
 export function passesFilters(row: PerfDriverRow, filters: DriverFilters): boolean {
   if (filters.status !== 'ALL' && statusOf(row) !== filters.status) return false;
   if (filters.tiers.length > 0 && !filters.tiers.includes(row.latestTier ?? '')) return false;
-  if (filters.activity === 'in-range' && !row.activeInRange) return false;
+  if (filters.activity === 'in-range' && !row.inLatestWeek) return false;
   if (filters.activity === 'none' && row.activeInRange) return false;
   return true;
 }

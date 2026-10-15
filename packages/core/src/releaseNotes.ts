@@ -11,6 +11,12 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.8.1',
+    items: [
+      'On Scorecards, the In latest scorecard chip now shows only the drivers who are on the newest scorecard of the weeks you chose. Before, it also showed drivers whose last scorecard was an older week. Pick Everyone to see those drivers too.',
+    ],
+  },
+  {
     version: '2.8.0',
     items: [
       'The Dashboard has a Dashboard settings button next to its title. The rule numbers for its lists (the ID expiry warning, the weeks-running flags and how many movers to show) live there now.',

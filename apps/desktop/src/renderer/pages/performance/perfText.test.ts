@@ -14,11 +14,13 @@ import {
   progressWords,
   quickPickOf,
   quickRange,
+  passesFilters,
   readFilters,
   syncWords,
   tierTone,
   writeFilters,
 } from './perfText';
+import type { PerfDriverRow } from '../../../shared/performance';
 
 const WEEKS = ['2026-W31', '2026-W32', '2026-W33', '2026-W34', '2026-W35'];
 
@@ -58,6 +60,30 @@ describe('the filter chips', () => {
     // "Everyone" and "No scorecard" are this visit's only: nothing about them is remembered.
     expect(writeFilters({ ...filters, activity: 'all' })).toEqual(['tier:Gold', 'tier:Bronze']);
     expect(writeFilters({ ...filters, activity: 'none' })).toEqual(['tier:Gold', 'tier:Bronze']);
+  });
+
+  it('In latest scorecard keeps only the drivers on the newest scorecard; No scorecard the rest', () => {
+    const row = (parts: { activeInRange: boolean; inLatestWeek: boolean }) =>
+      ({ status: 'ACTIVE', latestTier: 'Gold', ...parts }) as PerfDriverRow;
+    const onNewest = row({ activeInRange: true, inLatestWeek: true });
+    const olderWeek = row({ activeInRange: true, inLatestWeek: false });
+    const none = row({ activeInRange: false, inLatestWeek: false });
+    const chip = (activity: string) => ({ status: 'ALL', tiers: [], activity });
+    expect([onNewest, olderWeek, none].map((r) => passesFilters(r, chip('in-range')))).toEqual([
+      true,
+      false,
+      false,
+    ]);
+    expect([onNewest, olderWeek, none].map((r) => passesFilters(r, chip('none')))).toEqual([
+      false,
+      false,
+      true,
+    ]);
+    expect([onNewest, olderWeek, none].map((r) => passesFilters(r, chip('all')))).toEqual([
+      true,
+      true,
+      true,
+    ]);
   });
 });
 
