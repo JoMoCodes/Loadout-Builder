@@ -668,6 +668,12 @@ export function PerformanceTab({
         mono: true,
       },
       { id: 'status', header: 'Status', value: (row) => statusOf(row) },
+      {
+        id: 'tenure',
+        header: 'Lifetime Routes',
+        value: (row) => (row.tenure === null ? '' : String(row.tenure)),
+        align: 'center',
+      },
       { id: 'latest-week', header: 'Latest Week', value: (row) => row.latestWeek ?? '' },
       {
         id: 'latest-tier',

@@ -57,6 +57,7 @@ export function driverRow(who: { name: string; id: string }, values: Json = {}):
     transporterId: who.id,
     name: who.name,
     status: 'ACTIVE',
+    tenure: null,
     latestWeek: '2026-W40',
     latestTier: 'Gold',
     latestScore: 90.12,
@@ -76,11 +77,13 @@ export function driverRow(who: { name: string; id: string }, values: Json = {}):
 
 export const DRIVERS = (): Json[] => [
   driverRow(ARCHER, {
+    tenure: 412,
     latestScore: 93.58,
     latestRankDisplay: '32 / 61',
     safety: { ...NO_SAFETY, total: 2, speeding: 2 },
   }),
   driverRow(DESMOND, {
+    tenure: 57,
     latestTier: 'Bronze',
     latestScore: 76.36,
     trend: { scoreDelta: -4.2, tierDelta: -1, slope: -1, trendDirection: 'Declining' },

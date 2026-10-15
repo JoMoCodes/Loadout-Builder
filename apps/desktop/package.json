@@ -1,7 +1,7 @@
 {
   "name": "@loadout/desktop",
   "productName": "Loadout Builder",
-  "version": "2.8.1",
+  "version": "2.9.0",
   "description": "Builds the daily load-out roster and van assignments for a delivery station.",
   "main": "dist/main/main.js",
   "private": true,

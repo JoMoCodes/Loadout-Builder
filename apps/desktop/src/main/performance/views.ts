@@ -97,6 +97,7 @@ function driverRow(
   row: DriverGridRow,
   activeIds: Set<string>,
   latestIds: Set<string>,
+  tenureOf: ReadonlyMap<string, number | null>,
 ): PerfDriverRow {
   const averages: DriverAverages = {
     score: row.avgScore,
@@ -115,6 +116,7 @@ function driverRow(
     transporterId: row.transporterId,
     name: row.name,
     status: row.effectiveStatus,
+    tenure: tenureOf.get(row.transporterId) ?? null,
     latestWeek: row.latestWeek,
     latestTier: row.latestTier,
     latestScore: row.latestScore,
@@ -155,7 +157,11 @@ function tierChanges(data: PerfData, newest: string | null, before: string | nul
   return moves;
 }
 
-export function driversView(data: PerfData, asked: WeekRange | null): PerfDriversView {
+export function driversView(
+  data: PerfData,
+  asked: WeekRange | null,
+  tenureOf: ReadonlyMap<string, number | null> = new Map(),
+): PerfDriversView {
   const range = resolveRange(data, asked);
   const grid = buildDriverGrid(data, range?.from ?? null, range?.to ?? null);
   const activeIds = new Set(
@@ -184,7 +190,7 @@ export function driversView(data: PerfData, asked: WeekRange | null): PerfDriver
   );
   return {
     range,
-    rows: grid.map((row) => driverRow(row, activeIds, latestIds)),
+    rows: grid.map((row) => driverRow(row, activeIds, latestIds, tenureOf)),
     changes: {
       newestWeek,
       previousWeek,

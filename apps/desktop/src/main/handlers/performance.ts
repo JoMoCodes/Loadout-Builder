@@ -37,7 +37,12 @@ const dataOf = (ctx: HandlerContext) => ctx.host.perf.data();
 
 export const performanceHandlers: HandlersFor<typeof performanceChannels> = {
   // ---- reading
-  'performance:drivers': ({ range }, ctx) => driversView(dataOf(ctx), checkRange(range)),
+  'performance:drivers': ({ range }, ctx) =>
+    driversView(
+      dataOf(ctx),
+      checkRange(range),
+      new Map(ctx.state.associates.rows.map((a) => [a.transporterId, a.tenure])),
+    ),
   'performance:safety-events': ({ transporterId, range, metricType }, ctx) => {
     const r = checkRange(range);
     return getSafetyEventsForDriver(dataOf(ctx), transporterId, r.from, r.to, metricType);
