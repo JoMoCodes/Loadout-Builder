@@ -1344,7 +1344,7 @@ try {
   const oldEnv = { LOADOUT_OLD_DB: oldDb };
   third = await launch(oldDir, oldEnv);
   let fresh = third.page;
-  const oldDialog = fresh.locator('dialog[data-dialog="old-data"]');
+  let oldDialog = fresh.locator('dialog[data-dialog="old-data"]');
 
   await check(
     'a first run offers to bring over the old data, and Not now puts it away',
@@ -1376,6 +1376,8 @@ try {
   writeFileSync(join(oldDir, 'settings.json'), JSON.stringify({ autoTours: false }));
   third = await launch(oldDir, oldEnv);
   fresh = third.page;
+  // A new window, so the dialog has to be found again on it.
+  oldDialog = fresh.locator('dialog[data-dialog="old-data"]');
 
   await check(
     'Yes brings the old data over, in words, and a second try refuses to write over it',
