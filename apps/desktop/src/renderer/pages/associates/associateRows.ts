@@ -11,6 +11,7 @@ import {
   qualificationCounts,
   qualificationVocabulary,
   qualificationsLabel,
+  currentCount,
   tenureCount,
   tenureLabel,
 } from '@loadout/core';
@@ -142,7 +143,7 @@ export function expiryLine(snapshot: AppSnapshot): string {
   const parts = [
     `IDs expired: ${expired}`,
     `expiring soon: ${expiring}`,
-    `lifetime routes: ${withCount}/${views.length}`,
+    `lifetime routes: ${withCount}/${currentCount({ rows: views.map((view) => view.associate) })}`,
   ];
   if (snapshot.roster.rows.length > 0) {
     parts.push(`on load out: ${snapshot.counts.matched}/${snapshot.roster.rows.length}`);

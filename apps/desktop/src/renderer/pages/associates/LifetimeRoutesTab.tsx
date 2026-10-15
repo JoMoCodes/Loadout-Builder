@@ -5,6 +5,7 @@
 // remove them.
 
 import { FileDrop } from '../../components/FileDrop';
+import { isCurrent } from '@loadout/core';
 import { useMemo, useState } from 'react';
 import { DataGrid, type GridColumn } from '../../components/DataGrid';
 import type { AppSnapshot, AssociateView } from '../../../shared/snapshot';
@@ -54,7 +55,9 @@ export function LifetimeRoutesTab({
   const { ask, host } = useDialogs();
   const { tenure } = snapshot;
   const views = snapshot.associates;
-  const covered = views.filter((view) => view.associate.tenure !== null).length;
+  // Current people only: someone marked offboarded is not on the list to cover.
+  const current = views.filter((view) => isCurrent(view.associate));
+  const covered = current.filter((view) => view.associate.tenure !== null).length;
   const rows = useMemo(() => views, [views]);
 
   async function bringIn(dropped?: string) {
@@ -104,7 +107,7 @@ export function LifetimeRoutesTab({
             : sourceLine(tenure.sourceFile, tenure.importedAt)
         }
         metric={tenureHeadline(snapshot)}
-        details={views.length === 0 ? [] : [`${covered}/${views.length} associates covered`]}
+        details={views.length === 0 ? [] : [`${covered}/${current.length} associates covered`]}
       >
         <p className="m-0 mt-1.5 max-w-3xl text-sm text-muted" data-testid="tenure-rules">
           The Tenured Workforce file is a weekly history. Only each driver's newest week counts, and

@@ -222,9 +222,9 @@ export function mergeAssociateBooks(
   };
 }
 
-/** How many have a route count on file, the rest being unknown. */
+/** How many current (not offboarded) associates have a route count on file. */
 export function tenureCount(book: Pick<AssociateBook, 'rows'>): number {
-  return book.rows.filter((a) => a.tenure !== null).length;
+  return book.rows.filter((a) => isCurrent(a) && a.tenure !== null).length;
 }
 
 export function qualificationCounts(book: Pick<AssociateBook, 'rows'>): Map<string, number> {

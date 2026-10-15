@@ -4,7 +4,15 @@
 
 import { readFile } from 'node:fs/promises';
 import { basename } from 'node:path';
-import { newestWeek, weekLabel, type AppState, type IsoDate, type TenureBook } from '@loadout/core';
+import {
+  currentCount,
+  newestWeek,
+  tenureCount,
+  weekLabel,
+  type AppState,
+  type IsoDate,
+  type TenureBook,
+} from '@loadout/core';
 import {
   AssociateImportError,
   DwpImportError,
@@ -86,8 +94,9 @@ async function readTenure(state: AppState, path: string): Promise<ImportSummary>
     keptWeek: weekLabel(kept),
     older,
     fileWeek: weekLabel(book),
-    covered: state.associates.rows.filter((associate) => associate.tenure !== null).length,
-    associates: state.associates.rows.length,
+    // Current people only: someone marked offboarded is not on the list to cover.
+    covered: tenureCount(state.associates),
+    associates: currentCount(state.associates),
   };
   return { kind: 'tenure', rows: book.records.size, tenure };
 }
