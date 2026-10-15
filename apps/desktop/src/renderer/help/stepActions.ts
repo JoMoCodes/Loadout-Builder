@@ -11,15 +11,15 @@ interface Target {
   page: PageId;
   /** The Load Out tab to open (the page remembers its tab under this key). */
   loadOutTab?: 'roster' | 'print';
-  /** The Performance tab to open (handed over the same way the Dashboard does it). */
-  performanceTab?: 'imports' | 'drivers';
+  /** The Scorecards tab to open (handed over the same way the Dashboard does it). */
+  scorecardsTab?: 'imports' | 'performance';
   /** The page's own button to press once it is on screen. */
   press?: string;
   /** A part of the page to scroll to once it is on screen. */
   scrollTo?: string;
 }
 
-const PERF = '[data-page="performance"]';
+const SCORECARDS = '[data-page="scorecards"]';
 
 export const STEP_TARGETS: Record<StepAction | WeeklyStepAction, Target> = {
   'import-associates': { page: 'associates', press: '[data-testid="import-associates"]' },
@@ -47,20 +47,20 @@ export const STEP_TARGETS: Record<StepAction | WeeklyStepAction, Target> = {
   },
   'open-route-sheets': { page: 'route-sheets' },
   // The weekly checklist (its driver list step is 'import-associates', above).
-  'perf-open-imports': { page: 'performance', performanceTab: 'imports' },
+  'perf-open-imports': { page: 'scorecards', scorecardsTab: 'imports' },
   'perf-sync-now': {
-    page: 'performance',
-    performanceTab: 'imports',
-    press: `${PERF} [data-testid="perf-sync-now"]`,
+    page: 'scorecards',
+    scorecardsTab: 'imports',
+    press: `${SCORECARDS} [data-testid="perf-sync-now"]`,
   },
   'perf-choose-scorecards': {
-    page: 'performance',
-    performanceTab: 'imports',
-    press: `${PERF} [data-testid="perf-choose-scorecards"]`,
+    page: 'scorecards',
+    scorecardsTab: 'imports',
+    press: `${SCORECARDS} [data-testid="perf-choose-scorecards"]`,
   },
   'open-dashboard': { page: 'dashboard' },
   'perf-set-up-email': { page: 'settings', scrollTo: '[data-setting="performance"]' },
-  'perf-open-drivers': { page: 'performance', performanceTab: 'drivers' },
+  'perf-open-performance': { page: 'scorecards', scorecardsTab: 'performance' },
 };
 
 const LOAD_OUT_TAB_KEY = 'loadout.load-out-tab';
@@ -113,7 +113,7 @@ export async function runStepAction(
   goTo: (page: PageId) => void,
 ) {
   const target = STEP_TARGETS[action];
-  if (target.performanceTab) handTabToPerformance(target.performanceTab);
+  if (target.scorecardsTab) handTabToPerformance(target.scorecardsTab);
   if (target.loadOutTab) {
     try {
       localStorage.setItem(LOAD_OUT_TAB_KEY, target.loadOutTab);

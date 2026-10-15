@@ -253,19 +253,6 @@ export interface PerfDriversView {
   };
 }
 
-/** One line of the Directory tab. */
-export interface PerfDirectoryRow {
-  transporterId: string;
-  name: string;
-  status: string;
-  position: string;
-  qualifications: string;
-  email: string;
-  personalPhone: string;
-  workPhone: string;
-  idExpiration: string;
-}
-
 /** One line of the thresholds table. */
 export interface PerfThresholdRow {
   metricName: string;

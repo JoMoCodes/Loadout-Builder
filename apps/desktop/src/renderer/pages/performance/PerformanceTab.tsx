@@ -1,6 +1,6 @@
-// The Drivers tab: one line per driver for the chosen weeks, with their latest week, averages,
-// trend and safety counts, the filter chips, tick boxes, and the buttons that make, export and
-// email the reports. Ported from the old app's main window grid.
+// The Performance tab of the Scorecards page: one line per driver for the chosen weeks, with their
+// latest week, averages, trend and safety counts, the filter chips, tick boxes, and the buttons
+// that make, export and email the reports. Ported from the old app's main window grid.
 
 import { ArrowDown, ArrowRight, ArrowUp, Calculator, Medal } from 'lucide-react';
 import {
@@ -56,7 +56,7 @@ import {
 import { SafetyDialog } from './SafetyDialog';
 import { WeekRangePicker } from './WeekRangePicker';
 
-export interface DriversTabProps {
+export interface PerformanceTabProps {
   snapshot: AppSnapshot;
   settings: AppSettings;
   changeSettings(patch: SettingsPatch): Promise<void>;
@@ -260,7 +260,7 @@ function ProgressMeter({ progress }: { progress: PerfProgress }) {
   );
 }
 
-export function DriversTab({
+export function PerformanceTab({
   snapshot,
   settings,
   changeSettings,
@@ -276,7 +276,7 @@ export function DriversTab({
   onGoImports,
   reveal,
   onRevealed,
-}: DriversTabProps) {
+}: PerformanceTabProps) {
   const { setStatus, setProblem } = messages;
   const { ask, host } = useDialogs();
   const gridBox = useRef<HTMLDivElement>(null);
@@ -479,15 +479,11 @@ export function DriversTab({
     );
   }
 
+  // The email address is on the driver list (the Associates page), which the snapshot carries.
   async function copyEmail(row: PerfDriverRow) {
-    const reply = await call('performance:directory');
-    if (!reply.ok) {
-      setProblem({ title: 'The email address was not copied', message: explain(reply) });
-      return;
-    }
-    const address = (reply.value ?? []).find(
-      (one) => one.transporterId === row.transporterId,
-    )?.email;
+    const address = snapshot.associates.find(
+      (one) => one.associate.transporterId === row.transporterId,
+    )?.associate.email;
     if (!address) {
       setStatus(`There is no email address on file for ${row.name}.`);
       return;

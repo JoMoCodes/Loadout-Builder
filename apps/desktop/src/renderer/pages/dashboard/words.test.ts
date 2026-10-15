@@ -21,7 +21,7 @@ import {
 const WEEKS = ['2026-W36', '2026-W37', '2026-W38', '2026-W39', '2026-W40'];
 
 describe('the weeks shown', () => {
-  it('is every week when nothing is chosen, the same as the Performance page', () => {
+  it('is every week when nothing is chosen, the same as the Scorecards page', () => {
     expect(dashboardRange(WEEKS, { from: null, to: null })).toEqual({
       from: '2026-W36',
       to: '2026-W40',

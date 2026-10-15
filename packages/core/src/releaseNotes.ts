@@ -11,6 +11,16 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.5.0',
+    items: [
+      'The Performance page is now called Scorecards. Its first tab is called Performance.',
+      'The Directory tab is gone. The Associates page now has the Position column and the Copy email and Copy phone buttons, so everything about a driver is in one place.',
+      'On Associates, right-click a driver to copy their email address or phone number. You can search by email or phone too.',
+      'Previous Roster is no longer in the left menu. It is still a tab on the Load Out page, where you move the roster across.',
+      'If the app remembered one of those pages, it opens the new place.',
+    ],
+  },
+  {
     version: '2.4.0',
     items: [
       'You now bring in the driver list once, on the Associates page. The Performance page uses the same list.',

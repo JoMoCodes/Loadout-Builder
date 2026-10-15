@@ -11,7 +11,7 @@ import { PRINTED_EVENT } from './help/printed';
 import { useTours } from './help/useTours';
 import { useWeeklyMemory } from './help/weeklyMemory';
 import { call, explain, listen, signal } from './lib/channels';
-import { PAGES, pageIdFrom } from './pages';
+import { PAGES, rememberedPlace } from './pages';
 import type { HelpApi, PageId, PageRequest } from './pages/types';
 import { useNoStrayDrops } from './components/FileDrop';
 import { Nav } from './shell/Nav';
@@ -40,8 +40,12 @@ export function App() {
   const [version, setVersion] = useState<string | null>(null);
   const [settings, setSettings] = useState<AppSettings | null>(null);
   const [dataSource, setDataSource] = useState<DataSourceInfo | null>(null);
-  const [page, setPage] = useState<PageId>(() =>
-    target ? target.page : pageIdFrom(readLastPage()),
+  // The main window opens on the page it was on last time. A remembered name from before a page
+  // was renamed, or folded into another page's tab, opens the new place, tab and all.
+  const [remembered] = useState(() => (target ? null : rememberedPlace(readLastPage())));
+  const [page, setPage] = useState<PageId>(() => (target ? target.page : remembered!.page));
+  const [startTab, setStartTab] = useState<string | null>(
+    () => target?.tab ?? remembered?.tab ?? null,
   );
   const [showNews, setShowNews] = useState(false);
   // The "bring over your old data" window: asked at start-up on a first run, or opened from
@@ -190,6 +194,8 @@ export function App() {
         return;
       }
       setPage(pageId);
+      // The remembered tab was for the page the window opened on; the next page picks its own.
+      setStartTab(null);
       writeLastPage(pageId);
     },
     [ownWindow],
@@ -395,7 +401,7 @@ export function App() {
             request={request}
             takeRequest={takeRequest}
             ownWindow={ownWindow}
-            startTab={target?.tab ?? null}
+            startTab={startTab}
           />
         </main>
       </div>

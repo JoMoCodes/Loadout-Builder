@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { PAGES, pageIdFrom } from '../pages';
+import { PAGES, pageIdFrom, rememberedPlace } from '../pages';
 import { updatePillText } from './TopBar';
 
 describe('pages', () => {
-  it('are the twelve pages, in menu order', () => {
+  it('are the eleven pages, in menu order', () => {
     expect(PAGES.map((page) => page.id)).toEqual([
       'home',
       'dashboard',
@@ -12,8 +12,7 @@ describe('pages', () => {
       'route-data',
       'vehicle-data',
       'associates',
-      'performance',
-      'previous-roster',
+      'scorecards',
       'how-to-use',
       'features-log',
       'settings',
@@ -24,6 +23,18 @@ describe('pages', () => {
     expect(pageIdFrom('settings')).toBe('settings');
     expect(pageIdFrom('gone')).toBe('home');
     expect(pageIdFrom(null)).toBe('home');
+  });
+
+  it('open the new place for a remembered page that was renamed or became a tab', () => {
+    expect(rememberedPlace('performance')).toEqual({ page: 'scorecards' });
+    expect(pageIdFrom('performance')).toBe('scorecards');
+    expect(rememberedPlace('previous-roster')).toEqual({
+      page: 'load-out',
+      tab: 'previous-roster',
+    });
+    expect(pageIdFrom('previous-roster')).toBe('load-out');
+    expect(rememberedPlace('settings')).toEqual({ page: 'settings' });
+    expect(rememberedPlace('gone')).toEqual({ page: 'home' });
   });
 });
 

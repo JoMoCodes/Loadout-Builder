@@ -1,4 +1,4 @@
-// The Performance page, Imports tab, on the stand-in bridge: one card per kind of export with its
+// The Scorecards page, Imports tab, on the stand-in bridge: one card per kind of export with its
 // folder, last import and warnings; Choose folder, Bring in again and Forget folder; asking before
 // bringing in weeks that are already there; Sync now and the auto-import switch; and files or
 // folders dropped on a card or on the tab. The real reading is proved by the main process's
@@ -109,9 +109,7 @@ test('Choose folder brings the kind in and sums it up in plain words', async ({ 
   await expect(page.getByTestId('perf-import-problems')).toHaveText(
     'Safety_Dashboard_week33.csv: row 4 has no Transporter ID.',
   );
-  await expect(page.getByTestId('performance-status')).toHaveText(
-    'Brought in, with some problems.',
-  );
+  await expect(page.getByTestId('scorecards-status')).toHaveText('Brought in, with some problems.');
   expect(await callsTo(page, 'performance:choose-and-import')).toEqual([{ kind: 'safety' }]);
 });
 
@@ -147,7 +145,7 @@ test('bringing in a kind that has weeks asks first, and the buttons wait while i
 test('Forget folder forgets it, and a refusal is shown in plain words', async ({ page }) => {
   await openPerformance(page, { tab: 'imports', data: { cards: CARDS() } });
   await card(page, 'dsb').getByTestId('perf-forget-dsb').click();
-  await expect(page.getByTestId('performance-status')).toHaveText(
+  await expect(page.getByTestId('scorecards-status')).toHaveText(
     'The app no longer looks for the delivery concessions files there.',
   );
   expect(await callsTo(page, 'performance:forget-folder')).toEqual([{ kind: 'dsb' }]);
@@ -272,7 +270,7 @@ test('a folder dropped on the tab is sorted by name, one import per kind found',
   // Nothing recognised: plain words, and nothing is brought in.
   await onCall(page, 'performance:dropped', `() => ({ ok: true, value: [] })`);
   await dropFile(page, page.locator('[data-drop-kind="any"]'), 'notes.txt');
-  await expect(page.getByTestId('performance-problem')).toContainText(
+  await expect(page.getByTestId('scorecards-problem')).toContainText(
     'None of those files looked like a weekly export.',
   );
   expect(await callsTo(page, 'performance:import')).toHaveLength(2);

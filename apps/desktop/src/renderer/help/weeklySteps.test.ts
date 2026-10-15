@@ -96,10 +96,10 @@ describe("what each weekly step's button does", () => {
     expect(weeklyStepAction('perf-dashboard', nothing)).toBe('open-dashboard');
   });
 
-  it('sets up email first, then opens the Drivers tab', () => {
+  it('sets up email first, then opens the Performance tab', () => {
     expect(weeklyStepAction('perf-reports', nothing)).toBe('perf-set-up-email');
     expect(weeklyStepAction('perf-reports', { ...nothing, emailReady: true })).toBe(
-      'perf-open-drivers',
+      'perf-open-performance',
     );
   });
 });

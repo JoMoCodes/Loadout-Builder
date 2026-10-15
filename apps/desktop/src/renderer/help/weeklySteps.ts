@@ -17,7 +17,7 @@ export const WEEKLY_STEP_ORDER: readonly WeeklyStepId[] = [
 
 /** What the weekly checklist needs to know (counts and yes/no only, never names). */
 export interface WeeklyFacts {
-  /** People on the Associates list (the one driver list; the Performance page reads it too). */
+  /** People on the Associates list (the one driver list; the Scorecards page reads it too). */
   drivers: number;
   /** Kinds of export with a remembered folder (or file). */
   foldersChosen: number;
@@ -87,7 +87,7 @@ export type WeeklyStepAction =
   | 'perf-choose-scorecards'
   | 'open-dashboard'
   | 'perf-set-up-email'
-  | 'perf-open-drivers';
+  | 'perf-open-performance';
 
 export function weeklyStepAction(id: WeeklyStepId, facts: WeeklyFacts): WeeklyStepAction {
   switch (id) {
@@ -101,7 +101,7 @@ export function weeklyStepAction(id: WeeklyStepId, facts: WeeklyFacts): WeeklySt
     case 'perf-dashboard':
       return 'open-dashboard';
     case 'perf-reports':
-      // Emailing needs the email set up once, in Settings. After that, the Drivers tab does it.
-      return facts.emailReady ? 'perf-open-drivers' : 'perf-set-up-email';
+      // Emailing needs the email set up once, in Settings. After that, the Performance tab does it.
+      return facts.emailReady ? 'perf-open-performance' : 'perf-set-up-email';
   }
 }

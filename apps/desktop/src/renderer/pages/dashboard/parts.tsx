@@ -292,7 +292,7 @@ export interface DriverMenuActions {
 
 /**
  * A driver's line. Clicking it (or Enter or Space on it) opens a small menu: open them on the
- * Performance page, preview their report, or explain their score. Esc closes the menu.
+ * Scorecards page, preview their report, or explain their score. Esc closes the menu.
  */
 export function DriverRow({
   transporterId,
@@ -336,7 +336,7 @@ export function DriverRow({
           data-testid="driver-menu-open"
         >
           <UserRound aria-hidden="true" />
-          Open on the Performance page
+          Open on the Scorecards page
         </DropdownMenuItem>
         <DropdownMenuItem
           onSelect={() => actions.previewReport(transporterId)}

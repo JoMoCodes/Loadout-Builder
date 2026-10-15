@@ -1,8 +1,9 @@
-// What the Dashboard hands to the Performance page when it sends the person there: which driver
+// What the Dashboard hands to the Scorecards page when it sends the person there: which driver
 // to show, or which tab to open. Kept for this run of the window only (sessionStorage), and read
-// once by the Performance page, which then removes it.
+// once by the Scorecards page, which then removes it. (The keys keep the page's old name,
+// Performance; they are not shown to anyone.)
 //
-//   loadout.performance.driver  a Transporter ID: open the Drivers tab on this driver's row
+//   loadout.performance.driver  a Transporter ID: open the Performance tab on this driver's row
 //   loadout.performance.tab     a tab id ('imports'): open this tab
 
 export const PERF_DRIVER_KEY = 'loadout.performance.driver';
@@ -16,14 +17,14 @@ function put(key: string, value: string): void {
   }
 }
 
-/** Asks the Performance page to show this driver when it opens next. */
+/** Asks the Scorecards page to show this driver when it opens next. */
 export function handDriverToPerformance(transporterId: string): void {
   put(PERF_DRIVER_KEY, transporterId);
-  put(PERF_TAB_KEY, 'drivers');
+  put(PERF_TAB_KEY, 'performance');
 }
 
-/** Asks the Performance page to open this tab when it opens next. */
-export function handTabToPerformance(tab: 'imports' | 'drivers'): void {
+/** Asks the Scorecards page to open this tab when it opens next. */
+export function handTabToPerformance(tab: 'imports' | 'performance'): void {
   put(PERF_TAB_KEY, tab);
 }
 
@@ -32,7 +33,7 @@ export interface PerformanceHandoff {
   tab: string | null;
 }
 
-/** For the Performance page: what the Dashboard left, without removing it, or nulls. */
+/** For the Scorecards page: what the Dashboard left, without removing it, or nulls. */
 export function peekPerformanceHandoff(): PerformanceHandoff {
   try {
     return {
@@ -44,7 +45,7 @@ export function peekPerformanceHandoff(): PerformanceHandoff {
   }
 }
 
-/** Removes what the Dashboard left, once the Performance page has it. */
+/** Removes what the Dashboard left, once the Scorecards page has it. */
 export function clearPerformanceHandoff(): void {
   try {
     window.sessionStorage.removeItem(PERF_DRIVER_KEY);
@@ -55,7 +56,7 @@ export function clearPerformanceHandoff(): void {
 }
 
 /**
- * For the Performance page: takes what the Dashboard left (and removes it), or nulls.
+ * For the Scorecards page: takes what the Dashboard left (and removes it), or nulls.
  * Exported here so the key names live in one place. (The page itself peeks first and clears in
  * an effect, so React's double start-up in development does not lose it.)
  */

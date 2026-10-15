@@ -15,8 +15,7 @@ export const PAGE_IDS = [
   'route-data',
   'vehicle-data',
   'associates',
-  'performance',
-  'previous-roster',
+  'scorecards',
   'how-to-use',
   'features-log',
   'settings',
@@ -33,8 +32,7 @@ export const PAGE_LABELS: Record<PageId, string> = {
   'route-data': 'Route Data',
   'vehicle-data': 'Vehicle Data',
   associates: 'Associates',
-  performance: 'Performance',
-  'previous-roster': 'Previous Roster',
+  scorecards: 'Scorecards',
   'how-to-use': 'How to use',
   'features-log': 'Features log',
   settings: 'Settings',
@@ -83,13 +81,11 @@ export const PAGE_TABS: Record<PageId, readonly TabItem[]> = {
     { id: 'associates', label: 'Associates' },
     { id: 'lifetime-routes', label: 'Lifetime Routes' },
   ],
-  performance: [
-    { id: 'drivers', label: 'Drivers' },
+  scorecards: [
+    { id: 'performance', label: 'Performance' },
     { id: 'reports', label: 'Reports' },
-    { id: 'directory', label: 'Directory' },
     { id: 'imports', label: 'Imports' },
   ],
-  'previous-roster': [],
   'how-to-use': [],
   'features-log': [],
   settings: [],
@@ -108,6 +104,40 @@ export function isPageId(value: unknown): value is PageId {
 /** Is this one of the page's tabs? */
 export function isTabOf(page: PageId, tab: unknown): tab is string {
   return typeof tab === 'string' && PAGE_TABS[page].some((item) => item.id === tab);
+}
+
+/**
+ * Where an old page or tab name leads now. The app remembers the last page and tab, and a
+ * page-only window carries its page in its address, so a name from before a rename still has to
+ * open somewhere sensible:
+ *
+ *   performance (page)          ->  Scorecards
+ *   performance, tab drivers    ->  Scorecards, Performance tab
+ *   previous-roster (page)      ->  Load Out, Previous Roster tab
+ */
+const OLD_PAGES: Record<string, WindowTarget> = {
+  performance: { page: 'scorecards' },
+  'previous-roster': { page: 'load-out', tab: 'previous-roster' },
+};
+
+const OLD_TABS: Partial<Record<PageId, Record<string, string>>> = {
+  scorecards: { drivers: 'performance' },
+};
+
+/**
+ * The place a page name and a tab name lead to today: the page and tab themselves when they are
+ * current, the new place when they are old names, or null when the page is not one at all. A
+ * tab that is not one of the page's (old or new) is dropped, and the page opens as usual.
+ */
+export function currentTarget(page: unknown, tab?: unknown): WindowTarget | null {
+  let target: WindowTarget;
+  if (isPageId(page)) target = { page };
+  else if (typeof page === 'string' && Object.hasOwn(OLD_PAGES, page)) target = OLD_PAGES[page]!;
+  else return null;
+  if (typeof tab !== 'string' || tab === '') return target;
+  const renamed = OLD_TABS[target.page]?.[tab];
+  if (renamed !== undefined) return { page: target.page, tab: renamed };
+  return isTabOf(target.page, tab) ? { page: target.page, tab } : target;
 }
 
 /** A page with a tab that is not one of its tabs is not a place a window can open on. */
@@ -133,6 +163,7 @@ export function windowQuery(target: WindowTarget): Record<string, string> {
 /**
  * Reads what a window was opened on from its address (`?page=load-out&tab=roster`). Null for the
  * main window, which has no page in its address, and for anything that is not a page or a tab.
+ * An address from before a page or tab was renamed opens the new place.
  */
 export function parseWindowTarget(search: string): WindowTarget | null {
   let params: URLSearchParams;
@@ -141,11 +172,7 @@ export function parseWindowTarget(search: string): WindowTarget | null {
   } catch {
     return null;
   }
-  const page = params.get('page');
-  if (!isPageId(page)) return null;
-  const tab = params.get('tab');
-  if (tab === null || tab === '') return { page };
-  return isTabOf(page, tab) ? { page, tab } : { page };
+  return currentTarget(params.get('page'), params.get('tab') ?? undefined);
 }
 
 /** Two targets name the same window when they are the same page and the same tab. */

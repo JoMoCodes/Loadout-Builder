@@ -1,20 +1,20 @@
-// Performance: the weekly scorecards for every driver. Four tabs: Drivers (the grid, making and
-// emailing the reports), Reports (colours, a preview, the thresholds), Directory (how to reach
-// everyone) and Imports (bringing in the weekly exports). Ported from the Weekly Performance App.
+// Scorecards: the weekly scorecards for every driver. Three tabs: Performance (the grid, making
+// and emailing the reports), Reports (colours, a preview, the thresholds) and Imports (bringing in
+// the weekly exports). Ported from the Weekly Performance App. Phone numbers and emails are on the
+// Associates page, with everything else about a driver.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { PerfDriversView } from '../../shared/performance';
 import { EMPTY_PERF_SNAPSHOT } from '../../shared/performance';
 import type { WeekRangeChoice } from '../../shared/performanceSettings';
-import { PAGE_TABS, isTabOf } from '../../shared/windows';
+import { PAGE_TABS, currentTarget, isTabOf } from '../../shared/windows';
 import { call, explain } from '../lib/channels';
 import { useAppSnapshot } from '../lib/useAppSnapshot';
 import { clearPerformanceHandoff, peekPerformanceHandoff } from './dashboard/handoff';
 import { ProblemBanner, StatusLine, useMessages } from './dataPages/PageParts';
 import { TabPanel, Tabs } from './dataPages/Tabs';
-import { DirectoryTab } from './performance/DirectoryTab';
-import { DriversTab } from './performance/DriversTab';
 import { ImportsTab } from './performance/ImportsTab';
+import { PerformanceTab } from './performance/PerformanceTab';
 import {
   effectiveRange,
   matchesSearch,
@@ -26,36 +26,35 @@ import {
 import { ReportsTab } from './performance/ReportsTab';
 import type { PageProps } from './types';
 
-const TABS = PAGE_TABS.performance;
+const TABS = PAGE_TABS.scorecards;
 
-const TAB_KEY = 'loadout.performance-tab';
+const TAB_KEY = 'loadout.scorecards-tab';
+/** Where the tab was remembered when the page was called Performance. */
+const OLD_TAB_KEY = 'loadout.performance-tab';
 
-const isTab = (id: string | null): id is string => isTabOf('performance', id);
+const isTab = (id: string | null): id is string => isTabOf('scorecards', id);
+
+/** The tab this id names today, or null: an old tab name ("drivers") leads to the new one. */
+const tabFrom = (id: string | null): string | null => currentTarget('scorecards', id)?.tab ?? null;
 
 const NO_FILTERS: DriverFilters = { status: 'ALL', tiers: [], activity: 'all' };
 
 function readTab(): string {
   try {
-    const saved = window.localStorage.getItem(TAB_KEY);
-    return TABS.some((tab) => tab.id === saved) ? saved! : TABS[0]!.id;
+    const saved = window.localStorage.getItem(TAB_KEY) ?? window.localStorage.getItem(OLD_TAB_KEY);
+    return tabFrom(saved) ?? TABS[0]!.id;
   } catch {
     return TABS[0]!.id;
   }
 }
 
-export function PerformancePage({
-  settings,
-  changeSettings,
-  goTo,
-  ownWindow,
-  startTab,
-}: PageProps) {
+export function ScorecardsPage({ settings, changeSettings, goTo, ownWindow, startTab }: PageProps) {
   const { snapshot, loading, error } = useAppSnapshot();
   // What the Dashboard handed over (a driver to show, or a tab), read once when the page opens.
   const [handoff] = useState(peekPerformanceHandoff);
   const [tab, setTab] = useState<string>(() =>
     handoff.driver
-      ? 'drivers'
+      ? 'performance'
       : isTab(handoff.tab)
         ? handoff.tab
         : isTab(startTab)
@@ -149,7 +148,7 @@ export function PerformancePage({
         try {
           window.localStorage.setItem(TAB_KEY, id);
         } catch {
-          // Only a convenience: the page opens on Drivers next time instead.
+          // Only a convenience: the page opens on Performance next time instead.
         }
       }
       // What a tab said last is not news on the next one.
@@ -162,37 +161,33 @@ export function PerformancePage({
   return (
     <section
       className="page-full flex min-h-0 flex-1 flex-col"
-      data-page="performance"
-      aria-labelledby="title-performance"
+      data-page="scorecards"
+      aria-labelledby="title-scorecards"
     >
       <div className="border-b border-line bg-surface px-6 pt-3 pb-1">
-        <h1 id="title-performance" className="text-[1.6rem] leading-tight font-semibold">
-          Performance
+        <h1 id="title-scorecards" className="text-[1.6rem] leading-tight font-semibold">
+          Scorecards
         </h1>
       </div>
       <Tabs
-        label="Performance"
-        name="performance"
-        page="performance"
+        label="Scorecards"
+        name="scorecards"
+        page="scorecards"
         tabs={TABS}
         value={tab}
         onChange={choose}
       />
-      <ProblemBanner
-        problem={messages.problem}
-        onClose={messages.clearProblem}
-        name="performance"
-      />
+      <ProblemBanner problem={messages.problem} onClose={messages.clearProblem} name="scorecards" />
       {error ? (
-        <p role="alert" className="problem px-6 py-4" data-testid="performance-load-problem">
+        <p role="alert" className="problem px-6 py-4" data-testid="scorecards-load-problem">
           {error}
         </p>
       ) : !snapshot ? (
         <p className="px-6 py-4 text-muted">{loading ? 'Getting the saved data...' : ''}</p>
       ) : (
-        <TabPanel name="performance" id={tab}>
-          {tab === 'drivers' ? (
-            <DriversTab
+        <TabPanel name="scorecards" id={tab}>
+          {tab === 'performance' ? (
+            <PerformanceTab
               snapshot={snapshot}
               settings={settings}
               changeSettings={changeSettings}
@@ -220,7 +215,6 @@ export function PerformancePage({
               messages={messages}
             />
           ) : null}
-          {tab === 'directory' ? <DirectoryTab revision={revision} messages={messages} /> : null}
           {tab === 'imports' ? (
             <ImportsTab
               snapshot={snapshot}
@@ -231,7 +225,7 @@ export function PerformancePage({
           ) : null}
         </TabPanel>
       )}
-      <StatusLine text={messages.status} name="performance" action={messages.statusAction} />
+      <StatusLine text={messages.status} name="scorecards" action={messages.statusAction} />
     </section>
   );
 }

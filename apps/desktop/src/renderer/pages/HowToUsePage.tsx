@@ -201,7 +201,7 @@ function problems(goTo: (id: PageId) => void): Problem[] {
           <li>
             <strong>No ... file for 2026-W38</strong> means there is a scorecard for that week, but
             not that kind of file. Download it for that week, save it in its folder, and click{' '}
-            <strong>Sync now</strong> on the {go('performance', 'Performance')} page,{' '}
+            <strong>Sync now</strong> on the {go('scorecards', 'Scorecards')} page,{' '}
             <strong>Imports</strong> tab.
           </li>
         </ul>
@@ -715,11 +715,11 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
             </li>
             <li>
               Bring in your driver list on {go('associates', 'Associates')}, if you have not
-              already. The Performance page uses the same list, so there is only one to keep up to
+              already. The Scorecards page uses the same list, so there is only one to keep up to
               date.
             </li>
             <li>
-              On the {go('performance', 'Performance')} page, open the <strong>Imports</strong> tab.
+              On the {go('scorecards', 'Scorecards')} page, open the <strong>Imports</strong> tab.
               There is a card for each of the nine kinds of weekly export.
             </li>
             <li>
@@ -754,8 +754,8 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
               <strong>How is this worked out?</strong> to see the rule behind a number.
             </li>
             <li>
-              To check a driver, open the <strong>Drivers</strong> tab. Pick the weeks at the top.
-              Double-click a driver to open their report. Click a red safety number to see the
+              To check a driver, open the <strong>Performance</strong> tab. Pick the weeks at the
+              top. Double-click a driver to open their report. Click a red safety number to see the
               events. Next to the weeks, <strong>What changed since last week</strong> counts who
               moved tier and who had new safety events. Click a count to see the names, and click a
               name to jump to that driver.
@@ -771,7 +771,7 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
               <strong>100%</strong> and zoom buttons.
             </li>
             <li>
-              On the <strong>Drivers</strong> tab, tick the drivers (or click{' '}
+              On the <strong>Performance</strong> tab, tick the drivers (or click{' '}
               <strong>Select all shown</strong>). Click <strong>Generate for selected</strong> to
               save their PDF reports in a folder you choose. The app counts up as it makes them.
               When it is done, click <strong>Show in folder</strong> to open that folder.
@@ -784,7 +784,7 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
             </li>
           </ol>
           <Shot name="dashboard" caption="The Dashboard with made-up weekly data" />
-          <Shot name="perf-drivers" caption="The Drivers tab with made-up drivers" />
+          <Shot name="perf-drivers" caption="The Performance tab with made-up drivers" />
           <Shot name="perf-reports" caption="The Reports tab: colours and a preview" />
 
           <h3>Email setup</h3>
@@ -815,9 +815,9 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
           <h3>The check file</h3>
           <p>
             <strong>Export selected</strong> and <strong>Export shown</strong> on the{' '}
-            <strong>Drivers</strong> tab save a check file: a spreadsheet of every number the app
-            read, for the ticked or shown drivers. Open it to compare the app&apos;s numbers with
-            the scorecard, or to check a driver&apos;s numbers by hand. Click{' '}
+            <strong>Performance</strong> tab save a check file: a spreadsheet of every number the
+            app read, for the ticked or shown drivers. Open it to compare the app&apos;s numbers
+            with the scorecard, or to check a driver&apos;s numbers by hand. Click{' '}
             <strong>Show in folder</strong> after it is saved to see the file.
           </p>
         </>

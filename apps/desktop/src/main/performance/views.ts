@@ -7,11 +7,9 @@ import {
   buildFleetSummary,
   categoryRollup,
   computeSafetyCounts,
-  effectiveStatus,
   evaluateCoaching,
   evaluateCompliance,
   getAllWeeks,
-  getAllWithLatest,
   getPsbImportedWeeks,
   getThresholds,
   tierRank,
@@ -24,7 +22,6 @@ import {
 import type {
   PerfComplianceRow,
   PerfDashboardView,
-  PerfDirectoryRow,
   PerfDriverRow,
   PerfDriversView,
   PerfImportCard,
@@ -194,20 +191,6 @@ export function driversView(data: PerfData, asked: WeekRange | null): PerfDriver
         .sort((a, b) => b.count - a.count || byName(a, b)),
     },
   };
-}
-
-export function directoryView(data: PerfData): PerfDirectoryRow[] {
-  return getAllWithLatest(data).map((d) => ({
-    transporterId: d.transporterId,
-    name: d.name,
-    status: effectiveStatus(d),
-    position: d.position ?? '',
-    qualifications: d.qualifications ?? '',
-    email: d.email ?? '',
-    personalPhone: d.personalPhone ?? '',
-    workPhone: d.workPhone ?? '',
-    idExpiration: d.idExpiration ?? '',
-  }));
 }
 
 export function thresholdsView(data: PerfData): PerfThresholdRow[] {

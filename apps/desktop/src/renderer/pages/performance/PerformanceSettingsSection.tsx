@@ -157,7 +157,7 @@ export function PerformanceSettingsSection({
         Bring in new weekly files each time the app opens
       </label>
       <p className="hint">
-        The app looks in the folders you chose on the Performance page, Imports tab, and brings in
+        The app looks in the folders you chose on the Scorecards page, Imports tab, and brings in
         any file it has not seen before.
       </p>
 

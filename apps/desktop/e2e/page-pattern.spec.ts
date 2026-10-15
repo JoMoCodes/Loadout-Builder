@@ -1,5 +1,6 @@
 // The shared way a page gets its data and runs actions (docs/PAGE-PATTERN.md), driven in a plain
-// browser with the stand-in bridge. The real thing is covered by the Electron smoke check.
+// browser with the stand-in bridge. The worked example is the Previous Roster tab on Load Out.
+// The real thing is covered by the Electron smoke check.
 
 import { expect, test, type Page } from '@playwright/test';
 import { callsTo, emit, installFakeBridge, onCall } from './support/fakeBridge';
@@ -16,14 +17,20 @@ function previousRoster(rows: number) {
   };
 }
 
+const previousRosterTab = (page: Page) =>
+  page.locator('[data-page="load-out"] [data-tab-panel="previous-roster"]');
+
 async function openPreviousRoster(page: Page, rows: number) {
   await installFakeBridge(page, {
     settings: { demoMode: false },
     snapshot: { previousRoster: previousRoster(rows), counts: { previousRosterRows: rows } },
   });
-  await page.addInitScript(() => window.localStorage.setItem('loadout.page', 'previous-roster'));
+  await page.addInitScript(() => {
+    window.localStorage.setItem('loadout.page', 'load-out');
+    window.localStorage.setItem('loadout.load-out-tab', 'previous-roster');
+  });
   await page.goto('/');
-  await expect(page.locator('[data-page="previous-roster"]')).toBeVisible();
+  await expect(previousRosterTab(page)).toBeVisible();
 }
 
 test('Load Out with nothing loaded says how to start, in plain words', async ({ page }) => {
@@ -108,7 +115,7 @@ test('the app’s own words are shown when it refuses, and a missing database is
 
   await onCall(page, 'state:snapshot', `() => ({ ok: false, reason: 'no-data' })`);
   await emit(page, 'state:changed', { revision: 9 });
-  await expect(page.getByTestId('previous-roster-problem')).toContainText(
+  await expect(page.getByTestId('load-out-problem')).toContainText(
     'saved data could not be opened',
   );
 });
@@ -116,9 +123,50 @@ test('the app’s own words are shown when it refuses, and a missing database is
 test('outside the app there is no bridge, and pages say so instead of breaking', async ({
   page,
 }) => {
-  await page.addInitScript(() => window.localStorage.setItem('loadout.page', 'previous-roster'));
+  await page.addInitScript(() => window.localStorage.setItem('loadout.page', 'load-out'));
   await page.goto('/');
-  await expect(page.getByTestId('previous-roster-problem')).toContainText(
+  await expect(page.getByTestId('load-out-problem')).toContainText(
     'only works inside the Loadout Builder app',
+  );
+});
+
+test('a remembered Previous Roster page (from before it became a tab) opens Load Out on that tab', async ({
+  page,
+}) => {
+  await installFakeBridge(page, {
+    settings: { demoMode: false },
+    snapshot: { previousRoster: previousRoster(4), counts: { previousRosterRows: 4 } },
+  });
+  await page.addInitScript(() => {
+    window.localStorage.setItem('loadout.page', 'previous-roster');
+    // What the Load Out page itself remembered is set aside for the tab the old page stood for.
+    window.localStorage.setItem('loadout.load-out-tab', 'print');
+  });
+  await page.goto('/');
+  await expect(page.locator('[data-nav="load-out"]')).toHaveAttribute('aria-current', 'page');
+  await expect(page.getByRole('tab', { name: 'Previous Roster' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+  await expect(page.getByTestId('previous-roster-count')).toContainText('4 drivers');
+  // There is no Previous Roster page in the menu any more.
+  await expect(page.locator('[data-nav="previous-roster"]')).toHaveCount(0);
+});
+
+test('a remembered Performance page opens Scorecards, on the tab that was the Drivers tab', async ({
+  page,
+}) => {
+  await installFakeBridge(page, { settings: { demoMode: false } });
+  await page.addInitScript(() => {
+    window.localStorage.setItem('loadout.page', 'performance');
+    window.localStorage.setItem('loadout.performance-tab', 'drivers');
+  });
+  await page.goto('/');
+  await expect(page.locator('[data-nav="scorecards"]')).toHaveAttribute('aria-current', 'page');
+  await expect(page.locator('[data-page="scorecards"] h1')).toHaveText('Scorecards');
+  await expect(page.getByRole('tab')).toHaveText(['Performance', 'Reports', 'Imports']);
+  await expect(page.getByTestId('scorecards-tab-performance')).toHaveAttribute(
+    'aria-selected',
+    'true',
   );
 });

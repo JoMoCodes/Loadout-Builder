@@ -2,7 +2,8 @@
 // Each step points at something on the page by a CSS selector. A step whose thing is not on the
 // screen (for example a table with nothing in it) is left out when the tour starts.
 //
-// Tour names are stored in the settings once a tour has run, so they must stay the same.
+// Tour names are stored in the settings once a tour has run, so they must stay the same. When one
+// has to change (a page was renamed), its old name goes in OLD_TOUR_NAMES so it does not run again.
 
 import type { PageId } from '../pages/types';
 
@@ -27,7 +28,7 @@ const VEHICLE_DATA = '[data-page="vehicle-data"]';
 const ASSOCIATES = '[data-page="associates"]';
 const ROUTE_SHEETS = '[data-page="route-sheets"]';
 const SETTINGS = '[data-page="settings"]';
-const PERF = '[data-page="performance"]';
+const SCORECARDS = '[data-page="scorecards"]';
 const DASHBOARD = '[data-page="dashboard"]';
 
 export const TOURS: Record<string, Tour> = {
@@ -204,31 +205,6 @@ export const TOURS: Record<string, Tour> = {
     ],
   },
 
-  'previous-roster': {
-    name: 'previous-roster',
-    label: 'Previous Roster',
-    steps: [
-      {
-        element: '[data-page="previous-roster"] [data-testid="previous-roster-count"]',
-        title: 'The last roster you kept',
-        text: 'Drivers who had a van last time get the same van back when you click Assign Vans.',
-        side: 'bottom',
-      },
-      {
-        element: '[data-page="previous-roster"] [data-testid="clear-previous-roster"]',
-        title: 'Start fresh',
-        text: 'Clear Previous Roster forgets it. Keep a new one with Move Data to Previous Roster on the Load Out page.',
-        side: 'bottom',
-      },
-      {
-        element: '[data-page="previous-roster"] [data-testid="data-grid"]',
-        title: 'Who had which van',
-        text: 'Each row is a driver from the last roster, with the van they had.',
-        side: 'top',
-      },
-    ],
-  },
-
   'route-data': {
     name: 'route-data',
     label: 'Route Data',
@@ -363,7 +339,13 @@ export const TOURS: Record<string, Tour> = {
       {
         element: `${ASSOCIATES} [aria-label="Search this table"]`,
         title: 'Find someone',
-        text: 'Type a name or ID to find a driver. Their van skills and ID expiry date are in the table.',
+        text: 'Type a name, ID, email or phone number to find a driver. Their van skills, phones, email and ID expiry date are in the table.',
+        side: 'bottom',
+      },
+      {
+        element: `${ASSOCIATES} [data-testid="copy-email"]`,
+        title: 'Copy their details',
+        text: 'Click a driver, then Copy email or Copy phone. Paste it where you need it.',
         side: 'bottom',
       },
       {
@@ -375,42 +357,42 @@ export const TOURS: Record<string, Tour> = {
     ],
   },
 
-  'performance-drivers': {
-    name: 'performance-drivers',
-    label: 'Performance: Drivers tab',
+  'scorecards-performance': {
+    name: 'scorecards-performance',
+    label: 'Scorecards: Performance tab',
     steps: [
       {
-        element: `${PERF} [role="tablist"]`,
-        title: 'Four tabs',
-        text: 'Drivers lists everyone and makes the reports. Reports sets how they look. Directory has phone numbers and emails. Imports brings in the weekly files.',
+        element: `${SCORECARDS} [role="tablist"]`,
+        title: 'Three tabs',
+        text: 'Performance lists everyone and makes the reports. Reports sets how they look. Imports brings in the weekly files. Phone numbers and emails are on the Associates page.',
         side: 'bottom',
       },
       {
-        element: `${PERF} [data-testid="perf-week-range"]`,
+        element: `${SCORECARDS} [data-testid="perf-week-range"]`,
         title: 'Pick the weeks',
         text: 'The scores and the reports cover these weeks. Click a quick pick, or choose the first and last week.',
         side: 'bottom',
       },
       {
-        element: `${PERF} [role="group"][aria-label="Show only"]`,
+        element: `${SCORECARDS} [role="group"][aria-label="Show only"]`,
         title: 'Narrow the list',
         text: 'Show only active drivers, one tier, or the drivers with a scorecard in these weeks.',
         side: 'bottom',
       },
       {
-        element: `${PERF} [data-testid="data-grid"]`,
+        element: `${SCORECARDS} [data-testid="data-grid"]`,
         title: 'Check a driver',
         text: 'Double-click a driver to open their report. Click a red safety number to see the events. Tick drivers in the first column to act on them.',
         side: 'top',
       },
       {
-        element: `${PERF} [data-testid="perf-generate-selected"]`,
+        element: `${SCORECARDS} [data-testid="perf-generate-selected"]`,
         title: 'Make the reports',
         text: 'Generate for selected saves one PDF for each ticked driver, in a folder you choose.',
         side: 'bottom',
       },
       {
-        element: `${PERF} [data-testid="perf-email-selected"]`,
+        element: `${SCORECARDS} [data-testid="perf-email-selected"]`,
         title: 'Email the reports',
         text: 'Email selected sends each ticked driver their report. It shows who gets what first. Set up email once in Settings.',
         side: 'bottom',
@@ -418,30 +400,30 @@ export const TOURS: Record<string, Tour> = {
     ],
   },
 
-  'performance-reports': {
-    name: 'performance-reports',
-    label: 'Performance: Reports tab',
+  'scorecards-reports': {
+    name: 'scorecards-reports',
+    label: 'Scorecards: Reports tab',
     steps: [
       {
-        element: `${PERF} [data-testid="perf-use-colour"]`,
+        element: `${SCORECARDS} [data-testid="perf-use-colour"]`,
         title: 'Colour or black and white',
         text: 'Turn colour off for reports that print well on any printer.',
         side: 'right',
       },
       {
-        element: `${PERF} [data-testid="perf-save-colours"]`,
+        element: `${SCORECARDS} [data-testid="perf-save-colours"]`,
         title: 'Keep your colours',
         text: 'Change the colours, look at the sample, then click Save colours. Reset puts the old colours back.',
         side: 'top',
       },
       {
-        element: `${PERF} [data-testid="perf-driver-preview"]`,
+        element: `${SCORECARDS} [data-testid="perf-driver-preview"]`,
         title: 'Preview a driver',
-        text: "See a driver's report before you send it. The arrows go to the next driver on the Drivers tab.",
+        text: "See a driver's report before you send it. The arrows go to the next driver on the Performance tab.",
         side: 'top',
       },
       {
-        element: `${PERF} [data-testid="perf-import-thresholds"]`,
+        element: `${SCORECARDS} [data-testid="perf-import-thresholds"]`,
         title: 'The scorecard thresholds',
         text: 'The numbers each tier needs. Bring in a new thresholds file when they change.',
         side: 'top',
@@ -449,55 +431,30 @@ export const TOURS: Record<string, Tour> = {
     ],
   },
 
-  'performance-directory': {
-    name: 'performance-directory',
-    label: 'Performance: Directory tab',
+  'scorecards-imports': {
+    name: 'scorecards-imports',
+    label: 'Scorecards: Imports tab',
     steps: [
       {
-        element: `${PERF} [data-testid="data-grid"]`,
-        title: 'How to reach everyone',
-        text: 'Every driver on the driver list, with their email, phones and ID expiry date.',
-        side: 'top',
-      },
-      {
-        element: `${PERF} [aria-label="Search this table"]`,
-        title: 'Find someone',
-        text: 'Type a name, ID, email or phone number.',
-        side: 'bottom',
-      },
-      {
-        element: `${PERF} [data-testid="perf-copy-email"]`,
-        title: 'Copy their details',
-        text: 'Click a driver, then Copy email or Copy phone. Paste it where you need it.',
-        side: 'bottom',
-      },
-    ],
-  },
-
-  'performance-imports': {
-    name: 'performance-imports',
-    label: 'Performance: Imports tab',
-    steps: [
-      {
-        element: `${PERF} [data-testid="perf-card-thresholds"]`,
+        element: `${SCORECARDS} [data-testid="perf-card-thresholds"]`,
         title: 'One card for each file',
         text: 'Each card says where its file comes from, which folder it is read from, and when it was last brought in. The driver list is not here: it comes from Associates.',
         side: 'right',
       },
       {
-        element: `${PERF} [data-testid="perf-choose-scorecards"]`,
+        element: `${SCORECARDS} [data-testid="perf-choose-scorecards"]`,
         title: 'Choose each folder once',
         text: 'Click Choose folder and pick the folder you save that kind of file in. The app brings in what is there.',
         side: 'bottom',
       },
       {
-        element: `${PERF} [data-testid="perf-sync-now"]`,
+        element: `${SCORECARDS} [data-testid="perf-sync-now"]`,
         title: 'Every week: Sync now',
         text: 'Sync now brings in every new file from the folders you chose.',
         side: 'bottom',
       },
       {
-        element: `${PERF} label:has([data-testid="perf-auto-import"])`,
+        element: `${SCORECARDS} label:has([data-testid="perf-auto-import"])`,
         title: 'Or let it happen by itself',
         text: 'Leave this on, and the app brings in new files each time it opens.',
         side: 'bottom',
@@ -528,7 +485,7 @@ export const TOURS: Record<string, Tour> = {
       {
         element: `${DASHBOARD} [data-testid="dashboard-coaching"]`,
         title: 'Who needs a word',
-        text: 'Drivers to coach, with the reasons. Click a driver to open them on the Performance page or preview their report.',
+        text: 'Drivers to coach, with the reasons. Click a driver to open them on the Scorecards page or preview their report.',
         side: 'right',
       },
       {
@@ -546,7 +503,7 @@ export const TOURS: Record<string, Tour> = {
       {
         element: `${DASHBOARD} [data-testid="dashboard-go-imports"]`,
         title: 'No scorecards yet?',
-        text: 'Bring in the weekly exports on the Performance page, Imports tab, and the Dashboard fills in.',
+        text: 'Bring in the weekly exports on the Scorecards page, Imports tab, and the Dashboard fills in.',
         side: 'bottom',
       },
     ],
@@ -584,11 +541,27 @@ export const TOURS: Record<string, Tour> = {
   },
 };
 
-/** The tour for what is on screen: the page, and on Load Out and Performance the open tab. */
+/**
+ * What a tour was called before its page was renamed. A tour seen under its old name has been
+ * seen: it does not run again by itself.
+ */
+const OLD_TOUR_NAMES: Record<string, string> = {
+  'scorecards-performance': 'performance-drivers',
+  'scorecards-reports': 'performance-reports',
+  'scorecards-imports': 'performance-imports',
+};
+
+/** Has this tour run (or been skipped) before, under this name or the one it had? */
+export function tourSeen(seen: readonly string[], name: string): boolean {
+  const old = OLD_TOUR_NAMES[name];
+  return seen.includes(name) || (old !== undefined && seen.includes(old));
+}
+
+/** The tour for what is on screen: the page, and on Load Out and Scorecards the open tab. */
 export function tourNameFor(page: PageId, openTab: string | null): string | null {
   let name: string = page;
   if (page === 'load-out') name = `load-out-${openTab ?? 'roster'}`;
-  else if (page === 'performance') name = `performance-${openTab ?? 'drivers'}`;
+  else if (page === 'scorecards') name = `scorecards-${openTab ?? 'performance'}`;
   return TOURS[name] ? name : null;
 }
 
@@ -598,11 +571,11 @@ export function openLoadOutTab(root: ParentNode = document): string | null {
   return tab?.getAttribute('data-tab-button') ?? null;
 }
 
-/** Reads which Performance tab is open from the page itself ("drivers", "imports"). */
-export function openPerformanceTab(root: ParentNode = document): string | null {
-  const tab = root.querySelector('[data-page="performance"] [role="tab"][aria-selected="true"]');
+/** Reads which Scorecards tab is open from the page itself ("performance", "imports"). */
+export function openScorecardsTab(root: ParentNode = document): string | null {
+  const tab = root.querySelector('[data-page="scorecards"] [role="tab"][aria-selected="true"]');
   const id = tab?.getAttribute('id') ?? '';
-  return id.startsWith('performance-tab-') ? id.slice('performance-tab-'.length) : null;
+  return id.startsWith('scorecards-tab-') ? id.slice('scorecards-tab-'.length) : null;
 }
 
 /** Every tour name, for "See all the tours again" and for tests. */

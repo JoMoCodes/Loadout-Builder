@@ -1,4 +1,4 @@
-// Made-up data and helpers for the Performance page tests (performance-*.spec.ts). Every name
+// Made-up data and helpers for the Scorecards page tests (performance-*.spec.ts). Every name
 // and ID comes from packages/fixtures/manifest.json (the made-up people in
 // scripts/parity/wpa/expected/drivers.json); the email addresses are at example.com.
 //
@@ -8,6 +8,7 @@
 import type { Page } from '@playwright/test';
 import { DEFAULT_PERFORMANCE } from '../../src/shared/performanceSettings';
 import { installFakeBridge } from './fakeBridge';
+import { associate } from './pageData';
 
 export const ARCHER = { name: 'Archer Gresham', id: 'A02V4L9HIELIDL' };
 export const DESMOND = { name: 'Desmond Marisol Penrose', id: 'A05QUB9XOW4NT1' };
@@ -39,7 +40,7 @@ const NO_SAFETY = {
   seatbelt: 0,
 };
 
-/** One line of the Drivers tab. */
+/** One line of the Performance tab. */
 export function driverRow(who: { name: string; id: string }, values: Json = {}): Json {
   const averages = {
     score: 90.12,
@@ -88,26 +89,14 @@ export const DRIVERS = (): Json[] => [
   driverRow(FABIAN, { status: '', latestTier: 'Platinum', latestScore: 100, hasEmail: false }),
 ];
 
-export function directoryRow(who: { name: string; id: string }, values: Json = {}): Json {
-  return {
-    transporterId: who.id,
-    name: who.name,
-    status: 'ACTIVE',
-    position: 'Driver',
-    qualifications: 'EDV',
-    email: '',
-    personalPhone: '',
-    workPhone: '',
-    idExpiration: '2031-03-24',
-    ...values,
-  };
-}
-
-export const DIRECTORY = (): Json[] => [
-  directoryRow(ARCHER, { email: 'driver034@example.com', personalPhone: '4885550141' }),
-  directoryRow(DESMOND, { email: 'driver035@example.com', workPhone: '+17535550146' }),
-  directoryRow(CARMEN, { status: 'INACTIVE', email: 'driver076@example.com' }),
-  directoryRow(FABIAN, { status: '' }),
+/** The same people on the Associates list (the snapshot), with how to reach them. */
+export const ASSOCIATES = (): Json[] => [
+  associate(ARCHER, {
+    associate: { email: 'driver034@example.com', personalPhone: '4885550141' },
+  }),
+  associate(DESMOND, { associate: { email: 'driver035@example.com', workPhone: '+17535550146' } }),
+  associate(CARMEN, { associate: { status: 'INACTIVE', email: 'driver076@example.com' } }),
+  associate(FABIAN, { associate: { status: '' } }),
 ];
 
 export function importCard(kind: string, values: Json = {}): Json {
@@ -125,14 +114,13 @@ export function importCard(kind: string, values: Json = {}): Json {
 export interface PerfData {
   drivers?: Json[];
   changes?: Json;
-  directory?: Json[];
   thresholds?: Json[];
   cards?: Json[];
   safety?: Json[];
 }
 
 export interface OpenPerformance {
-  tab?: 'drivers' | 'reports' | 'directory' | 'imports';
+  tab?: 'performance' | 'reports' | 'imports';
   page?: string;
   /** Changes to the performance settings. */
   performance?: Json;
@@ -166,7 +154,7 @@ export async function openPerformance(page: Page, options: OpenPerformance = {})
       ...options.settings,
       performance: { ...DEFAULT_PERFORMANCE, ...options.performance },
     },
-    snapshot: { performance: brief as never },
+    snapshot: { performance: brief as never, associates: ASSOCIATES() as never },
   });
   const data: PerfData = {
     drivers: DRIVERS(),
@@ -177,7 +165,6 @@ export async function openPerformance(page: Page, options: OpenPerformance = {})
       tierDown: 2,
       newSafetyEvents: 1,
     },
-    directory: DIRECTORY(),
     thresholds: [],
     cards: [],
     safety: [],
@@ -237,7 +224,6 @@ export async function openPerformance(page: Page, options: OpenPerformance = {})
           rows: w.__perf.drivers,
           changes: w.__perf.changes,
         });
-      hooks['performance:directory'] = () => ok(w.__perf.directory);
       hooks['performance:thresholds'] = () => ok(w.__perf.thresholds);
       hooks['performance:import-cards'] = () => ok(w.__perf.cards);
       hooks['performance:safety-events'] = () => ok(w.__perf.safety);
@@ -255,12 +241,12 @@ export async function openPerformance(page: Page, options: OpenPerformance = {})
   await page.addInitScript(
     ([pageId, tab]) => {
       window.localStorage.setItem('loadout.page', pageId!);
-      if (tab) window.localStorage.setItem('loadout.performance-tab', tab);
+      if (tab) window.localStorage.setItem('loadout.scorecards-tab', tab);
     },
-    [options.page ?? 'performance', options.tab ?? ''],
+    [options.page ?? 'scorecards', options.tab ?? ''],
   );
   await page.goto('/');
-  await page.locator(`[data-page="${options.page ?? 'performance'}"]`).waitFor();
+  await page.locator(`[data-page="${options.page ?? 'scorecards'}"]`).waitFor();
 }
 
 /** What the page copied, oldest first. */

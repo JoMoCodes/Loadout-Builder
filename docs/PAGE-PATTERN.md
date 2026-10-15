@@ -45,7 +45,7 @@ A **query** asks and changes nothing. A **command** does something; after every 
 process sends `state:changed`, so every page that is looking reads the snapshot again.
 
 The worked example is **Clear Previous Roster**. It is already in the code (the Previous Roster
-page), so you can open each file.
+tab on the Load Out page), so you can open each file.
 
 **1. Declare it** in `src/shared/channels/loadOut.ts`:
 
@@ -260,7 +260,10 @@ await installFakeBridge(page, {
   settings: { demoMode: false },
   snapshot: { counts: { previousRosterRows: 12 } },
 });
-await page.addInitScript(() => localStorage.setItem('loadout.page', 'previous-roster'));
+await page.addInitScript(() => {
+  localStorage.setItem('loadout.page', 'load-out');
+  localStorage.setItem('loadout.load-out-tab', 'previous-roster');
+});
 await page.goto('/');
 await onCall(page, 'loadOut:clear-previous-roster', `() => {
   window.__fake.snapshot.counts.previousRosterRows = 0;

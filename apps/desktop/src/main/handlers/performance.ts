@@ -11,7 +11,6 @@ import { ChannelRefusal } from '../channels';
 import {
   complianceView,
   dashboardView,
-  directoryView,
   driversView,
   importCardsView,
   resolveRange,
@@ -43,7 +42,6 @@ export const performanceHandlers: HandlersFor<typeof performanceChannels> = {
     const r = checkRange(range);
     return getSafetyEventsForDriver(dataOf(ctx), transporterId, r.from, r.to, metricType);
   },
-  'performance:directory': (_input, ctx) => directoryView(dataOf(ctx)),
   'performance:thresholds': (_input, ctx) => thresholdsView(dataOf(ctx)),
   'performance:compliance': (_input, ctx) =>
     complianceView(dataOf(ctx), settingsOf(ctx).complianceWindowDays, ctx.today()),

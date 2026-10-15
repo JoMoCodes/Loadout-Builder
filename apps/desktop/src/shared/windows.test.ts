@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import {
   PAGE_IDS,
   PAGE_TABS,
+  currentTarget,
   isTabOf,
   isWindowTarget,
   parseWindowTarget,
@@ -13,7 +14,7 @@ import {
 } from './windows';
 
 describe('the pages and their tabs', () => {
-  it('lists the twelve pages in menu order', () => {
+  it('lists the eleven pages in menu order', () => {
     expect(PAGE_IDS).toEqual([
       'home',
       'dashboard',
@@ -22,8 +23,7 @@ describe('the pages and their tabs', () => {
       'route-data',
       'vehicle-data',
       'associates',
-      'performance',
-      'previous-roster',
+      'scorecards',
       'how-to-use',
       'features-log',
       'settings',
@@ -54,13 +54,12 @@ describe('the pages and their tabs', () => {
       'lmr',
     ]);
     expect(PAGE_TABS.associates.map((tab) => tab.id)).toEqual(['associates', 'lifetime-routes']);
-    expect(PAGE_TABS.performance.map((tab) => tab.id)).toEqual([
-      'drivers',
+    expect(PAGE_TABS.scorecards.map((tab) => tab.id)).toEqual([
+      'performance',
       'reports',
-      'directory',
       'imports',
     ]);
-    for (const page of ['home', 'dashboard', 'previous-roster', 'settings'] as const) {
+    for (const page of ['home', 'dashboard', 'settings'] as const) {
       expect(PAGE_TABS[page]).toEqual([]);
     }
   });
@@ -77,7 +76,7 @@ describe('a window target (what the page sends on app:open-window)', () => {
   it('is a page, with a tab only when it is one of that page’s tabs', () => {
     expect(isWindowTarget({ page: 'settings' })).toBe(true);
     expect(isWindowTarget({ page: 'load-out', tab: 'available-vans' })).toBe(true);
-    expect(isWindowTarget({ page: 'load-out', tab: 'drivers' })).toBe(false);
+    expect(isWindowTarget({ page: 'load-out', tab: 'performance' })).toBe(false);
     expect(isWindowTarget({ page: 'settings', tab: 'roster' })).toBe(false);
     expect(isWindowTarget({ page: 'nowhere' })).toBe(false);
     expect(isWindowTarget({ tab: 'roster' })).toBe(false);
@@ -103,7 +102,7 @@ describe('the window title', () => {
     expect(windowTitle({ page: 'load-out', tab: 'available-vans' })).toBe(
       'Load Out · Available Vans',
     );
-    expect(windowTitle({ page: 'performance', tab: 'imports' })).toBe('Performance · Imports');
+    expect(windowTitle({ page: 'scorecards', tab: 'imports' })).toBe('Scorecards · Imports');
   });
 
   it('is the page alone when there is no tab', () => {
@@ -132,5 +131,55 @@ describe('the address of a page-only window', () => {
     expect(parseWindowTarget('?page=load-out&tab=nowhere')).toEqual({ page: 'load-out' });
     expect(parseWindowTarget('?page=settings&tab=roster')).toEqual({ page: 'settings' });
     expect(parseWindowTarget('?page=load-out&tab=')).toEqual({ page: 'load-out' });
+  });
+
+  it('opens the new place for an address from before a page or tab was renamed', () => {
+    expect(parseWindowTarget('?page=performance')).toEqual({ page: 'scorecards' });
+    expect(parseWindowTarget('?page=performance&tab=drivers')).toEqual({
+      page: 'scorecards',
+      tab: 'performance',
+    });
+    expect(parseWindowTarget('?page=performance&tab=imports')).toEqual({
+      page: 'scorecards',
+      tab: 'imports',
+    });
+    // The Directory tab is gone: the page opens as usual.
+    expect(parseWindowTarget('?page=performance&tab=directory')).toEqual({ page: 'scorecards' });
+    expect(parseWindowTarget('?page=previous-roster')).toEqual({
+      page: 'load-out',
+      tab: 'previous-roster',
+    });
+  });
+});
+
+describe('an old page or tab name', () => {
+  it('leads to where that page or tab is now', () => {
+    expect(currentTarget('performance')).toEqual({ page: 'scorecards' });
+    expect(currentTarget('performance', 'drivers')).toEqual({
+      page: 'scorecards',
+      tab: 'performance',
+    });
+    expect(currentTarget('scorecards', 'drivers')).toEqual({
+      page: 'scorecards',
+      tab: 'performance',
+    });
+    expect(currentTarget('previous-roster')).toEqual({
+      page: 'load-out',
+      tab: 'previous-roster',
+    });
+  });
+
+  it('leaves a current name alone, and drops a tab that is not the page’s', () => {
+    expect(currentTarget('scorecards', 'reports')).toEqual({ page: 'scorecards', tab: 'reports' });
+    expect(currentTarget('settings')).toEqual({ page: 'settings' });
+    expect(currentTarget('settings', '')).toEqual({ page: 'settings' });
+    expect(currentTarget('load-out', 'drivers')).toEqual({ page: 'load-out' });
+  });
+
+  it('is nothing for a name that was never a page', () => {
+    expect(currentTarget('nowhere')).toBeNull();
+    expect(currentTarget(null)).toBeNull();
+    expect(currentTarget(undefined)).toBeNull();
+    expect(currentTarget('toString')).toBeNull();
   });
 });

@@ -314,7 +314,7 @@ test('the menu has Dashboard right after Home', async ({ page }) => {
   await expect(page.locator('[data-nav="dashboard"]')).toHaveAttribute('aria-current', 'page');
 });
 
-test('with nothing chosen it shows every week, like the Performance page, and All is lit', async ({
+test('with nothing chosen it shows every week, like the Scorecards page, and All is lit', async ({
   page,
 }) => {
   await openDashboard(page, { weekRange: { from: null, to: null } });
@@ -514,7 +514,7 @@ test('the ID expiry list shows expired first, then expiring soon', async ({ page
   await expect(page.getByTestId('dashboard-compliance')).not.toContainText('Felicia');
 });
 
-test("a driver's menu previews their report or opens them on the Performance page", async ({
+test("a driver's menu previews their report or opens them on the Scorecards page", async ({
   page,
 }) => {
   await openDashboard(page);
@@ -537,7 +537,7 @@ test("a driver's menu previews their report or opens them on the Performance pag
   await page.getByTestId('driver-menu-preview').click();
   await expect(page.getByTestId('dashboard-action-problem')).toContainText('Something went wrong');
 
-  // Opening them on the Performance page hands the driver over; that page reads it and lands on
+  // Opening them on the Scorecards page hands the driver over; that page reads it and lands on
   // their row (performance-explain.spec.ts follows it there).
   await page.evaluate(() => {
     const store = window.sessionStorage;
@@ -550,11 +550,11 @@ test("a driver's menu previews their report or opens them on the Performance pag
   });
   await page.getByTestId('coaching-row').nth(1).click();
   await page.getByTestId('driver-menu-open').click();
-  await expect(page.locator('[data-nav="performance"]')).toHaveAttribute('aria-current', 'page');
+  await expect(page.locator('[data-nav="scorecards"]')).toHaveAttribute('aria-current', 'page');
   expect(await page.evaluate(() => (window as unknown as { __handed: string[] }).__handed)).toEqual(
-    ['loadout.performance.driver=A05QUB9XOW4NT1', 'loadout.performance.tab=drivers'],
+    ['loadout.performance.driver=A05QUB9XOW4NT1', 'loadout.performance.tab=performance'],
   );
-  await expect(page.getByTestId('performance-tab-drivers')).toHaveAttribute(
+  await expect(page.getByTestId('scorecards-tab-performance')).toHaveAttribute(
     'aria-selected',
     'true',
   );
@@ -636,12 +636,9 @@ test('with no weekly data it says so and offers the Imports tab', async ({ page 
   await expect(empty).toContainText('No weekly scorecards yet.');
   await expect(page.getByTestId('tile-fleet')).toHaveCount(0);
   await page.getByTestId('dashboard-go-imports').click();
-  await expect(page.locator('[data-nav="performance"]')).toHaveAttribute('aria-current', 'page');
-  // The Performance page opens on the Imports tab and uses up the hand-over.
-  await expect(page.getByTestId('performance-tab-imports')).toHaveAttribute(
-    'aria-selected',
-    'true',
-  );
+  await expect(page.locator('[data-nav="scorecards"]')).toHaveAttribute('aria-current', 'page');
+  // The Scorecards page opens on the Imports tab and uses up the hand-over.
+  await expect(page.getByTestId('scorecards-tab-imports')).toHaveAttribute('aria-selected', 'true');
   expect(await page.evaluate(() => sessionStorage.getItem('loadout.performance.tab'))).toBeNull();
 });
 

@@ -1,4 +1,4 @@
-// The Performance page, Reports tab, on the stand-in bridge: the report colours with the live
+// The Scorecards page, Reports tab, on the stand-in bridge: the report colours with the live
 // preview of page 1, saving and resetting them, previewing each driver shown on the Drivers tab
 // (buttons and arrow keys), and the thresholds table with "asks before replacing".
 
@@ -7,7 +7,7 @@ import { DEFAULT_REPORT_COLOURS } from '../src/shared/performanceSettings';
 import { callsTo, onCall } from './support/fakeBridge';
 import { ARCHER, DESMOND, TOBIAS, openPerformance, setPerf } from './support/performance';
 
-const status = (page: Page) => page.getByTestId('performance-status');
+const status = (page: Page) => page.getByTestId('scorecards-status');
 const dialog = (page: Page, name: string) => page.locator(`dialog[data-dialog="${name}"]`);
 const frame = (page: Page, testId: string) => page.frameLocator(`[data-testid="${testId}"]`);
 
@@ -98,7 +98,7 @@ test('Preview a driver steps through the drivers shown on the Drivers tab', asyn
 test('with no drivers shown, the preview says what to do', async ({ page }) => {
   await openPerformance(page, { tab: 'reports', performance: { filters: ['tier:Silver'] } });
   await expect(page.getByTestId('perf-driver-preview')).toContainText(
-    'No drivers are shown on the Drivers tab. Change its filters to preview a report.',
+    'No drivers are shown on the Performance tab. Change its filters to preview a report.',
   );
 });
 

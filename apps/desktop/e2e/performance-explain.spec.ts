@@ -1,4 +1,4 @@
-// From the Dashboard to a driver's row on the Performance page, and "Explain this score" on the
+// From the Dashboard to a driver's row on the Scorecards page, and "Explain this score" on the
 // Drivers tab and the Dashboard, on the stand-in bridge. Every name and ID comes from the
 // made-up people in packages/fixtures (scripts/parity/wpa/expected).
 
@@ -6,7 +6,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { callsTo } from './support/fakeBridge';
 import { ARCHER, DESMOND, explanation, openPerformance, WEEKS } from './support/performance';
 
-const status = (page: Page) => page.getByTestId('performance-status');
+const status = (page: Page) => page.getByTestId('scorecards-status');
 const explainDialog = (page: Page) => page.locator('dialog[data-dialog="perf-explain-score"]');
 const gridRow = (page: Page, id: string) =>
   page.locator(`[role="grid"] [role="row"][data-row-id="${id}"]`);
@@ -54,7 +54,7 @@ const DASHBOARD = {
   rules: { atRiskDecliningWeeks: 3, recurringCategoryWeeks: 3, complianceWindowDays: 30, topN: 5 },
 };
 
-test('"Open on the Performance page" lands on that driver\'s row, switching off a filter that hid them', async ({
+test('"Open on the Scorecards page" lands on that driver\'s row, switching off a filter that hid them', async ({
   page,
 }) => {
   // Only Platinum drivers are showing, so Desmond (Bronze) would be hidden.
@@ -67,8 +67,8 @@ test('"Open on the Performance page" lands on that driver\'s row, switching off 
   await page.getByTestId('coaching-row').first().click();
   await page.getByTestId('driver-menu-open').click();
 
-  await expect(page.locator('[data-page="performance"]')).toBeVisible();
-  await expect(page.getByTestId('performance-tab-drivers')).toHaveAttribute(
+  await expect(page.locator('[data-page="scorecards"]')).toBeVisible();
+  await expect(page.getByTestId('scorecards-tab-performance')).toHaveAttribute(
     'aria-selected',
     'true',
   );

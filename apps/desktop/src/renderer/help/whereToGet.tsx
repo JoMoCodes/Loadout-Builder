@@ -256,7 +256,7 @@ export function PerfExportList({ kinds = PERF_KINDS }: { kinds?: readonly PerfKi
 export const WEEKLY_WHERE_TO_GET: Record<WeeklyStepId, Note> = {
   'perf-roster': {
     title: 'Where to get the driver list',
-    lead: 'The driver list is the associate file (AssociateData.csv) from Cortex. You bring it in once, on Associates, and the Performance page uses the same list.',
+    lead: 'The driver list is the associate file (AssociateData.csv) from Cortex. You bring it in once, on Associates, and the Scorecards page uses the same list.',
     steps: WHERE_TO_GET.drivers.steps,
   },
   'perf-folders': {
@@ -331,7 +331,7 @@ export const WEEKLY_WHERE_TO_GET: Record<WeeklyStepId, Note> = {
           <>
             <strong>Who needs a word</strong> lists drivers to coach, with the reasons.{' '}
             <strong>ID expiry</strong> lists IDs that run out soon. Click a driver to open them on
-            the Performance page or preview their report.
+            the Scorecards page or preview their report.
           </>
         ),
       },
@@ -360,13 +360,13 @@ export const WEEKLY_WHERE_TO_GET: Record<WeeklyStepId, Note> = {
       {
         text: (
           <>
-            On the <strong>Performance</strong> page, <strong>Drivers</strong> tab, tick the
+            On the <strong>Scorecards</strong> page, <strong>Performance</strong> tab, tick the
             drivers. Click <strong>Generate for selected</strong> to save their PDF reports, or{' '}
             <strong>Email selected</strong> to send them. The app shows who would get what before it
             sends anything.
           </>
         ),
-        shot: { name: 'perf-drivers', caption: 'The Drivers tab with made-up drivers' },
+        shot: { name: 'perf-drivers', caption: 'The Performance tab with made-up drivers' },
       },
       {
         text: (

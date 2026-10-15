@@ -1,11 +1,12 @@
 // The associate list: the anchor records behind route and van data, and the one driver list the
-// Performance page reads too. Ported from the old app's AssociatesPage. Import folds the file in
-// (anyone the file no longer lists is kept as offboarded); Clear asks first, since it removes the
-// list.
+// Scorecards page reads too. Ported from the old app's AssociatesPage, with Copy email and Copy
+// phone from the old Directory tab. Import folds the file in (anyone the file no longer lists is
+// kept as offboarded); Clear asks first, since it removes the list.
 
+import { Copy } from 'lucide-react';
 import { FileDrop } from '../../components/FileDrop';
 import { useCallback, useEffect, useEffectEvent, useMemo, useState } from 'react';
-import { DataGrid, type GridColumn } from '../../components/DataGrid';
+import { DataGrid, type GridColumn, type RowAction } from '../../components/DataGrid';
 import type { AppSnapshot, AssociateView } from '../../../shared/snapshot';
 import { databaseLayoutStore } from '../../lib/gridLayoutStore';
 import { Button } from '../../ui/button';
@@ -36,6 +37,7 @@ import {
   expiryText,
   idOf,
   passesAssociateFilters,
+  phoneOf,
   qualificationLine,
   qualificationOptions,
 } from './associateRows';
@@ -58,6 +60,8 @@ export function AssociatesTab({
   const [qualification, setQualification] = useState(ALL_QUALS);
   const [onLoadOutOnly, setOnLoadOutOnly] = useState(false);
   const [busy, setBusy] = useState(false);
+  // The picked row, for Copy email and Copy phone.
+  const [current, setCurrent] = useState<AssociateView | null>(null);
 
   const views = snapshot.associates;
   const empty = views.length === 0;
@@ -103,6 +107,47 @@ export function AssociatesTab({
     setQualification(ALL_QUALS);
     setOnLoadOutOnly(false);
   }
+
+  async function copy(view: AssociateView | null, what: 'email' | 'phone') {
+    if (!view) {
+      setStatus('Pick a driver in the table first.');
+      return;
+    }
+    const { name } = view.associate;
+    const words = what === 'email' ? 'email address' : 'phone number';
+    const text = what === 'email' ? view.associate.email : phoneOf(view);
+    if (!text) {
+      setStatus(`There is no ${words} on file for ${name}.`);
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      setStatus(`Copied the ${words} for ${name}.`);
+    } catch {
+      setStatus('That could not be copied. Try again.');
+    }
+  }
+
+  const rowActions = useMemo<RowAction<AssociateView>[]>(
+    () => [
+      {
+        id: 'copy-email',
+        label: 'Copy email address',
+        icon: Copy,
+        disabled: (view) => !view.associate.email,
+        onSelect: (view) => void copy(view, 'email'),
+      },
+      {
+        id: 'copy-phone',
+        label: 'Copy phone number',
+        icon: Copy,
+        disabled: (view) => !phoneOf(view),
+        onSelect: (view) => void copy(view, 'phone'),
+      },
+    ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- copy only uses the row it is given
+    [],
+  );
 
   async function importAssociates(dropped?: string) {
     if (busy) return;
@@ -214,6 +259,19 @@ export function AssociatesTab({
         <Button onClick={() => void clearAssociates()} data-testid="clear-associates">
           Clear Associates
         </Button>
+        <Button onClick={() => void copy(current, 'email')} data-testid="copy-email">
+          <Copy aria-hidden="true" />
+          Copy email
+        </Button>
+        <Button onClick={() => void copy(current, 'phone')} data-testid="copy-phone">
+          <Copy aria-hidden="true" />
+          Copy phone
+        </Button>
+        <span className="text-sm text-muted" data-testid="associates-current">
+          {current
+            ? `${current.associate.name} is picked.`
+            : 'Click a driver, then copy their details.'}
+        </span>
       </ButtonStrip>
       <div className="min-h-0 flex-1">
         <DataGrid
@@ -223,6 +281,8 @@ export function AssociatesTab({
           rows={views}
           getRowId={idOf}
           layoutStore={databaseLayoutStore}
+          rowActions={rowActions}
+          onSelectionChange={setCurrent}
           rowTone={associateTone}
           needsAttention={(view) => {
             const tone = associateTone(view);

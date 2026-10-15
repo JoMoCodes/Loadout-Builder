@@ -50,7 +50,7 @@ const BUTTON_WORDS: Record<WeeklyStepAction, string> = {
   'perf-choose-scorecards': 'Bring in the scorecards',
   'open-dashboard': 'Open the Dashboard',
   'perf-set-up-email': 'Set up email',
-  'perf-open-drivers': 'Open the Drivers tab',
+  'perf-open-performance': 'Open the Performance tab',
 };
 
 interface WeeklyChecklistProps {

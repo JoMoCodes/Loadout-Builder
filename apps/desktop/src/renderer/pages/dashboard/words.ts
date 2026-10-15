@@ -18,14 +18,14 @@ export const QUICK_PICKS = [
 
 export type QuickPickId = (typeof QUICK_PICKS)[number]['id'];
 
-/** Nothing chosen (both ends empty): every week, on the Dashboard and the Performance page. */
+/** Nothing chosen (both ends empty): every week, on the Dashboard and the Scorecards page. */
 export function isAllWeeks(choice: WeekRangeChoice | null | undefined): boolean {
   return !choice || (choice.from === null && choice.to === null);
 }
 
 /**
  * The weeks the Dashboard shows. With nothing chosen (both ends empty) it is every week brought
- * in, the same as the Performance page. A remembered end that is no longer one of the weeks
+ * in, the same as the Scorecards page. A remembered end that is no longer one of the weeks
  * brought in falls back to the oldest (from) or newest (to) week. Null when there are no weeks.
  */
 export function dashboardRange(

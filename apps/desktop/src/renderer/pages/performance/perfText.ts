@@ -1,4 +1,4 @@
-// The Performance page's small rules and words: the week range, the filter chips, and the plain
+// The Scorecards page's small rules and words: the week range, the filter chips, and the plain
 // sentences for what an import, a sync, the reports and the emails did. Plain functions, so they
 // can be tested on their own (perfText.test.ts).
 
