@@ -73,15 +73,15 @@ try {
     console.log(`took ${name}`);
   };
 
-  // The first-day checklist as a new person sees it: nothing saved yet, so nothing to hide.
-  await goTo('home');
+  // The first-day checklist as a new person sees it, at the top of How to use: nothing saved
+  // yet, so nothing to hide. (The picture keeps its old name, "home-checklist".)
+  await goTo('how-to-use');
   await page.waitForSelector('[data-testid="first-run-checklist"] [data-step]', {
     timeout: 10_000,
   });
   await shot('home-checklist');
 
-  // Made-up data only, from here on.
-  await goTo('settings');
+  // Made-up data only, from here on. The switch is at the top of How to use.
   await page.getByLabel('Show made-up drivers and vans').check();
   await page.waitForSelector('[data-testid="demo-banner"]', { timeout: 10_000 });
 

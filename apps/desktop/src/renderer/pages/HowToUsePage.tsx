@@ -1,14 +1,17 @@
-// How to use: the help page. Laid out like the sister app's help: a row of "jump to" buttons,
-// then one section per question, with the problems folded up so the page stays short.
+// How to use: the help page. Demo mode and the Help switches sit at the top, with the first-day
+// checklist under them. Then, laid out like the sister app's help: a row of "jump to" buttons and
+// one section per question, with the problems folded up so the page stays short.
 // Plain words only (see CLAUDE.md). Pictures are taken in demo mode, so they show made-up people.
 
 import { ExternalLink, ListChecks, Signpost } from 'lucide-react';
-import { useState, type ReactNode } from 'react';
+import { useCallback, useState, type ReactNode } from 'react';
 import { DISCUSSIONS_URL } from '../../shared/links';
+import { FirstRunChecklist } from '../help/FirstRunChecklist';
 import { Shot } from '../help/HelpParts';
 import { PerfExportList } from '../help/whereToGet';
 import { Button } from '../ui/button';
 import { Chip, type Tone } from '../ui/chip';
+import { HelpCards } from './howToUse/HelpCards';
 import type { PageId, PageProps } from './types';
 
 interface Section {
@@ -399,8 +402,8 @@ function problems(goTo: (id: PageId) => void): Problem[] {
       answer: (
         <ul>
           <li>
-            Open {go('settings', 'Settings')} and turn on <strong>Demo mode</strong>. The app then
-            shows made-up drivers and vans.
+            At the top of this page, turn on <strong>Demo mode</strong>. The app then shows made-up
+            drivers and vans.
           </li>
           <li>Your real data is not touched, and nothing you do in demo mode is kept.</li>
           <li>Turn it off to go back to your real data.</li>
@@ -410,8 +413,24 @@ function problems(goTo: (id: PageId) => void): Problem[] {
   ];
 }
 
-export function HowToUsePage({ goTo, help, version }: PageProps) {
+export function HowToUsePage({
+  goTo,
+  help,
+  version,
+  settings,
+  changeSettings,
+  dataSource,
+}: PageProps) {
   const [linkProblem, setLinkProblem] = useState<string | null>(null);
+  // Once every step of the first-day checklist is done it puts itself away, but the "all done"
+  // note stays up until the person leaves this page, so they see it happen.
+  const [justFinished, setJustFinished] = useState(false);
+  const { hideChecklist } = help;
+  const finished = useCallback(() => {
+    setJustFinished(true);
+    hideChecklist();
+  }, [hideChecklist]);
+  const showChecklist = help.checklistShown || justFinished;
   const go = (to: PageId, text: string) => (
     <Go to={to} goTo={goTo}>
       {text}
@@ -456,11 +475,11 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
               <strong>Import Vehicles</strong>.
             </li>
             <li>
-              The list on the right of {go('home', 'Home')} walks you through it. Click the{' '}
+              The first-day checklist at the top of this page walks you through it. Click the{' '}
               <strong>?</strong> on a step to see where to download the file.
             </li>
           </ol>
-          <Shot name="home-checklist" caption="The first-day checklist on Home" />
+          <Shot name="home-checklist" caption="The first-day checklist at the top of How to use" />
         </>
       ),
     },
@@ -715,8 +734,7 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
           <ol className="help-steps">
             <li>
               Used the old Weekly Performance App? The first time you open this app, it offers to
-              bring its data over. Click <strong>Yes</strong>. You can also do it later in{' '}
-              {go('settings', 'Settings')}, under <strong>Weekly performance</strong>.
+              bring its data over. Click <strong>Yes</strong>.
             </li>
             <li>
               Bring in your driver list on {go('associates', 'Associates')}, if you have not
@@ -946,8 +964,8 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
         <>
           <ul>
             <li>
-              The <strong>first-day checklist</strong> on Home shows the six steps of a day. It
-              hides itself once they are all done.
+              The <strong>first-day checklist</strong> at the top of this page shows the six steps
+              of a day. It hides itself once they are all done.
             </li>
             <li>
               The <strong>weekly checklist</strong> on Home shows the five steps of the weekly
@@ -958,14 +976,17 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
               time you open the page. Click <strong>Help</strong> at the top of the window, then{' '}
               <strong>Take the tour of this page</strong>, to see it again.
             </li>
-            <li>You can turn the tours off in {go('settings', 'Settings')}.</li>
+            <li>
+              You can turn the tours off at the top of this page, under <strong>Help</strong>.
+            </li>
           </ul>
           <div className="row-of-buttons">
             <Button
               data-testid="show-checklist-again"
               onClick={() => {
                 help.showChecklist();
-                goTo('home');
+                // The list is at the top of this page.
+                document.getElementById('page-frame')?.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             >
               <ListChecks aria-hidden="true" />
@@ -1038,6 +1059,23 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
   return (
     <section className="page" data-page="how-to-use" aria-labelledby="title-how-to-use">
       <h1 id="title-how-to-use">How to use</h1>
+      <HelpCards
+        settings={settings}
+        changeSettings={changeSettings}
+        dataSource={dataSource}
+        help={help}
+      />
+      {showChecklist ? (
+        <div className="mb-4 max-w-[36rem]">
+          <FirstRunChecklist
+            settings={settings}
+            changeSettings={changeSettings}
+            goTo={goTo}
+            help={help}
+            onFinished={finished}
+          />
+        </div>
+      ) : null}
       <p className="lede">
         Everything you need for a normal day and the weekly reports, and what to do when something
         goes wrong.

@@ -26,7 +26,8 @@ test('a page tour runs by itself the first time, and not the second', async ({ p
   await expect(tour(page)).toContainText('Step 1 of 4');
   await expect(tour(page)).toContainText('Colours');
 
-  // Next, Back and Skip are there; Enter goes on.
+  // Next, Back and Skip are there; Enter goes on. (Four steps: Colours, Text size, Your saved
+  // data and Email. Demo mode and the Help switches are on How to use now.)
   await expect(tour(page).getByRole('button', { name: 'Back' })).toBeVisible();
   await expect(tour(page).getByRole('button', { name: 'Skip' })).toBeVisible();
   await tour(page).getByRole('button', { name: 'Next' }).click();
@@ -237,21 +238,24 @@ test('the Dashboard has a tour that runs by itself the first time', async ({ pag
   await expect(tour(page)).toHaveCount(0);
 });
 
-test('the Home tour points at the weekly checklist too', async ({ page }) => {
+test('the Home tour points at the weekly checklist (the first-day one is on How to use)', async ({
+  page,
+}) => {
   await installFakeBridge(page, { settings: { autoTours: true } });
   await page.addInitScript(() => localStorage.setItem('loadout.page', 'home'));
   await page.goto('/');
   await expect(tour(page)).toHaveAttribute('data-tour-name', 'home');
-  await expect(tour(page)).toContainText('Step 1 of 6');
-  for (let i = 0; i < 3; i++) await page.keyboard.press('Enter');
+  await expect(tour(page)).toContainText('Step 1 of 4');
+  await page.keyboard.press('Enter');
   await expect(tour(page)).toContainText('Your weekly performance');
   await page.keyboard.press('Escape');
 });
 
-test('the tours can be turned off in Settings', async ({ page }) => {
-  await installFakeBridge(page, { settings: { autoTours: true, toursSeen: ['settings'] } });
-  await page.addInitScript(() => localStorage.setItem('loadout.page', 'settings'));
+test('the tours can be turned off at the top of How to use', async ({ page }) => {
+  await installFakeBridge(page, { settings: { autoTours: true, toursSeen: ['how-to-use'] } });
+  await page.addInitScript(() => localStorage.setItem('loadout.page', 'how-to-use'));
   await page.goto('/');
+  await expect(page.locator('[data-page="how-to-use"] [data-setting="help"]')).toBeVisible();
   await page.getByTestId('auto-tours').uncheck();
   expect(await callsTo(page, 'settings:set')).toContainEqual({ autoTours: false });
   await page.click('[data-nav="associates"]');

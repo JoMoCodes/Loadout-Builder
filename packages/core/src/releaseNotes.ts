@@ -11,6 +11,16 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.8.0',
+    items: [
+      'The Dashboard has a Dashboard settings button next to its title. The rule numbers for its lists (the ID expiry warning, the weeks-running flags and how many movers to show) live there now.',
+      'Settings is shorter: Colours, Text size, Your saved data, Email and About. Demo mode and the Help switches moved to the top of How to use.',
+      'The first-day checklist is off the Home page. It shows at the top of How to use, under those two cards. Show it again from the Help card there or from the Help menu.',
+      'The Bring over data from the old app buttons are gone from Settings. The app still offers to bring old data over the first time it opens with nothing saved.',
+      'On Scorecards, the Performance tab starts on In latest scorecard (it used to be called Had a scorecard), so you see the drivers who were on the scorecards for the weeks you chose. Pick Everyone to see all of them. That choice is for this visit only; the status and tier chips are still remembered.',
+    ],
+  },
+  {
     version: '2.7.0',
     items: [
       'Load Out has a new tab, Name and ID Links. It lists every driver you linked to an associate by hand, and who they are linked to.',

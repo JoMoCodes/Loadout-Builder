@@ -6,7 +6,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { DEFAULT_REPORT_COLOURS } from '../src/shared/performanceSettings';
 import { callsTo, onCall } from './support/fakeBridge';
-import { ARCHER, DESMOND, TOBIAS, openPerformance, setPerf } from './support/performance';
+import { ARCHER, DESMOND, openPerformance, setPerf } from './support/performance';
 
 const status = (page: Page) => page.getByTestId('scorecards-status');
 const dialog = (page: Page, name: string) => page.locator(`dialog[data-dialog="${name}"]`);
@@ -91,8 +91,8 @@ test('Undo changes and Reset to the old colours', async ({ page }) => {
 test('the preview steps through the drivers shown on the Performance tab', async ({ page }) => {
   await openPerformance(page, { tab: 'reports' });
   const preview = page.getByTestId('perf-driver-preview');
-  // Active drivers only (the Drivers tab's starting chip): three of the five.
-  await expect(page.getByTestId('perf-preview-position')).toHaveText('Driver 1 of 3');
+  // Active drivers in the latest scorecard (the Performance tab's starting chips): two of the five.
+  await expect(page.getByTestId('perf-preview-position')).toHaveText('Driver 1 of 2');
   await expect(page.getByTestId('perf-preview-name')).toHaveText(ARCHER.name);
   await expect(frame(page, 'perf-driver-frame').locator('h1')).toHaveText(`Report ${ARCHER.id}`);
 
@@ -105,14 +105,14 @@ test('the preview steps through the drivers shown on the Performance tab', async
   // The arrow keys move too; it goes round from the last to the first.
   await preview.focus();
   await page.keyboard.press('ArrowRight');
-  await expect(page.getByTestId('perf-preview-name')).toHaveText(TOBIAS.name);
-  await page.keyboard.press('ArrowRight');
   await expect(page.getByTestId('perf-preview-name')).toHaveText(ARCHER.name);
+  await page.keyboard.press('ArrowRight');
+  await expect(page.getByTestId('perf-preview-name')).toHaveText(DESMOND.name);
   await page.keyboard.press('ArrowLeft');
-  await expect(page.getByTestId('perf-preview-position')).toHaveText('Driver 3 of 3');
+  await expect(page.getByTestId('perf-preview-position')).toHaveText('Driver 1 of 2');
 
   await page.getByTestId('perf-preview-jump').selectOption(DESMOND.id);
-  await expect(page.getByTestId('perf-preview-position')).toHaveText('Driver 2 of 3');
+  await expect(page.getByTestId('perf-preview-position')).toHaveText('Driver 2 of 2');
 });
 
 test('with no drivers shown, the preview says what to do and shows the sample page', async ({

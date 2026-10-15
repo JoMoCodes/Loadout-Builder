@@ -10,18 +10,10 @@ import {
 } from '../../shared/settings';
 import { call } from '../lib/channels';
 import { Button } from '../ui/button';
-import { PerformanceSettingsSection } from './performance/PerformanceSettingsSection';
 import { EmailSettingsSection } from './settings/EmailSettingsSection';
 import type { PageProps } from './types';
 
-export function SettingsPage({
-  version,
-  settings,
-  changeSettings,
-  dataSource,
-  help,
-  openOldData,
-}: PageProps) {
+export function SettingsPage({ version, settings, changeSettings }: PageProps) {
   const [folderProblem, setFolderProblem] = useState(false);
 
   async function openFolder() {
@@ -85,64 +77,6 @@ export function SettingsPage({
         <p className="hint">You can also use A- and A+ at the top of the window.</p>
       </div>
 
-      <div className="settings-group card" data-setting="demo-mode">
-        <h2>Demo mode</h2>
-        <label className="switch-row">
-          <input
-            type="checkbox"
-            role="switch"
-            className="switch"
-            checked={settings.demoMode}
-            onChange={(event) => void changeSettings({ demoMode: event.target.checked })}
-          />
-          Show made-up drivers and vans
-        </label>
-        <p className="hint">
-          Use this to look around or to train someone. Your real data is not touched, and nothing
-          you do in demo mode is kept. The app always starts with demo mode off.
-        </p>
-        {dataSource && !dataSource.ok && dataSource.mode === 'demo' ? (
-          <p role="alert" className="problem">
-            The demo data could not be loaded.
-          </p>
-        ) : null}
-      </div>
-
-      <div className="settings-group card" data-setting="help">
-        <h2>Help</h2>
-        <label className="switch-row">
-          <input
-            type="checkbox"
-            role="switch"
-            className="switch"
-            checked={settings.autoTours}
-            onChange={(event) => void changeSettings({ autoTours: event.target.checked })}
-            data-testid="auto-tours"
-          />
-          Show a short tour the first time I open a page
-        </label>
-        <div className="row-of-buttons mt-2">
-          <Button
-            data-testid="tours-again"
-            disabled={settings.toursSeen.length === 0}
-            onClick={() => void changeSettings({ toursSeen: [], autoTours: true })}
-          >
-            See every tour again
-          </Button>
-          <Button
-            data-testid="settings-show-checklist"
-            disabled={help.checklistShown}
-            onClick={help.showChecklist}
-          >
-            Show the checklist again
-          </Button>
-        </div>
-        <p className="hint">
-          You can always take a page&apos;s tour from <strong>Help</strong> at the top of the
-          window.
-        </p>
-      </div>
-
       <div className="settings-group card" data-setting="data-folder">
         <h2>Your saved data</h2>
         <Button onClick={() => void openFolder()}>
@@ -156,22 +90,6 @@ export function SettingsPage({
           </p>
         ) : null}
       </div>
-
-      <div className="settings-group card" data-setting="old-data">
-        <h2>Data from the old app</h2>
-        <Button data-testid="bring-over-old-data" onClick={openOldData}>
-          Bring over data from the old app
-        </Button>
-        <p className="hint">
-          Copies your drivers, vans and other saved things from the old Loadout Builder. It only
-          works while this app has nothing saved yet, and it never writes over saved data.
-        </p>
-      </div>
-
-      <PerformanceSettingsSection
-        performance={settings.performance}
-        changeSettings={changeSettings}
-      />
 
       <EmailSettingsSection email={settings.email} changeSettings={changeSettings} />
 

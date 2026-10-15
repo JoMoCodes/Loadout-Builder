@@ -49,6 +49,7 @@ import {
   passesFilters,
   progressWords,
   rangeWords,
+  START_ACTIVITY,
   statusOf,
   tierMoveWords,
   tierTone,
@@ -128,7 +129,7 @@ function ChipButton({
   );
 }
 
-const NO_FILTERS: DriverFilters = { status: 'ALL', tiers: [], activity: 'all' };
+const NO_FILTERS: DriverFilters = { status: 'ALL', tiers: [], activity: START_ACTIVITY };
 
 type Changes = PerfDriversView['changes'];
 
@@ -413,7 +414,7 @@ export function PerformanceTab({
       const open = await ask<boolean>((done) => (
         <ConfirmDialog
           title="Email is not set up yet"
-          body="Before the app can email reports, it needs the email address to send from and its app password. Both go in Settings, under Weekly performance."
+          body="Before the app can email reports, it needs the email address to send from and its app password. Both go in Settings, under Email."
           confirmLabel="Open Settings"
           cancelLabel="Not now"
           onDone={done}
@@ -956,7 +957,7 @@ export function PerformanceTab({
           onRowActivate={activate}
           filter={filter}
           searchPlaceholder="Search by name or ID"
-          onResetFilters={() => onFilters({ status: 'ALL', tiers: [], activity: 'all' })}
+          onResetFilters={() => onFilters(NO_FILTERS)}
           onSelectionChange={setCurrent}
           reveal={revealNow}
           onRevealed={onRevealedNow}

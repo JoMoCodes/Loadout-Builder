@@ -11,23 +11,20 @@ import { callsTo, onCall } from './support/fakeBridge';
 import { openPerformance } from './support/performance';
 
 const section = (page: Page) => page.locator('[data-setting="email"]');
-const performance = (page: Page) => page.locator('[data-setting="performance"]');
 
 async function patches(page: Page) {
   return (await callsTo(page, 'settings:set')) as Array<Record<string, unknown>>;
 }
 
-test('Email is its own part of Settings, right after Weekly performance', async ({ page }) => {
+test('Email is its own part of Settings, between Your saved data and About', async ({ page }) => {
   await openPerformance(page, { page: 'settings' });
   await expect(section(page).getByRole('heading', { level: 2 })).toHaveText('Email');
+  // Settings is short now: Demo mode and Help moved to How to use, and the Weekly performance
+  // and old-app parts are gone.
   const order = await page
     .locator('[data-setting]')
     .evaluateAll((parts) => parts.map((part) => part.getAttribute('data-setting')));
-  expect(order.indexOf('email')).toBe(order.indexOf('performance') + 1);
-  // The account is no longer in the Weekly performance part.
-  await expect(performance(page).getByTestId('email-from')).toHaveCount(0);
-  await expect(performance(page)).not.toContainText('Send test email');
-  await expect(performance(page)).not.toContainText('App password');
+  expect(order).toEqual(['theme', 'text-size', 'data-folder', 'email', 'version']);
 });
 
 test('the email fields save together, and a bad port is refused in plain words', async ({
@@ -143,7 +140,7 @@ test('Send test email saves first, then says whether it went', async ({ page }) 
 
 test('the weekly reports’ subject and message are not in Settings any more', async ({ page }) => {
   await openPerformance(page, { page: 'settings' });
-  await expect(performance(page)).not.toContainText('Emailing the reports');
+  await expect(page.locator('[data-page="settings"]')).not.toContainText('Emailing the reports');
   await expect(page.getByTestId('perf-email-subject')).toHaveCount(0);
   await expect(section(page)).not.toContainText('Subject');
 });

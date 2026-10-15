@@ -1,4 +1,4 @@
-// The weekly checklist on Home, on the stand-in bridge: it sits beside the first-day one, ticks
+// The weekly checklist on Home, on the stand-in bridge: it sits on the right of Home, ticks
 // itself off as the weekly data changes, its buttons open the right page and tab (and press the
 // page's own button), its "?" says where to get each file, it hides once done, and Home and How
 // to use bring it back. The weekly data here is made up (counts only, no names).
@@ -48,11 +48,12 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test('sits beside the first-day list, with nothing done, pointing at the driver list', async ({
+test('sits on the right of Home, with nothing done, pointing at the driver list', async ({
   page,
 }) => {
   await page.goto('/');
-  await expect(page.getByTestId('first-run-checklist')).toBeVisible();
+  // The first-day checklist is on How to use, not here.
+  await expect(page.getByTestId('first-run-checklist')).toHaveCount(0);
   await expect(list(page)).toBeVisible();
   await expect(list(page)).toContainText('Your weekly performance');
   await expect(count(page)).toHaveText('0 of 5 done');
@@ -61,6 +62,7 @@ test('sits beside the first-day list, with nothing done, pointing at the driver 
   for (const id of ['perf-roster', 'perf-folders', 'perf-sync', 'perf-dashboard', 'perf-reports'])
     await expect(step(page, id)).toHaveAttribute('data-step-done', 'false');
   // The two lists keep their own counts.
+  await page.click('[data-nav="how-to-use"]');
   await expect(page.getByTestId('checklist-count')).toHaveText('0 of 6 done');
 });
 
@@ -129,7 +131,6 @@ test('hides itself once every step is done, and How to use brings it back', asyn
   await page.click('[data-nav="home"]');
   await expect(page.locator('[data-page="home"]')).toBeVisible();
   await expect(list(page)).toHaveCount(0);
-  await expect(page.getByTestId('first-run-checklist')).toBeVisible();
   expect(
     (await callsTo(page, 'settings:set')).filter(
       (p) => (p as { checklistHidden?: boolean }).checklistHidden !== undefined,
@@ -148,7 +149,6 @@ test('"Hide this list" puts it away in the settings file, and Home brings it bac
   await page.goto('/');
   await page.getByTestId('weekly-checklist-hide').click();
   await expect(list(page)).toHaveCount(0);
-  await expect(page.getByTestId('first-run-checklist')).toBeVisible();
   // Kept in the settings file, so it stays away after the app closes.
   expect(await callsTo(page, 'settings:set')).toContainEqual({ weeklyChecklistHidden: true });
 
@@ -160,7 +160,6 @@ test('"Hide this list" puts it away in the settings file, and Home brings it bac
 test('stays away when the settings say so, and the Help menu brings it back', async ({ page }) => {
   await installFakeBridge(page, { settings: { weeklyChecklistHidden: true } });
   await page.goto('/');
-  await expect(page.getByTestId('first-run-checklist')).toBeVisible();
   await expect(list(page)).toHaveCount(0);
 
   // Go somewhere else first: the Help menu brings it back and opens Home.
@@ -217,7 +216,7 @@ test('the driver list button opens Associates and presses Import Associates', as
   expect(await callsTo(page, 'performance:choose-and-import')).toEqual([]);
 });
 
-test('the Dashboard button opens the Dashboard, and the email button opens Settings', async ({
+test('the Dashboard button opens the Dashboard, and the email button opens Settings > Email', async ({
   page,
 }) => {
   await page.goto('/');
@@ -227,7 +226,7 @@ test('the Dashboard button opens the Dashboard, and the email button opens Setti
   await page.click('[data-nav="home"]');
   await step(page, 'perf-reports').locator('[data-step-do]').click();
   await expect(page.locator('[data-page="settings"]')).toBeVisible();
-  await expect(page.locator('[data-setting="performance"]')).toBeInViewport();
+  await expect(page.locator('[data-setting="email"]')).toBeInViewport();
 });
 
 test('the ? on a step says where to get the files', async ({ page }) => {
@@ -253,9 +252,11 @@ test('demo mode keeps its own weekly list', async ({ page }) => {
   await page.goto('/');
   await page.getByTestId('weekly-checklist-hide').click();
   await expect(list(page)).toHaveCount(0);
-  // Practising with made-up data starts the weekly list afresh.
-  await page.getByTestId('checklist-try-demo').click();
+  // Practising with made-up data (the switch at the top of How to use) starts the weekly list afresh.
+  await page.click('[data-nav="how-to-use"]');
+  await page.getByLabel('Show made-up drivers and vans').check();
   await expect(page.getByTestId('demo-banner')).toBeVisible();
+  await page.click('[data-nav="home"]');
   await expect(list(page)).toBeVisible();
 
   // In demo mode, hiding it and opening the Dashboard last for this run only: nothing is saved.

@@ -3,7 +3,8 @@
 //
 // Top to bottom: the week bar, four tiles, "Who needs a word" beside the ID-expiry list, the
 // movers, and the trend. Every number has a "How is this worked out?" button. A driver's line
-// opens a small menu: open them on the Scorecards page, or preview their report.
+// opens a small menu: open them on the Scorecards page, or preview their report. The gear next
+// to the title opens the rule numbers behind the lists (dashboard/DashboardSettingsDialog.tsx).
 
 import { X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -12,6 +13,10 @@ import type { WeekRangeChoice } from '../../shared/performanceSettings';
 import { call, explain as explainFailure } from '../lib/channels';
 import { useAppSnapshot } from '../lib/useAppSnapshot';
 import { Button } from '../ui/button';
+import {
+  DashboardSettingsButton,
+  DashboardSettingsDialog,
+} from './dashboard/DashboardSettingsDialog';
 import { handDriverToPerformance, handTabToPerformance } from './dashboard/handoff';
 import { ExplainScoreDialog } from './performance/ExplainScoreDialog';
 import { ExplainDialog, WeekBar, type DriverMenuActions } from './dashboard/parts';
@@ -51,6 +56,7 @@ export function DashboardPage({ settings, changeSettings, goTo }: PageProps) {
   const [tries, setTries] = useState(0);
   const [explaining, setExplaining] = useState<ExplainId | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [explainingDriver, setExplainingDriver] = useState<{
     transporterId: string;
     name: string;
@@ -117,9 +123,12 @@ export function DashboardPage({ settings, changeSettings, goTo }: PageProps) {
     >
       <header className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
         <div className="min-w-0">
-          <h1 id="title-dashboard" className="m-0 text-[1.6rem] leading-tight font-semibold">
-            Dashboard
-          </h1>
+          <div className="flex flex-wrap items-center gap-3">
+            <h1 id="title-dashboard" className="m-0 text-[1.6rem] leading-tight font-semibold">
+              Dashboard
+            </h1>
+            <DashboardSettingsButton onClick={() => setSettingsOpen(true)} />
+          </div>
           <p className="m-0 mt-0.5 text-sm text-muted" data-testid="dashboard-range-words">
             {range
               ? `${rangeWords(range)} · ${plural(weeksIn(weeks, range), 'week')}` +
@@ -226,6 +235,13 @@ export function DashboardPage({ settings, changeSettings, goTo }: PageProps) {
         </div>
       )}
 
+      {settingsOpen ? (
+        <DashboardSettingsDialog
+          performance={settings.performance}
+          changeSettings={changeSettings}
+          onDone={() => setSettingsOpen(false)}
+        />
+      ) : null}
       {explainingDriver && range ? (
         <ExplainScoreDialog
           driver={explainingDriver}

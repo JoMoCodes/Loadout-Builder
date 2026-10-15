@@ -43,18 +43,6 @@ export const TOURS: Record<string, Tour> = {
         side: 'right',
       },
       {
-        element: '[data-testid="first-run-checklist"]',
-        title: 'Your first day, step by step',
-        text: 'This list shows the six things to do. Each step ticks itself off when it is done.',
-        side: 'left',
-      },
-      {
-        element: '[data-testid="first-run-checklist"] [data-step-current="true"] [data-step-do]',
-        title: 'Do the next step',
-        text: 'This button takes you to the right page and starts the step. The ? next to it shows where to get the file.',
-        side: 'left',
-      },
-      {
         element: '[data-testid="weekly-checklist"]',
         title: 'Your weekly performance',
         text: 'Once a week, this list walks you through the scorecards and the driver reports, step by step.',
@@ -63,7 +51,7 @@ export const TOURS: Record<string, Tour> = {
       {
         element: '[data-testid="help-menu"]',
         title: 'Help is always here',
-        text: 'Click Help to see this tour again, or to open How to use.',
+        text: 'Click Help to see this tour again, or to open How to use and its first-day checklist.',
         side: 'bottom',
       },
       {
@@ -376,7 +364,7 @@ export const TOURS: Record<string, Tour> = {
       {
         element: `${SCORECARDS} [role="group"][aria-label="Show only"]`,
         title: 'Narrow the list',
-        text: 'Show only active drivers, one tier, or the drivers with a scorecard in these weeks.',
+        text: 'Show only active drivers, or one tier. It starts on the drivers in the latest scorecard; pick Everyone to see them all.',
         side: 'bottom',
       },
       {
@@ -526,15 +514,15 @@ export const TOURS: Record<string, Tour> = {
         side: 'right',
       },
       {
-        element: `${SETTINGS} [data-setting="demo-mode"]`,
-        title: 'Practise safely',
-        text: 'Demo mode shows made-up drivers and vans. Your real data is not touched.',
+        element: `${SETTINGS} [data-setting="data-folder"]`,
+        title: 'Your saved data',
+        text: 'Opens the folder on this computer where the app keeps what you saved.',
         side: 'right',
       },
       {
-        element: `${SETTINGS} [data-setting="help"]`,
-        title: 'Tours',
-        text: 'Turn the page tours off here, or see them all again.',
+        element: `${SETTINGS} [data-setting="email"]`,
+        title: 'Email',
+        text: 'The address the app sends from and its app password. Set it up once to email reports and route sheets.',
         side: 'right',
       },
     ],

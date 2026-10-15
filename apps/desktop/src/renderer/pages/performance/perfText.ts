@@ -80,7 +80,7 @@ export const TIERS = ['Platinum', 'Gold', 'Silver', 'Bronze'] as const;
 
 export const ACTIVITY_CHOICES = [
   { id: 'all', label: 'Everyone' },
-  { id: 'in-range', label: 'Had a scorecard' },
+  { id: 'in-range', label: 'In latest scorecard' },
   { id: 'none', label: 'No scorecard' },
 ] as const;
 
@@ -90,27 +90,32 @@ export interface DriverFilters {
   activity: string;
 }
 
-/** Reads the remembered chips ("status:ACTIVE", "tier:Gold", "activity:in-range"). */
+/** The activity chip each visit to the page starts on: the drivers in the chosen weeks' scorecards. */
+export const START_ACTIVITY = 'in-range';
+
+/**
+ * Reads the remembered chips ("status:ACTIVE", "tier:Gold"). The activity chip is not remembered:
+ * it starts on "In latest scorecard" each visit (an "activity:" chip saved by an older version is
+ * ignored).
+ */
 export function readFilters(saved: readonly string[]): DriverFilters {
   const of = (prefix: string) =>
     saved
       .filter((item) => item.startsWith(`${prefix}:`))
       .map((item) => item.slice(prefix.length + 1));
   const status = of('status')[0];
-  const activity = of('activity')[0];
   return {
     status: STATUS_CHOICES.some((choice) => choice.id === status) ? status! : 'ALL',
     tiers: of('tier').filter((tier) => (TIERS as readonly string[]).includes(tier)),
-    activity: ACTIVITY_CHOICES.some((choice) => choice.id === activity) ? activity! : 'all',
+    activity: START_ACTIVITY,
   };
 }
 
-/** The chips to remember. "All" and "Everyone" are remembered as no chip. */
+/** The chips to remember: status and tiers. "All" is remembered as no chip; activity never is. */
 export function writeFilters(filters: DriverFilters): string[] {
   const out: string[] = [];
   if (filters.status !== 'ALL') out.push(`status:${filters.status}`);
   for (const tier of filters.tiers) out.push(`tier:${tier}`);
-  if (filters.activity !== 'all') out.push(`activity:${filters.activity}`);
   return out;
 }
 

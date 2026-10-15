@@ -1,15 +1,15 @@
-// The Weekly performance part of Settings, the report emails' wording behind the Settings button
-// on the Scorecards page, and the question about the old Weekly Performance App's data, on the
-// stand-in bridge: auto-import, the rule numbers, the subject and message of the report emails,
-// and bringing the old data over on a first run or from Settings. The email setup is the Email
-// part of Settings (email-settings.spec.ts).
+// The report emails' wording behind the Settings button on the Scorecards page, and the question
+// about the old Weekly Performance App's data, on the stand-in bridge: the subject and message of
+// the report emails, and bringing the old data over on a first run (the only time it is offered).
+// The email setup is the Email part of Settings (email-settings.spec.ts); the rule numbers behind
+// the Dashboard's lists are in its own window (dashboard.spec.ts); auto-import is on the Imports
+// tab (performance-imports.spec.ts).
 
 import { expect, test, type Page } from '@playwright/test';
 import { DEFAULT_EMAIL } from '../src/shared/performanceSettings';
 import { callsTo, installFakeBridge, onCall } from './support/fakeBridge';
 import { openPerformance } from './support/performance';
 
-const section = (page: Page) => page.locator('[data-setting="performance"]');
 const perfDialog = (page: Page) => page.locator('dialog[data-dialog="perf-old-data"]');
 const wording = (page: Page) => page.locator('dialog[data-dialog="perf-email-wording"]');
 
@@ -17,32 +17,13 @@ async function patches(page: Page) {
   return (await callsTo(page, 'settings:set')) as Array<Record<string, unknown>>;
 }
 
-test('auto-import and the rule numbers save as they change, and odd numbers are refused', async ({
-  page,
-}) => {
+test('Settings has no Weekly performance part any more', async ({ page }) => {
   await openPerformance(page, { page: 'settings' });
-  await expect(section(page)).toContainText('Weekly performance');
-  await section(page).getByTestId('perf-settings-auto-import').uncheck();
-  expect(await patches(page)).toContainEqual({ performance: { autoImportOnStartup: false } });
-
-  const window = page.getByTestId('perf-rule-complianceWindowDays');
-  await expect(window).toHaveValue('30');
-  await window.fill('45');
-  await window.press('Enter');
-  expect(await patches(page)).toContainEqual({ performance: { complianceWindowDays: 45 } });
-
-  const weeks = page.getByTestId('perf-rule-atRiskDecliningWeeks');
-  await weeks.fill('1');
-  await weeks.blur();
-  await expect(section(page).getByRole('alert')).toHaveText('Type a whole number from 2 to 26.');
-  expect(await patches(page)).not.toContainEqual({ performance: { atRiskDecliningWeeks: 1 } });
-
-  await page.getByTestId('perf-rule-topN').fill('8');
-  await page.getByTestId('perf-rule-topN').blur();
-  await page.getByTestId('perf-rule-recurringCategoryWeeks').fill('4');
-  await page.getByTestId('perf-rule-recurringCategoryWeeks').blur();
-  expect(await patches(page)).toContainEqual({ performance: { topN: 8 } });
-  expect(await patches(page)).toContainEqual({ performance: { recurringCategoryWeeks: 4 } });
+  await expect(page.locator('[data-page="settings"]')).toBeVisible();
+  await expect(page.locator('[data-setting="performance"]')).toHaveCount(0);
+  await expect(page.getByTestId('perf-settings-auto-import')).toHaveCount(0);
+  await expect(page.getByTestId('perf-rule-topN')).toHaveCount(0);
+  await expect(page.getByTestId('perf-bring-over-old-data')).toHaveCount(0);
 });
 
 // ------------------------------------------------------------ the report emails' wording
@@ -51,7 +32,6 @@ test('Settings on the Performance tab opens the report emails’ wording; Save k
   page,
 }) => {
   await openPerformance(page);
-  await expect(section(page)).toHaveCount(0);
   const button = page.getByTestId('scorecards-settings');
   await expect(button).toHaveText('Settings');
   // At the right end of the button row.
@@ -205,24 +185,18 @@ test('the roster question comes first, then the weekly performance one', async (
   expect(await patches(page)).toContainEqual({ perfOldDataAsked: true });
 });
 
-test('Settings can bring it over, choosing a different file', async ({ page }) => {
-  await openPerformance(page, {
-    page: 'settings',
-    answers: { 'performance:old-data-find': { ...FOUND, found: false } },
-  });
-  await page.getByTestId('perf-bring-over-old-data').click();
-  // The stand-in finds nothing in the usual place.
-  await expect(perfDialog(page)).toContainText(
-    'We could not find your weekly performance data in its usual place.',
-  );
-  await expect(perfDialog(page)).toContainText('app.db');
+test('Choose a different file on the first-run question picks first, then brings it over', async ({
+  page,
+}) => {
+  await openPerformance(page, { page: 'home', answers: { 'performance:old-data-find': FOUND } });
+  await expect(perfDialog(page)).toContainText('Bring it over?');
   await onCall(page, 'performance:old-data-pick', `() => ({ ok: true, value: { chosen: true } })`);
   await onCall(
     page,
     'performance:old-data-run',
     `() => ({ ok: true, value: { status: 'skipped', counts: [] } })`,
   );
-  await perfDialog(page).getByRole('button', { name: 'Choose the file' }).click();
+  await perfDialog(page).getByRole('button', { name: 'Choose a different file' }).click();
   await expect(perfDialog(page)).toContainText(
     'This app already has weekly performance data, so nothing was brought over.',
   );

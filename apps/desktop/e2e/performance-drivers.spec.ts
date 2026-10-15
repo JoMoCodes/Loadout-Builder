@@ -47,9 +47,18 @@ test('shows the drivers with the old columns, tier chips, trend words and red sa
   page,
 }) => {
   await openPerformance(page);
-  // Active is the starting chip: the inactive and offboarded drivers are not shown.
-  await expect(rows(page)).toHaveCount(3);
+  // Active and In latest scorecard are the starting chips: the inactive and offboarded drivers
+  // are not shown, nor the active driver with no scorecard in these weeks.
+  await expect(rows(page)).toHaveCount(2);
   await expect(row(page, CARMEN.name)).toHaveCount(0);
+  await expect(row(page, TOBIAS.name)).toHaveCount(0);
+  await expect(page.getByTestId('perf-activity-in-range')).toHaveText('In latest scorecard');
+  await expect(page.getByTestId('perf-activity-in-range')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByTestId('perf-shown-line')).toHaveText(
+    'Showing 2 drivers of 5. Weeks held: 2026-W31 to 2026-W40.',
+  );
+  await page.getByTestId('perf-activity-all').click();
+  await expect(rows(page)).toHaveCount(3);
   const headings = (await page.locator('[role="columnheader"]').allInnerTexts()).map((t) =>
     t.trim(),
   );
@@ -130,7 +139,9 @@ test('the search box finds drivers by name or Transporter ID', async ({ page }) 
   await expect(row(page, ARCHER.name)).toHaveCount(1);
 });
 
-test('the filter chips narrow the list and are remembered', async ({ page }) => {
+test('the status and tier chips narrow the list and are remembered; the activity chip is not', async ({
+  page,
+}) => {
   await openPerformance(page);
   await page.getByTestId('perf-status-inactive').click();
   await expect(rows(page)).toHaveCount(1);
@@ -139,16 +150,29 @@ test('the filter chips narrow the list and are remembered', async ({ page }) => 
     performance: { filters: ['status:INACTIVE'] },
   });
 
+  // All statuses, still only the drivers in the latest scorecard; Everyone shows the fifth.
   await page.getByTestId('perf-status-all').click();
+  await expect(rows(page)).toHaveCount(4);
+  await page.getByTestId('perf-activity-all').click();
   await expect(rows(page)).toHaveCount(5);
   await page.getByTestId('perf-tier-platinum').click();
   await expect(rows(page)).toHaveCount(3);
   await page.getByTestId('perf-activity-none').click();
   await expect(rows(page)).toHaveCount(1);
   await expect(row(page, TOBIAS.name)).toHaveCount(1);
+  // Only the tier is remembered: nothing about the activity chip is saved.
   expect((await settingsPatches(page)).at(-1)).toEqual({
-    performance: { filters: ['tier:Platinum', 'activity:none'] },
+    performance: { filters: ['tier:Platinum'] },
   });
+  expect(JSON.stringify(await settingsPatches(page))).not.toContain('activity:');
+
+  // Away and back: the tier chip is still on, and the activity chip starts afresh.
+  await page.click('[data-nav="associates"]');
+  await page.click('[data-nav="scorecards"]');
+  await expect(page.getByTestId('perf-tier-platinum')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByTestId('perf-activity-in-range')).toHaveAttribute('aria-pressed', 'true');
+  await expect(rows(page)).toHaveCount(2);
+  await expect(row(page, TOBIAS.name)).toHaveCount(0);
 });
 
 test('opens with the filters, the weeks and the ticks it remembered', async ({ page }) => {
@@ -211,6 +235,8 @@ test('the week range picker reads the drivers again and remembers the choice', a
 
 test('ticking, Select all shown and Clear selection are remembered', async ({ page }) => {
   await openPerformance(page);
+  // Everyone, not only the drivers in the latest scorecard (the starting chip).
+  await page.getByTestId('perf-activity-all').click();
   await row(page, DESMOND.name).getByTestId('perf-pick').check();
   expect((await settingsPatches(page)).at(-1)).toEqual({
     performance: { selected: [DESMOND.id] },
@@ -240,6 +266,8 @@ test('Generate asks first, then makes the reports for the ticked or the shown dr
   page,
 }) => {
   await openPerformance(page);
+  // Everyone, not only the drivers in the latest scorecard (the starting chip).
+  await page.getByTestId('perf-activity-all').click();
   await page.getByTestId('perf-generate-selected').click();
   await expect(status(page)).toHaveText(
     'Tick drivers in the first column first, or use Generate all.',
@@ -273,6 +301,8 @@ test('Generate asks first, then makes the reports for the ticked or the shown dr
 
 test('Export writes the check file for the ticked or the shown drivers', async ({ page }) => {
   await openPerformance(page);
+  // Everyone, not only the drivers in the latest scorecard (the starting chip).
+  await page.getByTestId('perf-activity-all').click();
   await onCall(
     page,
     'performance:export-check-file',

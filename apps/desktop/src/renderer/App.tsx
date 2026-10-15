@@ -48,10 +48,9 @@ export function App() {
     () => target?.tab ?? remembered?.tab ?? null,
   );
   const [showNews, setShowNews] = useState(false);
-  // The "bring over your old data" window: asked at start-up on a first run, or opened from
-  // Settings. `oldDataChecked` stays false until the start-up look is done, so a page tour does
-  // not start underneath it.
-  const [oldData, setOldData] = useState<'start' | 'settings' | null>(null);
+  // The "bring over your old data" window, asked at start-up on a first run. `oldDataChecked`
+  // stays false until the start-up look is done, so a page tour does not start underneath it.
+  const [oldData, setOldData] = useState<'start' | null>(null);
   const [oldDataChecked, setOldDataChecked] = useState(false);
   // The same question for the old Weekly Performance App's data. There is no setting that
   // remembers it was asked, so it is asked once per run while this app has no weekly data.
@@ -257,13 +256,12 @@ export function App() {
   }, [version]);
 
   const closeOldData = useCallback(() => {
-    // Asked once at start-up: Not now, Esc and Yes all count as answered. Settings can redo it.
-    if (oldData === 'start') void changeSettings({ oldDataAsked: true });
+    // Asked once at start-up: Not now, Esc and Yes all count as answered.
+    void changeSettings({ oldDataAsked: true });
     setOldData(null);
-  }, [oldData, changeSettings]);
-  const openOldData = useCallback(() => setOldData('settings'), []);
+  }, [changeSettings]);
   const closePerfOldData = useCallback(() => {
-    // Asked once: Yes, Not now and Esc all count as answered. Settings can bring it over later.
+    // Asked once: Yes, Not now and Esc all count as answered.
     void changeSettings({ perfOldDataAsked: true });
     setPerfOldData(false);
   }, [changeSettings]);
@@ -370,7 +368,7 @@ export function App() {
             checklistShown={checklistShown}
             onShowChecklist={() => {
               help.showChecklist();
-              goTo('home');
+              goTo('how-to-use');
             }}
             weeklyShown={help.weeklyShown}
             onShowWeekly={() => {
@@ -397,7 +395,6 @@ export function App() {
             dataSource={dataSource}
             goTo={goTo}
             help={help}
-            openOldData={openOldData}
             request={request}
             takeRequest={takeRequest}
             ownWindow={ownWindow}

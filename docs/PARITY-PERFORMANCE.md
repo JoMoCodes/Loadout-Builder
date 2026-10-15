@@ -214,8 +214,8 @@ on Associates, not on the Imports tab.
       Not ticked: there is no All chip for tiers. With no tier chip on, every tier shows, and more
       than one tier can be on at once (Test: `e2e/performance-drivers.spec.ts`).
 - [ ] Activity chips: In latest week (the start), Has any data, All. `MainWindow.xaml`
-      Not ticked: on purpose, the chips are Everyone (the start), Had a scorecard and No scorecard,
-      and they look at the chosen weeks, not only the latest week (Test:
+      Not ticked: on purpose, the chips are In latest scorecard (the start, each visit), Everyone
+      and No scorecard, and they look at the chosen weeks, not only the latest week (Test:
       `e2e/performance-drivers.spec.ts`).
 - [x] A search box finds drivers by name or Transporter ID. `MainWindow.xaml.cs` Test:
       `e2e/performance-drivers.spec.ts`.
