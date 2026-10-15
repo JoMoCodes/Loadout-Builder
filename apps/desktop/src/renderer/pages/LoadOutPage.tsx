@@ -1,5 +1,6 @@
-// The Load Out page: today's roster and what is still in the yard, in four tabs as the old app
-// had them (loadout_page.py `LoadoutPage`): Roster, Print, Available Vans, Previous Roster.
+// The Load Out page: today's roster and what is still in the yard, in the four tabs the old app
+// had (loadout_page.py `LoadoutPage`): Roster, Print, Available Vans, Previous Roster, and a
+// fifth, Name and ID Links, that lists the links made by hand on the Roster tab.
 // Print sits next to the Roster because it is the roster it prints.
 
 import { useCallback, useEffect, useState } from 'react';
@@ -8,6 +9,7 @@ import { OpenInNewWindow } from '../components/OpenInNewWindow';
 import { useAppSnapshot } from '../lib/useAppSnapshot';
 import { cn } from '../ui/cn';
 import { AvailableVansTab } from './loadOut/AvailableVansTab';
+import { LinksTab } from './loadOut/LinksTab';
 import { PreviousRosterTab } from './loadOut/PreviousRosterTab';
 import { PrintTab } from './loadOut/print';
 import { RosterTab } from './loadOut/RosterTab';
@@ -137,6 +139,8 @@ export function LoadOutPage({ request, takeRequest, ownWindow, startTab }: PageP
           </div>
         ) : shown === 'available-vans' ? (
           <AvailableVansTab snapshot={snapshot} />
+        ) : shown === 'links' ? (
+          <LinksTab snapshot={snapshot} say={setStatus} />
         ) : (
           <PreviousRosterTab snapshot={snapshot} say={setStatus} />
         )}

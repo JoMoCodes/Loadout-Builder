@@ -11,6 +11,14 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.7.0',
+    items: [
+      'Load Out has a new tab, Name and ID Links. It lists every driver you linked to an associate by hand, and who they are linked to.',
+      "The list says whether each linked driver is on today's roster, and you can search it.",
+      'Remove one link there to go back to automatic matching for that driver, or clear them all.',
+    ],
+  },
+  {
     version: '2.6.0',
     items: [
       'The wording of the report emails is now behind a Settings button on the Scorecards page, on both the Performance and Reports tabs. The address and server stay in Settings.',

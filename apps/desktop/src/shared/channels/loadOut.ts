@@ -65,6 +65,12 @@ export const loadOutChannels = [
     result: as<null>(),
   }),
 
+  /** Drops one hand-made link by its driver key, whether or not the driver is on today's roster. */
+  defineCommand('loadOut:remove-link', {
+    input: shape({ revision, driverKey: filled(200) }),
+    result: as<null>(),
+  }),
+
   /** Hands one driver's route (and its van and DWP numbers) to another; a swap if they had one. */
   defineCommand('loadOut:reassign-route', {
     input: shape({ revision, from: rowIndex, to: rowIndex }),

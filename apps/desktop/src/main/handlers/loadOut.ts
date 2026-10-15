@@ -11,6 +11,10 @@ import type { HandlerContext, HandlersFor } from './types';
 export const STALE_ROSTER =
   'The roster changed while you were choosing. Look at it again and try once more.';
 
+/** Plain words for the person when the link they picked is not there any more. */
+export const STALE_LINKS =
+  'The links changed while you were choosing. Look at them again and try once more.';
+
 /**
  * The roster row a command is about. Refuses when the snapshot the page read is no longer the
  * current one (the index could now point at somebody else) or the row is gone.
@@ -83,6 +87,13 @@ export const loadOutHandlers: HandlersFor<typeof loadOutChannels> = {
 
   'loadOut:unlink-driver': ({ revision, rowIndex }, ctx) => {
     ctx.state.unlinkDriver(rowAt(ctx, revision, rowIndex).driver);
+    return null;
+  },
+
+  'loadOut:remove-link': ({ revision, driverKey }, ctx) => {
+    if (revision !== ctx.host.revision) throw new ChannelRefusal('refused', STALE_LINKS);
+    if (!ctx.state.links.has(driverKey)) throw new ChannelRefusal('refused', STALE_LINKS);
+    ctx.state.removeLink(driverKey);
     return null;
   },
 

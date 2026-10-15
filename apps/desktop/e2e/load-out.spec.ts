@@ -55,7 +55,7 @@ async function rightClick(page: Page, driver: string, column: string) {
   await expect(page.getByRole('menu')).toBeVisible();
 }
 
-test('the page has four tabs, and remembers the one you were on', async ({ page }) => {
+test('the page has five tabs, and remembers the one you were on', async ({ page }) => {
   await open(page);
   const tabs = page.getByRole('tab');
   expect(await tabs.allInnerTexts()).toEqual([
@@ -63,6 +63,7 @@ test('the page has four tabs, and remembers the one you were on', async ({ page 
     'Print',
     'Available Vans',
     'Previous Roster',
+    'Name and ID Links',
   ]);
   await page.getByRole('tab', { name: 'Print' }).click();
   // The Print tab is mounted in its place (its own tests are in print-tab.spec.ts).

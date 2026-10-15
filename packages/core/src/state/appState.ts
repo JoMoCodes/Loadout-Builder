@@ -95,6 +95,7 @@ import {
   routeDataToStored,
   tenureFromStored,
   tenureToStored,
+  type DriverLink,
   type StateStore,
 } from './store';
 import type { AssignmentResult } from '../assignment';
@@ -121,6 +122,8 @@ export class AppState {
   associates: AssociateBook = createAssociateBook();
   /** Driver key -> Transporter ID, or null for "not an associate". */
   links = new Map<string, string | null>();
+  /** Driver key -> the driver's name as the sheet spelt it when the link was made. */
+  linkNames = new Map<string, string>();
   matches = new Map<string, Match>();
   routeData = new Map<string, RouteDataSet>(
     ROUTE_KINDS.map((kind) => [kind, createRouteDataSet({ kind })]),
@@ -155,7 +158,12 @@ export class AppState {
   loadAll(): void {
     this.roster = rosterFromStored(this.store.loadRoster());
     this.associates = associatesFromStored(this.store.loadAssociates());
-    this.links = new Map(Object.entries(this.store.loadLinks()));
+    this.links = new Map();
+    this.linkNames = new Map();
+    for (const stored of this.store.listLinks()) {
+      this.links.set(stored.driver_key, stored.transporter_id);
+      this.linkNames.set(stored.driver_key, stored.driver_name);
+    }
     this.routeData = new Map(
       ROUTE_KINDS.map((kind) => [kind, routeDataFromStored(this.store.loadRouteData(kind))]),
     );
@@ -458,6 +466,7 @@ export class AppState {
           const key = driverKey(associate.name);
           this.store.setLink(key, associate.name, entry.transporterId);
           this.links.set(key, entry.transporterId);
+          this.linkNames.set(key, associate.name);
         }
         added.push(associate.name);
       }
@@ -883,15 +892,25 @@ export class AppState {
     const key = driverKey(driverName);
     this.store.setLink(key, driverName, transporterId);
     this.links.set(key, transporterId || null);
+    this.linkNames.set(key, driverName);
     this.rematch();
     this.notify();
   }
 
   /** Drop the manual link and fall back to automatic matching. */
   unlinkDriver(driverName: string): void {
-    const key = driverKey(driverName);
+    this.removeLink(driverKey(driverName));
+  }
+
+  /**
+   * Drop the manual link with this key, whether or not the driver is on today's roster (the
+   * Name and ID Links tab lists them all). Nothing happens when there is no such link.
+   */
+  removeLink(key: string): void {
+    if (!this.links.has(key)) return;
     this.store.deleteLink(key);
     this.links.delete(key);
+    this.linkNames.delete(key);
     this.rematch();
     this.notify();
   }
@@ -899,8 +918,20 @@ export class AppState {
   clearLinks(): void {
     this.store.clearLinks();
     this.links = new Map();
+    this.linkNames = new Map();
     this.rematch();
     this.notify();
+  }
+
+  /** Every hand-made link, A to Z by the driver's name. */
+  linkList(): DriverLink[] {
+    const list: DriverLink[] = [];
+    for (const [key, transporterId] of this.links) {
+      list.push({ driverKey: key, driverName: this.linkNames.get(key) ?? key, transporterId });
+    }
+    return list.sort(
+      (a, b) => a.driverName.localeCompare(b.driverName) || a.driverKey.localeCompare(b.driverKey),
+    );
   }
 
   // --------------------------------------------------------------- lookup

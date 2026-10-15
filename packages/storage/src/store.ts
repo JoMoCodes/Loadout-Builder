@@ -14,6 +14,7 @@ import type {
   Roster,
   RouteDataSet,
   RouteEntry,
+  StoredLink,
   TenureBook,
   Vehicle,
   VehicleFleet,
@@ -250,6 +251,20 @@ export class Store {
     const out: Record<string, string | null> = {};
     for (const r of records) out[text(r.driver_key)] = (r.transporter_id as string | null) ?? null;
     return out;
+  }
+
+  /** Every manual link, with the driver's name as the sheet spelt it. A to Z by name. */
+  listLinks(): StoredLink[] {
+    const records = this.db
+      .prepare(
+        'SELECT driver_key, driver_name, transporter_id FROM driver_links ORDER BY driver_name, driver_key',
+      )
+      .all() as Row[];
+    return records.map((r) => ({
+      driver_key: text(r.driver_key),
+      driver_name: text(r.driver_name),
+      transporter_id: (r.transporter_id as string | null) ?? null,
+    }));
   }
 
   setLink(driverKey: string, driverName: string, transporterId: string | null): void {

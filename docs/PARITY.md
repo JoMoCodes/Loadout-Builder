@@ -21,7 +21,7 @@ which test or harness check proved it.
 The page has four tabs.
 
 - [x] There are four tabs: **Roster**, **Print**, **Available Vans** and **Previous Roster**.
-      Proved by `apps/desktop/e2e/load-out.spec.ts`: "the page has four tabs, and remembers the one you were on". The Print tab holds a plain placeholder until the Print tab work lands.
+      Proved by `apps/desktop/e2e/load-out.spec.ts`: "the page has five tabs, and remembers the one you were on" (the fifth, **Name and ID Links**, is new in 2.7.0). The Print tab holds a plain placeholder until the Print tab work lands.
 
 ### 1.1 Previous Roster tab
 
@@ -369,7 +369,7 @@ The columns, page and who prints are the user's to set. The two fixed exports ab
       _The Print tab reads the core's own print rows (`print:rows`, checked against `AppState.printRows` by `apps/desktop/src/main/handlers/print.test.ts`; the rows themselves by the parity diff `printing`)._
       Proved by `apps/desktop/src/main/handlers/loadOut.test.ts`: "prints in every cell what the Roster table shows in it, from the same records" (every column, every row of a fixture day, Check, Vans and Matched On included). The one difference is the old app's too: the table shows "PAD 1", the sheet prints "1".
 - [x] The Print tab and the Roster read the same records, with no separate working out.
-      Proved by `apps/desktop/src/main/handlers/loadOut.test.ts`: "prints in every cell what the Roster table shows in it, from the same records": both come from the same day state in the main process, and the Print tab is mounted on the Load Out page beside the Roster (`apps/desktop/e2e/load-out.spec.ts`: "the page has four tabs...").
+      Proved by `apps/desktop/src/main/handlers/loadOut.test.ts`: "prints in every cell what the Roster table shows in it, from the same records": both come from the same day state in the main process, and the Print tab is mounted on the Load Out page beside the Roster (`apps/desktop/e2e/load-out.spec.ts`: "the page has five tabs...").
 
 ### 2.2 Columns
 

@@ -9,7 +9,7 @@ import { mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { AssignmentResult } from '@loadout/core';
+import { driverKey, type AssignmentResult } from '@loadout/core';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import type { AppSnapshot } from '../../shared/snapshot';
 import { StateHost } from '../appState';
@@ -17,7 +17,7 @@ import type { ChannelEnv, ChannelEvent, IpcLike } from '../channels';
 import { DataSource } from '../dataSource';
 import { registerAllChannels } from './index';
 import type { HandlerContext, Services } from './types';
-import { STALE_ROSTER } from './loadOut';
+import { STALE_LINKS, STALE_ROSTER } from './loadOut';
 import { ROSTER_COLUMNS } from '../../renderer/pages/loadOut/columns';
 
 const root = path.resolve(
@@ -250,6 +250,57 @@ describe('Load Out commands', () => {
       transporterId: 'NOT-IN-THE-LIST',
     });
     expect(unknown.reason).toBe('refused');
+  });
+
+  it('removes one link by its key, even after the driver has left the roster', async () => {
+    let snap = await snapshot();
+    const view = snap.roster.rows.find((r) => r.match.method !== 'manual' && r.associateId)!;
+    const key = driverKey(view.row.driver);
+    const other = snap.associates.find((a) => a.associate.transporterId !== view.associateId)!;
+    let reply = await rig.call('loadOut:link-driver', {
+      revision: snap.revision,
+      rowIndex: view.index,
+      transporterId: other.associate.transporterId,
+    });
+    expect(reply.ok).toBe(true);
+    snap = await snapshot();
+    expect(snap.linkList).toContainEqual({
+      driverKey: key,
+      driverName: view.row.driver,
+      transporterId: other.associate.transporterId,
+    });
+
+    // The link outlives the roster row.
+    reply = await rig.call('loadOut:remove-driver', {
+      revision: snap.revision,
+      rowIndex: view.index,
+    });
+    expect(reply.ok).toBe(true);
+    snap = await snapshot();
+    expect(snap.linkList.some((link) => link.driverKey === key)).toBe(true);
+
+    // A stale revision and an unknown key are both refused in plain words.
+    const stale = await rig.call('loadOut:remove-link', {
+      revision: snap.revision - 1,
+      driverKey: key,
+    });
+    expect(stale.reason).toBe('refused');
+    expect(stale.message).toBe(STALE_LINKS);
+    const unknown = await rig.call('loadOut:remove-link', {
+      revision: snap.revision,
+      driverKey: 'nobody at all',
+    });
+    expect(unknown.reason).toBe('refused');
+    const empty = await rig.call('loadOut:remove-link', { revision: snap.revision, driverKey: '' });
+    expect(empty.reason).toBe('bad-input');
+
+    // Every command, refused or not, moves the revision on; the page looks again before acting.
+    snap = await snapshot();
+    reply = await rig.call('loadOut:remove-link', { revision: snap.revision, driverKey: key });
+    expect(reply).toEqual({ ok: true, value: null });
+    const after = await snapshot();
+    expect(after.linkList.some((link) => link.driverKey === key)).toBe(false);
+    expect(after.counts.links).toBe(snap.counts.links - 1);
   });
 
   it('forgets every manual link', async () => {

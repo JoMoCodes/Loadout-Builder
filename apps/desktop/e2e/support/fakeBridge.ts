@@ -88,6 +88,7 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
         lmrApproved: [],
         affinity: {},
         links: new Map(),
+        linkList: [],
         tenure: {
           records: 0,
           sourceFile: '',

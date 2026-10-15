@@ -82,6 +82,11 @@ function problems(goTo: (id: PageId) => void): Problem[] {
             <strong>Link to associate</strong>. Pick the right person. The app remembers this.
           </li>
           <li>
+            Every link you made by hand is listed on the <strong>Name and ID Links</strong> tab of{' '}
+            {go('load-out', 'Load Out')}. Remove one there if it is wrong, and the app goes back to
+            matching that driver by name.
+          </li>
+          <li>
             <Example tone="bad">Ambiguous - pick one</Example> means more than one person fits.
             Right-click and link the right one the same way.
           </li>

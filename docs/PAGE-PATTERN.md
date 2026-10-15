@@ -332,6 +332,7 @@ the snapshot's `revision` and refuse when it has moved on.
 | `loadOut:remove-driver` | command | `{ revision, rowIndex }` | Takes one driver off the roster, with whatever they were holding. |
 | `loadOut:link-driver` | command | `{ revision, rowIndex, transporterId }` | Links a driver to an associate by hand, or (transporterId null) marks them as not one. |
 | `loadOut:unlink-driver` | command | `{ revision, rowIndex }` | Drops the hand-made link of one driver: back to automatic matching. |
+| `loadOut:remove-link` | command | `{ revision, driverKey }` | Drops one hand-made link by its driver key, whether or not the driver is on today's roster (the Name and ID Links tab). |
 | `loadOut:reassign-route` | command | `{ revision, from, to }` | Hands one driver's route (and its van and DWP numbers) to another; a swap if they had one. |
 | `loadOut:reassign-van` | command | `{ revision, from, to }` | Hands one driver's van to another; a swap if they had one. |
 | `loadOut:give-van` | command | `{ revision, rowIndex, vin }` | Puts a driver in a free van by hand. |

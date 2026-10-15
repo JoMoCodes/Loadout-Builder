@@ -264,6 +264,12 @@ export function loadOutDay(): NonNullable<FakeBridgeOptions['snapshot']> {
       matchedCount: 1,
       dayStatus: 'mismatch',
     },
+    // Three links made by hand: two drivers on today's roster, one who is not working today.
+    linkList: [
+      { driverKey: 'colton alderman', driverName: 'Colton Alderman', transporterId: IDS.colton },
+      { driverKey: 'nadine abernathy', driverName: 'Nadine Abernathy', transporterId: IDS.nadine },
+      { driverKey: 'zane applewhite', driverName: 'Zane Applewhite', transporterId: null },
+    ],
     previousRoster: {
       rows: [
         row({

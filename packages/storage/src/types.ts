@@ -26,6 +26,14 @@ export const FIELD_NAMES = [
 
 export type DriverRow = Record<(typeof FIELD_NAMES)[number], string>;
 
+/** One hand-made link: a driver's name on the sheet, pinned to a Transporter ID (or to none). */
+export interface StoredLink {
+  driver_key: string;
+  driver_name: string;
+  /** null means "not an associate". */
+  transporter_id: string | null;
+}
+
 export interface Roster {
   rows: DriverRow[];
   load_out_date: string | null;
