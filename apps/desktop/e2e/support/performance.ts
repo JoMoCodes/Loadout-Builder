@@ -69,6 +69,7 @@ export function driverRow(who: { name: string; id: string }, values: Json = {}):
     safety: NO_SAFETY,
     hasEmail: true,
     activeInRange: true,
+    inLatestWeek: true,
     ...values,
   };
 }
@@ -85,7 +86,12 @@ export const DRIVERS = (): Json[] => [
     trend: { scoreDelta: -4.2, tierDelta: -1, slope: -1, trendDirection: 'Declining' },
   }),
   driverRow(CARMEN, { status: 'INACTIVE', latestTier: 'Platinum', latestScore: 95.07 }),
-  driverRow(TOBIAS, { latestTier: 'Platinum', latestScore: 97.72, activeInRange: false }),
+  driverRow(TOBIAS, {
+    latestTier: 'Platinum',
+    latestScore: 97.72,
+    activeInRange: false,
+    inLatestWeek: false,
+  }),
   driverRow(FABIAN, { status: '', latestTier: 'Platinum', latestScore: 100, hasEmail: false }),
 ];
 

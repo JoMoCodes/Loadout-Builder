@@ -93,7 +93,11 @@ const DISPLAY_FIELD: Record<keyof DriverAverages, keyof DriverGridRow> = {
   ced: 'avgCedDisplay',
 };
 
-function driverRow(row: DriverGridRow, activeIds: Set<string>): PerfDriverRow {
+function driverRow(
+  row: DriverGridRow,
+  activeIds: Set<string>,
+  latestIds: Set<string>,
+): PerfDriverRow {
   const averages: DriverAverages = {
     score: row.avgScore,
     rank: row.avgRank,
@@ -135,6 +139,7 @@ function driverRow(row: DriverGridRow, activeIds: Set<string>): PerfDriverRow {
     },
     hasEmail: (row.email ?? '').trim() !== '',
     activeInRange: activeIds.has(row.transporterId),
+    inLatestWeek: latestIds.has(row.transporterId),
   };
 }
 
@@ -161,6 +166,11 @@ export function driversView(data: PerfData, asked: WeekRange | null): PerfDriver
           .map((card) => card.transporterId),
   );
   const [newestWeek, previousWeek] = newestTwo(data, range);
+  // The drivers on the newest scorecard: the "In latest scorecard" chip. A driver whose last
+  // scorecard is an older week in the range is in the weeks but not in the latest scorecard.
+  const latestIds = new Set(
+    data.scorecards.filter((card) => card.week === newestWeek).map((card) => card.transporterId),
+  );
   const moves = tierChanges(data, newestWeek, previousWeek);
   const names = new Map(data.drivers.map((d) => [d.transporterId, d.name]));
   const nameOf = (id: string) => names.get(id) ?? '';
@@ -174,7 +184,7 @@ export function driversView(data: PerfData, asked: WeekRange | null): PerfDriver
   );
   return {
     range,
-    rows: grid.map((row) => driverRow(row, activeIds)),
+    rows: grid.map((row) => driverRow(row, activeIds, latestIds)),
     changes: {
       newestWeek,
       previousWeek,

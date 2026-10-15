@@ -233,6 +233,8 @@ export interface PerfDriverRow {
   hasEmail: boolean;
   /** Had a scorecard in the chosen weeks. */
   activeInRange: boolean;
+  /** On the newest scorecard of the chosen weeks (the "In latest scorecard" chip). */
+  inLatestWeek: boolean;
 }
 
 /** The Drivers tab's data for one week range. */
