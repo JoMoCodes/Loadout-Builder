@@ -36,6 +36,7 @@ describe('the pages and their tabs', () => {
       'print',
       'available-vans',
       'previous-roster',
+      'links',
     ]);
     expect(PAGE_TABS['route-sheets'].map((tab) => tab.id)).toEqual([
       'distribute',

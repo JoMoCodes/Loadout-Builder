@@ -54,6 +54,7 @@ export const LOAD_OUT_TABS = [
   { id: 'print', label: 'Print' },
   { id: 'available-vans', label: 'Available Vans' },
   { id: 'previous-roster', label: 'Previous Roster' },
+  { id: 'links', label: 'Name and ID Links' },
 ] as const satisfies readonly TabItem[];
 
 export type LoadOutTab = (typeof LOAD_OUT_TABS)[number]['id'];

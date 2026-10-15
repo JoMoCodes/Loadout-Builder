@@ -413,6 +413,36 @@ describe('bringing in the associate export', () => {
   });
 });
 
+describe('hand-made links', () => {
+  it('lists them with the name the sheet spelt, removes one by key, and keeps that on reload', () => {
+    const st = build();
+    st.clearLinks(); // build() pins one of its own
+    let told = 0;
+    st.subscribe(() => (told += 1));
+    st.linkDriver('Zane Applewhite', IDS.carmen);
+    st.linkDriver('Orson Applewhite', null);
+    expect(st.linkList()).toEqual([
+      { driverKey: 'orson applewhite', driverName: 'Orson Applewhite', transporterId: null },
+      { driverKey: 'zane applewhite', driverName: 'Zane Applewhite', transporterId: IDS.carmen },
+    ]);
+
+    st.removeLink('zane applewhite');
+    expect(told).toBe(3);
+    expect([...st.links.keys()]).toEqual(['orson applewhite']);
+    expect(st.linkList().map((link) => link.driverName)).toEqual(['Orson Applewhite']);
+    expect(st.store.loadLinks()).toEqual({ 'orson applewhite': null });
+
+    const again = new AppState(st.store);
+    again.loadAll();
+    expect(again.linkList()).toEqual([
+      { driverKey: 'orson applewhite', driverName: 'Orson Applewhite', transporterId: null },
+    ]);
+    again.clearLinks();
+    expect(again.linkList()).toEqual([]);
+    expect(again.linkNames.size).toBe(0);
+  });
+});
+
 describe('saved data', () => {
   it('pins links and saves new associates and the roster when route data adds someone', () => {
     const store = new Store(':memory:', { now: () => new Date(2000, 0, 1) });

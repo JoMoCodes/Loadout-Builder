@@ -134,6 +134,7 @@ export function buildSnapshot(state: AppState, options: SnapshotOptions): AppSna
       [...state.affinity.slots].map(([vin, held]) => [vin, Object.fromEntries(held)]),
     ),
     links: new Map(state.links),
+    linkList: state.linkList(),
     tenure: {
       records: state.tenureBook.records.size,
       sourceFile: state.tenureBook.sourceFile,

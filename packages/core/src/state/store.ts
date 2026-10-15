@@ -34,6 +34,22 @@ export type StoredDriverRow = Record<
   string
 >;
 
+/** One hand-made link as saved: driver key and name, and the Transporter ID (null: not one). */
+export interface StoredLink {
+  driver_key: string;
+  driver_name: string;
+  transporter_id: string | null;
+}
+
+/** One hand-made link as the state and the pages see it. */
+export interface DriverLink {
+  driverKey: string;
+  /** The driver's name as the sheet spelt it when the link was made. */
+  driverName: string;
+  /** null means "not an associate". */
+  transporterId: string | null;
+}
+
 export interface StoredRoster {
   rows: StoredDriverRow[];
   load_out_date: string | null;
@@ -144,6 +160,8 @@ export interface StateStore {
   loadAssociates(): StoredAssociateBook;
   clearAssociates(): void;
   loadLinks(): Record<string, string | null>;
+  /** Every manual link with the driver's name as the sheet spelt it, A to Z by name. */
+  listLinks(): StoredLink[];
   setLink(driverKey: string, driverName: string, transporterId: string | null): void;
   deleteLink(driverKey: string): void;
   clearLinks(): void;

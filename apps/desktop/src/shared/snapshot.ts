@@ -7,6 +7,7 @@
 
 import type {
   Associate,
+  DriverLink,
   DriverRow,
   DwpDataSet,
   ExpiryState,
@@ -169,6 +170,8 @@ export interface AppSnapshot {
   affinity: Record<string, Record<string, string>>;
   /** Driver key to the Transporter ID they were linked to (null: "not an associate"). */
   links: Map<string, string | null>;
+  /** The same links with the driver's name as the sheet spelt it, A to Z (the Links tab). */
+  linkList: DriverLink[];
   tenure: TenureSummary;
   print: {
     spec: PrintSpec;

@@ -38,8 +38,10 @@ import {
   unassignedOf,
   unassignedTimes,
   vehicleRequiredQualification,
+  driverKey,
   type Associate,
   type AssignmentResult,
+  type DriverLink,
   type DriverRow,
   type DwpApplyResult,
   type IsoDate,
@@ -556,6 +558,43 @@ export function availableEmpty(vehicles: readonly VehicleView[]): { title: strin
     };
   }
   return { title: 'Every operational van is out with a driver.', body: '' };
+}
+
+// ------------------------------------------------------------ Name and ID Links
+
+/** One line of the Name and ID Links tab. */
+export interface LinkLine {
+  link: DriverLink;
+  /** The associate's name; "Not an associate" for a null link; the ID itself when they are gone. */
+  linkedTo: string;
+  /** A row on today's roster has this driver's key. */
+  onRoster: boolean;
+}
+
+export const NOT_AN_ASSOCIATE = 'Not an associate';
+
+/** The tab's lines, in the snapshot's order (A to Z by the driver's name). */
+export function linkLines(snapshot: AppSnapshot): LinkLine[] {
+  const names = new Map(
+    snapshot.associates.map((v) => [v.associate.transporterId, v.associate.name]),
+  );
+  const rostered = new Set(snapshot.roster.rows.map((view) => driverKey(view.row.driver)));
+  return snapshot.linkList.map((link) => ({
+    link,
+    linkedTo:
+      link.transporterId === null
+        ? NOT_AN_ASSOCIATE
+        : (names.get(link.transporterId) ?? link.transporterId),
+    onRoster: rostered.has(link.driverKey),
+  }));
+}
+
+/** The header card's count: "3 hand-made links · 2 on today's roster". */
+export function linksHeader(lines: readonly LinkLine[]): string {
+  if (lines.length === 0) return 'No hand-made links';
+  const onRoster = lines.filter((line) => line.onRoster).length;
+  const links = lines.length === 1 ? '1 hand-made link' : `${lines.length} hand-made links`;
+  return `${links} · ${onRoster} on today's roster`;
 }
 
 /** The filter choices of the Available Vans tab: service types and categories on the list. */

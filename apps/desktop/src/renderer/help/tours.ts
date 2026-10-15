@@ -81,8 +81,8 @@ export const TOURS: Record<string, Tour> = {
     steps: [
       {
         element: `${LOAD_OUT} [role="tablist"]`,
-        title: 'Four tabs',
-        text: "Roster is today's drivers. Print makes the sheet you hand out. Available Vans shows the vans nobody has. Previous Roster is the last one you kept.",
+        title: 'Five tabs',
+        text: "Roster is today's drivers. Print makes the sheet. Available Vans lists free vans. Previous Roster is the last one kept. Name and ID Links are the links you made by hand.",
         side: 'bottom',
       },
       {

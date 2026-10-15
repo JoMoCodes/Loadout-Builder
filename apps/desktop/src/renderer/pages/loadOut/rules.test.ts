@@ -30,6 +30,8 @@ import {
   holdingText,
   importedAtLabel,
   linkCandidates,
+  linkLines,
+  linksHeader,
   matchesShift,
   rosterHeader,
   routeTakers,
@@ -227,6 +229,50 @@ describe('status lines', () => {
     expect(assignSummary({ considered: 4, vansAvailable: 0, assignments: [] })).toBe(
       'No vans assigned - none of the 4 drivers could be matched to a free van.',
     );
+  });
+});
+
+describe('Name and ID Links', () => {
+  const associates = [
+    { associate: createAssociate({ name: 'Colton Alderman', transporterId: 'A047LNAN5VQIQR' }) },
+    { associate: createAssociate({ name: 'Nadine Abernathy', transporterId: 'A0DZDWECHDJ5TO' }) },
+  ] as AppSnapshot['associates'];
+  const linkList = [
+    {
+      driverKey: 'colton alderman',
+      driverName: 'Colton Alderman',
+      transporterId: 'A047LNAN5VQIQR',
+    },
+    {
+      driverKey: 'orson applewhite',
+      driverName: 'Orson Applewhite',
+      transporterId: 'A02V4L9HIELIDL',
+    },
+    { driverKey: 'zane applewhite', driverName: 'Zane Applewhite', transporterId: null },
+  ];
+
+  it('names who each link points at, and says who is on today', () => {
+    const snapshot = snapshotWith(
+      [view(0, { driver: 'Colton  Alderman' }), view(1, { driver: 'Nadine Abernathy' })],
+      { associates, linkList },
+    );
+    expect(linkLines(snapshot)).toEqual([
+      { link: linkList[0], linkedTo: 'Colton Alderman', onRoster: true },
+      { link: linkList[1], linkedTo: 'A02V4L9HIELIDL', onRoster: false },
+      { link: linkList[2], linkedTo: 'Not an associate', onRoster: false },
+    ]);
+  });
+
+  it('counts the links and the ones on today in the header', () => {
+    const snapshot = snapshotWith([view(0, { driver: 'Colton Alderman' })], {
+      associates,
+      linkList,
+    });
+    expect(linksHeader(linkLines(snapshot))).toBe("3 hand-made links · 1 on today's roster");
+    expect(linksHeader(linkLines(snapshotWith([], { associates, linkList: [linkList[2]!] })))).toBe(
+      "1 hand-made link · 0 on today's roster",
+    );
+    expect(linksHeader([])).toBe('No hand-made links');
   });
 });
 

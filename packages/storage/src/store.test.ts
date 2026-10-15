@@ -143,6 +143,20 @@ describe('driver links', () => {
     store.clearLinks();
     expect(store.loadLinks()).toEqual({});
   });
+
+  it('lists links with the name the sheet spelt, A to Z, and a deleted one is gone', () => {
+    store.setLink(RHEA.key, RHEA.name, null);
+    store.setLink(CARMEN.key, CARMEN.name, CARMEN.id);
+    expect(store.listLinks()).toEqual([
+      { driver_key: CARMEN.key, driver_name: CARMEN.name, transporter_id: CARMEN.id },
+      { driver_key: RHEA.key, driver_name: RHEA.name, transporter_id: null },
+    ]);
+    store.deleteLink(RHEA.key);
+    expect(store.listLinks().map((link) => link.driver_key)).toEqual([CARMEN.key]);
+    // Deleting a link that is not there is not an error.
+    store.deleteLink(RHEA.key);
+    expect(store.listLinks()).toHaveLength(1);
+  });
 });
 
 describe('route data', () => {
