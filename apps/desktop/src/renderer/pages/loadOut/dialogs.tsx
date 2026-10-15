@@ -10,6 +10,7 @@ import {
   vanBadges,
   type Associate,
   type AssignmentResult,
+  type KeepVans,
 } from '@loadout/core';
 import { useMemo, useState } from 'react';
 import type { RosterRowView, RouteSetView } from '../../../shared/snapshot';
@@ -324,6 +325,66 @@ export function AssignDialog({
         tone={(l) => l.severity}
         testId="assign-lines"
       />
+    </Modal>
+  );
+}
+
+// ------------------------------------------------------- keep vans
+
+interface KeepVansDialogProps {
+  byHand: number;
+  fromSheet: number;
+  onAnswer: (keep: KeepVans | null) => void;
+}
+
+const vans = (count: number) => (count === 1 ? '1 van' : `${count} vans`);
+
+/** Before Assign Vans: keep the vans drivers already have, or work them out again. */
+export function KeepVansDialog({ byHand, fromSheet, onAnswer }: KeepVansDialogProps) {
+  const [keepByHand, setKeepByHand] = useState(true);
+  const [keepFromSheet, setKeepFromSheet] = useState(true);
+  const go = () => onAnswer({ byHand: keepByHand, fromSheet: keepFromSheet });
+  return (
+    <Modal
+      title="Keep the vans drivers already have?"
+      onCancel={() => onAnswer(null)}
+      onEnter={go}
+      testId="keep-vans-dialog"
+      footer={
+        <>
+          <Button onClick={() => onAnswer(null)}>Cancel</Button>
+          <Button variant="primary" onClick={go} data-testid="keep-vans-go">
+            Assign Vans
+          </Button>
+        </>
+      }
+    >
+      <Subtitle text="A ticked box keeps those vans with their drivers. Untick it to have Assign Vans give those drivers a van again, like everyone else." />
+      <fieldset className="flex flex-col gap-2 text-sm">
+        <legend className="sr-only">Vans to keep</legend>
+        {byHand > 0 ? (
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={keepByHand}
+              onChange={(event) => setKeepByHand(event.target.checked)}
+              data-testid="keep-by-hand"
+            />
+            Keep the {vans(byHand)} given by hand
+          </label>
+        ) : null}
+        {fromSheet > 0 ? (
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={keepFromSheet}
+              onChange={(event) => setKeepFromSheet(event.target.checked)}
+              data-testid="keep-from-sheet"
+            />
+            Keep the {vans(fromSheet)} from the load-out sheet
+          </label>
+        ) : null}
+      </fieldset>
     </Modal>
   );
 }

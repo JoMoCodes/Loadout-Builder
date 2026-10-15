@@ -37,6 +37,7 @@ import {
   shiftTypeCounts,
   unassignedOf,
   unassignedTimes,
+  vanSource,
   vehicleRequiredQualification,
   driverKey,
   type Associate,
@@ -231,6 +232,21 @@ export function assignSummary(result: AssignmentResult): string {
   const left = unassignedOf(result).length;
   if (left) message += ` ${left} left without one.`;
   return message + kept;
+}
+
+/** How many vans on the roster were given by hand, and how many came on the load-out sheet. */
+export function heldVans(rows: readonly Pick<DriverRow, 'vehicle' | 'vin' | 'assignMethod'>[]): {
+  byHand: number;
+  fromSheet: number;
+} {
+  let byHand = 0;
+  let fromSheet = 0;
+  for (const row of rows) {
+    const source = vanSource(row);
+    if (source === 'by-hand') byHand += 1;
+    else if (source === 'sheet') fromSheet += 1;
+  }
+  return { byHand, fromSheet };
 }
 
 /** Vans given by hand or on the load-out sheet are left where they are. */

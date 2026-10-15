@@ -2,7 +2,15 @@
 // did to it (loadout_page.py `RosterPage`). The page only asks and shows: every change is one
 // command, and the core does the work.
 
-import { isActive, needsVan, rosterDateLabel, type Associate, type DriverRow } from '@loadout/core';
+import {
+  isActive,
+  KEEP_ALL_VANS,
+  needsVan,
+  rosterDateLabel,
+  type Associate,
+  type DriverRow,
+  type KeepVans,
+} from '@loadout/core';
 import {
   ArrowLeftRight,
   ChevronDown,
@@ -30,6 +38,7 @@ import {
 import { Badges, checkTone, ROSTER_COLUMNS, VAN_COLUMNS } from './columns';
 import {
   AssignDialog,
+  KeepVansDialog,
   LinkDialog,
   RosterPickDialog,
   SourceDialog,
@@ -45,6 +54,7 @@ import {
   baseName,
   dwpDayProblem,
   dwpSummary,
+  heldVans,
   matchesShift,
   rosterHeader,
   routeTakers,
@@ -303,7 +313,20 @@ export function RosterTab({ snapshot, say, pendingImport, onImportTaken }: Roste
       say('Nothing to assign - no service types on the roster.');
       return;
     }
-    const reply = await call('loadOut:assign-vans');
+    // Vans given by hand or on the load-out sheet stay put unless the person says otherwise.
+    const held = heldVans(now.roster.rows.map((view) => view.row));
+    let keep: KeepVans = KEEP_ALL_VANS;
+    if (held.byHand || held.fromSheet) {
+      const answer = await ask<KeepVans | null>((done) => (
+        <KeepVansDialog byHand={held.byHand} fromSheet={held.fromSheet} onAnswer={done} />
+      ));
+      if (answer === null) {
+        say('Vans left as they were.');
+        return;
+      }
+      keep = answer;
+    }
+    const reply = await call('loadOut:assign-vans', keep);
     if (failed(reply)) return;
     say(assignSummary(reply.value));
     await ask<void>((done) => <AssignDialog result={reply.value} onClose={() => done()} />);

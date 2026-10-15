@@ -15,8 +15,8 @@ export const RELEASE_NOTES: readonly ReleaseNote[] = [
     items: [
       'On Load Out, Assign Vans now keeps the vans drivers already have. That means vans you gave by hand, and vans that were already on the load-out sheet.',
       'It only gives vans to drivers who still need one. A van someone already has is never handed to another driver.',
-      'Assign Vans no longer asks before it runs, because it never replaces a van you gave by hand.',
-      'To start over and have every van worked out again, use Clear Van Assignments in the More menu first.',
+      'When some drivers already have a van, Assign Vans first asks which ones to keep. There is one box for vans given by hand and one for vans from the load-out sheet. Both start ticked.',
+      'Untick a box to have Assign Vans give those drivers a van again, like everyone else.',
     ],
   },
   {

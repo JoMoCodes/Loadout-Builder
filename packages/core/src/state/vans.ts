@@ -6,7 +6,16 @@
 // Python's `state.assign_vans()`. LMR approval, van affinity and the van badges live on
 // `AppState` itself.
 
-import { BY_HAND, methodLabel, plan, type AssignmentResult, type Candidate } from '../assignment';
+import {
+  BY_HAND,
+  KEEP_ALL_VANS,
+  methodLabel,
+  plan,
+  vanSource,
+  type AssignmentResult,
+  type Candidate,
+  type KeepVans,
+} from '../assignment';
 import { needsVan, type DriverRow } from '../models/roster';
 import { isRental, manualOnly, type Vehicle } from '../models/vehicles';
 import { pyStrip } from '../models/text';
@@ -92,20 +101,22 @@ export function setVehiclePriority(state: AppState, vehicle: Vehicle, priority: 
 
 /**
  * A van Assign Vans leaves where it is: one given by hand, or one that was already on the load-out
- * sheet (a van with no method recorded). Only vans Assign Vans gave out itself are worked out again.
+ * sheet, unless the person asked for that kind to be worked out again. A van Assign Vans gave out
+ * itself is always worked out again.
  */
-export function keepsVan(row: DriverRow): boolean {
-  if (!(row.vehicle || row.vin)) return false;
-  return row.assignMethod === BY_HAND || row.assignMethod === '';
+export function keepsVan(row: DriverRow, keep: KeepVans = KEEP_ALL_VANS): boolean {
+  const source = vanSource(row);
+  if (source === 'by-hand') return keep.byHand;
+  if (source === 'sheet') return keep.fromSheet;
+  return false;
 }
 
 /**
- * Fill the roster's Vehicle and VIN columns from the fleet. Vans given by hand or brought in with
- * the load-out sheet stay put and are kept out of the pool; every other route driver's van is
- * worked out again.
+ * Fill the roster's Vehicle and VIN columns from the fleet. Vans kept by `keep` stay put and are
+ * kept out of the pool; every other route driver's van is worked out again.
  */
-export function assignVans(state: AppState): AssignmentResult {
-  const kept = state.roster.rows.filter(keepsVan);
+export function assignVans(state: AppState, keep: KeepVans = KEEP_ALL_VANS): AssignmentResult {
+  const kept = new Set(state.roster.rows.filter((row) => keepsVan(row, keep)));
   const held = new Set<string>();
   for (const row of kept) {
     if (row.vin) held.add(row.vin);
@@ -114,7 +125,7 @@ export function assignVans(state: AppState): AssignmentResult {
   const fleet = assignableVehicles(state);
   const free = fleet.filter((v) => !held.has(v.vin) && !held.has(v.name));
   const candidates: Candidate[] = state.roster.rows
-    .filter((row) => needsVan(row) && !keepsVan(row))
+    .filter((row) => needsVan(row) && !kept.has(row))
     .map((row) => ({ row, associate: state.associateFor(row) }));
   const result = plan(
     candidates,
@@ -125,12 +136,12 @@ export function assignVans(state: AppState): AssignmentResult {
     state.vehiclePriorities,
   );
   result.vansAvailable = fleet.length;
-  result.kept = kept.length;
+  result.kept = kept.size;
 
   // Every other row, not just the ones in scope: a driver who loses their route loses the van
   // Assign Vans gave them.
   for (const row of state.roster.rows) {
-    if (keepsVan(row)) continue;
+    if (kept.has(row)) continue;
     row.vehicle = '';
     row.vin = '';
     row.assignMethod = '';

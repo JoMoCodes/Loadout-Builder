@@ -7,7 +7,17 @@
 // point at somebody else) and the page asks the person to look again.
 
 import type { AssignmentResult, DwpApplyResult, RouteApplyResult } from '@loadout/core';
-import { filled, intBetween, integer, nothing, nullable, oneOf, shape } from './check';
+import {
+  boolean,
+  filled,
+  intBetween,
+  integer,
+  nothing,
+  nullable,
+  oneOf,
+  optional,
+  shape,
+} from './check';
 import { as, defineCommand } from './define';
 
 /** The most rows a roster can have, for the input checks. */
@@ -38,8 +48,14 @@ export const loadOutChannels = [
   /** Copies staging, bags and OVS from the DWP sheet, matched on route code. */
   defineCommand('loadOut:bring-over-dwp', { input: nothing, result: as<DwpApplyResult>() }),
 
-  /** Works out a van for every driver who needs one, keeping vans given by hand or on the sheet. */
-  defineCommand('loadOut:assign-vans', { input: nothing, result: as<AssignmentResult>() }),
+  /**
+   * Works out a van for every driver who needs one. Vans given by hand or on the sheet stay put,
+   * unless `keep` says to work that kind out again (left out: keep both).
+   */
+  defineCommand('loadOut:assign-vans', {
+    input: optional(shape({ byHand: boolean, fromSheet: boolean })),
+    result: as<AssignmentResult>(),
+  }),
 
   /** Empties the Vehicle and VIN columns. How many drivers lost a van. */
   defineCommand('loadOut:clear-vans', { input: nothing, result: as<number>() }),

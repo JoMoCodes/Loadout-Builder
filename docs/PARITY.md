@@ -823,9 +823,12 @@ The Amazon exports that say who has scheduled work and when they dispatch.
       Assignments) and `state/vans.test.ts`: "works out again the vans it gave out, and takes one
       off a driver with no route".
 - [x] Changed from the old app: a van given by hand, or already on the load-out sheet, stays put
-      and is given to nobody else. The old app emptied every row.
+      and is given to nobody else, unless the person unticks that kind in the question Assign
+      Vans asks first. The old app emptied every row.
       Proved by `state/vans.test.ts`: "keeps a van given by hand or on the load-out sheet, and
-      gives it to nobody else".
+      gives it to nobody else" and "choosing which vans to keep", and
+      `apps/desktop/e2e/shortcuts-and-drops.spec.ts`: "Assign Vans works out again the vans whose
+      box is unticked".
 - [x] Grounding a van moves its driver, when Assign Vans gave out that van.
       Proved by the parity diff `vans` on all three days (grounded vans in the fixture database stay out of the run).
 - [x] A driver who loses their route loses the van Assign Vans gave them.
@@ -1283,11 +1286,11 @@ each one and said keep it on 2026-10-08.
       Proved by `apps/desktop/e2e/print-tab.spec.ts`: "Ctrl+P on the Load Out page runs Print Page
       from any tab, and says so on the one status line".
 - [x] **Questions before taking something away**: Clear Van Assignments and Unassign this van ask
-      first. Assign Vans no longer asks, because it keeps vans given by hand. Every red question starts
+      first. Assign Vans asks which vans drivers already have to keep, with Cancel leaving them all. Every red question starts
       on No, so Enter never clears anything by accident.
       Proved by `apps/desktop/e2e/load-out.spec.ts` ("Unassign this van...", "Clear Roster asks
       first...", "Remove from the roster asks first..."), `apps/desktop/e2e/shortcuts-and-drops.spec.ts`
-      ("Assign Vans goes straight ahead, even when a van was given by hand"), `page-pattern.spec.ts`,
+      ("Assign Vans asks which vans to keep, and Cancel leaves every van alone"), `page-pattern.spec.ts`,
       `associates.spec.ts` and `vehicle-data.spec.ts` (Clear Previous Roster, Clear Associates
       and Clear Vehicles start on No).
 - [x] **Clear Lifetime Routes** (section 6.1).

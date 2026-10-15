@@ -98,7 +98,7 @@ import {
   type DriverLink,
   type StateStore,
 } from './store';
-import type { AssignmentResult } from '../assignment';
+import type { AssignmentResult, KeepVans } from '../assignment';
 import type { PrintRow, PrintSpec } from '../printing/printing';
 import * as print from './print';
 import * as vans from './vans';
@@ -708,8 +708,8 @@ export class AppState {
 
   // ------------------------------------------------------- van assignment
 
-  assignVans(): AssignmentResult {
-    return vans.assignVans(this);
+  assignVans(keep?: KeepVans): AssignmentResult {
+    return vans.assignVans(this, keep);
   }
 
   reassignRoute(source: DriverRow, target: DriverRow): void {

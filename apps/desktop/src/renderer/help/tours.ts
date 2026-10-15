@@ -88,7 +88,7 @@ export const TOURS: Record<string, Tour> = {
       {
         element: `${LOAD_OUT} [data-action="assign-vans"]`,
         title: 'Give out the vans',
-        text: 'Assign Vans gives each driver a van they are qualified for. Anyone who already has a van keeps it. A window then shows who got which van, and who did not and why.',
+        text: 'Assign Vans gives each driver a van they are qualified for. It asks first about vans drivers already have. A window then shows who got which van and who did not.',
         side: 'bottom',
       },
       {

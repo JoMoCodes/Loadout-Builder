@@ -510,8 +510,8 @@ export function HowToUsePage({
             </li>
             <li>
               Click <strong>Assign Vans</strong>. A window shows who got which van, and anyone who
-              did not, with the reason. Drivers who already have a van, from the load-out sheet or
-              given by hand, keep it.
+              did not, with the reason. If some drivers already have a van, from the load-out sheet
+              or given by hand, it first asks whether to keep those vans.
             </li>
             <li>
               Look down the <strong>Check</strong> column. Sort out anything red. See "What the

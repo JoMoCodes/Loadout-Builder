@@ -28,6 +28,7 @@ import {
   dwpDayProblem,
   dwpSummary,
   holdingText,
+  heldVans,
   importedAtLabel,
   linkCandidates,
   linkLines,
@@ -230,6 +231,18 @@ describe('status lines', () => {
     expect(assignSummary({ considered: 4, vansAvailable: 0, kept: 0, assignments: [] })).toBe(
       'No vans assigned - none of the 4 drivers could be matched to a free van.',
     );
+  });
+
+  it('counts the vans given by hand and the vans from the load-out sheet', () => {
+    expect(
+      heldVans([
+        createDriverRow({ vehicle: '51', assignMethod: 'by-hand' }),
+        createDriverRow({ vehicle: '52' }),
+        createDriverRow({ vin: 'VIN53' }),
+        createDriverRow({ vehicle: '54', assignMethod: 'service-type' }),
+        createDriverRow({ assignMethod: 'by-hand' }),
+      ]),
+    ).toEqual({ byHand: 1, fromSheet: 2 });
   });
 
   it('says how many drivers kept the van they already had', () => {

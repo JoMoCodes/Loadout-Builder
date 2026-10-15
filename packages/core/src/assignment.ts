@@ -70,6 +70,27 @@ export function methodLabel(method: string): string {
   return METHOD_LABELS.get(method) ?? method;
 }
 
+/** Which vans already on the roster Assign Vans leaves where they are. */
+export interface KeepVans {
+  byHand: boolean;
+  fromSheet: boolean;
+}
+
+export const KEEP_ALL_VANS: KeepVans = { byHand: true, fromSheet: true };
+
+/**
+ * Where the van on a row came from: given by hand, already on the load-out sheet (no method
+ * recorded), or handed out by Assign Vans. Empty when the row has no van.
+ */
+export function vanSource(
+  row: Pick<DriverRow, 'vehicle' | 'vin' | 'assignMethod'>,
+): 'by-hand' | 'sheet' | 'assigned' | '' {
+  if (!(row.vehicle || row.vin)) return '';
+  if (row.assignMethod === BY_HAND) return 'by-hand';
+  if (row.assignMethod === '') return 'sheet';
+  return 'assigned';
+}
+
 /** A driver with a route, and what we know about them (Python `Candidate`). */
 export interface Candidate {
   row: DriverRow;
