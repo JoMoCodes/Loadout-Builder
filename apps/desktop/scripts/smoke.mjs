@@ -1388,8 +1388,8 @@ try {
         .locator('[data-testid="old-data-summary"]')
         .waitFor({ state: 'visible', timeout: 20_000 })
         .then(() => fresh.locator('[data-testid="old-data-summary"]').innerText());
-      assert(/^Brought over .*d+ drivers/.test(summary), 'no count of drivers in words');
-      assert(/d+ vans/.test(summary), 'no count of vans in words');
+      assert(/^Brought over .*\d+ drivers/.test(summary), 'no count of drivers in words');
+      assert(/\d+ vans/.test(summary), 'no count of vans in words');
       await fresh.click('[data-action="old-data-close"]');
       await oldDialog.waitFor({ state: 'hidden', timeout: 5_000 });
       const info = await fresh.evaluate(() => window.loadout.calls['data:get-source-info']());
