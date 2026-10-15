@@ -11,7 +11,7 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
-    version: '2.8.0',
+    version: '2.7.0',
     items: [
       'Load Out has a new tab, Name and ID Links. It lists every driver you linked to an associate by hand, and who they are linked to.',
       "The list says whether each linked driver is on today's roster, and you can search it.",
