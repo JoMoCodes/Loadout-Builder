@@ -59,7 +59,7 @@ export const STEP_TARGETS: Record<StepAction | WeeklyStepAction, Target> = {
     press: `${SCORECARDS} [data-testid="perf-choose-scorecards"]`,
   },
   'open-dashboard': { page: 'dashboard' },
-  'perf-set-up-email': { page: 'settings', scrollTo: '[data-setting="performance"]' },
+  'perf-set-up-email': { page: 'settings', scrollTo: '[data-setting="email"]' },
   'perf-open-performance': { page: 'scorecards', scorecardsTab: 'performance' },
 };
 

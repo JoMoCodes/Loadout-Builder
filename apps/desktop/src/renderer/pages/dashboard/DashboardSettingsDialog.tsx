@@ -1,17 +1,17 @@
-// The "Weekly performance" part of the Settings page: auto-import, the rule numbers behind the
-// Dashboard's lists, and bringing over the old Weekly Performance App's data. Ported from the old
-// app's settings windows. The email account itself is the Email part (settings/
-// EmailSettingsSection.tsx), and the subject and message of the report emails are behind the
-// Settings button on the Scorecards page (performance/EmailWordingDialog.tsx).
+// The "Dashboard settings" window: the four rule numbers behind the Dashboard's lists (the ID
+// expiry window, the two "weeks running" flags and how many movers to list). Opened by the gear
+// button next to the Dashboard's title. Each number saves when you leave the box or press Enter,
+// and an odd number is refused in plain words. Ported from the old app's settings window.
 
+import { Settings } from 'lucide-react';
 import { useId, useState } from 'react';
 import type { PerformanceSettings } from '../../../shared/performanceSettings';
 import type { SettingsPatch } from '../../../shared/settings';
-import { OldDataDialog } from '../../shell/OldDataDialog';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
+import { Modal } from '../dataPages/Modal';
 
-const RULES = [
+export const RULES = [
   {
     key: 'complianceWindowDays',
     label: 'Warn about an ID that runs out within this many days',
@@ -81,7 +81,11 @@ function RuleInput({
         onChange={(event) => setText(event.target.value)}
         onBlur={save}
         onKeyDown={(event) => {
-          if (event.key === 'Enter') save();
+          // Enter saves this number; it does not close the window.
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            save();
+          }
         }}
         className="w-28"
         data-testid={`perf-rule-${rule.key}`}
@@ -96,60 +100,49 @@ function RuleInput({
   );
 }
 
-export function PerformanceSettingsSection({
+export function DashboardSettingsDialog({
   performance,
   changeSettings,
+  onDone,
 }: {
   performance: PerformanceSettings;
   changeSettings(patch: SettingsPatch): Promise<void>;
+  onDone(): void;
 }) {
-  const [oldData, setOldData] = useState(false);
-
   return (
-    <div className="settings-group card" data-setting="performance">
-      <h2>Weekly performance</h2>
+    <Modal
+      name="dashboard-settings"
+      title="Dashboard settings"
+      lead="The rules behind the Dashboard's lists. Each number saves as soon as you leave its box."
+      confirmLabel="Close"
+      onConfirm={onDone}
+      noValidate
+    >
+      <div className="my-2">
+        {RULES.map((rule) => (
+          <RuleInput
+            key={`${rule.key}-${performance[rule.key]}`}
+            rule={rule}
+            value={performance[rule.key]}
+            onSave={(key, value) => void changeSettings({ performance: { [key]: value } })}
+          />
+        ))}
+      </div>
+    </Modal>
+  );
+}
 
-      <label className="switch-row">
-        <input
-          type="checkbox"
-          role="switch"
-          className="switch"
-          checked={performance.autoImportOnStartup}
-          onChange={(event) =>
-            void changeSettings({ performance: { autoImportOnStartup: event.target.checked } })
-          }
-          data-testid="perf-settings-auto-import"
-        />
-        Bring in new weekly files each time the app opens
-      </label>
-      <p className="hint">
-        The app looks in the folders you chose on the Scorecards page, Imports tab, and brings in
-        any file it has not seen before.
-      </p>
-
-      <h3 className="mt-5 mb-2 text-base font-semibold">Rules for the Dashboard lists</h3>
-      {RULES.map((rule) => (
-        <RuleInput
-          key={`${rule.key}-${performance[rule.key]}`}
-          rule={rule}
-          value={performance[rule.key]}
-          onSave={(key, value) => void changeSettings({ performance: { [key]: value } })}
-        />
-      ))}
-
-      <h3 className="mt-5 mb-2 text-base font-semibold">
-        Data from the old Weekly Performance App
-      </h3>
-      <Button onClick={() => setOldData(true)} data-testid="perf-bring-over-old-data">
-        Bring over data from the old Weekly Performance App
-      </Button>
-      <p className="hint">
-        Copies the drivers’ weekly scores, safety events and thresholds from the old app. It only
-        works while this app has no weekly data yet, and it never writes over data.
-      </p>
-      {oldData ? (
-        <OldDataDialog how="settings" about="performance" onClose={() => setOldData(false)} />
-      ) : null}
-    </div>
+/** The gear button next to the Dashboard's title that opens the window. */
+export function DashboardSettingsButton({ onClick }: { onClick: () => void }) {
+  return (
+    <Button
+      onClick={onClick}
+      aria-haspopup="dialog"
+      title="The rule numbers behind the Dashboard's lists"
+      data-testid="dashboard-settings"
+    >
+      <Settings aria-hidden="true" />
+      Dashboard settings
+    </Button>
   );
 }

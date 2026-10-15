@@ -93,6 +93,8 @@ test('no "Show in folder" when no report was written', async ({ page }) => {
 
 test('counts up while the reports are made, with a progress bar', async ({ page }) => {
   await openPerformance(page);
+  // Everyone, not only the drivers in the latest scorecard (the starting chip).
+  await page.getByTestId('perf-activity-all').click();
   await holdAnswer(
     page,
     'performance:generate',
@@ -216,6 +218,8 @@ test('"Email everyone shown" uses the drivers shown, with the same list first', 
   page,
 }) => {
   await openPerformance(page);
+  // Everyone, not only the drivers in the latest scorecard (the starting chip).
+  await page.getByTestId('perf-activity-all').click();
   await onCall(
     page,
     'performance:email',

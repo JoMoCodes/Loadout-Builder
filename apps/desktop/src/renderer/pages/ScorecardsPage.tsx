@@ -20,6 +20,7 @@ import {
   matchesSearch,
   passesFilters,
   readFilters,
+  START_ACTIVITY,
   writeFilters,
   type DriverFilters,
 } from './performance/perfText';
@@ -36,8 +37,6 @@ const isTab = (id: string | null): id is string => isTabOf('scorecards', id);
 
 /** The tab this id names today, or null: an old tab name ("drivers") leads to the new one. */
 const tabFrom = (id: string | null): string | null => currentTarget('scorecards', id)?.tab ?? null;
-
-const NO_FILTERS: DriverFilters = { status: 'ALL', tiers: [], activity: 'all' };
 
 function readTab(): string {
   try {
@@ -94,9 +93,13 @@ export function ScorecardsPage({ settings, changeSettings, goTo, ownWindow, star
     // eslint-disable-next-line react-hooks/exhaustive-deps -- read again on a new revision, not a new snapshot object
   }, [revision, range, setProblem, snapshot === null]);
 
+  // The status and tier chips are remembered in the settings. The activity chip is this visit's
+  // only: it starts on "In latest scorecard" each time the page opens, or on "Everyone" when the
+  // Dashboard handed a driver over, so that chip never hides them.
+  const [activity, setActivity] = useState<string>(handoff.driver ? 'all' : START_ACTIVITY);
   const filters = useMemo(
-    () => readFilters(settings.performance.filters),
-    [settings.performance.filters],
+    () => ({ ...readFilters(settings.performance.filters), activity }),
+    [settings.performance.filters, activity],
   );
   const [search, setSearch] = useState('');
   const visible = useMemo(
@@ -106,7 +109,10 @@ export function ScorecardsPage({ settings, changeSettings, goTo, ownWindow, star
   );
 
   const setFilters = useCallback(
-    (next: DriverFilters) => void changeSettings({ performance: { filters: writeFilters(next) } }),
+    (next: DriverFilters) => {
+      setActivity(next.activity);
+      void changeSettings({ performance: { filters: writeFilters(next) } });
+    },
     [changeSettings],
   );
 
@@ -125,10 +131,11 @@ export function ScorecardsPage({ settings, changeSettings, goTo, ownWindow, star
       return;
     }
     if (!passesFilters(row, filters)) {
-      setFilters(NO_FILTERS);
+      // Only the remembered status and tier chips can be hiding them (see `activity` above).
+      void changeSettings({ performance: { filters: [] } });
       setStatus(`The filters were hiding ${row.name}, so they are switched off now.`);
     }
-  }, [reveal, view, filters, setFilters, setStatus]);
+  }, [reveal, view, filters, changeSettings, setStatus]);
   const revealed = useCallback(() => setReveal(null), []);
   const revealTarget = useMemo(
     () => (reveal ? { rowId: reveal, columnId: 'name' } : null),

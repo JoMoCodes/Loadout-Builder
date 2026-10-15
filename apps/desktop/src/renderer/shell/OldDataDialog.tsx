@@ -5,8 +5,8 @@ import { call, explain } from '../lib/channels';
 import { Button } from '../ui/button';
 
 interface OldDataDialogProps {
-  /** Asked at start-up (saying "Not now" is remembered) or from Settings. */
-  how: 'start' | 'settings';
+  /** Asked at start-up on a first run; the answer (even "Not now") is remembered. */
+  how: 'start';
   /** Which old app: the old Loadout Builder (the default) or the old Weekly Performance App. */
   about?: OldApp;
   onClose(): void;

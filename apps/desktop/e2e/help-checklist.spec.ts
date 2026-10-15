@@ -1,6 +1,7 @@
-// The first-day checklist on Home, on the stand-in bridge: it ticks itself off as the data
-// changes, its buttons open the right page and press that page's button, its "?" says where to
-// get the file, it hides once done, and How to use brings it back.
+// The first-day checklist at the top of How to use, on the stand-in bridge: it ticks itself off
+// as the data changes, its buttons open the right page and press that page's button, its "?"
+// says where to get the file, it hides once done, and the Help card (or the Help menu) brings it
+// back.
 
 import { expect, test, type Page } from '@playwright/test';
 import { callsTo, emit, installFakeBridge, onCall } from './support/fakeBridge';
@@ -34,12 +35,21 @@ async function change(page: Page, apply: string) {
 
 test.beforeEach(async ({ page }) => {
   await installFakeBridge(page);
-  await page.addInitScript(() => localStorage.setItem('loadout.page', 'home'));
+  await page.addInitScript(() => localStorage.setItem('loadout.page', 'how-to-use'));
 });
 
 test('starts with nothing done and points at the driver list', async ({ page }) => {
   await page.goto('/');
   await expect(list(page)).toBeVisible();
+  // Under the Demo mode and Help cards, above the rest of the page; not on Home.
+  const order = await page
+    .locator('[data-testid="help-cards"], [data-testid="first-run-checklist"], .help-jump')
+    .evaluateAll((items) => items.map((item) => item.dataset.testid ?? item.className));
+  expect(order).toEqual(['help-cards', 'first-run-checklist', 'help-jump']);
+  await page.click('[data-nav="home"]');
+  await expect(page.locator('[data-page="home"]')).toBeVisible();
+  await expect(list(page)).toHaveCount(0);
+  await page.click('[data-nav="how-to-use"]');
   await expect(page.getByTestId('checklist-count')).toHaveText('0 of 6 done');
   await expect(list(page).getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
   await expect(step(page, 'drivers')).toHaveAttribute('data-step-current', 'true');
@@ -115,16 +125,15 @@ test('hides itself once every step is done, and How to use brings it back', asyn
     .toBe(1);
   expect(await callsTo(page, 'settings:set')).toContainEqual({ printedOnce: true });
 
-  // Gone next time Home opens.
+  // Gone next time How to use opens.
   await page.click('[data-nav="settings"]');
-  await page.click('[data-nav="home"]');
-  await expect(page.locator('[data-page="home"]')).toBeVisible();
+  await page.click('[data-nav="how-to-use"]');
+  await expect(page.locator('[data-page="how-to-use"]')).toBeVisible();
   await expect(list(page)).toHaveCount(0);
 
-  // How to use has "Show the checklist again".
-  await page.click('[data-nav="how-to-use"]');
+  // The Help card at the top has "Show the checklist again"; so does the guides part lower down.
+  await expect(page.getByTestId('settings-show-checklist')).toBeEnabled();
   await page.getByTestId('show-checklist-again').click();
-  await expect(page.locator('[data-page="home"]')).toBeVisible();
   await expect(list(page)).toBeVisible();
   expect(await callsTo(page, 'settings:set')).toContainEqual({ checklistHidden: false });
 });
@@ -137,13 +146,13 @@ test('a step button opens the page and presses its import button', async ({ page
   await expect(page.locator('[data-page="associates"]')).toBeVisible();
   await expect.poll(() => callsTo(page, 'files:pick')).toEqual([{ kind: 'associates' }]);
 
-  await page.click('[data-nav="home"]');
+  await page.click('[data-nav="how-to-use"]');
   await step(page, 'vans').locator('[data-step-do]').click();
   await expect(page.locator('[data-page="vehicle-data"]')).toBeVisible();
   await expect.poll(async () => (await callsTo(page, 'files:pick')).length).toBe(2);
   expect((await callsTo(page, 'files:pick'))[1]).toEqual({ kind: 'vehicles' });
 
-  await page.click('[data-nav="home"]');
+  await page.click('[data-nav="how-to-use"]');
   await step(page, 'sheet').locator('[data-step-do]').click();
   await expect(page.locator('[data-page="load-out"]')).toBeVisible();
   await expect.poll(async () => (await callsTo(page, 'files:pick')).length).toBe(3);
@@ -173,12 +182,15 @@ test('"Try it with made-up data" turns on demo mode', async ({ page }) => {
   await expect(page.getByTestId('checklist-try-demo')).toHaveCount(0);
 });
 
-test('"Hide this list" puts it away, and Help brings it back', async ({ page }) => {
+test('"Hide this list" puts it away, and Help brings it back on How to use', async ({ page }) => {
   await page.goto('/');
   await page.getByTestId('checklist-hide').click();
   await expect(list(page)).toHaveCount(0);
+  // From another page, the Help menu brings it back and opens How to use.
+  await page.click('[data-nav="home"]');
   await page.getByTestId('help-menu').click();
   await page.getByTestId('help-show-checklist').click();
+  await expect(page.locator('[data-page="how-to-use"]')).toBeVisible();
   await expect(list(page)).toBeVisible();
 });
 

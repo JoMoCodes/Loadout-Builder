@@ -46,15 +46,18 @@ describe('the week range', () => {
 });
 
 describe('the filter chips', () => {
-  it('reads and writes the remembered chips', () => {
-    expect(readFilters(['status:ACTIVE'])).toEqual({
+  it('reads and writes the remembered chips; the activity chip always starts on In latest scorecard', () => {
+    expect(readFilters(['status:ACTIVE', 'activity:none'])).toEqual({
       status: 'ACTIVE',
       tiers: [],
-      activity: 'all',
+      activity: 'in-range',
     });
     const filters = { status: 'ALL', tiers: ['Gold', 'Bronze'], activity: 'in-range' };
-    expect(writeFilters(filters)).toEqual(['tier:Gold', 'tier:Bronze', 'activity:in-range']);
+    expect(writeFilters(filters)).toEqual(['tier:Gold', 'tier:Bronze']);
     expect(readFilters(writeFilters(filters))).toEqual(filters);
+    // "Everyone" and "No scorecard" are this visit's only: nothing about them is remembered.
+    expect(writeFilters({ ...filters, activity: 'all' })).toEqual(['tier:Gold', 'tier:Bronze']);
+    expect(writeFilters({ ...filters, activity: 'none' })).toEqual(['tier:Gold', 'tier:Bronze']);
   });
 });
 

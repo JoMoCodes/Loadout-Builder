@@ -800,3 +800,53 @@ for (const scale of [1, 1.5]) {
     await tile.screenshot({ path: info.outputPath(`tiers-${scale}.png`) });
   });
 }
+
+test('Dashboard settings holds the rule numbers; they save as they change, odd ones refused', async ({
+  page,
+}) => {
+  await openDashboard(page);
+  await ready(page);
+  const patches = async () =>
+    (await callsTo(page, 'settings:set')) as Array<Record<string, unknown>>;
+  const dialog = page.locator('dialog[data-dialog="dashboard-settings"]');
+
+  // The gear sits next to the title, before the week bar.
+  const header = page.locator('[data-page="dashboard"] header');
+  await expect(header.getByTestId('dashboard-settings')).toHaveText('Dashboard settings');
+  const order = await header
+    .locator('[data-testid="dashboard-settings"], [data-testid="dashboard-pick-last-1"]')
+    .evaluateAll((items) => items.map((item) => item.getAttribute('data-testid')));
+  expect(order).toEqual(['dashboard-settings', 'dashboard-pick-last-1']);
+
+  await header.getByTestId('dashboard-settings').click();
+  await expect(dialog.getByRole('heading')).toHaveText('Dashboard settings');
+
+  const window = page.getByTestId('perf-rule-complianceWindowDays');
+  await expect(window).toHaveValue('30');
+  await window.fill('45');
+  await window.press('Enter');
+  expect(await patches()).toContainEqual({ performance: { complianceWindowDays: 45 } });
+  // Enter saves the number; the window stays open.
+  await expect(dialog).toBeVisible();
+
+  const weeks = page.getByTestId('perf-rule-atRiskDecliningWeeks');
+  await weeks.fill('1');
+  await weeks.blur();
+  await expect(dialog.getByRole('alert')).toHaveText('Type a whole number from 2 to 26.');
+  expect(await patches()).not.toContainEqual({ performance: { atRiskDecliningWeeks: 1 } });
+
+  await page.getByTestId('perf-rule-topN').fill('8');
+  await page.getByTestId('perf-rule-topN').blur();
+  await page.getByTestId('perf-rule-recurringCategoryWeeks').fill('4');
+  await page.getByTestId('perf-rule-recurringCategoryWeeks').blur();
+  expect(await patches()).toContainEqual({ performance: { topN: 8 } });
+  expect(await patches()).toContainEqual({ performance: { recurringCategoryWeeks: 4 } });
+
+  // Close puts it away; so does Esc.
+  await dialog.getByRole('button', { name: 'Close' }).click();
+  await expect(dialog).toHaveCount(0);
+  await header.getByTestId('dashboard-settings').click();
+  await expect(dialog).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(dialog).toHaveCount(0);
+});

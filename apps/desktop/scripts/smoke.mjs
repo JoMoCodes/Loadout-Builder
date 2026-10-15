@@ -23,7 +23,8 @@
 //   - a column layout is kept in the saved data and comes back after a restart
 //   - the Features log lists the note for this version
 //   - the theme (light, dark, high contrast) and the text size (A-, A+, reset) change and stick
-//   - Settings: version, "Open data folder", and Demo mode (made-up data loads, then goes away)
+//   - Settings: version and "Open data folder"; How to use: Demo mode (made-up data loads, then
+//     goes away) and the first-day checklist
 //   - demo mode loads the made-up route sheet day (the fixture Routes export and PDF)
 //   - route sheets: in demo mode the synthetic route sheet PDF comes in through the real bridge,
 //     Accept all suggestions takes them, a ready route previews as its email, one page is saved
@@ -238,21 +239,25 @@ try {
     );
   });
 
-  await check('the first-day checklist shows on a fresh start, with nothing ticked', async () => {
-    await goTo(page, 'home');
-    const list = page.locator('[data-testid="first-run-checklist"]');
-    await list.waitFor({ state: 'visible', timeout: 5_000 });
-    await until(
-      async () =>
-        (await page.locator('[data-testid="checklist-count"]').innerText()).trim() ===
-        '0 of 6 done',
-      'the checklist does not say 0 of 6 done',
-    );
-    const current = await list.locator('[data-step-current="true"]').getAttribute('data-step');
-    assert(current === 'drivers', `the first step to do is ${current}`);
-  });
+  await check(
+    'the first-day checklist shows on How to use on a fresh start, nothing ticked',
+    async () => {
+      await goTo(page, 'how-to-use');
+      const list = page.locator('[data-testid="first-run-checklist"]');
+      await list.waitFor({ state: 'visible', timeout: 5_000 });
+      await until(
+        async () =>
+          (await page.locator('[data-testid="checklist-count"]').innerText()).trim() ===
+          '0 of 6 done',
+        'the checklist does not say 0 of 6 done',
+      );
+      const current = await list.locator('[data-step-current="true"]').getAttribute('data-step');
+      assert(current === 'drivers', `the first step to do is ${current}`);
+    },
+  );
 
   await check('Help > Take the tour runs the page tour, and Esc skips it', async () => {
+    await goTo(page, 'home');
     await page.click('[data-testid="help-menu"]');
     await page.click('[data-testid="take-tour"]');
     const tour = page.locator('[data-testid="tour"]');
@@ -414,7 +419,8 @@ try {
 
   let demoRows = 0;
 
-  await check('Demo mode loads made-up data', async () => {
+  await check('Demo mode (at the top of How to use) loads made-up data', async () => {
+    await goTo(page, 'how-to-use');
     await page.getByLabel('Show made-up drivers and vans').check();
     await page.waitForSelector('[data-testid="demo-banner"]', { timeout: 5_000 });
     const line = await until(
@@ -431,7 +437,7 @@ try {
   });
 
   await check('demo mode ticks the first two steps of the checklist', async () => {
-    await goTo(page, 'home');
+    await goTo(page, 'how-to-use');
     const step = (id) => page.locator(`[data-testid="first-run-checklist"] [data-step="${id}"]`);
     for (const id of ['drivers', 'vans']) {
       await until(
@@ -1012,7 +1018,7 @@ try {
   });
 
   await check('demo mode goes away', async () => {
-    await goTo(page, 'settings');
+    await goTo(page, 'how-to-use');
     await page.getByLabel('Show made-up drivers and vans').uncheck();
     await page.waitForSelector('[data-testid="demo-banner"]', {
       state: 'detached',
@@ -1337,8 +1343,8 @@ try {
   const oldDb = resolve(root, '..', '..', 'packages', 'fixtures', 'v1', 'loadout.db');
   const oldEnv = { LOADOUT_OLD_DB: oldDb };
   third = await launch(oldDir, oldEnv);
-  const fresh = third.page;
-  const oldDialog = fresh.locator('dialog[data-dialog="old-data"]');
+  let fresh = third.page;
+  let oldDialog = fresh.locator('dialog[data-dialog="old-data"]');
 
   await check(
     'a first run offers to bring over the old data, and Not now puts it away',
@@ -1364,12 +1370,19 @@ try {
     },
   );
 
+  // There is no Settings button to ask again: a fresh start with the answer forgotten asks again.
+  await third.app.close();
+  third = null;
+  writeFileSync(join(oldDir, 'settings.json'), JSON.stringify({ autoTours: false }));
+  third = await launch(oldDir, oldEnv);
+  fresh = third.page;
+  // A new window, so the dialog has to be found again on it.
+  oldDialog = fresh.locator('dialog[data-dialog="old-data"]');
+
   await check(
-    'Settings brings the old data over, in words, and refuses to do it twice',
+    'Yes brings the old data over, in words, and a second try refuses to write over it',
     async () => {
-      await goTo(fresh, 'settings');
-      await fresh.click('[data-testid="bring-over-old-data"]');
-      await oldDialog.waitFor({ state: 'visible', timeout: 5_000 });
+      await oldDialog.waitFor({ state: 'visible', timeout: 10_000 });
       await fresh.click('[data-action="old-data-yes"]');
       const summary = await fresh
         .locator('[data-testid="old-data-summary"]')
@@ -1390,15 +1403,11 @@ try {
         snapshot.value.associates.length === info.value.counts.associates,
         'the page was not told',
       );
-      // Again: nothing is written over what is saved.
-      await fresh.click('[data-testid="bring-over-old-data"]');
-      await oldDialog.waitFor({ state: 'visible', timeout: 5_000 });
-      // The dialog looks for the old file first, which takes a moment on a slow machine.
-      await oldDialog
-        .getByText('already has saved data')
-        .waitFor({ state: 'visible', timeout: 10_000 })
-        .catch(() => assert(false, 'no refusal in words'));
-      await fresh.click('[data-action="old-data-close"]');
+      // Again (through the bridge, as there is no button for it): nothing is written over.
+      const again = await fresh.evaluate(() =>
+        window.loadout.calls['migration:run']({ from: 'usual' }),
+      );
+      assert(again.ok && again.value.status === 'skipped', `got ${JSON.stringify(again)}`);
       const again2 = await fresh.evaluate(() => window.loadout.calls['data:get-source-info']());
       assert(
         JSON.stringify(again2.value.counts) === JSON.stringify(info.value.counts),

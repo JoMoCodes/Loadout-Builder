@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { FirstRunChecklist } from '../help/FirstRunChecklist';
 import { WeeklyChecklist } from '../help/WeeklyChecklist';
 import type { PageProps } from './types';
 
@@ -7,25 +6,16 @@ function count(counts: Record<string, number>, table: string): number {
   return counts[table] ?? 0;
 }
 
-export function HomePage({ version, dataSource, goTo, settings, changeSettings, help }: PageProps) {
+export function HomePage({ version, dataSource, goTo, help }: PageProps) {
   const counts = dataSource?.counts ?? {};
-  // Once every step is done the list puts itself away, but the "all done" note stays up until
-  // the person leaves Home, so they see it happen.
-  const [justFinished, setJustFinished] = useState(false);
-  const { hideChecklist } = help;
-  const finished = useCallback(() => {
-    setJustFinished(true);
-    hideChecklist();
-  }, [hideChecklist]);
-
-  // The weekly checklist has its own hide and show.
+  // Once every step is done the weekly list puts itself away, but the "all done" note stays up
+  // until the person leaves Home, so they see it happen. (The first-day checklist is on How to use.)
   const [weeklyJustFinished, setWeeklyJustFinished] = useState(false);
   const { hideWeekly } = help;
   const weeklyFinished = useCallback(() => {
     setWeeklyJustFinished(true);
     hideWeekly();
   }, [hideWeekly]);
-  const showFirstDay = help.checklistShown || justFinished;
   const showWeekly = help.weeklyShown || weeklyJustFinished;
 
   return (
@@ -55,7 +45,7 @@ export function HomePage({ version, dataSource, goTo, settings, changeSettings, 
               <button type="button" className="link-button" onClick={() => goTo('how-to-use')}>
                 How to use
               </button>{' '}
-              for help, step by step.
+              for help, step by step, and the first-day checklist.
             </p>
             {showWeekly ? null : (
               <p>
@@ -73,26 +63,15 @@ export function HomePage({ version, dataSource, goTo, settings, changeSettings, 
           </div>
         </div>
 
-        {showFirstDay || showWeekly ? (
+        {showWeekly ? (
           <div className="home-aside flex flex-col gap-4">
-            {showFirstDay ? (
-              <FirstRunChecklist
-                settings={settings}
-                changeSettings={changeSettings}
-                goTo={goTo}
-                help={help}
-                onFinished={finished}
-              />
-            ) : null}
-            {showWeekly ? (
-              <WeeklyChecklist
-                goTo={goTo}
-                help={help}
-                dashboardSeen={help.dashboardSeen}
-                onHide={hideWeekly}
-                onFinished={weeklyFinished}
-              />
-            ) : null}
+            <WeeklyChecklist
+              goTo={goTo}
+              help={help}
+              dashboardSeen={help.dashboardSeen}
+              onHide={hideWeekly}
+              onFinished={weeklyFinished}
+            />
           </div>
         ) : null}
       </div>

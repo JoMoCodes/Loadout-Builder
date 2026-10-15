@@ -11,6 +11,25 @@ test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('loadout.page', 'how-to-use'));
   await page.goto('/');
   await expect(page.locator('[data-page="how-to-use"]')).toBeVisible();
+  // The first-day checklist at the top fills in once the saved data arrives, and the pictures
+  // load as they come into view. Wait for both, so the page does not grow under a scroll.
+  await expect(
+    page.locator('[data-testid="first-run-checklist"] [data-step]').first(),
+  ).toBeVisible();
+  await page.evaluate(async () => {
+    const images = Array.from(document.images);
+    for (const img of images) img.loading = 'eager';
+    await Promise.all(
+      images.map((img) =>
+        img.complete
+          ? null
+          : new Promise<void>((done) => {
+              img.onload = () => done();
+              img.onerror = () => done();
+            }),
+      ),
+    );
+  });
 });
 
 test('has a jump-to button for every part, and each one scrolls to its part', async ({ page }) => {

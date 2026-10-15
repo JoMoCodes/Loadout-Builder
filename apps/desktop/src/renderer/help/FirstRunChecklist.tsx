@@ -1,6 +1,6 @@
-// The first-day checklist on the right of Home. Six steps that tick themselves off as the app
+// The first-day checklist at the top of How to use. Six steps that tick themselves off as the app
 // sees them done, a button on each that does the step, and a "?" that says where to get the file.
-// It hides itself once every step is done; How to use can bring it back.
+// It hides itself once every step is done; the Help card above it (or the Help menu) brings it back.
 
 import { FlaskConical } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -120,11 +120,8 @@ export function FirstRunChecklist({
       steps={steps}
       finished={
         <>
-          <strong>All six steps are done.</strong> You are ready for a normal day. Open{' '}
-          <button type="button" className="link-button" onClick={() => goTo('how-to-use')}>
-            How to use
-          </button>{' '}
-          any time you need help.
+          <strong>All six steps are done.</strong> You are ready for a normal day. Come back to this
+          page any time you need help.
         </>
       }
       foot={

@@ -23,8 +23,6 @@ export interface PageProps {
   request: PageRequest | null;
   /** The page has taken the request; it is not run again. */
   takeRequest(): void;
-  /** Opens the "Bring over data from the old app" window. */
-  openOldData(): void;
   /** The help layers: the first-day checklist, the page tours and the help links. */
   help: HelpApi;
 }
@@ -37,7 +35,7 @@ export interface HelpApi {
   skipNextAutoTour(): void;
   /** A roster was printed or saved (in demo mode, only for this run). */
   printed: boolean;
-  /** The first-day checklist is shown on Home. */
+  /** The first-day checklist is shown on How to use. */
   checklistShown: boolean;
   showChecklist(): void;
   hideChecklist(): void;

@@ -1,5 +1,5 @@
 // The Help button at the top of every page: the page's tour, How to use, the two checklists
-// (when put away), and the help forum.
+// when put away (the first-day one lives on How to use, the weekly one on Home), and the forum.
 
 import {
   BookOpen,

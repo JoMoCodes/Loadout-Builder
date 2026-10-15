@@ -25,6 +25,11 @@ interface ModalProps {
   wide?: boolean;
   /** A test id for the confirm button, when a test needs to find it by name. */
   confirmTestId?: string;
+  /**
+   * The window checks its own fields and says what is wrong in plain words, so the browser must
+   * not hold the buttons back with its own pop-up (for example on a number out of range).
+   */
+  noValidate?: boolean;
 }
 
 /** The frame: a title, a body that scrolls, and a strip of buttons that stays put. */
@@ -42,6 +47,7 @@ export function Modal({
   danger,
   wide,
   confirmTestId,
+  noValidate,
 }: ModalProps) {
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
@@ -72,7 +78,7 @@ export function Modal({
         wide ? 'w-[min(46rem,calc(100vw-2rem))]' : 'w-[min(34rem,calc(100vw-2rem))]',
       )}
     >
-      <form onSubmit={submit} className="flex max-h-[90vh] flex-col">
+      <form onSubmit={submit} noValidate={noValidate} className="flex max-h-[90vh] flex-col">
         <div className="px-5 pt-4 pb-2">
           <h2 id={titleId} className="m-0 text-[1.15rem] font-semibold">
             {title}
