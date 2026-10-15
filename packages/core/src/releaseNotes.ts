@@ -18,6 +18,13 @@ export const RELEASE_NOTES: readonly ReleaseNote[] = [
     ],
   },
   {
+    version: '2.9.0',
+    items: [
+      'On Scorecards, the Performance tab now has a Lifetime Routes column. It sits right after the Status column.',
+      'It shows the same count as the Associates page. It is blank for a driver with no count yet.',
+    ],
+  },
+  {
     version: '2.8.1',
     items: [
       'On Scorecards, the In latest scorecard chip now shows only the drivers who are on the newest scorecard of the weeks you chose. Before, it also showed drivers whose last scorecard was an older week. Pick Everyone to see those drivers too.',
