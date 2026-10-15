@@ -38,7 +38,7 @@ export const loadOutChannels = [
   /** Copies staging, bags and OVS from the DWP sheet, matched on route code. */
   defineCommand('loadOut:bring-over-dwp', { input: nothing, result: as<DwpApplyResult>() }),
 
-  /** Works out a van for every driver who needs one (a full recompute). */
+  /** Works out a van for every driver who needs one, keeping vans given by hand or on the sheet. */
   defineCommand('loadOut:assign-vans', { input: nothing, result: as<AssignmentResult>() }),
 
   /** Empties the Vehicle and VIN columns. How many drivers lost a van. */

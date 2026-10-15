@@ -91,24 +91,46 @@ export function setVehiclePriority(state: AppState, vehicle: Vehicle, priority: 
 // ------------------------------------------------------- van assignment
 
 /**
- * Fill the roster's Vehicle and VIN columns from the fleet. A full recompute rather than a top-up:
- * every route driver's van is worked out again.
+ * A van Assign Vans leaves where it is: one given by hand, or one that was already on the load-out
+ * sheet (a van with no method recorded). Only vans Assign Vans gave out itself are worked out again.
+ */
+export function keepsVan(row: DriverRow): boolean {
+  if (!(row.vehicle || row.vin)) return false;
+  return row.assignMethod === BY_HAND || row.assignMethod === '';
+}
+
+/**
+ * Fill the roster's Vehicle and VIN columns from the fleet. Vans given by hand or brought in with
+ * the load-out sheet stay put and are kept out of the pool; every other route driver's van is
+ * worked out again.
  */
 export function assignVans(state: AppState): AssignmentResult {
+  const kept = state.roster.rows.filter(keepsVan);
+  const held = new Set<string>();
+  for (const row of kept) {
+    if (row.vin) held.add(row.vin);
+    if (row.vehicle) held.add(row.vehicle);
+  }
+  const fleet = assignableVehicles(state);
+  const free = fleet.filter((v) => !held.has(v.vin) && !held.has(v.name));
   const candidates: Candidate[] = state.roster.rows
-    .filter((row) => needsVan(row))
+    .filter((row) => needsVan(row) && !keepsVan(row))
     .map((row) => ({ row, associate: state.associateFor(row) }));
   const result = plan(
     candidates,
-    assignableVehicles(state),
+    free,
     state.affinity,
     state.lmrApproved,
     state.previousVans(),
     state.vehiclePriorities,
   );
+  result.vansAvailable = fleet.length;
+  result.kept = kept.length;
 
-  // Every row, not just the ones in scope: a driver who loses their route loses the van with it.
+  // Every other row, not just the ones in scope: a driver who loses their route loses the van
+  // Assign Vans gave them.
   for (const row of state.roster.rows) {
+    if (keepsVan(row)) continue;
     row.vehicle = '';
     row.vin = '';
     row.assignMethod = '';

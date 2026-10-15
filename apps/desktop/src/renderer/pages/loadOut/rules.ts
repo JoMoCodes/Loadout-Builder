@@ -213,10 +213,14 @@ export function dwpSummary(result: DwpApplyResult): string {
 /** What Assign Vans says on the status line (`_assign_summary`). */
 export function assignSummary(result: AssignmentResult): string {
   const assigned = assignedOf(result).length;
+  const kept = keptNote(result);
+  if (!result.considered && result.kept) {
+    return `Nothing to assign - every driver with a route already has a van.${kept}`;
+  }
   if (!assigned) {
     return (
       `No vans assigned - none of the ${result.considered} drivers ` +
-      'could be matched to a free van.'
+      `could be matched to a free van.${kept}`
     );
   }
   let message =
@@ -226,7 +230,15 @@ export function assignSummary(result: AssignmentResult): string {
   if (loose) message += ` ${loose} on qualification only.`;
   const left = unassignedOf(result).length;
   if (left) message += ` ${left} left without one.`;
-  return message;
+  return message + kept;
+}
+
+/** Vans given by hand or on the load-out sheet are left where they are. */
+function keptNote(result: AssignmentResult): string {
+  if (!result.kept) return '';
+  return result.kept === 1
+    ? ' 1 driver kept the van they already had.'
+    : ` ${result.kept} drivers kept the van they already had.`;
 }
 
 /** The two lines at the top of the Assign Vans read-out (`AssignDialog._build`). */
@@ -245,7 +257,7 @@ export function assignHeading(result: AssignmentResult): {
   const loose = looseCount(result);
   return {
     title: `${assignedOf(result).length} of ${result.considered} drivers have a van`,
-    summary: `${summary}.  ${result.vansAvailable} operational vans in the fleet.`,
+    summary: `${summary}.${keptNote(result)}  ${result.vansAvailable} operational vans in the fleet.`,
     loose: loose
       ? `${loose} took a van that isn't the service type their route asked for - amber below.`
       : '',

@@ -326,7 +326,7 @@ the snapshot's `revision` and refuse when it has moved on.
 | `loadOut:clear-roster` | command | none | Empties today's roster. Associate data and manual links are kept. |
 | `loadOut:bring-over-route-data` | command | `{ kind }` | Copies dispatch time, route code, service type and PAD from one route export. |
 | `loadOut:bring-over-dwp` | command | none | Copies staging, bags and OVS from the DWP sheet, matched on route code. |
-| `loadOut:assign-vans` | command | none | Works out a van for every driver who needs one (a full recompute). |
+| `loadOut:assign-vans` | command | none | Works out a van for every driver who needs one. Vans given by hand or on the load-out sheet stay put. |
 | `loadOut:clear-vans` | command | none | Empties the Vehicle and VIN columns. How many drivers lost a van. |
 | `loadOut:clear-links` | command | none | Forgets every hand-made link; every driver goes back to automatic matching. |
 | `loadOut:remove-driver` | command | `{ revision, rowIndex }` | Takes one driver off the roster, with whatever they were holding. |

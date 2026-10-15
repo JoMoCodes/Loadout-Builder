@@ -2,14 +2,7 @@
 // did to it (loadout_page.py `RosterPage`). The page only asks and shows: every change is one
 // command, and the core does the work.
 
-import {
-  BY_HAND,
-  isActive,
-  needsVan,
-  rosterDateLabel,
-  type Associate,
-  type DriverRow,
-} from '@loadout/core';
+import { isActive, needsVan, rosterDateLabel, type Associate, type DriverRow } from '@loadout/core';
 import {
   ArrowLeftRight,
   ChevronDown,
@@ -310,26 +303,11 @@ export function RosterTab({ snapshot, say, pendingImport, onImportTaken }: Roste
       say('Nothing to assign - no service types on the roster.');
       return;
     }
-    // Assign Vans works every van out again, so a van given by hand would be lost.
-    if (
-      now.roster.rows.some(
-        (view) => view.row.assignMethod === BY_HAND && (view.row.vehicle || view.row.vin),
-      )
-    ) {
-      const yes = await confirm(
-        'Replace vans given by hand?',
-        'Some vans were given by hand. Assign Vans will replace them. Go ahead?',
-      );
-      if (!yes) {
-        say('Vans left as they were.');
-        return;
-      }
-    }
     const reply = await call('loadOut:assign-vans');
     if (failed(reply)) return;
     say(assignSummary(reply.value));
     await ask<void>((done) => <AssignDialog result={reply.value} onClose={() => done()} />);
-  }, [snapshot, ask, confirm, inform, failed, say]);
+  }, [snapshot, ask, inform, failed, say]);
 
   const clearVans = useCallback(async () => {
     const holding = snapshot.roster.rows.filter((view) => view.row.vehicle || view.row.vin).length;

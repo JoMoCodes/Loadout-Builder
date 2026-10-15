@@ -205,6 +205,7 @@ describe('status lines', () => {
     const result: AssignmentResult = {
       considered: 3,
       vansAvailable: 24,
+      kept: 0,
       assignments: [
         { driver: 'Gideon Whitaker', vehicle: van('51'), method: 'affinity-primary', reason: '' },
         { driver: 'Colton Alderman', vehicle: van('52'), method: 'qualified-only', reason: '' },
@@ -226,8 +227,33 @@ describe('status lines', () => {
     ]);
     expect(assignLines(result)[0]!.detail).toBe('No van free');
     expect(assignLines(result)[2]!.detail).toBe(`${ELECTRIC}  -  Branded Van`);
-    expect(assignSummary({ considered: 4, vansAvailable: 0, assignments: [] })).toBe(
+    expect(assignSummary({ considered: 4, vansAvailable: 0, kept: 0, assignments: [] })).toBe(
       'No vans assigned - none of the 4 drivers could be matched to a free van.',
+    );
+  });
+
+  it('says how many drivers kept the van they already had', () => {
+    const kept: AssignmentResult = {
+      considered: 3,
+      vansAvailable: 24,
+      kept: 2,
+      assignments: [
+        {
+          driver: 'Gideon Whitaker',
+          vehicle: createVehicle({ name: '51', vin: 'VIN51' }),
+          method: 'service-type',
+          reason: '',
+        },
+      ],
+    };
+    expect(assignSummary(kept)).toBe(
+      'Assigned 1 of 3 drivers from 24 operational vans. 2 drivers kept the van they already had.',
+    );
+    expect(assignHeading(kept).summary).toBe(
+      '1 by service type. 2 drivers kept the van they already had.  24 operational vans in the fleet.',
+    );
+    expect(assignSummary({ considered: 0, vansAvailable: 24, kept: 1, assignments: [] })).toBe(
+      'Nothing to assign - every driver with a route already has a van. 1 driver kept the van they already had.',
     );
   });
 });

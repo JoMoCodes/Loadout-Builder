@@ -11,6 +11,15 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.11.0',
+    items: [
+      'On Load Out, Assign Vans now keeps the vans drivers already have. That means vans you gave by hand, and vans that were already on the load-out sheet.',
+      'It only gives vans to drivers who still need one. A van someone already has is never handed to another driver.',
+      'Assign Vans no longer asks before it runs, because it never replaces a van you gave by hand.',
+      'To start over and have every van worked out again, use Clear Van Assignments in the More menu first.',
+    ],
+  },
+  {
     version: '2.10.0',
     items: [
       "On Load Out, Move Data to Previous Roster now also clears today's roster. You no longer need to press Clear Roster afterwards.",

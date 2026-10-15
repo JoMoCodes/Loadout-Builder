@@ -124,6 +124,8 @@ export interface AssignmentResult {
   considered: number;
   /** Python `vans_available`. */
   vansAvailable: number;
+  /** Drivers whose van was left as it was (given by hand, or on the load-out sheet). */
+  kept: number;
 }
 
 export function assignedOf(result: AssignmentResult): Assignment[] {
@@ -250,6 +252,7 @@ export function plan(
     assignments: [],
     considered: candidates.length,
     vansAvailable: vehicles.length,
+    kept: 0,
   };
 
   const pool = sortedBy(vehicles, vanSortKey);

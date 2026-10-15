@@ -326,10 +326,9 @@ test('How to use lists the shortcuts', async ({ page }) => {
 
 // ------------------------------------------------------------- questions first
 
-test('Assign Vans asks first when a van was given by hand', async ({ page }) => {
+test('Assign Vans goes straight ahead, even when a van was given by hand', async ({ page }) => {
   const day = loadOutDay();
-  const rows = day.roster!.rows;
-  rows[0]!.row.assignMethod = 'by-hand';
+  day.roster!.rows[0]!.row.assignMethod = 'by-hand';
   await installFakeBridge(page, { snapshot: day });
   await withMaps(page);
   await page.addInitScript(() => {
@@ -337,25 +336,18 @@ test('Assign Vans asks first when a van was given by hand', async ({ page }) => 
     window.localStorage.setItem('loadout.load-out-tab', 'roster');
   });
   await page.goto('/');
-  await page.getByRole('button', { name: 'Assign Vans' }).click();
-  await expect(page.getByTestId('confirm-dialog')).toContainText(
-    'Some vans were given by hand. Assign Vans will replace them. Go ahead?',
-  );
-  await page.getByTestId('confirm-no').click();
-  await expect(page.getByTestId('load-out-status')).toHaveText('Vans left as they were.');
-  expect(await callsTo(page, 'loadOut:assign-vans')).toEqual([]);
-});
-
-test('Assign Vans goes straight ahead when no van was given by hand', async ({ page }) => {
-  await openLoadOut(page);
   await onCall(
     page,
     'loadOut:assign-vans',
-    `() => ({ ok: true, value: { considered: 0, vansAvailable: 4, assignments: [] } })`,
+    `() => ({ ok: true, value: { considered: 0, vansAvailable: 4, kept: 1, assignments: [] } })`,
   );
   await page.getByRole('button', { name: 'Assign Vans' }).click();
   await expect(page.getByTestId('assign-dialog')).toBeVisible();
   await expect(page.getByTestId('confirm-dialog')).toHaveCount(0);
+  await expect(page.getByTestId('load-out-status')).toHaveText(
+    'Nothing to assign - every driver with a route already has a van. ' +
+      '1 driver kept the van they already had.',
+  );
   expect(await callsTo(page, 'loadOut:assign-vans')).toHaveLength(1);
 });
 

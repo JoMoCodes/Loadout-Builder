@@ -54,6 +54,7 @@ import {
   assignableVehicles,
   assignVans,
   availableVehicles,
+  clearVans,
   isOperational,
   isOverridden,
   lmrVehicles,
@@ -150,6 +151,9 @@ function vansModule(state: AppState, beforeAvailable: string[]): Json {
       .map((v) => v.vin)
       .sort(codePointCompare),
   );
+  // The old app worked every van out again. Assign Vans now keeps the vans on the load-out sheet,
+  // so clearing them first gives the old app's run.
+  clearVans(state);
   // Read before assignVans, which blanks every row: the candidate's wave time is unchanged by it.
   const result = assignVans(state);
   const entries = candidates.map((cand, i) => {
