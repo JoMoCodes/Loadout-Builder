@@ -77,6 +77,7 @@ export const PAGE_TABS: Record<PageId, readonly TabItem[]> = {
     { id: 'management', label: 'Vehicle Management' },
     { id: 'affinity', label: 'Van Affinity' },
     { id: 'lmr', label: 'LMR Approved Drivers' },
+    { id: 'types', label: 'Vehicle Types' },
   ],
   associates: [
     { id: 'associates', label: 'Associates' },

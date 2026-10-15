@@ -53,6 +53,7 @@ describe('the pages and their tabs', () => {
       'management',
       'affinity',
       'lmr',
+      'types',
     ]);
     expect(PAGE_TABS.associates.map((tab) => tab.id)).toEqual(['associates', 'lifetime-routes']);
     expect(PAGE_TABS.scorecards.map((tab) => tab.id)).toEqual([

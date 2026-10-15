@@ -673,7 +673,7 @@ export function RosterTab({
       const choices = vanChoices(
         view.row,
         associateOf(view),
-        now.vehicles.filter((v) => v.available).map((v) => v.vehicle),
+        now.vehicles.filter((v) => v.available),
         new Set(now.lmrApproved),
       );
       if (choices.length === 0) {

@@ -578,6 +578,27 @@ CREATE INDEX idx_perf_scorecard_driver ON perf_weekly_scorecards(transporter_id)
 DROP TABLE perf_drivers;
 `;
 
+/**
+ * Step 5: ownership types. The built-in types (Branded van, LMR rental, Rental, Self-owned) live in
+ * the code; a row here is a type somebody made, or a built-in one somebody changed. The second
+ * table is a van set to a type by hand, which outlives a new vehicle list like a grounding does.
+ */
+const SCHEMA_V5_VEHICLE_TYPES = `
+CREATE TABLE vehicle_types (
+    id        TEXT PRIMARY KEY,
+    name      TEXT NOT NULL,
+    drive     TEXT NOT NULL,
+    position  INTEGER NOT NULL,
+    words     TEXT NOT NULL DEFAULT '',
+    built_in  INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE vehicle_type_overrides (
+    vin      TEXT PRIMARY KEY,
+    type_id  TEXT NOT NULL
+);
+`;
+
 export const MIGRATIONS: readonly Migration[] = [
   { version: 1, name: 'v1 schema from the old version', sql: SCHEMA_V1 },
   { version: 2, name: 'weekly performance tables', sql: SCHEMA_V2_PERFORMANCE },
@@ -588,6 +609,7 @@ export const MIGRATIONS: readonly Migration[] = [
     sql: SCHEMA_V4_ONE_DRIVER_LIST,
     foreignKeysOff: true,
   },
+  { version: 5, name: 'ownership types', sql: SCHEMA_V5_VEHICLE_TYPES },
 ];
 
 /** Every table a migration creates for saved data (not the bookkeeping table). */
@@ -616,6 +638,8 @@ export const DATA_TABLES = [
   'print_layouts',
   'van_affinity',
   'associate_tenure',
+  'vehicle_types',
+  'vehicle_type_overrides',
 ] as const;
 
 export type DataTable = (typeof DATA_TABLES)[number];

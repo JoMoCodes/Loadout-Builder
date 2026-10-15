@@ -102,6 +102,8 @@ import type { AssignmentResult, KeepVans } from '../assignment';
 import type { PrintRow, PrintSpec } from '../printing/printing';
 import * as print from './print';
 import * as vans from './vans';
+import * as vanTypes from './vanTypes';
+import { BUILT_IN_TYPES, type VanType, type VehicleType } from '../models/vehicleTypes';
 
 /** A route export's kinds, in tab order. */
 const ROUTE_KINDS: readonly string[] = ROUTE_SOURCES.map(([kind]) => kind);
@@ -131,6 +133,10 @@ export class AppState {
   dwp: DwpDataSet = createDwpDataSet();
   vehicles: VehicleFleet = createVehicleFleet();
   vehicleOverrides = new Map<string, boolean>();
+  /** Ownership types: the built-in ones with any changes, then the ones somebody made. */
+  vehicleTypes: VehicleType[] = BUILT_IN_TYPES.map((type) => ({ ...type }));
+  /** VIN -> the type somebody set it to here. Wins over the vehicle list. */
+  vehicleTypeOverrides = new Map<string, string>();
   affinity: VanAffinity = createVanAffinity();
   lmrApproved = new Set<string>();
   previousRoster: Roster = createRoster();
@@ -170,6 +176,8 @@ export class AppState {
     this.dwp = dwpFromStored(this.store.loadDwp());
     this.vehicles = fleetFromStored(this.store.loadVehicles());
     this.vehicleOverrides = new Map(Object.entries(this.store.loadVehicleOverrides()));
+    this.vehicleTypes = vanTypes.typesFromStored(this.store.loadVehicleTypes());
+    this.vehicleTypeOverrides = new Map(Object.entries(this.store.loadVehicleTypeOverrides()));
     this.affinity = affinityFromStored(this.store.loadAffinity());
     this.lmrApproved = new Set(this.store.loadLmrApproved());
     this.previousRoster = rosterFromStored(this.store.loadPreviousRoster());
@@ -700,6 +708,76 @@ export class AppState {
 
   lmrVehicles(): Vehicle[] {
     return vans.lmrVehicles(this);
+  }
+
+  // ------------------------------------------------------ ownership types
+
+  vanType(vehicle: Vehicle): VanType {
+    return vanTypes.vanTypeOf(this, vehicle);
+  }
+
+  setVanTypes(changes: ReadonlyArray<{ vin: string; typeId: string }>): number {
+    return vanTypes.setVanTypes(this, changes);
+  }
+
+  saveVehicleType(id: string | null, fields: vanTypes.TypeFields): string {
+    return vanTypes.saveType(this, id, fields);
+  }
+
+  addOwnershipWord(typeId: string, word: string): void {
+    vanTypes.addWord(this, typeId, word);
+  }
+
+  moveVehicleType(id: string, direction: 'earlier' | 'later'): void {
+    vanTypes.moveTypeInOrder(this, id, direction);
+  }
+
+  deleteVehicleType(id: string, moveTo: string): void {
+    vanTypes.deleteType(this, id, moveTo);
+  }
+
+  restoreVehicleTypes(
+    types: readonly VehicleType[],
+    overrides: Readonly<Record<string, string>>,
+  ): void {
+    vanTypes.restoreTypes(this, types, overrides);
+  }
+
+  clearVanTypes(): void {
+    vanTypes.clearVanTypes(this);
+  }
+
+  /** The fleet van a roster row holds, by VIN or by name. Null when it is not in the list. */
+  heldVehicle(row: DriverRow): Vehicle | null {
+    const byVin = row.vin ? this.vehicles.rows.find((v) => v.vin === row.vin) : undefined;
+    if (byVin) return byVin;
+    return row.vehicle ? (this.vehicles.rows.find((v) => v.name === row.vehicle) ?? null) : null;
+  }
+
+  /**
+   * Problems with the van a driver holds: it is grounded, or only LMR approved drivers may take
+   * it and this driver is not one. Kept apart from the driver's own record (`driverIssues`).
+   */
+  vanIssues(row: DriverRow): string[] {
+    const vehicle = this.heldVehicle(row);
+    if (!vehicle) return [];
+    const issues: string[] = [];
+    if (!this.isOperational(vehicle)) issues.push('Van is grounded');
+    if (this.vanType(vehicle).type.drive === 'lmr') {
+      const match = this.matchFor(row);
+      const id = match && isMatched(match) ? (match.associate as Associate).transporterId : '';
+      if (id && !this.lmrApproved.has(id)) issues.push('Not LMR approved for this van');
+    }
+    return issues;
+  }
+
+  /** The Check column: the driver's record, then any problem with the van they hold. */
+  rowCheck(row: DriverRow, today: IsoDate): string {
+    const base = this.checkText(row, today);
+    const van = this.vanIssues(row);
+    if (van.length === 0) return base;
+    if (base === '' || base === 'OK') return van.join(', ');
+    return `${base}, ${van.join(', ')}`;
   }
 
   overriddenCount(): number {

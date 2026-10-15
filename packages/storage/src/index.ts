@@ -19,6 +19,7 @@ export type {
   Roster,
   RouteDataSet,
   RouteEntry,
+  StoredVehicleType,
   TenureBook,
   TenureRecord,
   Vehicle,

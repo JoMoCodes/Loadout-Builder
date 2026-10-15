@@ -42,6 +42,17 @@ import {
   type Vehicle,
 } from './models/vehicles';
 import { pyStrip } from './models/text';
+import type { VanKind } from './models/vehicleTypes';
+
+/**
+ * What a run knows about each van's type (who may take it, its place in the order). Left out, a
+ * van is judged by the old app's rules: AMAZON_RENTAL is a rental, the rest go by `orderRank`.
+ */
+export type KindOf = (vehicle: Vehicle) => VanKind;
+
+export function legacyKind(vehicle: Vehicle): VanKind {
+  return { lmrOnly: isRental(vehicle), handOnly: false, rank: orderRank(vehicle) };
+}
 
 // How a match was arrived at, loosest last.
 export const BY_AFFINITY_PRIMARY = 'affinity-primary';
@@ -129,6 +140,8 @@ export interface Assignment {
   vehicle: Vehicle | null;
   method: string;
   reason: string;
+  /** The van's kind as the pages name it, filled in by the run that knows the types. */
+  category?: string;
 }
 
 export function createAssignment(values: Partial<Assignment> = {}): Assignment {
@@ -172,8 +185,13 @@ export function looseCount(result: AssignmentResult): number {
 
 /** `_van_sort_key`: vehicle order first, then a stable name - never random. */
 export function vanSortKey(vehicle: Vehicle): SortKey {
+  return rankedSortKey(vehicle, orderRank(vehicle));
+}
+
+/** The same, with the van's place in the order already worked out from its type. */
+export function rankedSortKey(vehicle: Vehicle, rank: number): SortKey {
   const name = vehicle.name.toLowerCase();
-  return [orderRank(vehicle), Array.from(name).length, name];
+  return [rank, Array.from(name).length, name];
 }
 
 /** Python's `float(text)` for a priority typed by hand, or null where that would raise. */
@@ -204,9 +222,10 @@ export function eligible(
   candidate: Candidate,
   vehicle: Vehicle,
   lmrApproved: ReadonlySet<string>,
+  lmrOnly: boolean = isRental(vehicle),
 ): boolean {
   if (!candidateHolds(candidate, vehicleRequiredQualification(vehicle))) return false;
-  if (isRental(vehicle)) {
+  if (lmrOnly) {
     const transporterId = candidate.associate ? candidate.associate.transporterId : '';
     return lmrApproved.has(transporterId);
   }
@@ -219,18 +238,19 @@ export function whyNot(
   vehicles: readonly Vehicle[],
   taken: ReadonlySet<string>,
   lmrApproved: ReadonlySet<string>,
+  kindOf: KindOf = legacyKind,
 ): string {
   if (candidate.associate === null) return 'No associate record - qualifications unknown';
 
   const free = vehicles.filter((v) => !taken.has(v.vin));
   if (free.length === 0) return 'No van left in the fleet';
 
-  const qualified = free.filter((v) => eligible(candidate, v, lmrApproved));
+  const qualified = free.filter((v) => eligible(candidate, v, lmrApproved, kindOf(v).lmrOnly));
   if (qualified.length > 0) return 'No van free';
 
   // Say which gate closed. If skill alone would have been enough, the LMR list stopped them.
   const bySkill = free.filter((v) => candidateHolds(candidate, vehicleRequiredQualification(v)));
-  if (bySkill.length > 0 && bySkill.every((v) => isRental(v))) {
+  if (bySkill.length > 0 && bySkill.every((v) => kindOf(v).lmrOnly)) {
     return 'Only LMR vans left, and not on the approved list';
   }
   const wanted = candidateNeededQualification(candidate) || 'the required skill';
@@ -264,6 +284,7 @@ export function plan(
   lmrApproved: ReadonlySet<string> | null = null,
   previousVans: ReadonlyMap<string, string> | null = null,
   priorities: ReadonlyMap<string, string> | null = null,
+  kindOf: KindOf = legacyKind,
 ): AssignmentResult {
   const held = affinity ?? createVanAffinity();
   const approved = lmrApproved ?? new Set<string>();
@@ -276,7 +297,12 @@ export function plan(
     kept: 0,
   };
 
-  const pool = sortedBy(vehicles, vanSortKey);
+  const kinds = new Map(vehicles.map((v) => [v.vin, kindOf(v)]));
+  const kind = (v: Vehicle): VanKind => kinds.get(v.vin) ?? kindOf(v);
+  const sortKey = (v: Vehicle): SortKey => rankedSortKey(v, kind(v).rank);
+  const allowed = (candidate: Candidate, v: Vehicle): boolean =>
+    eligible(candidate, v, approved, kind(v).lmrOnly);
+  const pool = sortedBy(vehicles, sortKey);
   const byVin = new Map<string, Vehicle>();
   for (const v of pool) byVin.set(v.vin, v);
   const taken = new Set<string>();
@@ -332,14 +358,14 @@ export function plan(
     let bestKey: SortKey | null = null;
     for (const vehicle of pool) {
       if (taken.has(vehicle.vin)) continue;
-      if (!eligible(candidate, vehicle, approved)) continue;
+      if (!allowed(candidate, vehicle)) continue;
       if (!allows(vehicle)) continue;
       // Priority sits under affinity and over the vehicle order.
       const key: SortKey = [
         preference(candidate, vehicle),
         -priorityOf(numbers, vehicle.vin),
         spokenFor(vehicle),
-        vanSortKey(vehicle),
+        sortKey(vehicle),
       ];
       if (bestKey === null || compareKeys(key, bestKey) < 0) {
         best = vehicle;
@@ -358,7 +384,7 @@ export function plan(
     for (const [index, candidate] of ordered) {
       if (outcome.has(index)) continue;
       const vehicle = affinityVan(candidate, kind);
-      if (vehicle === null || !eligible(candidate, vehicle, approved)) continue;
+      if (vehicle === null || !allowed(candidate, vehicle)) continue;
       // Their van, but is it the right kind for today's work? Judged on family.
       const serviceType = candidateServiceType(candidate);
       if (serviceType && !canServe(vehicle, serviceType)) continue;
@@ -372,7 +398,7 @@ export function plan(
     const vin = previous.get(candidate.associate.transporterId);
     if (!vin || taken.has(vin)) continue;
     const vehicle = byVin.get(vin);
-    if (vehicle === undefined || !eligible(candidate, vehicle, approved)) continue;
+    if (vehicle === undefined || !allowed(candidate, vehicle)) continue;
     const serviceType = candidateServiceType(candidate);
     if (serviceType && !canServe(vehicle, serviceType)) continue; // wrong work for it today
     claim(index, candidate, vehicle, BY_PREVIOUS);
@@ -407,7 +433,7 @@ export function plan(
         index,
         createAssignment({
           driver: candidate.row.driver,
-          reason: whyNot(candidate, pool, taken, approved),
+          reason: whyNot(candidate, pool, taken, approved, kind),
         }),
       );
     }

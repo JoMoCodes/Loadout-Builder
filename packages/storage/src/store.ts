@@ -15,6 +15,7 @@ import type {
   RouteDataSet,
   RouteEntry,
   StoredLink,
+  StoredVehicleType,
   TenureBook,
   Vehicle,
   VehicleFleet,
@@ -492,6 +493,68 @@ export class Store {
 
   clearVehicleOverrides(): void {
     this.db.exec('DELETE FROM vehicle_overrides');
+  }
+
+  // -------------------------------------------------------- ownership types
+
+  loadVehicleTypes(): StoredVehicleType[] {
+    const records = this.db
+      .prepare('SELECT id, name, drive, position, words, built_in FROM vehicle_types')
+      .all() as Row[];
+    return records.map((r) => ({
+      id: text(r.id),
+      name: text(r.name),
+      drive: text(r.drive),
+      position: Number(r.position) || 0,
+      words: text(r.words)
+        .split('\n')
+        .filter((word) => word),
+      builtIn: Boolean(r.built_in),
+    }));
+  }
+
+  saveVehicleType(type: StoredVehicleType): void {
+    this.db
+      .prepare(
+        `INSERT OR REPLACE INTO vehicle_types (id, name, drive, position, words, built_in)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+      )
+      .run(
+        type.id,
+        type.name,
+        type.drive,
+        type.position,
+        type.words.join('\n'),
+        type.builtIn ? 1 : 0,
+      );
+  }
+
+  deleteVehicleType(id: string): void {
+    this.db.prepare('DELETE FROM vehicle_types WHERE id = ?').run(id);
+  }
+
+  loadVehicleTypeOverrides(): Record<string, string> {
+    const records = this.db
+      .prepare('SELECT vin, type_id FROM vehicle_type_overrides')
+      .all() as Row[];
+    const out: Record<string, string> = {};
+    for (const r of records) if (r.type_id) out[text(r.vin)] = text(r.type_id);
+    return out;
+  }
+
+  /** An empty type id puts the van back on the vehicle list's type. */
+  setVehicleTypeOverride(vin: string, typeId: string): void {
+    if (typeId) {
+      this.db
+        .prepare('INSERT OR REPLACE INTO vehicle_type_overrides (vin, type_id) VALUES (?, ?)')
+        .run(vin, typeId);
+    } else {
+      this.db.prepare('DELETE FROM vehicle_type_overrides WHERE vin = ?').run(vin);
+    }
+  }
+
+  clearVehicleTypeOverrides(): void {
+    this.db.exec('DELETE FROM vehicle_type_overrides');
   }
 
   // ---------------------------------------------------------- LMR approval

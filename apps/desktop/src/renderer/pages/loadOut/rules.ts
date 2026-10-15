@@ -21,14 +21,11 @@ import {
   hasServiceTypes,
   hasVan,
   isActive,
-  isRental,
   looseCount,
   makeModel,
-  manualOnly,
   methodLabel,
   needsVan,
   normalizeName,
-  orderRank,
   padFor,
   registrationState,
   daysUntilRegistrationExpiry,
@@ -297,7 +294,7 @@ export function assignLines(result: AssignmentResult): AssignLine[] {
           driver: item.driver,
           vehicle: item.vehicle!.name,
           how: methodLabel(item.method),
-          detail: `${item.vehicle!.serviceType}  -  ${category(item.vehicle!)}`,
+          detail: `${item.vehicle!.serviceType}  -  ${item.category ?? category(item.vehicle!)}`,
           severity: item.method === 'qualified-only' ? 'warn' : '',
         }
       : {
@@ -359,6 +356,10 @@ export interface VanChoice {
   vehicle: Vehicle;
   fit: string;
   severity: Severity;
+  /** Its kind as the pages name it (its ownership type, or a step van and its type). */
+  category: string;
+  /** Never handed out by Assign Vans. */
+  handOnly: boolean;
 }
 
 /**
@@ -369,14 +370,15 @@ export interface VanChoice {
 export function vanChoices(
   row: DriverRow,
   associate: Associate | null,
-  available: readonly Vehicle[],
+  available: readonly VehicleView[],
   lmrApproved: ReadonlySet<string>,
 ): VanChoice[] {
-  const choices = available.map((vehicle) => {
+  const choices = available.map((view) => {
+    const vehicle = view.vehicle;
     const required = vehicleRequiredQualification(vehicle);
     const qualified = associate !== null && (!required || hasQualification(associate, required));
     const approved =
-      !isRental(vehicle) || (associate !== null && lmrApproved.has(associate.transporterId));
+      !view.rental || (associate !== null && lmrApproved.has(associate.transporterId));
     let entry: [string, Severity, number];
     if (!qualified) entry = [`Not ${required} qualified`, 'bad', 3];
     else if (!approved) entry = ['Not approved for LMR', 'warn', 2];
@@ -385,12 +387,13 @@ export function vanChoices(
     else if (row.serviceType) entry = ['Qualified, other service type', 'warn', 1];
     else entry = ['Qualified', '', 1];
     const [fit, severity, rank] = entry;
-    return { choice: { vehicle, fit, severity }, rank };
+    const choice = { vehicle, fit, severity, category: view.category, handOnly: view.handOnly };
+    return { choice, rank, order: view.rank };
   });
   choices.sort(
     (a, b) =>
       a.rank - b.rank ||
-      orderRank(a.choice.vehicle) - orderRank(b.choice.vehicle) ||
+      a.order - b.order ||
       pyCompare(a.choice.vehicle.name, b.choice.vehicle.name),
   );
   return choices.map((entry) => entry.choice);
@@ -529,8 +532,8 @@ export function availableVanRow(view: VehicleView, today: IsoDate): AvailableVan
     values: {
       name: vehicle.name,
       serviceType: vehicle.serviceType,
-      category: category(vehicle),
-      assign: manualOnly(vehicle) ? 'Manual' : 'Auto',
+      category: view.category,
+      assign: view.handOnly ? 'Manual' : 'Auto',
       makeModel: makeModel(vehicle),
       plate: vehicle.plate,
       registration,
@@ -562,7 +565,8 @@ export function availableHeader(vehicles: readonly VehicleView[]): AvailableHead
     .sort((a, b) => pyCompare(a[0], b[0]))
     .map(([name, count]) => `${name}: ${count}`)
     .join('   ');
-  const manual = available.filter((v) => manualOnly(v));
+  const handOnly = new Set(vehicles.filter((v) => v.handOnly).map((v) => v.vehicle.vin));
+  const manual = available.filter((v) => handOnly.has(v.vin));
   return {
     count: `${available.length} available`,
     source:
@@ -634,7 +638,9 @@ export function availableFilterOptions(vehicles: readonly VehicleView[]): {
   const services = [...new Set(available.map((v) => v.serviceType).filter(Boolean))].sort(
     pyCompare,
   );
-  const categories = [...new Set(available.map((v) => category(v)))].sort(pyCompare);
+  const categories = [...new Set(vehicles.filter((v) => v.available).map((v) => v.category))].sort(
+    pyCompare,
+  );
   return {
     services: [ALL_SERVICE_TYPES, ...services],
     categories: [ALL_CATEGORIES, ...categories],

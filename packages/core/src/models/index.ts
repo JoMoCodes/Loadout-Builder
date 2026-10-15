@@ -9,3 +9,4 @@ export * from './routes';
 export * from './serviceType';
 export * from './tenure';
 export * from './vehicles';
+export * from './vehicleTypes';

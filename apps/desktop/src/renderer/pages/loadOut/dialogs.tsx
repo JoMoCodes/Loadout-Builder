@@ -3,10 +3,8 @@
 // headings, same columns, same order, same buttons.
 
 import {
-  category,
   isActive,
   makeModel,
-  manualOnly,
   vanBadges,
   type Associate,
   type AssignmentResult,
@@ -222,8 +220,8 @@ const VAN_PICK_COLUMNS: PickColumn<VanChoice>[] = [
   { id: 'name', header: 'Vehicle', value: (c) => c.vehicle.name },
   { id: 'fit', header: 'Fit', value: (c) => c.fit },
   { id: 'service_type', header: 'Service Type', value: (c) => c.vehicle.serviceType },
-  { id: 'category', header: 'Category', value: (c) => category(c.vehicle) },
-  { id: 'assign', header: 'Assign', value: (c) => (manualOnly(c.vehicle) ? 'Manual' : 'Auto') },
+  { id: 'category', header: 'Category', value: (c) => c.category },
+  { id: 'assign', header: 'Assign', value: (c) => (c.handOnly ? 'Manual' : 'Auto') },
   { id: 'make_model', header: 'Make / Model', value: (c) => makeModel(c.vehicle) },
   { id: 'plate', header: 'Plate', value: (c) => c.vehicle.plate },
   { id: 'vin', header: 'VIN', value: (c) => c.vehicle.vin, mono: true },

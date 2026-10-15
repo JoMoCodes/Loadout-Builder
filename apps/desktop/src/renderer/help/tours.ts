@@ -302,7 +302,13 @@ export const TOURS: Record<string, Tour> = {
       {
         element: `${VEHICLE_DATA} [data-testid="vehicle-data-tab-lmr"]`,
         title: 'Rental vans',
-        text: 'Only drivers ticked on LMR Approved Drivers are given a rental van.',
+        text: 'Only drivers ticked on LMR Approved Drivers are given an LMR rental.',
+        side: 'bottom',
+      },
+      {
+        element: `${VEHICLE_DATA} [data-testid="vehicle-data-tab-types"]`,
+        title: 'What kind of van',
+        text: 'On Vehicle Types, fix a van the vehicle file has wrong, make your own types, and see the order Assign Vans gives them out in.',
         side: 'bottom',
       },
     ],

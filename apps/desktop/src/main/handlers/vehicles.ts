@@ -1,4 +1,4 @@
-import type { AppState, Vehicle } from '@loadout/core';
+import type { AppState, Vehicle, VehicleType } from '@loadout/core';
 import { byTransporterId } from '@loadout/core';
 import type { vehicleChannels } from '../../shared/channels/vehicles';
 import { ChannelRefusal } from '../channels';
@@ -113,4 +113,60 @@ export const vehicleHandlers: HandlersFor<typeof vehicleChannels> = {
     ctx.state.clearLmrApproved();
     return null;
   },
+
+  'vehicles:set-types': ({ changes }, ctx) => {
+    vansFor(
+      ctx.state,
+      changes.map((change) => change.vin),
+    );
+    for (const { typeId } of changes) if (typeId) typeFor(ctx.state, typeId);
+    return { changed: ctx.state.setVanTypes(changes) };
+  },
+  'vehicles:save-type': ({ id, name, drive, words, place }, ctx) => {
+    if (id !== null) typeFor(ctx.state, id);
+    const clean = name.trim();
+    if (!clean) throw new ChannelRefusal('refused', 'Give the type a name.');
+    const clash = ctx.state.vehicleTypes.find(
+      (type) => type.id !== id && type.name.toLowerCase() === clean.toLowerCase(),
+    );
+    if (clash) {
+      throw new ChannelRefusal('refused', `There is already a type called ${clash.name}.`);
+    }
+    return { id: ctx.state.saveVehicleType(id, { name: clean, drive, words, place }) };
+  },
+  'vehicles:add-ownership-word': ({ typeId, word }, ctx) => {
+    typeFor(ctx.state, typeId);
+    ctx.state.addOwnershipWord(typeId, word);
+    return null;
+  },
+  'vehicles:move-type': ({ id, direction }, ctx) => {
+    typeFor(ctx.state, id);
+    ctx.state.moveVehicleType(id, direction);
+    return null;
+  },
+  'vehicles:delete-type': ({ id, moveTo }, ctx) => {
+    const type = typeFor(ctx.state, id);
+    typeFor(ctx.state, moveTo);
+    if (type.builtIn) {
+      throw new ChannelRefusal('refused', `${type.name} is built in, so it can't be deleted.`);
+    }
+    ctx.state.deleteVehicleType(id, moveTo);
+    return null;
+  },
+  'vehicles:restore-types': ({ types, overrides }, ctx) => {
+    ctx.state.restoreVehicleTypes(types, overrides);
+    return null;
+  },
 };
+
+/** The type with this id. Refuses if there is none (it was deleted meanwhile). */
+function typeFor(state: AppState, id: string): VehicleType {
+  const type = state.vehicleTypes.find((t) => t.id === id);
+  if (!type) {
+    throw new ChannelRefusal(
+      'refused',
+      'That type is no longer there. Look at the Vehicle Types tab again and try once more.',
+    );
+  }
+  return type;
+}

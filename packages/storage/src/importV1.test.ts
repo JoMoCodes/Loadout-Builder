@@ -34,6 +34,8 @@ const EXPECTED: Record<string, number> = {
   print_layouts: 2,
   van_affinity: 42,
   associate_tenure: 77,
+  vehicle_types: 0,
+  vehicle_type_overrides: 0,
 };
 
 let store: Store;

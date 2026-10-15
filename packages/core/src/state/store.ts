@@ -136,6 +136,16 @@ export interface StoredVehicleFleet {
   imported_at: string | null;
 }
 
+/** An ownership type as the store keeps it (`drive` is 'anyone', 'lmr' or 'hand'). */
+export interface StoredVehicleType {
+  id: string;
+  name: string;
+  drive: string;
+  position: number;
+  words: string[];
+  builtIn: boolean;
+}
+
 export interface StoredTenureBook {
   records: Record<string, TenureRecord>;
   source_file: string;
@@ -178,6 +188,12 @@ export interface StateStore {
   setVehicleOverride(vin: string, operational: boolean): void;
   deleteVehicleOverride(vin: string): void;
   clearVehicleOverrides(): void;
+  loadVehicleTypes(): StoredVehicleType[];
+  saveVehicleType(type: StoredVehicleType): void;
+  deleteVehicleType(id: string): void;
+  loadVehicleTypeOverrides(): Record<string, string>;
+  setVehicleTypeOverride(vin: string, typeId: string): void;
+  clearVehicleTypeOverrides(): void;
   loadLmrApproved(): Set<string>;
   setLmrApproved(transporterId: string, approved: boolean): void;
   clearLmrApproved(): void;

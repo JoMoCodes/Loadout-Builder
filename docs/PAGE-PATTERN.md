@@ -362,6 +362,12 @@ the snapshot's `revision` and refuse when it has moved on.
 | `vehicles:clear-all-affinity` | command | none || Empties every van's slots. |
 | `vehicles:set-lmr` | command | `{ transporterIds, approved }` | Approves or removes approval for Last Mile Rentals. |
 | `vehicles:clear-lmr` | command | none || Removes every Last Mile Rental approval. |
+| `vehicles:set-types` | command | `{ changes: { vin, typeId }[] }` | Sets vans to an ownership type by hand; an empty type id puts a van back on the list's type. |
+| `vehicles:save-type` | command | `{ id \| null, name, drive, words, place }` | Makes an ownership type, or changes one. A word belongs to one type. |
+| `vehicles:add-ownership-word` | command | `{ typeId, word }` | Adds one vehicle list word to a type. |
+| `vehicles:move-type` | command | `{ id, direction }` | Moves a type earlier or later in the Assign Vans order. |
+| `vehicles:delete-type` | command | `{ id, moveTo }` | Deletes a type somebody made; its vans and words go to `moveTo`. Built-in types are refused. |
+| `vehicles:restore-types` | command | `{ types, overrides }` | Puts every type and every van set here back as given (Undo). |
 | `associates:clear` | command | none | Empties the associate list. Lifetime route counts and the roster are kept. |
 | `associates:clear-tenure` | command | none | Forgets every lifetime route count. The associate list and the roster are kept. |
 | `routeSheets:state` | query | none | The open route sheet run, History's list, which route export the matcher reads, the driver list and its age, the old app's folder flag, the email setup problem. |

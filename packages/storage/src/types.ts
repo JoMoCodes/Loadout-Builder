@@ -130,6 +130,19 @@ export interface VehicleFleet {
   imported_at: string | null;
 }
 
+/** An ownership type as saved: one somebody made, or a built-in one somebody changed. */
+export interface StoredVehicleType {
+  id: string;
+  name: string;
+  /** 'anyone', 'lmr' or 'hand'. */
+  drive: string;
+  /** Place in the Assign Vans order, lowest first. */
+  position: number;
+  /** The vehicle list's ownership words that mean this type, upper case. */
+  words: string[];
+  builtIn: boolean;
+}
+
 export interface TenureRecord {
   routes: number;
   year: number;

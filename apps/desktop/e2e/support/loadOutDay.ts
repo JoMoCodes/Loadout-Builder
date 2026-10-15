@@ -4,6 +4,7 @@
 
 import type { Page } from '@playwright/test';
 import type { FakeBridgeOptions } from './fakeBridge';
+import { typeFields } from './vanType';
 
 const STEP = 'Standard Parcel Step Van - US';
 const ELECTRIC = 'Standard Parcel Electric - Rivian MEDIUM';
@@ -93,6 +94,7 @@ function associate(
 function van(name: string, vin: string, serviceType: string, more: Record<string, unknown> = {}) {
   const { available = true, ...fields } = more;
   return {
+    ...typeFields({ vin, name, serviceType, ownership: '', ...fields }),
     vehicle: {
       vin,
       name,

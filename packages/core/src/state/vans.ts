@@ -17,7 +17,9 @@ import {
   type KeepVans,
 } from '../assignment';
 import { needsVan, type DriverRow } from '../models/roster';
-import { isRental, manualOnly, type Vehicle } from '../models/vehicles';
+import type { Vehicle } from '../models/vehicles';
+import { kindOf, vanTypeOf } from './vanTypes';
+import { vanCategory } from '../models/vehicleTypes';
 import { pyStrip } from '../models/text';
 import type { AppState } from './appState';
 import { rosterToStored } from './store';
@@ -59,9 +61,9 @@ export function operationalVehicles(state: AppState): Vehicle[] {
   return state.vehicles.rows.filter((v) => isOperational(state, v));
 }
 
-/** What auto-assignment may draw on. Self-owned vans are always handed out by hand. */
+/** What auto-assignment may draw on. A van whose type is hand-only is always handed out by hand. */
 export function assignableVehicles(state: AppState): Vehicle[] {
-  return operationalVehicles(state).filter((v) => !manualOnly(v));
+  return operationalVehicles(state).filter((v) => vanTypeOf(state, v).type.drive !== 'hand');
 }
 
 /**
@@ -76,7 +78,7 @@ export function availableVehicles(state: AppState): Vehicle[] {
 }
 
 export function lmrVehicles(state: AppState): Vehicle[] {
-  return state.vehicles.rows.filter((v) => isRental(v));
+  return state.vehicles.rows.filter((v) => vanTypeOf(state, v).type.drive === 'lmr');
 }
 
 export function overriddenCount(state: AppState): number {
@@ -116,7 +118,14 @@ export function keepsVan(row: DriverRow, keep: KeepVans = KEEP_ALL_VANS): boolea
  * kept out of the pool; every other route driver's van is worked out again.
  */
 export function assignVans(state: AppState, keep: KeepVans = KEEP_ALL_VANS): AssignmentResult {
-  const kept = new Set(state.roster.rows.filter((row) => keepsVan(row, keep)));
+  // A grounded van is never kept: its driver needs another one.
+  const kept = new Set(
+    state.roster.rows.filter((row) => {
+      if (!keepsVan(row, keep)) return false;
+      const vehicle = state.heldVehicle(row);
+      return vehicle === null || isOperational(state, vehicle);
+    }),
+  );
   const held = new Set<string>();
   for (const row of kept) {
     if (row.vin) held.add(row.vin);
@@ -134,8 +143,13 @@ export function assignVans(state: AppState, keep: KeepVans = KEEP_ALL_VANS): Ass
     state.lmrApproved,
     state.previousVans(),
     state.vehiclePriorities,
+    kindOf(state),
   );
   result.vansAvailable = fleet.length;
+  for (const item of result.assignments) {
+    if (item.vehicle)
+      item.category = vanCategory(item.vehicle, vanTypeOf(state, item.vehicle).type);
+  }
   result.kept = kept.size;
 
   // Every other row, not just the ones in scope: a driver who loses their route loses the van

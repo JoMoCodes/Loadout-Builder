@@ -10,8 +10,10 @@ import {
   createVehicle,
   type Associate,
   type RouteEntry,
+  type Vehicle,
 } from '@loadout/core';
 import { describe, expect, it } from 'vitest';
+import { vehicleView } from './vehicleViewForTest';
 import type { AppSnapshot, AssociateView, RouteSetView, VehicleView } from '../../shared/snapshot';
 import {
   ALL_QUALS,
@@ -97,18 +99,18 @@ function person(who: { name: string; id: string }, values: Partial<Associate> = 
   };
 }
 
+/** A van whose ownership the type is worked out from. */
+function owned(name: string, ownership: string, more: Partial<Vehicle> = {}): VehicleView {
+  return vehicleView(
+    createVehicle({ vin: VIN_B, name, serviceType: 'Electric Vehicle', ownership, ...more }),
+  );
+}
+
 function van(vin: string, name: string, values: Partial<VehicleView> = {}): VehicleView {
-  return {
-    vehicle: createVehicle({ vin, name, serviceType: 'Electric Vehicle', ownership: 'LEASED' }),
-    operational: true,
-    overridden: false,
-    priority: '',
-    affinity: {},
-    rental: false,
-    inUse: false,
-    available: true,
-    ...values,
-  };
+  const vehicle =
+    values.vehicle ??
+    createVehicle({ vin, name, serviceType: 'Electric Vehicle', ownership: 'LEASED' });
+  return { ...vehicleView(vehicle), ...values };
 }
 
 function snapshotWith(values: Partial<AppSnapshot>): AppSnapshot {
@@ -430,21 +432,18 @@ describe('the Vehicle Management table', () => {
     const grounded = van(VIN_A, '101');
     grounded.vehicle.statusNote = 'Waiting on a part';
     expect(noteText(grounded)).toBe('Waiting on a part');
-    const rental = van(VIN_B, '102');
-    rental.vehicle.ownership = 'AMAZON_RENTAL';
-    rental.vehicle.ownershipEnd = '2026-10-01';
+    const rental = owned('102', 'AMAZON_RENTAL', { ownershipEnd: '2026-10-01' });
     expect(noteText(rental)).toBe('until 2026-10-01');
     expect(vehicleCell(rental, 'ownership', '2026-09-11')).toBe('Amazon Rental');
-    expect(vehicleCell(rental, 'category', '2026-09-11')).toBe('Rental Van');
+    expect(vehicleCell(rental, 'category', '2026-09-11')).toBe('LMR Rental');
     expect(vehicleCell(rental, 'assign', '2026-09-11')).toBe('Auto');
-    const own = van(VIN_B, '103');
-    own.vehicle.ownership = 'SELF_OWNED';
+    expect(vehicleCell(owned('104', 'RENTAL'), 'category', '2026-09-11')).toBe('Rental Van');
+    const own = owned('103', 'SELF_OWNED');
     expect(vehicleCell(own, 'assign', '2026-09-11')).toBe('Manual');
   });
 
   it('counts handed out automatically vans only when they differ from the operational ones', () => {
-    const own = van(VIN_B, '103');
-    own.vehicle.ownership = 'SELF_OWNED';
+    const own = owned('103', 'SELF_OWNED');
     expect(fleetCountLine([van(VIN_A, '101')])).toBe('1 vehicles  -  1 operational');
     expect(fleetCountLine([van(VIN_A, '101'), own])).toBe(
       '2 vehicles  -  2 operational  -  1 handed out automatically',

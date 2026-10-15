@@ -2,10 +2,8 @@
 // and the colour rules are the old Vehicle Data page's.
 
 import {
-  category,
   daysUntilRegistrationExpiry,
   makeModel,
-  manualOnly,
   registrationState,
   serviceTypeVocabulary,
   type IsoDate,
@@ -75,9 +73,9 @@ export function vehicleCell(view: VehicleView, columnId: string, today: IsoDate)
     case 'service_type':
       return vehicle.serviceType;
     case 'category':
-      return category(vehicle);
+      return view.category;
     case 'assign':
-      return manualOnly(vehicle) ? 'Manual' : 'Auto';
+      return view.handOnly ? 'Manual' : 'Auto';
     case 'make_model':
       return makeModel(vehicle);
     case 'plate':
@@ -137,7 +135,7 @@ export function fleetTitle(vehicles: readonly VehicleView[]): string {
 /** "41 vehicles  -  26 operational  -  24 handed out automatically". */
 export function fleetCountLine(vehicles: readonly VehicleView[]): string {
   const operational = vehicles.filter((view) => view.operational);
-  const assignable = operational.filter((view) => !manualOnly(view.vehicle));
+  const assignable = operational.filter((view) => !view.handOnly);
   const tail =
     assignable.length !== operational.length
       ? `  -  ${assignable.length} handed out automatically`
@@ -150,7 +148,7 @@ export function fleetMix(vehicles: readonly VehicleView[]): string {
   const counts = new Map<string, number>();
   for (const view of vehicles) {
     if (!view.operational) continue;
-    const name = category(view.vehicle);
+    const name = view.category;
     counts.set(name, (counts.get(name) ?? 0) + 1);
   }
   return [...counts]
@@ -185,7 +183,11 @@ export function vehiclesImportedMessage(
 ): string {
   const kept = snapshot.counts.overriddenVehicles;
   const tail = kept ? ` ${kept} kept the status set here.` : '';
-  return `Imported ${rows} vehicles from ${fileName} - ${snapshot.counts.operationalVehicles} operational.${tail}`;
+  const odd = snapshot.unknownOwnership.reduce((sum, entry) => sum + entry.vans, 0);
+  const unknown = odd
+    ? ` ${odd === 1 ? '1 van has' : `${odd} vans have`} an ownership type the app doesn't know. See Vehicle Types.`
+    : '';
+  return `Imported ${rows} vehicles from ${fileName} - ${snapshot.counts.operationalVehicles} operational.${tail}${unknown}`;
 }
 
 /** The old window's check on a priority: whole numbers only, or empty to take the number away. */
