@@ -10,7 +10,6 @@ import type {
   PsbWeekEntry,
 } from '@loadout/performance';
 import type {
-  AssociateImportResult,
   CdfImportResult,
   DcrImportResult,
   DcrTotalsImportResult,
@@ -30,6 +29,10 @@ import { perfTableSpec } from './perfTables';
  * The file readers in @loadout/performance work out what to write; the `apply*` methods write
  * it the way the old Weekly Performance app's importers did, each in one transaction (all of
  * it lands, or none of it). They return the counts only the database can know.
+ *
+ * The drivers are not a performance table: they are the `associates` table, the one driver list
+ * the Associates page keeps (every row with a Transporter ID). A driver first seen on a scorecard
+ * is added to that list by name alone, marked OFFBOARDED, until an associate export names them.
  */
 export interface PerformanceStoreOptions {
   /** The clock used to stamp "imported at". Defaults to the computer's clock. */
@@ -43,13 +46,6 @@ export interface WeekApplyCounts {
   /** Rows taken out of those weeks first. */
   rowsRemoved: number;
   rowsWritten: number;
-}
-
-export interface AssociatesApplyCounts {
-  /** Drivers that were not in the database before. */
-  driversAdded: number;
-  /** Drivers that were, and had their record replaced. */
-  driversUpdated: number;
 }
 
 export interface ThresholdsApplyCounts {
@@ -152,50 +148,18 @@ export class PerformanceStore {
     return Object.values(this.perfTableCounts()).every((n) => n === 0);
   }
 
-  /** Every Transporter ID in the drivers table, for the readers that count new drivers. */
+  /** Every Transporter ID on the driver list, in list order, for the readers that count new drivers. */
   knownDriverIds(): string[] {
     return (
-      this.db.prepare('SELECT transporter_id FROM perf_drivers ORDER BY rowid').all() as Array<{
-        transporter_id: string;
-      }>
+      this.db
+        .prepare(
+          "SELECT transporter_id FROM associates WHERE transporter_id <> '' ORDER BY position_index",
+        )
+        .all() as Array<{ transporter_id: string }>
     ).map((row) => row.transporter_id);
   }
 
   // ------------------------------------------------------------------ apply
-
-  /**
-   * The roster: add each driver, or replace every column of one already saved. (Pass
-   * `knownDriverIds()` to `parseAssociates` for the old app's row-by-row counts; the counts here
-   * are per driver.)
-   */
-  applyAssociates(result: Pick<AssociateImportResult, 'drivers'>): AssociatesApplyCounts {
-    const exists = this.db.prepare('SELECT 1 FROM perf_drivers WHERE transporter_id = ?');
-    const upsert = this.db.prepare(
-      `INSERT INTO perf_drivers
-         (transporter_id, name, status, position, qualifications,
-          id_expiration, personal_phone, work_phone, email)
-       VALUES (@transporterId, @name, @status, @position, @qualifications,
-               @idExpiration, @personalPhone, @workPhone, @email)
-       ON CONFLICT(transporter_id) DO UPDATE SET
-         name           = excluded.name,
-         status         = excluded.status,
-         position       = excluded.position,
-         qualifications = excluded.qualifications,
-         id_expiration  = excluded.id_expiration,
-         personal_phone = excluded.personal_phone,
-         work_phone     = excluded.work_phone,
-         email          = excluded.email`,
-    );
-    return this.transaction(() => {
-      const counts: AssociatesApplyCounts = { driversAdded: 0, driversUpdated: 0 };
-      for (const driver of result.drivers) {
-        if (exists.get(driver.transporterId)) counts.driversUpdated++;
-        else counts.driversAdded++;
-        upsert.run(driver);
-      }
-      return counts;
-    });
-  }
 
   /**
    * The thresholds file: when it could be read, the whole table is replaced by its rows, all
@@ -221,17 +185,19 @@ export class PerformanceStore {
   }
 
   /**
-   * Scorecards: add each driver or replace only their name; then for each scorecard, take out
-   * the one saved for the same driver and week (its metrics go with it) and write the new one
-   * with its metrics. Other drivers' scorecards for that week are left alone.
+   * Scorecards: a driver not on the driver list yet is added to it by name alone (after the
+   * last row, marked OFFBOARDED until an associate export names them); a driver already on it
+   * is left as the list has them. Then for each scorecard, take out the one saved for the same
+   * driver and week (its metrics go with it) and write the new one with its metrics. Other
+   * drivers' scorecards for that week are left alone.
    */
   applyScorecards(
     result: Pick<ScorecardImportResult, 'drivers' | 'scorecards'>,
   ): ScorecardsApplyCounts {
-    const exists = this.db.prepare('SELECT 1 FROM perf_drivers WHERE transporter_id = ?');
-    const upsertDriver = this.db.prepare(
-      `INSERT INTO perf_drivers (transporter_id, name) VALUES (?, ?)
-       ON CONFLICT(transporter_id) DO UPDATE SET name = excluded.name`,
+    const exists = this.db.prepare('SELECT 1 FROM associates WHERE transporter_id = ?');
+    const addDriver = this.db.prepare(
+      `INSERT INTO associates (transporter_id, position_index, name, status)
+       VALUES (?, COALESCE((SELECT MAX(position_index) FROM associates), -1) + 1, ?, 'OFFBOARDED')`,
     );
     const remove = this.db.prepare(
       'DELETE FROM perf_weekly_scorecards WHERE transporter_id = ? AND week = ?',
@@ -255,8 +221,9 @@ export class PerformanceStore {
         metricsWritten: 0,
       };
       for (const driver of result.drivers) {
-        if (!exists.get(driver.transporterId)) counts.driversAdded++;
-        upsertDriver.run(driver.transporterId, driver.name);
+        if (!driver.transporterId || exists.get(driver.transporterId)) continue;
+        addDriver.run(driver.transporterId, driver.name);
+        counts.driversAdded++;
       }
       for (const card of result.scorecards) {
         counts.scorecardsReplaced += remove.run(card.transporterId, card.week).changes;
@@ -373,10 +340,38 @@ export class PerformanceStore {
 
   // ------------------------------------------------------------------- read
 
+  /**
+   * The driver list as the performance side reads it: every associate with a Transporter ID, in
+   * list order. A blank status reads as OFFBOARDED further up (`effectiveStatus`); every other
+   * blank is null, as the old drivers table had it for a driver known by name alone.
+   */
+  loadDrivers(): DriverRecord[] {
+    const rows = this.db
+      .prepare(
+        `SELECT transporter_id, name, status, position, qualifications, id_expiration,
+                personal_phone, work_phone, email
+         FROM associates WHERE transporter_id <> '' ORDER BY position_index`,
+      )
+      .all() as Row[];
+    const blankNull = (value: unknown): string | null =>
+      value == null || String(value).trim() === '' ? null : String(value);
+    return rows.map((row) => ({
+      transporterId: String(row.transporter_id),
+      name: String(row.name ?? ''),
+      status: blankNull(row.status),
+      position: blankNull(row.position),
+      qualifications: blankNull(row.qualifications),
+      idExpiration: blankNull(row.id_expiration),
+      personalPhone: blankNull(row.personal_phone),
+      workPhone: blankNull(row.work_phone),
+      email: blankNull(row.email),
+    }));
+  }
+
   /** Every performance table, as the row shapes of @loadout/performance, in the order saved. */
   loadPerfData(): PerfData {
     return {
-      drivers: this.rows<DriverRecord>('perf_drivers'),
+      drivers: this.loadDrivers(),
       scorecards: this.rows('perf_weekly_scorecards'),
       metrics: this.rows('perf_metric_entries'),
       thresholds: this.rows('perf_metric_thresholds'),

@@ -20,6 +20,16 @@ async function changePerf(page: Page, patch: Record<string, unknown>) {
   await emit(page, 'state:changed', { revision: 99 });
 }
 
+/** The driver list step watches the Associates list, not the weekly data. */
+async function changeAssociates(page: Page, associates: number) {
+  await page.evaluate((n) => {
+    const fake = window.__fake!;
+    (fake.snapshot.counts as { associates: number }).associates = n;
+    (fake.snapshot as { revision: number }).revision += 1;
+  }, associates);
+  await emit(page, 'state:changed', { revision: 99 });
+}
+
 const SYNC = {
   at: '2026-10-05T08:00:00Z',
   newFiles: 12,
@@ -59,6 +69,9 @@ test('ticks itself off as the weekly data changes', async ({ page }) => {
   await expect(count(page)).toHaveText('0 of 5 done');
 
   await changePerf(page, { drivers: 61, withEmail: 58 });
+  // The weekly data alone does not tick it: the Associates list does.
+  await expect(step(page, 'perf-roster')).toHaveAttribute('data-step-done', 'false');
+  await changeAssociates(page, 61);
   await expect(step(page, 'perf-roster')).toHaveAttribute('data-step-done', 'true');
   await expect(step(page, 'perf-folders')).toHaveAttribute('data-step-current', 'true');
   await expect(step(page, 'perf-folders').locator('[data-step-do]')).toHaveText(
@@ -103,6 +116,7 @@ test('hides itself once every step is done, and How to use brings it back', asyn
     weeks: ['2026-W40'],
     emailReady: true,
   });
+  await changeAssociates(page, 61);
   await expect(count(page)).toHaveText('4 of 5 done');
   await changePerf(page, { reportsEmailed: true });
   await expect(count(page)).toHaveText('5 of 5 done');
@@ -190,19 +204,17 @@ test('starts with the Dashboard step ticked when the settings say it was opened'
   await expect(step(page, 'perf-dashboard')).toHaveAttribute('data-step-done', 'true');
 });
 
-test('the driver list button opens the Imports tab and presses Choose file', async ({ page }) => {
+test('the driver list button opens Associates and presses Import Associates', async ({ page }) => {
   await page.goto('/');
-  // The person closes the file window.
-  await onCall(page, 'performance:choose-and-import', '() => ({ ok: true, value: null })');
-  await step(page, 'perf-roster').locator('[data-step-do]').click();
-  await expect(page.locator('[data-page="performance"]')).toBeVisible();
-  await expect(page.getByTestId('performance-tab-imports')).toHaveAttribute(
-    'aria-selected',
-    'true',
+  await expect(step(page, 'perf-roster').locator('[data-step-do]')).toHaveText(
+    'Import driver list',
   );
-  await expect
-    .poll(() => callsTo(page, 'performance:choose-and-import'))
-    .toEqual([{ kind: 'roster' }]);
+  // The person closes the file window.
+  await onCall(page, 'files:pick', '() => ({ ok: true, value: { path: null } })');
+  await step(page, 'perf-roster').locator('[data-step-do]').click();
+  await expect(page.locator('[data-page="associates"]')).toBeVisible();
+  await expect.poll(() => callsTo(page, 'files:pick')).toEqual([{ kind: 'associates' }]);
+  expect(await callsTo(page, 'performance:choose-and-import')).toEqual([]);
 });
 
 test('the Dashboard button opens the Dashboard, and the email button opens Settings', async ({
@@ -224,8 +236,8 @@ test('the ? on a step says where to get the files', async ({ page }) => {
   const note = page.locator('dialog[data-dialog="where-to-get"]');
   await expect(note).toBeVisible();
   await expect(note).toContainText('Where to keep the weekly exports');
-  // All ten kinds of export, each with where it comes from.
-  await expect(note.locator('[data-export]')).toHaveCount(10);
+  // All nine kinds of weekly export, each with where it comes from (the driver list is not one).
+  await expect(note.locator('[data-export]')).toHaveCount(9);
   await expect(note.locator('[data-export="scorecards"]')).toContainText(
     'weekly overview dashboard export',
   );

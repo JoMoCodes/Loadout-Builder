@@ -11,6 +11,18 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.4.0',
+    items: [
+      'You now bring in the driver list once, on the Associates page. The Performance page uses the same list.',
+      'The Driver list card is gone from the Imports tab on the Performance page. The weekly checklist on Home sends you to Associates for it instead.',
+      'Bringing in a new driver list no longer wipes the old one. New people are added, people in the file are updated, and anyone who is not in the file any more is kept and marked Offboarded.',
+      'Drivers who leave stay on the list as Offboarded, so their old scorecards keep their names. Load Out never matches a name to an offboarded driver.',
+      'The Associates page shows current drivers by default. Pick Offboarded or All statuses in the Status box to see everyone.',
+      'After an import, the Associates page says how many were new, updated and offboarded.',
+      'If you already had the driver list on the Performance page, those drivers are moved onto the Associates list the first time you open this version. Nothing is lost.',
+    ],
+  },
+  {
     version: '2.3.0',
     items: [
       'Route Sheet Distributor is now part of Loadout Builder. You only need one app. You can uninstall the old one.',

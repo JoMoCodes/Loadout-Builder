@@ -238,7 +238,7 @@ export const WHERE_TO_GET: Record<StepId, Note> = {
   },
 };
 
-/** The ten weekly exports: what each is called on the Imports tab, and where it comes from. */
+/** The nine weekly exports: what each is called on the Imports tab, and where it comes from. */
 export function PerfExportList({ kinds = PERF_KINDS }: { kinds?: readonly PerfKind[] }) {
   return (
     <ul className="m-0 mt-1 list-disc pl-5" data-testid="perf-export-list">
@@ -256,36 +256,18 @@ export function PerfExportList({ kinds = PERF_KINDS }: { kinds?: readonly PerfKi
 export const WEEKLY_WHERE_TO_GET: Record<WeeklyStepId, Note> = {
   'perf-roster': {
     title: 'Where to get the driver list',
-    lead: PERF_KIND_WORDS.roster.whereFrom,
-    steps: [
-      {
-        text: 'Download the driver list from the DSP portal. The file goes to your Downloads folder.',
-        toCome: { name: 'perf-roster-download', what: 'where the driver list is downloaded' },
-      },
-      {
-        text: (
-          <>
-            In this app, open <strong>Performance</strong>, then the <strong>Imports</strong> tab.
-            On the <strong>Driver list</strong> card, click <strong>Choose file</strong> and pick
-            the file.
-          </>
-        ),
-        shot: { name: 'perf-imports', caption: 'The Imports tab, with a card for each export' },
-      },
-      {
-        text: 'The app remembers the file. Next time, Sync now brings it in again if it has changed.',
-      },
-    ],
+    lead: 'The driver list is the associate file (AssociateData.csv) from Cortex. You bring it in once, on Associates, and the Performance page uses the same list.',
+    steps: WHERE_TO_GET.drivers.steps,
   },
   'perf-folders': {
     title: 'Where to keep the weekly exports',
-    lead: 'There are ten kinds of weekly export. Keep each kind in its own folder, and choose that folder once.',
+    lead: 'There are nine kinds of weekly export. Keep each kind in its own folder, and choose that folder once.',
     steps: [
       {
         text: (
           <>
             Make a folder for each kind on your computer, for example in Downloads. Save each
-            week&apos;s file into its folder. The ten kinds are:
+            week&apos;s file into its folder. The nine kinds are:
           </>
         ),
         extra: <PerfExportList />,

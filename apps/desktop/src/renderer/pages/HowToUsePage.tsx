@@ -714,8 +714,13 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
               {go('settings', 'Settings')}, under <strong>Weekly performance</strong>.
             </li>
             <li>
+              Bring in your driver list on {go('associates', 'Associates')}, if you have not
+              already. The Performance page uses the same list, so there is only one to keep up to
+              date.
+            </li>
+            <li>
               On the {go('performance', 'Performance')} page, open the <strong>Imports</strong> tab.
-              There is a card for each of the ten kinds of export.
+              There is a card for each of the nine kinds of weekly export.
             </li>
             <li>
               Keep each kind in its own folder on your computer. On each card, click{' '}
@@ -728,7 +733,7 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
 
           <h3>Where to get each file</h3>
           <p>
-            All ten are downloaded from Amazon&apos;s websites for delivery partners. Ask your
+            All nine are downloaded from Amazon&apos;s websites for delivery partners. Ask your
             manager if you are not sure where. Save each one into its own folder.
           </p>
           <PerfExportList />

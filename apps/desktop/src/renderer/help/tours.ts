@@ -479,9 +479,9 @@ export const TOURS: Record<string, Tour> = {
     label: 'Performance: Imports tab',
     steps: [
       {
-        element: `${PERF} [data-testid="perf-card-roster"]`,
+        element: `${PERF} [data-testid="perf-card-thresholds"]`,
         title: 'One card for each file',
-        text: 'Each card says where its file comes from, which folder it is read from, and when it was last brought in.',
+        text: 'Each card says where its file comes from, which folder it is read from, and when it was last brought in. The driver list is not here: it comes from Associates.',
         side: 'right',
       },
       {

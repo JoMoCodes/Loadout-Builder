@@ -16,8 +16,12 @@ import type { AppSnapshot, AssociateView, RouteSetView, VehicleView } from '../.
 import {
   ALL_QUALS,
   ALL_STATUSES,
+  CURRENT_STATUSES,
+  STATUS_OPTIONS,
   associateCell,
+  associateCountLine,
   associateTone,
+  associatesImportedMessage,
   expiryText,
   passesAssociateFilters,
   tenureImportedMessage,
@@ -574,6 +578,49 @@ describe('the Associates tables', () => {
     expect(associateCell(person(CARMEN, { tenure: 0 }), 'tenure')).toBe('0');
     expect(associateCell(person(CARMEN), 'tenure')).toBe('');
     expect(associateCell({ ...person(CARMEN), onRoster: true }, 'on_loadout')).toBe('Yes');
+  });
+
+  it('show everyone but the offboarded by default, and count only them', () => {
+    const gone = person(BARRETT, { status: 'OFFBOARDED' });
+    const here = person(CARMEN, { status: 'ACTIVE' });
+    expect(STATUS_OPTIONS).toEqual(['Current', 'All statuses', 'ACTIVE', 'INACTIVE', 'OFFBOARDED']);
+    expect(passesAssociateFilters(gone, CURRENT_STATUSES, ALL_QUALS, false)).toBe(false);
+    expect(passesAssociateFilters(here, CURRENT_STATUSES, ALL_QUALS, false)).toBe(true);
+    expect(passesAssociateFilters(gone, ALL_STATUSES, ALL_QUALS, false)).toBe(true);
+    expect(passesAssociateFilters(gone, 'OFFBOARDED', ALL_QUALS, false)).toBe(true);
+    expect(passesAssociateFilters(here, 'OFFBOARDED', ALL_QUALS, false)).toBe(false);
+    expect(associateTone(gone)).toBe('ghost');
+    const snap = {
+      associates: [here, gone, person(COLTON, { status: 'INACTIVE' })],
+      counts: { activeAssociates: 1 },
+    } as unknown as AppSnapshot;
+    expect(associateCountLine(snap)).toBe('2 associates  -  1 active');
+  });
+
+  it('say how many were new, updated or offboarded when the list comes in', () => {
+    const snap = {
+      roster: { rows: [{}, {}] },
+      counts: { matched: 1, needReview: 0 },
+    } as unknown as AppSnapshot;
+    expect(
+      associatesImportedMessage(snap, 78, 'AssociateData.csv', {
+        added: 3,
+        updated: 75,
+        offboarded: 2,
+      }),
+    ).toBe(
+      'Imported 78 associates from AssociateData.csv: 3 new, 75 updated, 2 offboarded. 1 of 2 drivers on the roster found.',
+    );
+    expect(
+      associatesImportedMessage({ ...snap, roster: { rows: [] } } as never, 4, 'A.csv', {
+        added: 4,
+        updated: 0,
+        offboarded: 0,
+      }),
+    ).toBe('Imported 4 associates from A.csv: 4 new.');
+    expect(associatesImportedMessage({ ...snap, roster: { rows: [] } } as never, 4, 'A.csv')).toBe(
+      'Imported 4 associates from A.csv.',
+    );
   });
 
   it('filter by status, a single qualification and who is on the load out', () => {

@@ -5,7 +5,9 @@ import {
   QUAL_DOT,
   QUAL_EDV,
   QUAL_STEP_VAN,
+  STATUS_OFFBOARDED,
   hasQualification,
+  isOffboarded,
   qualificationCounts,
   qualificationVocabulary,
   qualificationsLabel,
@@ -15,9 +17,17 @@ import {
 import type { AppSnapshot, AssociateView } from '../../../shared/snapshot';
 import { plural } from '../dataPages/format';
 
+/** Everyone who is not offboarded: the usual view. */
+export const CURRENT_STATUSES = 'Current';
 export const ALL_STATUSES = 'All statuses';
 export const ALL_QUALS = 'All qualifications';
-export const STATUS_OPTIONS = [ALL_STATUSES, 'ACTIVE', 'INACTIVE'] as const;
+export const STATUS_OPTIONS = [
+  CURRENT_STATUSES,
+  ALL_STATUSES,
+  'ACTIVE',
+  'INACTIVE',
+  STATUS_OFFBOARDED,
+] as const;
 
 export const ASSOCIATES_EMPTY = {
   title: 'No associate data loaded.',
@@ -99,7 +109,11 @@ export function passesAssociateFilters(
   qualification: string,
   onLoadOutOnly: boolean,
 ): boolean {
-  if (status !== ALL_STATUSES && view.associate.status.toUpperCase() !== status) return false;
+  if (status === CURRENT_STATUSES) {
+    if (isOffboarded(view.associate)) return false;
+  } else if (status !== ALL_STATUSES && view.associate.status.toUpperCase() !== status) {
+    return false;
+  }
   if (qualification !== ALL_QUALS && !hasQualification(view.associate, qualification)) return false;
   if (onLoadOutOnly && !view.onRoster) return false;
   return true;
@@ -136,16 +150,33 @@ export function expiryLine(snapshot: AppSnapshot): string {
   return parts.join('   ');
 }
 
-/** "78 associates  -  60 active". */
-export function associateCountLine(snapshot: AppSnapshot): string {
-  return `${snapshot.associates.length} associates  -  ${snapshot.counts.activeAssociates} active`;
+/** Everyone on the list who is not offboarded. */
+export function currentViews(views: readonly AssociateView[]): AssociateView[] {
+  return views.filter((view) => !isOffboarded(view.associate));
 }
 
-/** What the status says after the associate list came in. */
+/** "78 associates  -  60 active". Offboarded people are not counted. */
+export function associateCountLine(snapshot: AppSnapshot): string {
+  const current = currentViews(snapshot.associates).length;
+  return `${current} associates  -  ${snapshot.counts.activeAssociates} active`;
+}
+
+/** How many were new, updated or marked offboarded, as the import says it. */
+export interface AssociateImportCounts {
+  added: number;
+  updated: number;
+  offboarded: number;
+}
+
+/**
+ * What the status says after the associate list came in: "Imported 78 associates from
+ * AssociateData.csv: 3 new, 2 offboarded. 30 of 40 drivers on the roster found."
+ */
 export function associatesImportedMessage(
   snapshot: AppSnapshot,
   rows: number,
   fileName: string,
+  counts?: AssociateImportCounts,
 ): string {
   let tail = '';
   if (snapshot.roster.rows.length > 0) {
@@ -153,7 +184,14 @@ export function associatesImportedMessage(
     tail = ` ${snapshot.counts.matched} of ${snapshot.roster.rows.length} drivers on the roster found`;
     tail += review ? ` (${review} need review).` : '.';
   }
-  return `Imported ${rows} associates from ${fileName}.${tail}`;
+  const bits: string[] = [];
+  if (counts) {
+    if (counts.added > 0) bits.push(`${counts.added} new`);
+    if (counts.updated > 0) bits.push(`${counts.updated} updated`);
+    if (counts.offboarded > 0) bits.push(`${counts.offboarded} offboarded`);
+  }
+  const what = bits.length > 0 ? `: ${bits.join(', ')}.` : '.';
+  return `Imported ${rows} associates from ${fileName}${what}${tail}`;
 }
 
 /** What the status says after a Tenured Workforce file was folded in. */

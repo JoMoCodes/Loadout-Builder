@@ -23,7 +23,7 @@ import { WhereToGetDialog } from './whereToGet';
 const STEP_WORDS: Record<WeeklyStepId, { title: string; why: string }> = {
   'perf-roster': {
     title: 'Bring in the driver list',
-    why: 'So the reports know every driver, and who has an email address.',
+    why: 'On Associates. The reports use the same list, so they know every driver and who has an email address.',
   },
   'perf-folders': {
     title: 'Choose the export folders',
@@ -44,7 +44,7 @@ const STEP_WORDS: Record<WeeklyStepId, { title: string; why: string }> = {
 };
 
 const BUTTON_WORDS: Record<WeeklyStepAction, string> = {
-  'perf-choose-roster': 'Choose the driver list',
+  'import-associates': 'Import driver list',
   'perf-open-imports': 'Open the Imports tab',
   'perf-sync-now': 'Sync now',
   'perf-choose-scorecards': 'Bring in the scorecards',
@@ -74,7 +74,13 @@ export function WeeklyChecklist({
 
   const facts = useMemo(
     () =>
-      snapshot ? weeklyFacts(snapshot.performance ?? EMPTY_PERF_SNAPSHOT, dashboardSeen) : null,
+      snapshot
+        ? weeklyFacts(
+            snapshot.performance ?? EMPTY_PERF_SNAPSHOT,
+            dashboardSeen,
+            snapshot.counts.associates,
+          )
+        : null,
     [snapshot, dashboardSeen],
   );
   const done = useMemo(() => (facts ? weeklyStepsDone(facts) : null), [facts]);

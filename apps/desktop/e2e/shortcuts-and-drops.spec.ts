@@ -207,7 +207,7 @@ test('Vehicle Data takes the vehicle list on Vehicle Management, and a refusal s
   await expect(page.locator('[data-drop-kind]')).toHaveCount(0);
 });
 
-test('Associates takes the associate export on its tab (asking before replacing) and the tenure file on Lifetime Routes', async ({
+test('Associates takes the associate export on its tab (asking before updating) and the tenure file on Lifetime Routes', async ({
   page,
 }) => {
   await openPage(page, 'associates', {
@@ -228,8 +228,8 @@ test('Associates takes the associate export on its tab (asking before replacing)
   await zone(page, 'associates').dispatchEvent('dragleave');
   await dropFile(page, zone(page, 'associates'), 'AssociateData.csv');
   const ask = page.locator('dialog[data-dialog="confirm"]');
-  await expect(ask).toContainText('replaced by the file you dropped');
-  await ask.getByRole('button', { name: 'Yes, replace it' }).click();
+  await expect(ask).toContainText('updated from the file you dropped');
+  await ask.getByRole('button', { name: 'Yes, update it' }).click();
   await expect
     .poll(() => callsTo(page, 'files:import'))
     .toEqual([{ kind: 'associates', path: 'dropped-1/AssociateData.csv' }]);
@@ -299,7 +299,7 @@ test('Ctrl+I works from any page: it opens Associates and runs Import Associates
     'true',
   );
   const ask = page.locator('dialog[data-dialog="confirm"]');
-  await expect(ask).toContainText('Replace the associate list?');
+  await expect(ask).toContainText('Update the associate list?');
   // Pressing a shortcut while a question is open changes nothing.
   await page.keyboard.press('Control+o');
   await expect(page.locator('[data-page="associates"]')).toBeVisible();
@@ -313,7 +313,7 @@ test('Ctrl+I works from any page: it opens Associates and runs Import Associates
     'aria-selected',
     'true',
   );
-  await expect(ask).toContainText('Replace the associate list?');
+  await expect(ask).toContainText('Update the associate list?');
 });
 
 test('How to use lists the shortcuts', async ({ page }) => {

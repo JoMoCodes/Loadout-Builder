@@ -46,12 +46,7 @@ export const STEP_TARGETS: Record<StepAction | WeeklyStepAction, Target> = {
     press: '[data-page="route-sheets"] [data-testid="route-sheets-bring-in"]',
   },
   'open-route-sheets': { page: 'route-sheets' },
-  // The weekly checklist.
-  'perf-choose-roster': {
-    page: 'performance',
-    performanceTab: 'imports',
-    press: `${PERF} [data-testid="perf-choose-roster"]`,
-  },
+  // The weekly checklist (its driver list step is 'import-associates', above).
   'perf-open-imports': { page: 'performance', performanceTab: 'imports' },
   'perf-sync-now': {
     page: 'performance',

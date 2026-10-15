@@ -1,6 +1,7 @@
 // Picking a file and bringing it in. The reading happens in the main process; the page never
 // sees a file's contents, only the counts.
 
+import type { AssociateMergeCounts } from '@loadout/core';
 import type { RouteSheetsImportResult } from '../routeSheets';
 import { filled, oneOf, shape, text } from './check';
 import { as, defineCommand } from './define';
@@ -126,6 +127,8 @@ export interface ImportSummary {
   rows: number;
   /** For a Tenured Workforce file only: what it did to the kept counts. */
   tenure?: TenureImportResult;
+  /** For an associate export only: how many were new, updated, or marked offboarded. */
+  associates?: AssociateMergeCounts;
   /** For a route sheet PDF only: what was read, in the old app's words. */
   routeSheets?: RouteSheetsImportResult;
 }

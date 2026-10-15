@@ -13,7 +13,10 @@ const brief = (values: Partial<PerfSnapshot> = {}): PerfSnapshot => ({
   ...EMPTY_PERF_SNAPSHOT,
   ...values,
 });
-const nothing = weeklyFacts(brief(), false);
+// The driver list fact is the Associates list's count, handed in on its own.
+const facts = (values: Partial<PerfSnapshot> = {}, dashboardSeen = false, associates = 0) =>
+  weeklyFacts(brief(values), dashboardSeen, associates);
+const nothing = facts();
 const SYNC = {
   at: '2026-10-05T08:00:00Z',
   newFiles: 3,
@@ -32,7 +35,7 @@ describe('the weekly checklist', () => {
   });
 
   it('ticks the driver list and the folders once they are there', () => {
-    const done = weeklyStepsDone(weeklyFacts(brief({ drivers: 61, foldersChosen: 3 }), false));
+    const done = weeklyStepsDone(facts({ foldersChosen: 3 }, false, 61));
     expect(done['perf-roster']).toBe(true);
     expect(done['perf-folders']).toBe(true);
     expect(done['perf-sync']).toBe(false);
@@ -40,25 +43,18 @@ describe('the weekly checklist', () => {
   });
 
   it('ticks Sync now after a sync, or once scorecards were brought in by hand', () => {
-    expect(weeklyStepsDone(weeklyFacts(brief({ lastSync: SYNC }), false))['perf-sync']).toBe(true);
-    expect(weeklyStepsDone(weeklyFacts(brief({ weeks: ['2026-W40'] }), false))['perf-sync']).toBe(
-      true,
-    );
+    expect(weeklyStepsDone(facts({ lastSync: SYNC }))['perf-sync']).toBe(true);
+    expect(weeklyStepsDone(facts({ weeks: ['2026-W40'] }))['perf-sync']).toBe(true);
   });
 
   it('ticks the Dashboard only once it was opened with weeks to show', () => {
-    expect(weeklyStepsDone(weeklyFacts(brief(), true))['perf-dashboard']).toBe(false);
-    expect(
-      weeklyStepsDone(weeklyFacts(brief({ weeks: ['2026-W40'] }), false))['perf-dashboard'],
-    ).toBe(false);
-    expect(
-      weeklyStepsDone(weeklyFacts(brief({ weeks: ['2026-W40'] }), true))['perf-dashboard'],
-    ).toBe(true);
+    expect(weeklyStepsDone(facts({}, true))['perf-dashboard']).toBe(false);
+    expect(weeklyStepsDone(facts({ weeks: ['2026-W40'] }))['perf-dashboard']).toBe(false);
+    expect(weeklyStepsDone(facts({ weeks: ['2026-W40'] }, true))['perf-dashboard']).toBe(true);
   });
 
   it('ticks the reports once they were made, or emailed with email set up', () => {
-    const tick = (values: Partial<PerfSnapshot>) =>
-      weeklyStepsDone(weeklyFacts(brief(values), false))['perf-reports'];
+    const tick = (values: Partial<PerfSnapshot>) => weeklyStepsDone(facts(values))['perf-reports'];
     expect(tick({ emailReady: true })).toBe(false);
     expect(tick({ reportsMade: true })).toBe(true);
     expect(tick({ emailReady: true, reportsEmailed: true })).toBe(true);
@@ -67,16 +63,16 @@ describe('the weekly checklist', () => {
 
   it('is all done with every step ticked', () => {
     const done = weeklyStepsDone(
-      weeklyFacts(
-        brief({
-          drivers: 61,
+      facts(
+        {
           foldersChosen: 10,
           lastSync: SYNC,
           weeks: ['2026-W39', '2026-W40'],
           emailReady: true,
           reportsEmailed: true,
-        }),
+        },
         true,
+        61,
       ),
     );
     expect(weeklyDoneCount(done)).toBe(5);
@@ -87,7 +83,7 @@ describe('the weekly checklist', () => {
 
 describe("what each weekly step's button does", () => {
   it('brings in the driver list and opens the Imports tab for the folders', () => {
-    expect(weeklyStepAction('perf-roster', nothing)).toBe('perf-choose-roster');
+    expect(weeklyStepAction('perf-roster', nothing)).toBe('import-associates');
     expect(weeklyStepAction('perf-folders', nothing)).toBe('perf-open-imports');
   });
 

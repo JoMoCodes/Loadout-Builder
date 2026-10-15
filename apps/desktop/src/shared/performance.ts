@@ -15,9 +15,12 @@ import type {
   TierCount,
 } from '@loadout/performance';
 
-/** The ten kinds of weekly export, in the order the old app brought them in. */
+/**
+ * The nine kinds of weekly export, in the order the old app brought them in. The driver list
+ * (AssociateData.csv) is not one of them: it is brought in once, on the Associates page, and the
+ * Performance page reads that list.
+ */
 export const PERF_KINDS = [
-  'roster',
   'thresholds',
   'scorecards',
   'pod',
@@ -31,7 +34,7 @@ export const PERF_KINDS = [
 export type PerfKind = (typeof PERF_KINDS)[number];
 
 /** Kinds brought in as a single file (the others come as a folder of weekly files). */
-export const SINGLE_FILE_KINDS: readonly PerfKind[] = ['roster', 'thresholds'];
+export const SINGLE_FILE_KINDS: readonly PerfKind[] = ['thresholds'];
 
 /** How each kind is named to the person, where to get it, and how its files are recognised. */
 export const PERF_KIND_WORDS: Record<
@@ -49,13 +52,6 @@ export const PERF_KIND_WORDS: Record<
     namePattern: RegExp;
   }
 > = {
-  roster: {
-    title: 'Driver list',
-    the: 'the driver list',
-    whereFrom: 'The associate export (AssociateData.csv) from the DSP portal.',
-    endings: ['.csv'],
-    namePattern: /^AssociateData.*\.csv$/i,
-  },
   thresholds: {
     title: 'Thresholds',
     the: 'the scorecard thresholds',
@@ -146,8 +142,6 @@ export interface PerfImportSummary {
   weeks: string[];
   /** Plain words, one per problem (which file and which row number, never a row's contents). */
   problems: string[];
-  /** The driver list only: drivers already known whose details were updated, and the counts by status. */
-  roster?: { updated: number; active: number; inactive: number };
 }
 
 /** One card on the Imports tab. */
@@ -188,6 +182,7 @@ export interface PerfSnapshot {
   hasData: boolean;
   /** Every scorecard week brought in, oldest first. */
   weeks: string[];
+  /** Drivers with a Transporter ID on the Associates list (the one driver list). */
   drivers: number;
   /** Drivers with an email address on the driver list. */
   withEmail: number;

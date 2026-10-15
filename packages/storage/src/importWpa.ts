@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { PERF_TABLES } from './migrations';
 import type { PerfTable } from './migrations';
-import { legacyColumn, PERF_TABLE_SPECS } from './perfTables';
+import { legacyColumn, LEGACY_DRIVER_COLUMNS, PERF_TABLE_SPECS } from './perfTables';
 import { PerformanceStore } from './performance';
 import type { Store } from './store';
 
@@ -13,16 +13,20 @@ import type { Store } from './store';
  *
  * Behaviour, in short (the same rules as the load-out import in ./importV1.ts):
  * - The old file is never changed. It is copied to a temporary folder first and read from there.
- * - Every one of its 13 tables is copied as it is, in one transaction: all of it lands or none.
+ * - Its 12 weekly tables are copied as they are, in one transaction: all of it lands or none.
  *   Rows keep their ids (metric entries point at scorecards by id) and their saved order.
+ * - Its Drivers table goes to the one driver list (`associates`): a driver whose Transporter ID
+ *   is not on the list yet is added after the last row, with a blank status read as OFFBOARDED;
+ *   a driver already on the list is left as the list has them.
  * - Only while every performance table is empty; otherwise nothing is written and the result
- *   says `skipped`.
+ *   says `skipped`. The driver list may already have people on it.
  * - An older database that lacks a table, or the columns the old app added later (the drivers'
  *   contact details, the scorecards' file name), is accepted: what is missing reads as empty.
  * - The result carries counts per table, never names or IDs.
  */
 export interface WpaTableCount {
-  table: PerfTable;
+  /** A performance table, or `associates` for the old Drivers table. */
+  table: PerfTable | 'associates';
   /** Rows in the old database (0 if it has no such table). */
   source: number;
   /** Rows in the new database after the import. */
@@ -88,28 +92,82 @@ function columnsOf(src: Database.Database, table: string): Set<string> {
   );
 }
 
-function countSource(src: Database.Database): Record<PerfTable, number> {
-  const out = {} as Record<PerfTable, number>;
+type CountTable = PerfTable | 'associates';
+
+function countRows(db: Database.Database, table: string): number {
+  return (db.prepare(`SELECT COUNT(*) AS n FROM "${table}"`).get() as { n: number }).n;
+}
+
+function countSource(src: Database.Database): Record<CountTable, number> {
+  const out = {} as Record<CountTable, number>;
   for (const spec of PERF_TABLE_SPECS) {
-    out[spec.table] = hasTable(src, spec.legacy)
-      ? (src.prepare(`SELECT COUNT(*) AS n FROM "${spec.legacy}"`).get() as { n: number }).n
-      : 0;
+    out[spec.table] = hasTable(src, spec.legacy) ? countRows(src, spec.legacy) : 0;
   }
+  out.associates = hasTable(src, 'Drivers') ? countRows(src, 'Drivers') : 0;
   return out;
+}
+
+/**
+ * The old Drivers table into the one driver list: each driver not on it yet is added after the
+ * last row. Returns how many of the old rows are on the list afterwards (one already there counts
+ * as brought over, but is left as the list has them).
+ */
+function copyDrivers(src: Database.Database, db: Database.Database): number {
+  if (!hasTable(src, 'Drivers')) return 0;
+  const present = columnsOf(src, 'Drivers');
+  if (!present.has('TransporterId')) return 0;
+  const select = LEGACY_DRIVER_COLUMNS.map((column) =>
+    present.has(column) ? `"${column}"` : `NULL AS "${column}"`,
+  ).join(', ');
+  const exists = db.prepare('SELECT 1 FROM associates WHERE transporter_id = ?');
+  const insert = db.prepare(
+    `INSERT INTO associates
+       (transporter_id, position_index, name, status, position, qualifications,
+        id_expiration, personal_phone, work_phone, email)
+     VALUES (?, COALESCE((SELECT MAX(position_index) FROM associates), -1) + 1, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  );
+  const text = (value: unknown) => (value == null ? '' : String(value));
+  let over = 0;
+  const rows = src.prepare(`SELECT ${select} FROM "Drivers" ORDER BY rowid`).all() as Row[];
+  for (const row of rows) {
+    const transporterId = text(row.TransporterId).trim();
+    if (transporterId === '') continue;
+    over++;
+    if (exists.get(transporterId)) continue;
+    const status = text(row.Status).trim();
+    insert.run(
+      transporterId,
+      text(row.Name),
+      status === '' ? 'OFFBOARDED' : status,
+      text(row.Position),
+      text(row.Qualifications),
+      row.IdExpiration == null || text(row.IdExpiration).trim() === ''
+        ? null
+        : text(row.IdExpiration),
+      text(row.PersonalPhone),
+      text(row.WorkPhone),
+      text(row.Email),
+    );
+  }
+  return over;
 }
 
 function copyAll(src: Database.Database, db: Database.Database): ImportWpaResult {
   const perf = new PerformanceStore(db);
   const before = perf.perfTableCounts();
   const sourceCounts = countSource(src);
-  const summary = (counts: Record<PerfTable, number>): WpaTableCount[] =>
-    PERF_TABLES.map((table) => ({ table, source: sourceCounts[table], imported: counts[table] }));
+  const summary = (counts: Record<CountTable, number>): WpaTableCount[] =>
+    (['associates', ...PERF_TABLES] as const).map((table) => ({
+      table,
+      source: sourceCounts[table],
+      imported: counts[table],
+    }));
 
   if (Object.values(before).some((n) => n > 0)) {
     return {
       status: 'skipped',
       reason: 'destination-not-empty',
-      tables: summary(before),
+      tables: summary({ ...before, associates: 0 }),
       identical: false,
     };
   }
@@ -119,8 +177,10 @@ function copyAll(src: Database.Database, db: Database.Database): ImportWpaResult
   // (The setting cannot change inside a transaction, so it is turned off around it.)
   const foreignKeys = db.pragma('foreign_keys', { simple: true }) as number;
   db.pragma('foreign_keys = OFF');
+  let driversOver = 0;
   try {
     db.transaction(() => {
+      driversOver = copyDrivers(src, db);
       for (const spec of PERF_TABLE_SPECS) {
         if (!hasTable(src, spec.legacy)) continue;
         const present = columnsOf(src, spec.legacy);
@@ -156,7 +216,7 @@ function copyAll(src: Database.Database, db: Database.Database): ImportWpaResult
     db.pragma(`foreign_keys = ${foreignKeys ? 'ON' : 'OFF'}`);
   }
 
-  const tables = summary(perf.perfTableCounts());
+  const tables = summary({ ...perf.perfTableCounts(), associates: driversOver });
   return { status: 'imported', tables, identical: tables.every((t) => t.source === t.imported) };
 }
 

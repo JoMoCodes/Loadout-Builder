@@ -13,9 +13,10 @@ pull request. The plan behind it is [`docs/WPA-MIGRATION-PLAN.md`](WPA-MIGRATION
 
 ### All importers
 
-- [x] Each kind of export is brought in from a folder you pick (the roster and the thresholds are
-      single files). `MainWindow.xaml.cs` Test: `src/main/performance.test.ts`,
-      `e2e/performance-imports.spec.ts`.
+- [x] Each kind of export is brought in from a folder you pick (the thresholds are a single
+      file). `MainWindow.xaml.cs` Test: `src/main/performance.test.ts`,
+      `e2e/performance-imports.spec.ts`. The roster is not one of these kinds any more: see
+      "Roster (associates)" below.
 - [x] The week comes from the file name and is always written as year, "W" and a two-digit week
       (for example 2026-W07), so weeks sort and line up across exports. `WeekMath.cs`
 - [x] Bringing in a week again replaces that week's data instead of adding a second copy.
@@ -35,7 +36,11 @@ pull request. The plan behind it is [`docs/WPA-MIGRATION-PLAN.md`](WPA-MIGRATION
 ### Scorecards
 
 - [x] Every weekly scorecard file in the folder is brought in. `ScorecardImporter.cs`
-- [x] A driver seen for the first time is added to the driver list. `ScorecardImporter.cs`
+- [x] A driver seen for the first time is added to the driver list (the Associates list, by name
+      alone, marked OFFBOARDED until an associate export names them; a driver already on the list
+      is left as the list has them, where the old app replaced their name).
+      `ScorecardImporter.cs` Test: `packages/storage/src/performance.test.ts`,
+      `src/main/stateHost.test.ts`.
 - [x] Each week keeps the driver's Overall Standing (tier), Overall Score and Packages Delivered.
       `ScorecardImporter.cs`
 - [x] Each week keeps all twelve metrics (the safety driving score, the five safety rates, CDF,
@@ -48,17 +53,28 @@ pull request. The plan behind it is [`docs/WPA-MIGRATION-PLAN.md`](WPA-MIGRATION
 
 ### Roster (associates)
 
-- [x] One roster file is picked, starting in the Downloads folder the first time.
-      `MainWindow.xaml.cs` The Downloads folder is the start when nothing is remembered
-      (`src/main/main.ts`). Test: `src/main/performance.test.ts`.
+Since 2.4.0 there is one driver list for the whole app: the Associates page's list (the
+`associates` table). The Performance page reads it; the old `perf_drivers` copy was folded into it
+by database step 4 (`packages/storage/src/migrations.ts`) and dropped. So the roster is brought in
+on Associates, not on the Imports tab.
+
+- [x] One roster file is picked (Import Associates on the Associates page, or Ctrl+I from any
+      page). `MainWindow.xaml.cs` Test: `src/main/stateHost.test.ts`,
+      `e2e/associates.spec.ts`.
 - [x] Each driver's name, status, position, qualifications, ID expiry, personal phone, work phone
-      and email are brought in or updated. `AssociateImporter.cs`
-- [x] The summary says how many drivers were new, how many were updated, and how many are active and
-      inactive. `MainWindow.xaml.cs` Test: `src/main/performance.test.ts`,
-      `src/renderer/pages/performance/perfText.test.ts`.
+      and email are brought in or updated. Anyone with a Transporter ID the file no longer lists
+      stays, marked OFFBOARDED (the old app kept them with their last status).
+      `AssociateImporter.cs` Test: `packages/core/src/state/appState.test.ts`.
+- [x] The summary says how many drivers were new, how many were updated, and how many were marked
+      offboarded (the old app counted active and inactive instead). `MainWindow.xaml.cs` Test:
+      `src/renderer/pages/pageHelpers.test.ts`.
 - [x] A driver with no status is treated as Offboarded. `Models.cs`
-- [x] The roster file picked is remembered so auto-import can bring it in again when it changes.
-      `MainWindow.xaml.cs` Test: `src/main/performance.test.ts`.
+- [ ] The roster file picked is remembered so auto-import can bring it in again when it changes.
+      `MainWindow.xaml.cs` Not carried over: the driver list is brought in by hand on Associates,
+      like the vans. A roster folder left in an older settings file is ignored.
+- [x] The old app's Drivers table comes over into the Associates list when its data is brought
+      over (a driver already on the list is left as the list has them).
+      Test: `packages/storage/src/importWpa.test.ts`.
 
 ### Thresholds
 

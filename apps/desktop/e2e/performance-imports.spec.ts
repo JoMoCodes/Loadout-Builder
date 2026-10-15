@@ -23,8 +23,8 @@ const SUMMARY = (kind: string, values: Record<string, unknown> = {}) => ({
 });
 
 const CARDS = () => [
-  importCard('roster', {
-    folderName: 'AssociateData.csv',
+  importCard('thresholds', {
+    folderName: 'DSP_Thresholds_Scoring_Metadata_2026-W32.csv',
     lastImportAt: '2026-10-05T14:30:00',
   }),
   importCard('scorecards', {
@@ -56,13 +56,18 @@ async function dropFile(page: Page, target: Locator, name: string) {
 test('one card per kind, with its folder, last import and plain warnings', async ({ page }) => {
   await openPerformance(page, { tab: 'imports', data: { cards: CARDS() } });
   // One card per kind, each taking files dropped on it, inside the tab that takes them too.
-  await expect(page.locator('article[data-testid^="perf-card-"]')).toHaveCount(10);
-  await expect(page.locator('[data-drop-kind]')).toHaveCount(11);
-  await expect(card(page, 'roster')).toContainText('Driver list');
-  await expect(card(page, 'roster').getByTestId('perf-card-folder')).toHaveText(
-    'File: AssociateData.csv',
+  // The driver list has no card: it is brought in on Associates, and the tab says so.
+  await expect(page.locator('article[data-testid^="perf-card-"]')).toHaveCount(9);
+  await expect(page.locator('[data-drop-kind]')).toHaveCount(10);
+  await expect(page.getByTestId('perf-card-roster')).toHaveCount(0);
+  await expect(page.getByTestId('perf-driver-list-hint')).toHaveText(
+    'The driver list is not brought in here. Bring in the driver list on Associates; this page uses the same list.',
   );
-  await expect(card(page, 'roster')).toContainText('Choose file…');
+  await expect(card(page, 'thresholds')).toContainText('Thresholds');
+  await expect(card(page, 'thresholds').getByTestId('perf-card-folder')).toHaveText(
+    'File: DSP_Thresholds_Scoring_Metadata_2026-W32.csv',
+  );
+  await expect(card(page, 'thresholds')).toContainText('Choose file…');
   await expect(card(page, 'scorecards').getByTestId('perf-card-folder')).toHaveText(
     'Folder: Scorecards',
   );
@@ -132,7 +137,7 @@ test('bringing in a kind that has weeks asks first, and the buttons wait while i
   await card(page, 'scorecards').getByTestId('perf-again-scorecards').click();
   await dialog(page, 'confirm').getByRole('button', { name: 'Yes, bring them in' }).click();
   await expect(page.getByTestId('perf-sync-now')).toBeDisabled();
-  await expect(card(page, 'roster').getByTestId('perf-choose-roster')).toBeDisabled();
+  await expect(card(page, 'thresholds').getByTestId('perf-choose-thresholds')).toBeDisabled();
   await page.evaluate(() => (window as unknown as { __finish: () => void }).__finish());
   await expect(result(page)).toHaveText('Brought in 1 file: 64 rows, week 2026-W40.');
   await expect(page.getByTestId('perf-sync-now')).toBeEnabled();

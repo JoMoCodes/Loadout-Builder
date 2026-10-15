@@ -57,7 +57,7 @@ test('a first run offers to bring over the weekly performance data, and Yes coun
     page,
     'performance:old-data-run',
     `() => ({ ok: true, value: { status: 'imported', counts: [
-      { table: 'perf_drivers', imported: 76 },
+      { table: 'associates', imported: 76 },
       { table: 'perf_weekly_scorecards', imported: 650 },
       { table: 'perf_safety_events', imported: 1 },
       { table: 'perf_imported_files', imported: 90 },

@@ -4,7 +4,6 @@
 
 import type { PerfData } from '@loadout/performance';
 import {
-  parseAssociates,
   parseCdf,
   parseDcr,
   parseDcrTotals,
@@ -18,6 +17,7 @@ import {
   type PdfWords,
 } from '@loadout/performance/importers';
 import { readPdfWords } from '../../performance/src/importers/pdfWords.node';
+import { parseFixtureRoster } from '../../performance/src/importers/testkit';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { PerformanceStore } from './performance';
@@ -88,9 +88,49 @@ export async function loadFixtureImports(): Promise<FixtureImports> {
   };
 }
 
+/**
+ * The made-up roster onto the driver list (the `associates` table), as the old app's own
+ * importer kept it: each cell as written, trimmed. A driver already on the list is replaced.
+ */
+export function applyFixtureRoster(perf: PerformanceStore, files: readonly ImportFile[]): void {
+  const insert = perf.db.prepare(
+    `INSERT INTO associates
+       (transporter_id, position_index, name, status, position, qualifications,
+        id_expiration, personal_phone, work_phone, email)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+     ON CONFLICT(transporter_id) DO UPDATE SET
+       name = excluded.name, status = excluded.status, position = excluded.position,
+       qualifications = excluded.qualifications, id_expiration = excluded.id_expiration,
+       personal_phone = excluded.personal_phone, work_phone = excluded.work_phone,
+       email = excluded.email`,
+  );
+  perf.transaction(() => {
+    const next =
+      ((
+        perf.db.prepare('SELECT MAX(position_index) AS n FROM associates').get() as {
+          n: number | null;
+        }
+      ).n ?? -1) + 1;
+    parseFixtureRoster(files).forEach((d, index) => {
+      insert.run(
+        d.transporterId,
+        next + index, // kept as it was for a driver already on the list
+        d.name,
+        d.status,
+        d.position,
+        d.qualifications,
+        d.idExpiration || null,
+        d.personalPhone,
+        d.workPhone,
+        d.email,
+      );
+    });
+  });
+}
+
 /** Run every reader and write its result, in the old harness's order. */
 export function applyAll(perf: PerformanceStore, files: FixtureImports): void {
-  perf.applyAssociates(parseAssociates(files.roster, perf.knownDriverIds()));
+  applyFixtureRoster(perf, files.roster);
   perf.applyThresholds(parseThresholds(files.thresholds));
   perf.applyScorecards(parseScorecards(files.scorecards, perf.knownDriverIds()));
   perf.applyPod(parsePodFiles(files.pod));
@@ -122,7 +162,11 @@ export function expectedTableRows(): Record<string, number> {
   ).tableRows;
 }
 
-/** Which old table each list of PerfData came from. */
+/**
+ * Which old table each list of PerfData came from. The drivers come from the `associates` table
+ * now, so a blank in a row the roster filled reads as null (the old table kept '' there): compare
+ * them with `driversAlike`.
+ */
 export const PERF_DATA_TABLES: Record<keyof PerfData, string> = {
   drivers: 'Drivers',
   scorecards: 'WeeklyScorecards',
@@ -137,6 +181,28 @@ export const PERF_DATA_TABLES: Record<keyof PerfData, string> = {
   dcrTotals: 'DcrWeekTotals',
   safetyEvents: 'SafetyEvents',
 };
+
+/**
+ * Drivers rows as both sides can agree on them: every '' read as null (the old table kept ''
+ * where the roster had a blank, the driver list reads it as null); no status read as OFFBOARDED
+ * (what the driver list gives a driver known from a scorecard alone); and runs of spaces in a
+ * name closed up (the old app renamed a driver from each scorecard, the driver list keeps the
+ * associate export's name, and in the made-up data the two differ only in spacing).
+ */
+export function driversAlike(rows: readonly Row[]): Row[] {
+  return rows.map((row) => {
+    const out: Row = {};
+    for (const [key, value] of Object.entries(row)) out[key] = value === '' ? null : value;
+    if (out.Status == null) out.Status = 'OFFBOARDED';
+    if (typeof out.Name === 'string') out.Name = squeeze(out.Name);
+    return out;
+  });
+}
+
+/** Runs of spaces closed up, as a scorecard writes a name the associate export spaces out. */
+export function squeeze(text: string): string {
+  return text.replace(/ {2,}/g, ' ');
+}
 
 function compareValues(left: unknown, right: unknown): number {
   const a = left ?? null;

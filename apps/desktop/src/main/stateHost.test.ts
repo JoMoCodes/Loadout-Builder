@@ -227,6 +227,53 @@ describe('the day’s data in the main process', () => {
   });
 });
 
+describe('the one driver list', () => {
+  it('shows the Associates list to the Performance side as soon as it changes, and back', async () => {
+    const perf = rig.host.perf;
+    expect(perf.data().drivers).toEqual([]);
+    rig.picks.next = fixture('associates', 'AssociateData.csv');
+    await rig.call('files:pick', { kind: 'associates' });
+    const done = await rig.call('files:import', { kind: 'associates', path: rig.picks.next });
+    expect(done.ok).toBe(true);
+    const counts = (done.value as { associates: { added: number; offboarded: number } }).associates;
+    expect(counts.added).toBeGreaterThan(0);
+    expect(counts.offboarded).toBe(0);
+    // The cached read was let go, so the Performance side sees the list at once.
+    const drivers = perf.data().drivers;
+    expect(drivers.length).toBe(counts.added);
+    expect((await snapshot()).performance.drivers).toBe(counts.added);
+
+    // A scorecard that names someone new (a made-up ID from packages/fixtures/manifest.json that
+    // is not on the made-up list) puts them on the Associates list, offboarded, and the
+    // day's data reads the list back without being asked.
+    const first = drivers[0]!;
+    perf.write((store) =>
+      store.applyScorecards({
+        drivers: [
+          { transporterId: first.transporterId, name: 'Someone Else' },
+          { transporterId: 'A02V4L9HIELIDL', name: 'Only On A Scorecard' },
+        ],
+        scorecards: [],
+      }),
+    );
+    perf.driversChanged();
+    const after = await snapshot();
+    expect(after.counts.associates).toBe(counts.added + 1);
+    const added = after.associates.find((a) => a.associate.transporterId === 'A02V4L9HIELIDL');
+    expect(added?.associate.status).toBe('OFFBOARDED');
+    // The known driver kept the name the list had.
+    expect(
+      after.associates.find((a) => a.associate.transporterId === first.transporterId)?.associate
+        .name,
+    ).toBe(first.name);
+
+    // Clearing the list on Associates empties the Performance side's drivers too.
+    expect(await rig.call('associates:clear')).toEqual({ ok: true, value: null });
+    expect(perf.data().drivers).toEqual([]);
+    expect((await snapshot()).performance.drivers).toBe(0);
+  });
+});
+
 describe('bringing in a file', () => {
   it('refuses a file nobody picked', async () => {
     const reply = await rig.call('files:import', {

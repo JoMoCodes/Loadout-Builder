@@ -1,11 +1,5 @@
 import type { PerfData } from '@loadout/performance';
-import {
-  parseAssociates,
-  parseCdf,
-  parseDcr,
-  parsePsb,
-  parseSafety,
-} from '@loadout/performance/importers';
+import { parseCdf, parseDcr, parsePsb, parseSafety } from '@loadout/performance/importers';
 import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { PERF_TABLES } from './migrations';
 import {
@@ -19,6 +13,7 @@ import { perfTableSpec } from './perfTables';
 import {
   applyAll,
   asHarnessRows,
+  driversAlike,
   expectedTable,
   expectedTableRows,
   fixtureFiles,
@@ -44,10 +39,13 @@ beforeEach(() => {
 });
 afterEach(() => store.close());
 
-/** The table counts under the old app's table names. */
+/** The table counts under the old app's table names (its Drivers table is the driver list). */
 function countsByOldName(): Record<string, number> {
   const counts = perf.perfTableCounts();
-  return Object.fromEntries(PERF_TABLES.map((t) => [perfTableSpec(t).legacy, counts[t]]));
+  return {
+    Drivers: perf.knownDriverIds().length,
+    ...Object.fromEntries(PERF_TABLES.map((t) => [perfTableSpec(t).legacy, counts[t]])),
+  };
 }
 
 describe('the made-up files, imported in the old order', () => {
@@ -62,7 +60,9 @@ describe('the made-up files, imported in the old order', () => {
     '%s reads back the same as the old %s table',
     (key, table) => {
       const expected = expectedTable(table);
-      expect(asHarnessRows(perf.loadPerfData()[key], expected.columns)).toEqual(expected.rows);
+      const got = asHarnessRows(perf.loadPerfData()[key], expected.columns);
+      if (key === 'drivers') expect(driversAlike(got)).toEqual(driversAlike(expected.rows));
+      else expect(got).toEqual(expected.rows);
     },
   );
 
@@ -144,40 +144,81 @@ describe('the made-up files, imported in the old order', () => {
 });
 
 describe('writing one reader result', () => {
-  it('counts drivers added and updated against what is saved', () => {
-    const roster = files.roster;
-    const first = perf.applyAssociates({ drivers: parseAssociates(roster).drivers.slice(0, 10) });
-    expect(first).toEqual({ driversAdded: 10, driversUpdated: 0 });
-    const all = parseAssociates(roster).drivers;
-    const second = perf.applyAssociates({ drivers: all });
-    expect(second).toEqual({ driversAdded: all.length - 10, driversUpdated: 10 });
+  // Archer Gresham and Nadine Abernathy are made-up people from packages/fixtures/manifest.json.
+  const archer = {
+    name: 'Archer Gresham',
+    transporter_id: 'A02V4L9HIELIDL',
+    position: 'Driver',
+    qualifications: ['EDV', 'CDV'],
+    id_expiration: '2027-01-31',
+    personal_phone: '',
+    work_phone: '',
+    email: 'driver001@example.com',
+    status: 'ACTIVE',
+  };
+
+  it('reads the driver list as the performance side needs it', () => {
+    store.saveAssociates({
+      rows: [
+        archer,
+        { ...archer, name: 'Made up from route data', transporter_id: '', status: '' },
+      ],
+      source_file: 'AssociateData.csv',
+      imported_at: null,
+    });
+    // A row with no Transporter ID is not a driver here; blanks read as null.
+    expect(perf.knownDriverIds()).toEqual(['A02V4L9HIELIDL']);
+    expect(perf.loadPerfData().drivers).toEqual([
+      {
+        transporterId: 'A02V4L9HIELIDL',
+        name: 'Archer Gresham',
+        status: 'ACTIVE',
+        position: 'Driver',
+        qualifications: 'EDV, CDV',
+        idExpiration: '2027-01-31',
+        personalPhone: null,
+        workPhone: null,
+        email: 'driver001@example.com',
+      },
+    ]);
   });
 
-  it('replaces only the name of a driver seen on a scorecard', async () => {
-    // Archer Gresham is a made-up person from packages/fixtures/manifest.json.
-    perf.applyAssociates({
-      drivers: [
-        {
-          transporterId: 'A02V4L9HIELIDL',
-          name: 'Archer Gresham',
-          status: 'ACTIVE',
-          position: 'Driver',
-          qualifications: null,
-          idExpiration: null,
-          personalPhone: null,
-          workPhone: null,
-          email: null,
-        },
-      ],
-    });
+  it('adds a driver seen on a scorecard to the list by name, and leaves a known one alone', () => {
+    store.saveAssociates({ rows: [archer], source_file: 'AssociateData.csv', imported_at: null });
     const counts = perf.applyScorecards({
-      drivers: [{ transporterId: 'A02V4L9HIELIDL', name: 'Archer G' }],
+      drivers: [
+        { transporterId: 'A02V4L9HIELIDL', name: 'Archer G' },
+        { transporterId: 'A083QLD1CI9YSZ', name: 'Nadine Abernathy' },
+      ],
       scorecards: [],
     });
-    expect(counts.driversAdded).toBe(0);
+    expect(counts.driversAdded).toBe(1);
     expect(perf.loadPerfData().drivers).toEqual([
-      expect.objectContaining({ name: 'Archer G', status: 'ACTIVE', position: 'Driver' }),
+      expect.objectContaining({ name: 'Archer Gresham', status: 'ACTIVE', position: 'Driver' }),
+      {
+        transporterId: 'A083QLD1CI9YSZ',
+        name: 'Nadine Abernathy',
+        status: 'OFFBOARDED',
+        position: null,
+        qualifications: null,
+        idExpiration: null,
+        personalPhone: null,
+        workPhone: null,
+        email: null,
+      },
     ]);
+    // On the Associates page too, after the last row, offboarded until an export names them.
+    const list = store.loadAssociates().rows;
+    expect(list.map((a) => a.name)).toEqual(['Archer Gresham', 'Nadine Abernathy']);
+    expect(list[1]).toMatchObject({ status: 'OFFBOARDED', transporter_id: 'A083QLD1CI9YSZ' });
+    // Bringing the same scorecard in again adds nobody.
+    expect(
+      perf.applyScorecards({
+        drivers: [{ transporterId: 'A083QLD1CI9YSZ', name: 'Nadine A' }],
+        scorecards: [],
+      }).driversAdded,
+    ).toBe(0);
+    expect(store.loadAssociates().rows).toHaveLength(2);
   });
 
   it('replaces a scorecard for the same driver and week, metrics included', () => {
@@ -341,9 +382,13 @@ describe('an empty database', () => {
     expect(Object.values(perf.loadPerfData()).every((rows) => rows.length === 0)).toBe(true);
   });
 
-  it('does not count performance data as load-out data', () => {
+  it('counts only the driver list as load-out data', () => {
     applyAll(perf, files);
-    expect(Object.values(store.tableCounts()).every((n) => n === 0)).toBe(true);
+    const counts = store.tableCounts();
+    expect(counts.associates).toBe(expectedTableRows().Drivers);
+    for (const [table, n] of Object.entries(counts)) {
+      if (table !== 'associates') expect(n, table).toBe(0);
+    }
   });
 });
 

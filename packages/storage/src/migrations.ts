@@ -13,6 +13,12 @@ export interface Migration {
   version: number;
   name: string;
   sql: string;
+  /**
+   * Run with the foreign-key checks off. Needed by a step that drops or rebuilds a table other
+   * tables point at: with the checks on, dropping a parent table would first delete its rows
+   * (and cascade), and a rebuilt table could not be renamed into place.
+   */
+  foreignKeysOff?: boolean;
 }
 
 const SCHEMA_V1 = `
@@ -502,10 +508,86 @@ CREATE TABLE rs_sent (
 );
 `;
 
+/**
+ * Step 4: one driver list. The weekly performance side used to keep its own copy of the
+ * associate export in `perf_drivers`. From here on it reads the `associates` table (the
+ * Associates page's list), so the copy goes:
+ *
+ * 1. Every driver in `perf_drivers` whose Transporter ID is not on the associate list is added
+ *    to it, after the last row, with a blank status read as OFFBOARDED (which is how the
+ *    performance side always read it). Drivers already on the list are left as they are.
+ * 2. `perf_weekly_scorecards` is rebuilt without its foreign key to `perf_drivers` (ids, rows
+ *    and indexes kept, and its id counter carried over), so the table can go.
+ * 3. `perf_drivers` is dropped.
+ *
+ * The step runs with the foreign-key checks off (see `Migration.foreignKeysOff`).
+ */
+const SCHEMA_V4_ONE_DRIVER_LIST = `
+INSERT INTO associates
+    (transporter_id, position_index, name, status, position, qualifications,
+     id_expiration, personal_phone, work_phone, email)
+SELECT
+    d.transporter_id,
+    COALESCE((SELECT MAX(position_index) FROM associates), -1)
+      + ROW_NUMBER() OVER (ORDER BY d.rowid),
+    COALESCE(d.name, ''),
+    CASE WHEN d.status IS NULL OR TRIM(d.status) = '' THEN 'OFFBOARDED' ELSE d.status END,
+    COALESCE(d.position, ''),
+    COALESCE(d.qualifications, ''),
+    d.id_expiration,
+    COALESCE(d.personal_phone, ''),
+    COALESCE(d.work_phone, ''),
+    COALESCE(d.email, '')
+FROM perf_drivers AS d
+WHERE d.transporter_id IS NOT NULL
+  AND d.transporter_id <> ''
+  AND d.transporter_id NOT IN (SELECT transporter_id FROM associates);
+
+CREATE TABLE perf_weekly_scorecards_v4 (
+    id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+    transporter_id     TEXT NOT NULL,
+    week               TEXT NOT NULL,
+    overall_standing   TEXT,
+    overall_score      REAL,
+    packages_delivered INTEGER,
+    source_file        TEXT,
+    UNIQUE (transporter_id, week)
+);
+
+INSERT INTO perf_weekly_scorecards_v4
+    (id, transporter_id, week, overall_standing, overall_score, packages_delivered, source_file)
+SELECT id, transporter_id, week, overall_standing, overall_score, packages_delivered, source_file
+FROM perf_weekly_scorecards
+ORDER BY id;
+
+-- Carry the id counter over, so a new scorecard is numbered after the last one ever written
+-- (even one since deleted). Writing the rows above set the new table's counter to its highest id.
+UPDATE sqlite_sequence
+SET seq = MAX(
+    seq,
+    COALESCE((SELECT seq FROM sqlite_sequence WHERE name = 'perf_weekly_scorecards'), 0)
+)
+WHERE name = 'perf_weekly_scorecards_v4';
+
+DROP TABLE perf_weekly_scorecards;
+ALTER TABLE perf_weekly_scorecards_v4 RENAME TO perf_weekly_scorecards;
+
+CREATE INDEX idx_perf_scorecard_week ON perf_weekly_scorecards(week);
+CREATE INDEX idx_perf_scorecard_driver ON perf_weekly_scorecards(transporter_id);
+
+DROP TABLE perf_drivers;
+`;
+
 export const MIGRATIONS: readonly Migration[] = [
   { version: 1, name: 'v1 schema from the old version', sql: SCHEMA_V1 },
   { version: 2, name: 'weekly performance tables', sql: SCHEMA_V2_PERFORMANCE },
   { version: 3, name: 'route sheet runs', sql: SCHEMA_V3_ROUTE_SHEETS },
+  {
+    version: 4,
+    name: 'one driver list',
+    sql: SCHEMA_V4_ONE_DRIVER_LIST,
+    foreignKeysOff: true,
+  },
 ];
 
 /** Every table a migration creates for saved data (not the bookkeeping table). */
@@ -539,11 +621,11 @@ export const DATA_TABLES = [
 export type DataTable = (typeof DATA_TABLES)[number];
 
 /**
- * The weekly performance tables (step 2). Kept apart from DATA_TABLES on purpose: those decide
- * whether the load-out side is empty and whether the old version's data can be brought over.
+ * The weekly performance tables (step 2, less the driver copy step 4 took out). Kept apart from
+ * DATA_TABLES on purpose: those decide whether the load-out side is empty and whether the old
+ * version's data can be brought over. The drivers themselves are the `associates` table.
  */
 export const PERF_TABLES = [
-  'perf_drivers',
   'perf_weekly_scorecards',
   'perf_metric_entries',
   'perf_metric_thresholds',
@@ -596,10 +678,17 @@ export function runMigrations(
   const ordered = [...migrations].sort((a, b) => a.version - b.version);
   for (const step of ordered) {
     if (done.has(step.version)) continue;
-    db.transaction(() => {
-      db.exec(step.sql);
-      record.run(step.version, step.name, new Date().toISOString());
-    })();
+    // The setting cannot change inside a transaction, so it is switched around the step.
+    const checks = db.pragma('foreign_keys', { simple: true }) as number;
+    if (step.foreignKeysOff) db.pragma('foreign_keys = OFF');
+    try {
+      db.transaction(() => {
+        db.exec(step.sql);
+        record.run(step.version, step.name, new Date().toISOString());
+      })();
+    } finally {
+      if (step.foreignKeysOff) db.pragma(`foreign_keys = ${checks ? 'ON' : 'OFF'}`);
+    }
     applied.push(step.version);
   }
   return applied;

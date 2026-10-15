@@ -80,18 +80,6 @@ describe('the words', () => {
         problems: [],
       }),
     ).toBe('Nothing new to bring in for the delivery concessions files.');
-    // The driver list also says how many were updated, and how many are active and inactive.
-    expect(
-      importWords({
-        kind: 'roster',
-        filesRead: 1,
-        rows: 76,
-        driversAdded: 4,
-        weeks: [],
-        problems: [],
-        roster: { updated: 72, active: 61, inactive: 9 },
-      }),
-    ).toBe('Brought in 1 file: 76 rows, 4 new drivers. 72 drivers updated. 61 active, 9 inactive.');
   });
 
   it('says what the check file holds', () => {

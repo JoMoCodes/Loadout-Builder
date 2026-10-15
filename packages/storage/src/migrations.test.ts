@@ -24,17 +24,18 @@ describe('migration runner', () => {
   it('creates every table on a blank database', () => {
     const db = new Database(':memory:');
     expect(schemaVersion(db)).toBe(0);
-    expect(runMigrations(db)).toEqual([1, 2, 3]);
+    expect(runMigrations(db)).toEqual([1, 2, 3, 4]);
     expect(tableNames(db)).toEqual(
       [...DATA_TABLES, ...PERF_TABLES, ...RS_TABLES, 'schema_version'].sort(),
     );
     // The 23 tables of the old schema, plus the old hand-typed tenure table it left behind.
     expect(DATA_TABLES).toHaveLength(24);
-    // The 13 tables of the old weekly performance app.
-    expect(PERF_TABLES).toHaveLength(13);
+    // The 13 tables of the old weekly performance app, less its drivers table (step 4 folded it
+    // into the associates table).
+    expect(PERF_TABLES).toHaveLength(12);
     // The four route sheet tables.
     expect(RS_TABLES).toHaveLength(4);
-    expect(schemaVersion(db)).toBe(3);
+    expect(schemaVersion(db)).toBe(4);
   });
 
   it('changes nothing when run again', () => {
@@ -106,10 +107,8 @@ describe('step 2: the weekly performance tables', () => {
     const db = new Database(':memory:');
     runMigrations(db);
     expect(db.pragma('foreign_keys', { simple: true })).toBe(1);
-    // Archer Gresham is a made-up person from packages/fixtures/manifest.json.
-    db.prepare(
-      "INSERT INTO perf_drivers (transporter_id, name) VALUES ('A02V4L9HIELIDL', 'Archer Gresham')",
-    ).run();
+    // A02V4L9HIELIDL is a made-up Transporter ID from packages/fixtures/manifest.json. The
+    // scorecard needs no driver row first: the driver list is the associates table (step 4).
     const card = db
       .prepare(
         "INSERT INTO perf_weekly_scorecards (transporter_id, week) VALUES ('A02V4L9HIELIDL', '2026-W31')",
@@ -177,8 +176,126 @@ describe('step 3: the route sheet tables', () => {
     const db = new Database(':memory:');
     runMigrations(db, MIGRATIONS.slice(0, 2));
     db.prepare("INSERT INTO lmr_approved (transporter_id) VALUES ('A02V4L9HIELIDL')").run();
-    expect(runMigrations(db)).toEqual([3]);
-    expect(schemaVersion(db)).toBe(3);
+    expect(runMigrations(db)).toEqual([3, 4]);
+    expect(schemaVersion(db)).toBe(4);
     expect(db.prepare('SELECT COUNT(*) AS n FROM lmr_approved').get()).toEqual({ n: 1 });
+  });
+});
+
+describe('step 4: one driver list', () => {
+  // Made-up people from packages/fixtures/manifest.json.
+  const ARCHER = 'A02V4L9HIELIDL';
+  const NADINE = 'A083QLD1CI9YSZ';
+  const CARMEN = 'A047LNAN5VQIQR';
+
+  /** A database at step 3 with people on both lists, and a scorecard with a metric. */
+  function openV3(): Database.Database {
+    const db = new Database(':memory:');
+    runMigrations(db, MIGRATIONS.slice(0, 3));
+    db.prepare(
+      `INSERT INTO associates (transporter_id, position_index, name, status, qualifications)
+       VALUES (?, 0, 'Archer Gresham', 'ACTIVE', 'EDV'), (?, 1, 'Carmen Abernathy', 'INACTIVE', '')`,
+    ).run(ARCHER, CARMEN);
+    db.prepare(
+      `INSERT INTO perf_drivers
+         (transporter_id, name, status, position, qualifications, id_expiration, personal_phone,
+          work_phone, email)
+       VALUES
+         (?, 'Archer G', 'ACTIVE', 'Driver', 'CDV', '2027-01-31', '1', '2', 'driver001@example.com'),
+         (?, 'Nadine Abernathy', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+         ('A0FXMBXTK81V4D', 'Colton Alderman', ' ', 'Helper', 'DOT', '2028-02-02', '', '', '')`,
+    ).run(ARCHER, NADINE);
+    const card = db
+      .prepare(
+        `INSERT INTO perf_weekly_scorecards (transporter_id, week, overall_standing, overall_score)
+         VALUES (?, '2026-W31', 'Gold', 88.5)`,
+      )
+      .run(NADINE).lastInsertRowid;
+    db.prepare(
+      "INSERT INTO perf_metric_entries (scorecard_id, metric_name, score) VALUES (?, 'POD', 90)",
+    ).run(card);
+    // A scorecard since deleted, so the id counter is past the rows that are there.
+    db.prepare(
+      "INSERT INTO perf_weekly_scorecards (transporter_id, week) VALUES (?, '2026-W32')",
+    ).run(ARCHER);
+    db.prepare('DELETE FROM perf_weekly_scorecards WHERE week = ?').run('2026-W32');
+    return db;
+  }
+
+  it('moves the drivers the associate list does not have onto it, and drops the old table', () => {
+    const db = openV3();
+    expect(runMigrations(db)).toEqual([4]);
+    expect(tableNames(db)).not.toContain('perf_drivers');
+    const rows = db.prepare('SELECT * FROM associates ORDER BY position_index').all() as Record<
+      string,
+      unknown
+    >[];
+    expect(rows.map((r) => [r.transporter_id, r.position_index, r.name, r.status])).toEqual([
+      [ARCHER, 0, 'Archer Gresham', 'ACTIVE'], // kept as the list had them
+      [CARMEN, 1, 'Carmen Abernathy', 'INACTIVE'],
+      [NADINE, 2, 'Nadine Abernathy', 'OFFBOARDED'], // no status: offboarded
+      ['A0FXMBXTK81V4D', 3, 'Colton Alderman', 'OFFBOARDED'],
+    ]);
+    expect(rows[0]).toMatchObject({ qualifications: 'EDV', position: '' });
+    expect(rows[2]).toMatchObject({
+      position: '',
+      qualifications: '',
+      id_expiration: null,
+      personal_phone: '',
+      work_phone: '',
+      email: '',
+    });
+    expect(rows[3]).toMatchObject({
+      position: 'Helper',
+      qualifications: 'DOT',
+      id_expiration: '2028-02-02',
+    });
+  });
+
+  it('keeps the scorecards and their metrics, and the id counter, without the link to the old table', () => {
+    const db = openV3();
+    runMigrations(db);
+    expect(db.pragma('foreign_keys', { simple: true })).toBe(1);
+    expect(
+      db
+        .prepare('SELECT id, transporter_id, week, overall_score FROM perf_weekly_scorecards')
+        .all(),
+    ).toEqual([{ id: 1, transporter_id: NADINE, week: '2026-W31', overall_score: 88.5 }]);
+    expect(db.prepare('SELECT scorecard_id, metric_name FROM perf_metric_entries').all()).toEqual([
+      { scorecard_id: 1, metric_name: 'POD' },
+    ]);
+    const sql = (
+      db.prepare("SELECT sql FROM sqlite_master WHERE name = 'perf_weekly_scorecards'").get() as {
+        sql: string;
+      }
+    ).sql;
+    expect(sql).not.toContain('perf_drivers');
+    expect(sql).toContain('UNIQUE (transporter_id, week)');
+    const indexes = (
+      db
+        .prepare(
+          "SELECT name FROM sqlite_master WHERE type = 'index' AND name LIKE 'idx_perf_scorecard%'",
+        )
+        .all() as { name: string }[]
+    ).map((r) => r.name);
+    expect(indexes.sort()).toEqual(['idx_perf_scorecard_driver', 'idx_perf_scorecard_week']);
+    // A scorecard for someone the list does not know can still be written (no key check now),
+    // and it is numbered after the one that was deleted.
+    const next = db
+      .prepare(
+        "INSERT INTO perf_weekly_scorecards (transporter_id, week) VALUES ('A0G8EUL2VJ2V9F', '2026-W33')",
+      )
+      .run().lastInsertRowid;
+    expect(next).toBe(3);
+    // Deleting a scorecard still takes its metrics with it.
+    db.prepare('DELETE FROM perf_weekly_scorecards WHERE id = 1').run();
+    expect(db.prepare('SELECT COUNT(*) AS n FROM perf_metric_entries').get()).toEqual({ n: 0 });
+  });
+
+  it('runs on an empty database and on one with no drivers to move', () => {
+    const db = new Database(':memory:');
+    runMigrations(db, MIGRATIONS.slice(0, 3));
+    expect(runMigrations(db)).toEqual([4]);
+    expect(db.prepare('SELECT COUNT(*) AS n FROM associates').get()).toEqual({ n: 0 });
   });
 });

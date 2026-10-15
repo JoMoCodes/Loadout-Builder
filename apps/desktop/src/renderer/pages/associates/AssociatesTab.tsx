@@ -1,5 +1,7 @@
-// The associate list: the anchor records behind route and van data. Ported from the old app's
-// AssociatesPage. Import and Clear ask first, since they replace or remove the list.
+// The associate list: the anchor records behind route and van data, and the one driver list the
+// Performance page reads too. Ported from the old app's AssociatesPage. Import folds the file in
+// (anyone the file no longer lists is kept as offboarded); Clear asks first, since it removes the
+// list.
 
 import { FileDrop } from '../../components/FileDrop';
 import { useCallback, useEffect, useEffectEvent, useMemo, useState } from 'react';
@@ -22,9 +24,9 @@ import { useDialogs } from '../dataPages/useDialogs';
 import { importTenure } from './importTenure';
 import {
   ALL_QUALS,
-  ALL_STATUSES,
   ASSOCIATES_EMPTY,
   ASSOCIATE_COLUMNS,
+  CURRENT_STATUSES,
   STATUS_OPTIONS,
   associateCell,
   associateCountLine,
@@ -52,7 +54,7 @@ export function AssociatesTab({
 }) {
   const { setStatus } = messages;
   const { ask, host } = useDialogs();
-  const [status, setStatusFilter] = useState<string>(ALL_STATUSES);
+  const [status, setStatusFilter] = useState<string>(CURRENT_STATUSES);
   const [qualification, setQualification] = useState(ALL_QUALS);
   const [onLoadOutOnly, setOnLoadOutOnly] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -97,7 +99,7 @@ export function AssociatesTab({
   );
 
   function resetFilters() {
-    setStatusFilter(ALL_STATUSES);
+    setStatusFilter(CURRENT_STATUSES);
     setQualification(ALL_QUALS);
     setOnLoadOutOnly(false);
   }
@@ -107,9 +109,9 @@ export function AssociatesTab({
     if (!empty) {
       const yes = await ask<boolean>((done) => (
         <ConfirmDialog
-          title="Replace the associate list?"
-          body={`The ${views.length} associate records now in the app will be replaced by ${dropped ? 'the file you dropped' : 'the file you choose'}.\n\nLifetime route counts and the load-out roster are kept.`}
-          confirmLabel={dropped ? 'Yes, replace it' : 'Yes, choose a file'}
+          title="Update the associate list?"
+          body={`The ${views.length} associate records now in the app will be updated from ${dropped ? 'the file you dropped' : 'the file you choose'}. Anyone the file no longer lists stays on the list, marked offboarded.\n\nLifetime route counts and the load-out roster are kept.`}
+          confirmLabel={dropped ? 'Yes, update it' : 'Yes, choose a file'}
           cancelLabel="No, keep the list"
           onDone={done}
         />
@@ -122,7 +124,11 @@ export function AssociatesTab({
       if (!done) return;
       resetFilters();
       const fresh = await readNow();
-      if (fresh) setStatus(associatesImportedMessage(fresh, done.rows, baseName(done.path)));
+      if (fresh) {
+        setStatus(
+          associatesImportedMessage(fresh, done.rows, baseName(done.path), done.associates),
+        );
+      }
     } finally {
       setBusy(false);
     }

@@ -10,6 +10,7 @@ import { PerformanceStore } from './performance';
 import { perfTableSpec } from './perfTables';
 import {
   asHarnessRows,
+  driversAlike,
   expectedTable,
   expectedTableRows,
   PERF_DATA_TABLES,
@@ -296,8 +297,22 @@ afterEach(() => {
   rmSync(scratch, { recursive: true, force: true, maxRetries: 3 });
 });
 
+/** Counts under the old app's table names; its Drivers table is the driver list (associates). */
 function countsByOldName(counts: Record<string, number>): Record<string, number> {
-  return Object.fromEntries(PERF_TABLES.map((t) => [perfTableSpec(t).legacy, counts[t] ?? -1]));
+  return {
+    Drivers: counts.associates ?? -1,
+    ...Object.fromEntries(PERF_TABLES.map((t) => [perfTableSpec(t).legacy, counts[t] ?? -1])),
+  };
+}
+
+/** The performance table counts, with the driver list counted as the old Drivers table. */
+function tableCountsWithDrivers(): Record<string, number> {
+  return { ...perf.perfTableCounts(), associates: perf.knownDriverIds().length };
+}
+
+/** Rows as both sides can agree on them (the Drivers table needs `driversAlike`). */
+function alike(table: string, rows: Row[]): Row[] {
+  return table === 'Drivers' ? driversAlike(rows) : rows;
 }
 
 /** Expected rows of a table, as an older database without the added columns would hold them. */
@@ -331,8 +346,8 @@ describe('import of the old weekly performance database', () => {
     const result = importWpaDatabase(old, store);
     expect(result.status).toBe('imported');
     expect(result.identical).toBe(true);
-    expect(result.tables.map((t) => t.table)).toEqual([...PERF_TABLES]);
-    expect(countsByOldName(perf.perfTableCounts())).toEqual(expectedTableRows());
+    expect(result.tables.map((t) => t.table)).toEqual(['associates', ...PERF_TABLES]);
+    expect(countsByOldName(tableCountsWithDrivers())).toEqual(expectedTableRows());
     expect(
       countsByOldName(Object.fromEntries(result.tables.map((t) => [t.table, t.source]))),
     ).toEqual(expectedTableRows());
@@ -342,7 +357,9 @@ describe('import of the old weekly performance database', () => {
       [keyof PerfData, string]
     >) {
       const expected = expectedTable(table);
-      expect(asHarnessRows(data[key], expected.columns), table).toEqual(expected.rows);
+      expect(alike(table, asHarnessRows(data[key], expected.columns)), table).toEqual(
+        alike(table, expected.rows),
+      );
     }
 
     // The old file is exactly as it was.
@@ -375,11 +392,14 @@ describe('import of the old weekly performance database', () => {
     for (const table of ['Drivers', 'WeeklyScorecards']) {
       const key = table === 'Drivers' ? 'drivers' : 'scorecards';
       const expected = expectedTable(table);
-      expect(asHarnessRows(data[key], expected.columns)).toEqual(
-        asHarnessRows(withoutAddedColumns(table, expected.rows).map(lowerKeys), expected.columns),
+      expect(alike(table, asHarnessRows(data[key], expected.columns))).toEqual(
+        alike(
+          table,
+          asHarnessRows(withoutAddedColumns(table, expected.rows).map(lowerKeys), expected.columns),
+        ),
       );
     }
-    expect(countsByOldName(perf.perfTableCounts())).toEqual(expectedTableRows());
+    expect(countsByOldName(tableCountsWithDrivers())).toEqual(expectedTableRows());
   });
 
   it('carries over the auto-import record exactly, and numbers new rows after the old ones', () => {
@@ -419,15 +439,58 @@ describe('import of the old weekly performance database', () => {
     expect(result.status).toBe('skipped');
     expect(result.reason).toBe('destination-not-empty');
     expect(result.identical).toBe(false);
-    expect(perf.perfTableCounts().perf_drivers).toBe(0);
+    expect(perf.knownDriverIds()).toEqual([]);
     expect(perf.perfTableCounts().perf_imported_files).toBe(1);
   });
 
-  it('does not touch the load-out data', () => {
+  it('touches no load-out data but the driver list', () => {
     const old = join(scratch, 'app.db');
     buildOldDatabase(old, { addedColumns: true });
     importWpaDatabase(old, store);
-    expect(Object.values(store.tableCounts()).every((n) => n === 0)).toBe(true);
+    const counts = store.tableCounts();
+    expect(counts.associates).toBe(expectedTableRows().Drivers);
+    for (const [table, n] of Object.entries(counts)) {
+      if (table !== 'associates') expect(n, table).toBe(0);
+    }
+  });
+
+  it('leaves a driver already on the list as the list has them, and adds the rest after', () => {
+    const old = join(scratch, 'app.db');
+    buildOldDatabase(old, { addedColumns: true });
+    // Archer Gresham is a made-up person from packages/fixtures/manifest.json.
+    store.saveAssociates({
+      rows: [
+        {
+          name: 'Archer Gresham',
+          transporter_id: 'A02V4L9HIELIDL',
+          position: 'Driver',
+          qualifications: ['EDV'],
+          id_expiration: null,
+          personal_phone: '',
+          work_phone: '',
+          email: '',
+          status: 'ACTIVE',
+        },
+      ],
+      source_file: 'AssociateData.csv',
+      imported_at: null,
+    });
+    const result = importWpaDatabase(old, store);
+    expect(result.status).toBe('imported');
+    expect(result.tables[0]).toEqual({
+      table: 'associates',
+      source: expectedTableRows().Drivers,
+      imported: expectedTableRows().Drivers,
+    });
+    const list = store.loadAssociates().rows;
+    expect(list).toHaveLength(expectedTableRows().Drivers ?? -1);
+    expect(list[0]).toMatchObject({
+      name: 'Archer Gresham',
+      qualifications: ['EDV'],
+      status: 'ACTIVE',
+    });
+    // Someone the old app knew from a scorecard alone is on the list now, offboarded.
+    expect(list.filter((a) => a.status === 'OFFBOARDED').length).toBeGreaterThan(0);
   });
 
   it('says so when the old file is missing', () => {

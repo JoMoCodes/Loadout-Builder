@@ -3,7 +3,7 @@
 
 import type { CallArgs } from '../../../shared/api';
 import type { CallName, CallResult } from '../../../shared/channels';
-import type { FileKind } from '../../../shared/channels/files';
+import type { FileKind, ImportSummary } from '../../../shared/channels/files';
 import type { AppSnapshot } from '../../../shared/snapshot';
 import { call, explain } from '../../lib/channels';
 import type { Messages } from './PageParts';
@@ -17,6 +17,8 @@ export async function readNow(): Promise<AppSnapshot | null> {
 export interface BroughtIn {
   path: string;
   rows: number;
+  /** For an associate export: how many were new, updated, or marked offboarded. */
+  associates?: ImportSummary['associates'];
 }
 
 /**
@@ -39,7 +41,7 @@ export async function bringInFile(
     messages.setStatus('Import failed.');
     return null;
   }
-  return { path, rows: done.value.rows };
+  return { path, rows: done.value.rows, associates: done.value.associates };
 }
 
 /** Opens the file window only; null if closed. For a command that reads the file itself. */

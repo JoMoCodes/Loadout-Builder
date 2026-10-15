@@ -16,6 +16,9 @@ import {
 } from './support/pageData';
 import { callsTo, onCall } from './support/fakeBridge';
 
+// Another made-up person from packages/fixtures/manifest.json, for the offboarded row.
+const ARCHER = { name: 'Archer Gresham', id: 'A02V4L9HIELIDL' };
+
 const status = (page: Page) => page.getByTestId('associates-status');
 const rowsOf = (page: Page) => page.locator('[role="rowgroup"] [role="row"]');
 const tab = (page: Page, id: string) => page.getByTestId(`associates-tab-${id}`);
@@ -144,6 +147,40 @@ test('shows the old columns, the counts, and the ID state as a chip with words',
   await expect(colton.locator('[data-col-id="tenure"]')).toHaveText('-');
 });
 
+test('shows current people by default, and offboarded ones greyed when asked', async ({ page }) => {
+  const people = PEOPLE();
+  people.push(
+    associate(ARCHER, {
+      associate: { status: 'OFFBOARDED', qualifications: ['EDV'], tenure: 9 },
+      vanBadges: 'EDV',
+    }),
+  );
+  await openPage(page, 'associates', {
+    snapshot: { ...LOADED(), associates: people as never },
+  });
+  const filter = page.getByTestId('associate-status-filter');
+  await expect(filter).toHaveValue('Current');
+  await expect(filter.locator('option')).toHaveText([
+    'Current',
+    'All statuses',
+    'ACTIVE',
+    'INACTIVE',
+    'OFFBOARDED',
+  ]);
+  // The count line leaves offboarded people out.
+  await expect(page.getByTestId('associates-metric')).toHaveText('4 associates  -  3 active');
+  await expect(rowsOf(page)).toHaveCount(4);
+  await expect(row(page, ARCHER.name)).toHaveCount(0);
+
+  await filter.selectOption('OFFBOARDED');
+  await expect(page.getByText('Showing 1 of 5')).toBeVisible();
+  await expect(row(page, ARCHER.name)).toHaveAttribute('data-tone', 'ghost');
+  await expect(row(page, ARCHER.name).locator('[data-col-id="status"]')).toHaveText('OFFBOARDED');
+
+  await filter.selectOption('All statuses');
+  await expect(rowsOf(page)).toHaveCount(5);
+});
+
 test('filters by status, one qualification, the load out, and the search box', async ({ page }) => {
   await openLoaded(page);
   await page.getByTestId('associate-status-filter').selectOption('INACTIVE');
@@ -202,8 +239,8 @@ test('with a list already there, it asks before replacing it, and No leaves ever
   await openLoaded(page);
   await page.getByTestId('import-associates').click();
   const ask = dialog(page, 'confirm');
-  await expect(ask).toContainText('Replace the associate list?');
-  await expect(ask).toContainText('The 4 associate records now in the app will be replaced');
+  await expect(ask).toContainText('Update the associate list?');
+  await expect(ask).toContainText('The 4 associate records now in the app will be updated');
   await expect(ask).toContainText('Lifetime route counts and the load-out roster are kept.');
   await ask.getByRole('button', { name: 'No, keep the list' }).click();
   expect(await callsTo(page, 'files:pick')).toEqual([]);

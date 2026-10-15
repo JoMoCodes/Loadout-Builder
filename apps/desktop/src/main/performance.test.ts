@@ -15,6 +15,7 @@ import {
   utimesSync,
   writeFileSync,
 } from 'node:fs';
+import { importAssociateData } from '@loadout/core/importers';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -67,11 +68,23 @@ const good: ChannelEvent = { senderFrame: { url: OWN, parent: null } };
 /** The folder (or the one file) each kind's fixtures are in. */
 function fixturePlace(kind: PerfKind, root = perfFixtures): string {
   const folder = path.join(root, kind);
-  if (kind === 'roster' || kind === 'thresholds') {
+  if (kind === 'thresholds') {
     const name = readdirSync(folder).find((n) => n.endsWith('.csv'));
     return path.join(folder, name as string);
   }
   return folder;
+}
+
+/** The made-up driver list the old app's expected numbers were worked out from. */
+const ROSTER_FILE = path.join(perfFixtures, 'roster', 'AssociateData.csv');
+
+/**
+ * Brings the driver list in the one way there is now: on the Associates page, into the day's
+ * data. The Performance page reads that list.
+ */
+async function importRoster(rig: Rig): Promise<void> {
+  const counts = rig.host.state.importAssociates(await importAssociateData(ROSTER_FILE));
+  expect(counts).toEqual({ added: 76, updated: 0, offboarded: 0 });
 }
 
 interface FakeTransport extends MailTransport {
@@ -262,7 +275,10 @@ function makeRig(options: { settingsJson?: unknown; batch?: boolean } = {}): Rig
     demo: () => settings.demoMode,
     pickFile: nextDialog,
     perfEmpty: () => host.perf.store.isPerfEmpty(),
-    reload: () => host.perf.invalidate(),
+    reload: () => {
+      host.perf.invalidate();
+      host.state.reloadAssociates();
+    },
   });
 
   const setSettings = (patch: unknown) => {
@@ -351,11 +367,15 @@ async function snapshot(rig: Rig): Promise<AppSnapshot> {
   return rig.ok<AppSnapshot>('state:snapshot');
 }
 
-/** Brings in every kind from the fixture folders through the folder window, in the usual order. */
+/**
+ * Brings in the driver list (on Associates), then every kind from the fixture folders through
+ * the folder window, in the usual order.
+ */
 async function importAll(
   rig: Rig,
   root = perfFixtures,
 ): Promise<Record<PerfKind, PerfImportSummary>> {
+  await importRoster(rig);
   const out = {} as Record<PerfKind, PerfImportSummary>;
   for (const kind of PERF_KINDS) {
     rig.dialog.next.push(fixturePlace(kind, root));
@@ -390,7 +410,6 @@ const IMPORT_RESULTS = expected<
   }>
 >('import-results.json');
 const importerOf: Record<PerfKind, string> = {
-  roster: 'AssociateImporter',
   thresholds: 'ThresholdImporter',
   scorecards: 'ScorecardImporter',
   pod: 'PodImporter',
@@ -411,23 +430,20 @@ describe('with every fixture brought in', () => {
     imports = await importAll(rig);
   }, 60_000);
 
-  it('brought in each kind with the old app’s counts, and no problems', () => {
+  it('brought in each kind with the old app’s counts, and no problems', async () => {
     for (const kind of PERF_KINDS) {
       const old = IMPORT_RESULTS.find((r) => r.importer === importerOf[kind])!;
       expect(imports[kind].problems, kind).toEqual([]);
       expect(imports[kind].filesRead, kind).toBe(old.filesProcessed);
       expect(imports[kind].rows, kind).toBe(old.rowsImported);
     }
-    expect(imports.roster.driversAdded).toBe(76);
-    // The driver list also counts the updated, active and inactive drivers, as the old app did.
-    const roster = IMPORT_RESULTS.find((r) => r.importer === 'AssociateImporter')!.otherCounts;
-    expect(imports.roster.roster).toEqual({
-      updated: roster.DriversUpdated,
-      active: roster.ActiveCount,
-      inactive: roster.InactiveCount,
-    });
+    // The 16 drivers only the scorecards name were added to the Associates list, offboarded.
     expect(imports.scorecards.driversAdded).toBe(16);
     expect(imports.scorecards.weeks).toEqual(expected<string[]>('weeks.json'));
+    const associates = rig.host.state.associates.rows;
+    expect(associates).toHaveLength(92);
+    expect(associates.filter((a) => a.status === 'OFFBOARDED')).toHaveLength(16);
+    expect((await snapshot(rig)).counts.associates).toBe(92);
   });
 
   it('never logs a file or folder name', () => {
@@ -446,7 +462,7 @@ describe('with every fixture brought in', () => {
       newestWeek: '2026-W40',
       missingWeeks: [],
     });
-    expect(cards.find((c) => c.kind === 'roster')!.folderName).toBe('AssociateData.csv');
+    expect(cards.find((c) => c.kind === 'thresholds')!.folderName).toMatch(/\.csv$/);
     expect(cards.find((c) => c.kind === 'thresholds')!.newestWeek).toBe('2026-W32');
     // The PSB fixtures are for older weeks, so every scorecard week is missing its PSB file.
     expect(cards.find((c) => c.kind === 'psb')!.missingWeeks).toEqual(
@@ -665,7 +681,7 @@ describe('with every fixture brought in', () => {
       hasData: true,
       drivers: 92,
       thresholds: true,
-      foldersChosen: 10,
+      foldersChosen: 9,
       emailReady: false,
       reportsMade: false,
     });
@@ -1002,17 +1018,17 @@ describe('the settings file', () => {
 describe('bringing files in', () => {
   it('starts the window in the usual place the first time, then where it was last time', async () => {
     const rig = makeRig();
-    for (const kind of ['cdf', 'roster'] as const) {
+    for (const kind of ['cdf', 'thresholds'] as const) {
       rig.dialog.next.push(fixturePlace(kind), null);
       await rig.ok('performance:choose-and-import', { kind });
       await rig.ok('performance:choose-and-import', { kind });
     }
-    // No place yet means the Downloads folder (main.ts); the driver list starts in its folder.
+    // No place yet means the Downloads folder (main.ts); the thresholds file starts in its folder.
     expect(rig.dialog.asked.map((a) => a.start)).toEqual([
       null,
       fixturePlace('cdf'),
       null,
-      path.dirname(fixturePlace('roster')),
+      path.dirname(fixturePlace('thresholds')),
     ]);
   });
 
@@ -1100,10 +1116,9 @@ describe('bringing files in', () => {
 describe('making reports in one window', () => {
   it('hands the whole batch to the batch printer when there is one', async () => {
     const rig = makeRig({ batch: true });
-    for (const kind of ['roster', 'scorecards'] as const) {
-      rig.dialog.next.push(fixturePlace(kind));
-      await rig.ok('performance:choose-and-import', { kind });
-    }
+    await importRoster(rig);
+    rig.dialog.next.push(fixturePlace('scorecards'));
+    await rig.ok('performance:choose-and-import', { kind: 'scorecards' });
     const view = await rig.ok<PerfDriversView>('performance:drivers', { range: null });
     const ids = view.rows.filter((r) => r.activeInRange).map((r) => r.transporterId);
     const out = mkdtempSync(path.join(folder, 'batch-'));
@@ -1121,10 +1136,9 @@ describe('making reports in one window', () => {
 describe('counting up and showing the folder', () => {
   async function smallRig(batch: boolean) {
     const rig = makeRig({ batch });
-    for (const kind of ['roster', 'scorecards'] as const) {
-      rig.dialog.next.push(fixturePlace(kind));
-      await rig.ok('performance:choose-and-import', { kind });
-    }
+    await importRoster(rig);
+    rig.dialog.next.push(fixturePlace('scorecards'));
+    await rig.ok('performance:choose-and-import', { kind: 'scorecards' });
     const view = await rig.ok<PerfDriversView>('performance:drivers', { range: null });
     return { rig, view, ids: view.rows.filter((r) => r.activeInRange).map((r) => r.transporterId) };
   }
@@ -1195,7 +1209,9 @@ describe('counting up and showing the folder', () => {
 describe('dropping a file or a folder', () => {
   it('sorts a folder that mixes kinds by file name, and reads each token once', async () => {
     const mixed = mkdtempSync(path.join(folder, 'mixed-'));
-    cpSync(fixturePlace('roster'), path.join(mixed, 'AssociateData.csv'));
+    // The driver list is not a weekly export any more: a copy here is left alone.
+    cpSync(ROSTER_FILE, path.join(mixed, 'AssociateData.csv'));
+    cpSync(fixturePlace('thresholds'), path.join(mixed, path.basename(fixturePlace('thresholds'))));
     for (const name of readdirSync(path.join(perfFixtures, 'scorecards')).slice(0, 2)) {
       cpSync(path.join(perfFixtures, 'scorecards', name), path.join(mixed, name));
     }
@@ -1205,9 +1221,10 @@ describe('dropping a file or a folder', () => {
       'performance:dropped',
       { kind: null, path: mixed },
     );
+    // By file name: the scorecard files (DSP_Overview...) come before the thresholds (DSP_Thr...).
     expect(tokens.map((t) => [t.kind, t.files])).toEqual([
-      ['roster', 1],
       ['scorecards', 2],
+      ['thresholds', 1],
     ]);
     for (const t of tokens) {
       expect(t.token).toMatch(new RegExp(`^dropped-[0-9a-f-]+/${path.basename(mixed)}$`));
@@ -1219,7 +1236,7 @@ describe('dropping a file or a folder', () => {
 
     const scorecards = tokens.find((t) => t.kind === 'scorecards')!;
     expect(
-      await rig.call('performance:import', { kind: 'roster', token: scorecards.token }),
+      await rig.call('performance:import', { kind: 'thresholds', token: scorecards.token }),
     ).toEqual({ ok: false, reason: 'not-allowed' });
     // A token used for the wrong kind is gone too: drop again.
     const again = await rig.ok<Array<{ kind: PerfKind; token: string }>>('performance:dropped', {
@@ -1235,13 +1252,10 @@ describe('dropping a file or a folder', () => {
     expect(
       await rig.call('performance:import', { kind: 'scorecards', token: again[0]!.token }),
     ).toEqual({ ok: false, reason: 'not-allowed' });
-    const roster = tokens.find((t) => t.kind === 'roster')!;
+    const thresholds = tokens.find((t) => t.kind === 'thresholds')!;
     expect(
-      await rig.ok('performance:import', { kind: 'roster', token: roster.token }),
-    ).toMatchObject({
-      filesRead: 1,
-      rows: 76,
-    });
+      await rig.ok('performance:import', { kind: 'thresholds', token: thresholds.token }),
+    ).toMatchObject({ filesRead: 1 });
     expect(rig.logs.join('\n')).not.toContain(path.basename(mixed));
   });
 
@@ -1276,21 +1290,23 @@ describe('dropping a file or a folder', () => {
 describe('Sync now', () => {
   it('brings in new files once, then nothing, then only a file that changed', async () => {
     const copy = mkdtempSync(path.join(folder, 'sync-'));
-    for (const kind of ['roster', 'scorecards', 'cdf', 'psb'] as const) {
+    for (const kind of ['scorecards', 'cdf', 'psb'] as const) {
       cpSync(path.join(perfFixtures, kind), path.join(copy, kind), { recursive: true });
     }
     const rig = makeRig({
       settingsJson: {
         performanceFolders: {
-          roster: fixturePlace('roster', copy),
+          // A driver list file remembered by an older version is ignored.
+          roster: ROSTER_FILE,
           scorecards: path.join(copy, 'scorecards'),
           cdf: path.join(copy, 'cdf'),
           psb: path.join(copy, 'psb'),
         },
       },
     });
+    await importRoster(rig);
     const first = await rig.ok<SyncSummary>('performance:sync-now');
-    expect(first).toMatchObject({ newFiles: 31, missingFolders: [], problems: [] });
+    expect(first).toMatchObject({ newFiles: 30, missingFolders: [], problems: [] });
     // Ten scorecard weeks, the same ten CDF weeks, and ten older PSB weeks.
     expect(first.weeksUpdated).toBe(20);
     expect((await snapshot(rig)).performance).toMatchObject({ drivers: 92, lastSync: first });
@@ -1367,7 +1383,10 @@ describe('demo mode', () => {
     await rig.host.perfLoading.then(() => announced++);
     expect(announced).toBe(1);
     const demo = await snapshot(rig);
-    expect(demo.performance).toMatchObject({ hasData: true, drivers: 92, thresholds: true });
+    // The demo's driver list is the demo associate list, plus whoever only a scorecard names.
+    const onList = demo.associates.filter((a) => a.associate.transporterId !== '').length;
+    expect(onList).toBeGreaterThan(76);
+    expect(demo.performance).toMatchObject({ hasData: true, drivers: onList, thresholds: true });
     expect(demo.performance.weeks).toHaveLength(10);
     const dash = await rig.ok<PerfDashboardView>('performance:dashboard', { range: null });
     expect(dash.fleetAverage).toBe(
@@ -1463,10 +1482,12 @@ describe('the old Weekly Performance App’s data', () => {
       counts: Array<{ table: string; imported: number }>;
     }>('performance:old-data-run', { from: 'usual' });
     expect(result.status).toBe('imported');
-    expect(result.counts.find((c) => c.table === 'perf_drivers')!.imported).toBe(92);
+    expect(result.counts.find((c) => c.table === 'associates')!.imported).toBe(92);
     expect(result.counts.find((c) => c.table === 'perf_weekly_scorecards')!.imported).toBe(647);
     const snap = await snapshot(rig);
     expect(snap.performance).toMatchObject({ hasData: true, drivers: 92 });
+    // The drivers landed on the Associates list, and the day's data sees them at once.
+    expect(snap.counts.associates).toBe(92);
     expect(snap.performance.weeks).toHaveLength(10);
     // A second time skips: weekly data is never written over.
     expect(await rig.ok('performance:old-data-find')).toMatchObject({ empty: false });

@@ -17,8 +17,6 @@ export {
 } from './csv';
 export type { CsvOptions, CsvRow, ImportFile } from './csv';
 export type { WeekFileResult } from './weekFiles';
-export { parseAssociates } from './associates';
-export type { AssociateImportResult } from './associates';
 export { parseThresholds } from './thresholds';
 export type { ThresholdImportResult, ThresholdRow } from './thresholds';
 export { parseScorecards } from './scorecards';

@@ -11,7 +11,11 @@ import { readJson, writeJson } from './jsonFile';
 
 /** What only the main process keeps in the settings file. */
 export interface MainOnlySettings {
-  /** The folder (or, for the driver list and thresholds, the file) each kind comes from. */
+  /**
+   * The folder (or, for the thresholds, the file) each kind comes from. A folder kept for a kind
+   * the app no longer brings in this way (the driver list, before it moved to Associates) is
+   * not read: only the kinds in PERF_KINDS are kept.
+   */
   performanceFolders: Partial<Record<PerfKind, string>>;
   /** The email app password, sealed by the computer's safe storage, as base64. */
   emailPasswordSealed: string | null;
