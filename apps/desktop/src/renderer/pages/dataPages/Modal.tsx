@@ -23,6 +23,8 @@ interface ModalProps {
   confirmDisabled?: boolean;
   danger?: boolean;
   wide?: boolean;
+  /** A test id for the confirm button, when a test needs to find it by name. */
+  confirmTestId?: string;
 }
 
 /** The frame: a title, a body that scrolls, and a strip of buttons that stays put. */
@@ -39,6 +41,7 @@ export function Modal({
   confirmDisabled,
   danger,
   wide,
+  confirmTestId,
 }: ModalProps) {
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
@@ -92,6 +95,7 @@ export function Modal({
               disabled={confirmDisabled}
               autoFocus={!children && !(danger && onCancel)}
               data-action="confirm"
+              data-testid={confirmTestId}
             >
               {confirmLabel}
             </Button>

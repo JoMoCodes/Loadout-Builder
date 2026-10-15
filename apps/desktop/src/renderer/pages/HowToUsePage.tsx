@@ -765,10 +765,11 @@ export function HowToUsePage({ goTo, help, version }: PageProps) {
               each metric lost. Pick another week at the top, or click a bar in the chart.
             </li>
             <li>
-              Want to see the reports first? On the <strong>Reports</strong> tab,{' '}
-              <strong>Preview a driver</strong> shows each driver&apos;s report. You can change the
-              report colours there too. The sample page has <strong>Fit width</strong>,{' '}
-              <strong>100%</strong> and zoom buttons.
+              Want to see the reports first? On the <strong>Reports</strong> tab, the{' '}
+              <strong>Report colours</strong> card shows each driver&apos;s report in the colours
+              you pick. The preview has <strong>Fit width</strong>, <strong>100%</strong> and zoom
+              buttons. The <strong>Settings</strong> button there holds the wording of the report
+              emails.
             </li>
             <li>
               On the <strong>Performance</strong> tab, tick the drivers (or click{' '}

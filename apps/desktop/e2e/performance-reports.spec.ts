@@ -1,6 +1,7 @@
-// The Scorecards page, Reports tab, on the stand-in bridge: the report colours with the live
-// preview of page 1, saving and resetting them, previewing each driver shown on the Drivers tab
-// (buttons and arrow keys), and the thresholds table with "asks before replacing".
+// The Scorecards page, Reports tab, on the stand-in bridge: the thresholds table at the top (with
+// "asks before replacing"), and the report colours with a live preview of the report of each
+// driver shown on the Performance tab (buttons and arrow keys), or of a sample page when nobody is
+// shown; saving and resetting the colours.
 
 import { expect, test, type Page } from '@playwright/test';
 import { DEFAULT_REPORT_COLOURS } from '../src/shared/performanceSettings';
@@ -15,12 +16,31 @@ type HtmlAsk = { transporterId: string | null; range: unknown; colours: Record<s
 const htmlAsks = async (page: Page) =>
   (await callsTo(page, 'performance:report-html')) as HtmlAsk[];
 
-test('the sample page follows the colours being edited, and Save keeps them', async ({ page }) => {
+test('Thresholds is at the top, and the preview is part of the colours card', async ({ page }) => {
   await openPerformance(page, { tab: 'reports' });
-  await expect(frame(page, 'perf-sample-frame').locator('h1')).toHaveText('Sample report');
+  const cards = page.locator('[data-testid="perf-reports"] section');
+  await expect(cards).toHaveCount(2);
+  await expect(cards.nth(0)).toHaveAttribute('aria-labelledby', 'perf-thresholds-title');
+  await expect(cards.nth(1)).toHaveAttribute('aria-labelledby', 'perf-colours-title');
+  await expect(cards.nth(1).getByTestId('perf-driver-preview')).toBeVisible();
+  await expect(page.getByText('Preview a driver')).toHaveCount(0);
+  // The Settings button sits above the cards, on the right.
+  const button = page.getByTestId('scorecards-settings');
+  await expect(button).toHaveText('Settings');
+  const buttonBox = (await button.boundingBox())!;
+  const cardBox = (await cards.nth(0).boundingBox())!;
+  expect(buttonBox.y + buttonBox.height).toBeLessThanOrEqual(cardBox.y + 1);
+  expect(buttonBox.x + buttonBox.width).toBeGreaterThan(cardBox.x + cardBox.width / 2);
+});
+
+test('the driver’s page follows the colours being edited, and Save keeps them', async ({
+  page,
+}) => {
+  await openPerformance(page, { tab: 'reports' });
+  await expect(frame(page, 'perf-driver-frame').locator('h1')).toHaveText(`Report ${ARCHER.id}`);
   expect(await htmlAsks(page)).toContainEqual({
-    transporterId: null,
-    range: null,
+    transporterId: ARCHER.id,
+    range: { from: '2026-W31', to: '2026-W40' },
     colours: DEFAULT_REPORT_COLOURS,
   });
 
@@ -68,7 +88,7 @@ test('Undo changes and Reset to the old colours', async ({ page }) => {
   });
 });
 
-test('Preview a driver steps through the drivers shown on the Drivers tab', async ({ page }) => {
+test('the preview steps through the drivers shown on the Performance tab', async ({ page }) => {
   await openPerformance(page, { tab: 'reports' });
   const preview = page.getByTestId('perf-driver-preview');
   // Active drivers only (the Drivers tab's starting chip): three of the five.
@@ -95,16 +115,42 @@ test('Preview a driver steps through the drivers shown on the Drivers tab', asyn
   await expect(page.getByTestId('perf-preview-position')).toHaveText('Driver 2 of 3');
 });
 
-test('with no drivers shown, the preview says what to do', async ({ page }) => {
+test('with no drivers shown, the preview says what to do and shows the sample page', async ({
+  page,
+}) => {
   await openPerformance(page, { tab: 'reports', performance: { filters: ['tier:Silver'] } });
   await expect(page.getByTestId('perf-driver-preview')).toContainText(
     'No drivers are shown on the Performance tab. Change its filters to preview a report.',
   );
+  await expect(page.getByTestId('perf-preview-name')).toHaveCount(0);
+  await expect(frame(page, 'perf-sample-frame').locator('h1')).toHaveText('Sample report');
+  expect(await htmlAsks(page)).toContainEqual({
+    transporterId: null,
+    range: null,
+    colours: DEFAULT_REPORT_COLOURS,
+  });
+  // The sample follows the colours too.
+  await page.getByTestId('perf-colour-goldBackground').fill('#123456');
+  await expect
+    .poll(async () => (await htmlAsks(page)).at(-1))
+    .toMatchObject({ transporterId: null, colours: { goldBackground: '#123456' } });
+});
+
+test('with no scorecards yet, the preview says so and shows the sample page', async ({ page }) => {
+  await openPerformance(page, { tab: 'reports', brief: { weeks: [], hasData: false } });
+  await expect(page.getByTestId('perf-driver-preview')).toContainText(
+    'Bring in some scorecards first. The Imports tab does that.',
+  );
+  await expect(frame(page, 'perf-sample-frame').locator('h1')).toHaveText('Sample report');
 });
 
 test('the thresholds table, and bringing them in asks before replacing', async ({ page }) => {
   await openPerformance(page, { tab: 'reports' });
   await expect(page.getByText('No thresholds yet')).toBeVisible();
+  // The table is as tall as a few rows, not a tall empty box.
+  const table = page.locator('section[aria-labelledby="perf-thresholds-title"] [data-grid-view]');
+  const emptyHeight = (await table.boundingBox())!.height;
+  expect(emptyHeight).toBeLessThan(260);
 
   // None yet: nothing to replace, so no question.
   await onCall(
@@ -122,6 +168,32 @@ test('the thresholds table, and bringing them in asks before replacing', async (
   await expect(overall).toContainText('Higher is better');
   await expect(overall).toContainText('93');
   expect(await callsTo(page, 'performance:choose-and-import')).toEqual([{ kind: 'thresholds' }]);
+  // Four thresholds take a little more room; a long list stops growing at twelve rows.
+  const four = Array.from({ length: 4 }, (_, i) => ({
+    metricName: `Metric ${i}`,
+    metricNameDisplay: `Metric ${i}`,
+    direction: 'Higher is better',
+    platinum: '9',
+    gold: '8',
+    silver: '7',
+    bronze: '0',
+    weight: '',
+    sourceWeek: '2026-W40',
+  }));
+  await setPerf(page, { thresholds: four });
+  await page.evaluate(() => (window as unknown as { __bump: () => void }).__bump());
+  await expect(page.locator('[role="rowgroup"] [role="row"]')).toHaveCount(4);
+  const fourHeight = (await table.boundingBox())!.height;
+  expect(fourHeight).toBeGreaterThan(emptyHeight);
+  await setPerf(page, {
+    thresholds: Array.from({ length: 30 }, (_, i) => ({ ...four[0]!, metricName: `M${i}` })),
+  });
+  await page.evaluate(() => (window as unknown as { __bump: () => void }).__bump());
+  await expect.poll(async () => (await table.boundingBox())!.height).toBeGreaterThan(fourHeight);
+  expect((await table.boundingBox())!.height).toBeLessThan(fourHeight * 4);
+  await setPerf(page, { thresholds: four.slice(0, 1) });
+  await page.evaluate(() => (window as unknown as { __bump: () => void }).__bump());
+  await expect(page.locator('[role="rowgroup"] [role="row"]')).toHaveCount(1);
 
   // Now there are some: it asks first, and No keeps them.
   await page.getByTestId('perf-import-thresholds').click();
@@ -139,11 +211,11 @@ test('the thresholds table, and bringing them in asks before replacing', async (
     .toBe(2);
 });
 
-test('the colour preview zooms: Fit width, 100%, in and out, remembered in this window', async ({
+test('the preview zooms: Fit width, 100%, in and out, remembered in this window', async ({
   page,
 }) => {
   await openPerformance(page, { tab: 'reports' });
-  await expect(frame(page, 'perf-sample-frame').locator('h1')).toHaveText('Sample report');
+  await expect(frame(page, 'perf-driver-frame').locator('h1')).toHaveText(`Report ${ARCHER.id}`);
   const level = page.getByTestId('perf-zoom-level');
   const pageBox = page.getByTestId('perf-zoom-page');
   const scale = async () => Number(await pageBox.getAttribute('data-scale'));

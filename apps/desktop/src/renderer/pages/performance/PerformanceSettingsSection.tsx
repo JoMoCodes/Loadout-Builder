@@ -1,10 +1,11 @@
 // The "Weekly performance" part of the Settings page: auto-import, the rule numbers behind the
-// Dashboard's lists, the subject and message of the report emails, and bringing over the old
-// Weekly Performance App's data. Ported from the old app's email settings window and its PDF
-// settings. The email account itself is the Email part (settings/EmailSettingsSection.tsx).
+// Dashboard's lists, and bringing over the old Weekly Performance App's data. Ported from the old
+// app's settings windows. The email account itself is the Email part (settings/
+// EmailSettingsSection.tsx), and the subject and message of the report emails are behind the
+// Settings button on the Scorecards page (performance/EmailWordingDialog.tsx).
 
-import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
-import type { EmailSettings, PerformanceSettings } from '../../../shared/performanceSettings';
+import { useId, useState } from 'react';
+import type { PerformanceSettings } from '../../../shared/performanceSettings';
 import type { SettingsPatch } from '../../../shared/settings';
 import { OldDataDialog } from '../../shell/OldDataDialog';
 import { Button } from '../../ui/button';
@@ -42,18 +43,6 @@ const RULES = [
 ] as const;
 
 type RuleKey = (typeof RULES)[number]['key'];
-
-function Field({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) {
-  return (
-    <div className="mb-3">
-      <label className="block">
-        <span className="mb-1 block text-sm font-medium">{label}</span>
-        {children}
-      </label>
-      {hint ? <p className="hint">{hint}</p> : null}
-    </div>
-  );
-}
 
 function RuleInput({
   rule,
@@ -109,35 +98,12 @@ function RuleInput({
 
 export function PerformanceSettingsSection({
   performance,
-  email: saved,
   changeSettings,
 }: {
   performance: PerformanceSettings;
-  /** The app's email setup (Settings > Email): only the reports' subject and message are here. */
-  email: EmailSettings;
   changeSettings(patch: SettingsPatch): Promise<void>;
 }) {
-  const [subject, setSubject] = useState(saved.subjectTemplate);
-  const [body, setBody] = useState(saved.bodyTemplate);
-  const [emailNote, setEmailNote] = useState<{ ok: boolean; text: string } | null>(null);
   const [oldData, setOldData] = useState(false);
-
-  // The settings can arrive after the page is drawn: words not yet changed here follow them.
-  const before = useRef(saved);
-  useEffect(() => {
-    const was = before.current;
-    before.current = saved;
-    if (was === saved) return;
-    setSubject((now) => (now === was.subjectTemplate ? saved.subjectTemplate : now));
-    setBody((now) => (now === was.bodyTemplate ? saved.bodyTemplate : now));
-  }, [saved]);
-
-  const changed = subject !== saved.subjectTemplate || body !== saved.bodyTemplate;
-
-  async function saveWords() {
-    await changeSettings({ email: { ...saved, subjectTemplate: subject, bodyTemplate: body } });
-    setEmailNote({ ok: true, text: 'Email settings saved.' });
-  }
 
   return (
     <div className="settings-group card" data-setting="performance">
@@ -170,64 +136,6 @@ export function PerformanceSettingsSection({
           onSave={(key, value) => void changeSettings({ performance: { [key]: value } })}
         />
       ))}
-
-      <h3 className="mt-5 mb-2 text-base font-semibold">Emailing the reports</h3>
-      <p className="hint mb-3">
-        The reports are sent with the app&apos;s email setup, in the Email part below.
-      </p>
-      <Field label="Subject">
-        <Input
-          value={subject}
-          onChange={(event) => {
-            setSubject(event.target.value);
-            setEmailNote(null);
-          }}
-          data-testid="perf-email-subject"
-        />
-      </Field>
-      <Field label="Message">
-        <textarea
-          value={body}
-          onChange={(event) => {
-            setBody(event.target.value);
-            setEmailNote(null);
-          }}
-          rows={7}
-          className="w-full rounded-md border border-line-strong bg-sunken px-2.5 py-1.5 text-sm text-fg focus-visible:border-focus"
-          data-testid="perf-email-body"
-        />
-      </Field>
-      <p className="hint">
-        In the subject and message, <strong>{'{name}'}</strong> becomes the driver’s name, and{' '}
-        <strong>{'{from}'}</strong> and <strong>{'{to}'}</strong> become the first and last week of
-        the report.
-      </p>
-      <div className="row-of-buttons mt-3">
-        <Button
-          variant="primary"
-          disabled={!changed}
-          onClick={() => void saveWords()}
-          data-testid="perf-email-save"
-        >
-          Save subject and message
-        </Button>
-        <Button
-          disabled={!changed}
-          onClick={() => {
-            setSubject(saved.subjectTemplate);
-            setBody(saved.bodyTemplate);
-            setEmailNote(null);
-          }}
-          data-testid="perf-email-undo"
-        >
-          Undo changes
-        </Button>
-      </div>
-      {emailNote ? (
-        <p role="status" className="mt-2 text-sm text-ok" data-testid="perf-email-note">
-          {emailNote.text}
-        </p>
-      ) : null}
 
       <h3 className="mt-5 mb-2 text-base font-semibold">
         Data from the old Weekly Performance App

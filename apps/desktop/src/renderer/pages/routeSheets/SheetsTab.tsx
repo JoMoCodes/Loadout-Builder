@@ -1,6 +1,6 @@
 // The Sheets tab: a list of every route with a sheet, and beside it exactly the email the driver
-// gets, with the ways to send it. Email all and Export all sit above the list. Ported from the old
-// app's Route Sheets page.
+// gets, with the ways to send it. Email all, Export all and the Settings button (the emails'
+// wording) sit above the list. Ported from the old app's Route Sheets page.
 
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import type { RouteResult } from '@loadout/route-sheets';
@@ -10,6 +10,7 @@ import type {
   RouteSheetsStateView,
   SentHow,
 } from '../../../shared/routeSheets';
+import type { RouteSheetsEmailWording, SettingsPatch } from '../../../shared/settings';
 import { call, explain } from '../../lib/channels';
 import { Button } from '../../ui/button';
 import { Chip } from '../../ui/chip';
@@ -20,6 +21,7 @@ import type { Messages } from '../dataPages/PageParts';
 import type { Asker } from '../dataPages/useDialogs';
 import { ButtonStrip } from '../dataPages/PageParts';
 import { plural } from '../dataPages/format';
+import { EmailWordingDialog, WordingSettingsButton } from '../performance/EmailWordingDialog';
 import { PDF_MISSING_WORDS, StateChip, StatusChip } from './parts';
 import { emailAllWords, exportWords, sendOneWords, sentWords } from './words';
 
@@ -34,6 +36,9 @@ interface SheetsTabProps {
   onPick: (routeCode: string) => void;
   /** Moves to the Distribute tab. */
   onDistribute: () => void;
+  /** The subject and opening lines of the emails (Settings on this tab changes them). */
+  wording: RouteSheetsEmailWording;
+  changeSettings(patch: SettingsPatch): Promise<void>;
 }
 
 const NEED_READY = 'Choose who gets this route sheet on the Distribute tab first';
@@ -72,6 +77,8 @@ export function SheetsTab({
   picked,
   onPick,
   onDistribute,
+  wording,
+  changeSettings,
 }: SheetsTabProps) {
   const routes = dist.routes.filter((r) => r.hasSheet);
   const chosen =
@@ -122,6 +129,23 @@ export function SheetsTab({
 
   const emailAllOff = busy || state.unsent === 0 || emailProblem !== null;
 
+  async function openWording() {
+    await ask<boolean>((done) => (
+      <EmailWordingDialog
+        name="route-sheets-email-wording"
+        lead="What each driver gets with their route sheet. One wording for every route. The address and server come from Settings."
+        placeholders="{name} {route} {date} {staging} {wave} {pad}"
+        subject={wording.subjectTemplate}
+        body={wording.bodyTemplate}
+        testPrefix="route-sheets-email"
+        onSave={(subjectTemplate, bodyTemplate) =>
+          changeSettings({ routeSheetsEmail: { subjectTemplate, bodyTemplate } })
+        }
+        onDone={() => done(true)}
+      />
+    ));
+  }
+
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <ButtonStrip label="Send every route sheet">
@@ -152,6 +176,11 @@ export function SheetsTab({
         >
           Export all ({dist.counts.ready})
         </Button>
+        <WordingSettingsButton
+          onClick={() => void openWording()}
+          testId="route-sheets-settings"
+          className="ml-auto"
+        />
       </ButtonStrip>
       {pdfMissing ? (
         <div
@@ -180,6 +209,7 @@ export function SheetsTab({
               route={chosen}
               state={state}
               revision={revision}
+              wording={wording}
               messages={messages}
               ask={ask}
               busy={busy}
@@ -316,6 +346,7 @@ function SheetDetail({
   route,
   state,
   revision,
+  wording,
   messages,
   ask,
   busy,
@@ -325,6 +356,7 @@ function SheetDetail({
   route: RouteResult;
   state: RouteSheetsStateView;
   revision: number;
+  wording: RouteSheetsEmailWording;
   messages: Messages;
   ask: Asker;
   busy: boolean;
@@ -335,6 +367,8 @@ function SheetDetail({
   const [preview, setPreview] = useState<RouteSheetsPreview | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
 
+  // The preview is asked for again when the data changes, and when the wording is saved.
+  const wordingKey = `${wording.subjectTemplate}\n${wording.bodyTemplate}`;
   useEffect(() => {
     let off = false;
     void call('routeSheets:preview', { routeCode: code }).then((reply) => {
@@ -349,7 +383,7 @@ function SheetDetail({
     return () => {
       off = true;
     };
-  }, [code, revision]);
+  }, [code, revision, wordingKey]);
 
   const ready = route.state === 'ready';
   const sent = state.run.sent[code];

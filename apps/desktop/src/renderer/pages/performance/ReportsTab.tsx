@@ -1,6 +1,7 @@
-// The Reports tab: the report colours with a live preview of page 1, a preview of any driver's
-// report (stepping through the drivers shown on the Performance tab), and the thresholds table.
-// Ported from the old app's PDF settings window, its Preview tab and its thresholds window.
+// The Reports tab: the Settings button (the report emails' wording), the thresholds table, and the
+// report colours with a live preview of the report of any driver shown on the Performance tab
+// (stepping through them), or of a sample page when there is nobody to show. Ported from the old
+// app's PDF settings window, its Preview tab and its thresholds window.
 
 import { ChevronLeft, ChevronRight, RotateCcw, ZoomIn, ZoomOut } from 'lucide-react';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
@@ -16,6 +17,7 @@ import { Chip } from '../../ui/chip';
 import { ConfirmDialog } from '../dataPages/Modal';
 import type { Messages } from '../dataPages/PageParts';
 import { useDialogs } from '../dataPages/useDialogs';
+import { EmailWordingDialog, WordingSettingsButton } from './EmailWordingDialog';
 import { importWords, rangeWords, tierTone } from './perfText';
 
 const COLOUR_LABELS: Record<(typeof COLOUR_KEYS)[number], string> = {
@@ -39,14 +41,13 @@ const sameColours = (a: ReportColours, b: ReportColours) =>
 
 /** A report's HTML from the main process, asked again a moment after what it shows changes. */
 function useReportHtml(
-  ask: { transporterId: string | null; range: WeekRange | null; colours: ReportColours } | null,
+  ask: { transporterId: string | null; range: WeekRange | null; colours: ReportColours },
   revision: number,
 ) {
   const [html, setHtml] = useState('');
   const [problem, setProblem] = useState<string | null>(null);
   const key = JSON.stringify(ask);
   useEffect(() => {
-    if (!ask) return;
     let off = false;
     const timer = window.setTimeout(() => {
       void call('performance:report-html', {
@@ -67,19 +68,7 @@ function useReportHtml(
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- `key` stands for what is asked
   }, [key, revision]);
-  return { html: ask ? html : '', problem: ask ? problem : null };
-}
-
-function ReportFrame({ html, title, testId }: { html: string; title: string; testId: string }) {
-  return (
-    <iframe
-      title={title}
-      sandbox=""
-      srcDoc={html}
-      data-testid={testId}
-      className="h-[32rem] w-full rounded-md border border-line bg-white"
-    />
-  );
+  return { html, problem };
 }
 
 /** A report page is US Letter: 8.5 by 11 inches at 96 dots an inch. */
@@ -113,7 +102,7 @@ function writeZoom(zoom: Zoom): void {
 }
 
 /**
- * The colour preview with zoom: Fit width, 100%, and zoom in and out. The page is drawn at its
+ * The report preview with zoom: Fit width, 100%, and zoom in and out. The page is drawn at its
  * real size and scaled, so the scroll bars show how much of it is out of view. The choice is
  * remembered in this window.
  */
@@ -217,6 +206,10 @@ function ZoomedPreview({ html, title, testId }: { html: string; title: string; t
   );
 }
 
+/** The thresholds table shows this many rows at most before it scrolls; at least this many. */
+const THRESHOLD_ROWS_MAX = 12;
+const THRESHOLD_ROWS_MIN = 3;
+
 export function ReportsTab({
   snapshot,
   settings,
@@ -239,9 +232,27 @@ export function ReportsTab({
   const [draft, setDraft] = useState<ReportColours>(saved);
   const dirty = !sameColours(draft, saved);
 
-  // ------------------------------------------------------------------- the colours
+  // ----------------------------------------------------------------- the wording
 
-  const sample = useReportHtml({ transporterId: null, range: null, colours: draft }, 0);
+  /** The subject and message of the report emails (the Performance tab has the same window). */
+  async function openWording() {
+    await ask<boolean>((done) => (
+      <EmailWordingDialog
+        name="perf-email-wording"
+        lead="What each driver gets with their report. The address and server come from Settings."
+        placeholders="{name} {from} {to}"
+        subject={settings.email.subjectTemplate}
+        body={settings.email.bodyTemplate}
+        testPrefix="perf-email"
+        onSave={(subjectTemplate, bodyTemplate) =>
+          changeSettings({ email: { subjectTemplate, bodyTemplate } })
+        }
+        onDone={() => done(true)}
+      />
+    ));
+  }
+
+  // ------------------------------------------------------------------- the colours
 
   function setColour(key: (typeof COLOUR_KEYS)[number], value: string) {
     setDraft((now) => ({ ...now, [key]: value.toUpperCase() }));
@@ -264,13 +275,17 @@ export function ReportsTab({
     setStatus('Report colours are back to the old app’s colours.');
   }
 
-  // ------------------------------------------------------------ preview a driver
+  // ------------------------------------------------------------ the preview
 
+  // The report of the driver picked, in the colours being edited; a sample page when there is
+  // nobody to show, so the colours can still be previewed.
   const [at, setAt] = useState(0);
   const index = drivers.length === 0 ? -1 : Math.min(at, drivers.length - 1);
-  const driver = index >= 0 ? drivers[index]! : null;
-  const driverHtml = useReportHtml(
-    driver && range ? { transporterId: driver.transporterId, range, colours: draft } : null,
+  const driver = index >= 0 && range ? drivers[index]! : null;
+  const preview = useReportHtml(
+    driver && range
+      ? { transporterId: driver.transporterId, range, colours: draft }
+      : { transporterId: null, range: null, colours: draft },
     snapshot.revision,
   );
 
@@ -370,9 +385,50 @@ export function ReportsTab({
     ];
   }, []);
 
+  // The table is as tall as its rows (up to a cap), plus its search bar and heading row, so a
+  // handful of thresholds does not sit in a tall empty box.
+  const shownRows = Math.min(THRESHOLD_ROWS_MAX, Math.max(THRESHOLD_ROWS_MIN, thresholds.length));
+  const thresholdsHeight = `calc(${6.5 + 2 * shownRows}rem)`;
+
   return (
     <div className="min-h-0 flex-1 overflow-auto px-6 py-4" data-testid="perf-reports">
-      <section className="card mb-4" aria-labelledby="perf-colours-title">
+      <div className="mb-3 flex justify-end">
+        <WordingSettingsButton onClick={() => void openWording()} testId="scorecards-settings" />
+      </div>
+
+      <section className="card mb-4" aria-labelledby="perf-thresholds-title">
+        <div className="mb-2 flex flex-wrap items-center gap-3">
+          <h2 id="perf-thresholds-title" className="m-0 text-[1.15rem] font-semibold">
+            Thresholds
+          </h2>
+          <Button
+            onClick={() => void bringInThresholds()}
+            disabled={importing}
+            data-testid="perf-import-thresholds"
+          >
+            Bring in thresholds
+          </Button>
+        </div>
+        <p className="m-0 mb-2 text-sm text-muted">
+          The cut-off for each tier, and how much each metric counts towards the score.
+        </p>
+        <div className="flex flex-col" style={{ height: thresholdsHeight }}>
+          <DataGrid
+            view="performance-thresholds"
+            label="Thresholds"
+            columns={thresholdColumns}
+            rows={thresholds}
+            getRowId={(row) => row.metricName}
+            layoutStore={databaseLayoutStore}
+            empty={{
+              title: 'No thresholds yet',
+              body: 'Bring in the scoring metadata file (DSP_Thresholds_Scoring_Metadata_…csv) from the DSP portal.',
+            }}
+          />
+        </div>
+      </section>
+
+      <section className="card" aria-labelledby="perf-colours-title">
         <h2 id="perf-colours-title" className="mt-0 text-[1.15rem] font-semibold">
           Report colours
         </h2>
@@ -440,138 +496,84 @@ export function ReportsTab({
               </p>
             ) : null}
           </div>
-          <div>
-            <p className="m-0 mb-1 text-sm text-muted">Page 1 of a sample report</p>
-            {sample.problem ? (
+          <div onKeyDown={onPreviewKey} tabIndex={-1} data-testid="perf-driver-preview">
+            {!range ? (
+              <p className="m-0 mb-2 text-sm text-muted">
+                Bring in some scorecards first. The Imports tab does that. Until then, this is page
+                1 of a sample report.
+              </p>
+            ) : !driver ? (
+              <p className="m-0 mb-2 text-sm text-muted">
+                No drivers are shown on the Performance tab. Change its filters to preview a report.
+                Until then, this is page 1 of a sample report.
+              </p>
+            ) : (
+              <>
+                <div className="mb-2 flex flex-wrap items-center gap-2">
+                  <Button
+                    size="sm"
+                    onClick={() => step(-1)}
+                    aria-label="Previous driver"
+                    data-testid="perf-preview-prev"
+                  >
+                    <ChevronLeft aria-hidden="true" />
+                    Previous
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => step(1)}
+                    aria-label="Next driver"
+                    data-testid="perf-preview-next"
+                  >
+                    Next
+                    <ChevronRight aria-hidden="true" />
+                  </Button>
+                  <span className="text-sm tabular-nums" data-testid="perf-preview-position">
+                    Driver {index + 1} of {drivers.length}
+                  </span>
+                  <label className="flex items-center gap-1.5 text-sm text-muted">
+                    Go to
+                    <select
+                      value={driver.transporterId}
+                      onChange={(event) =>
+                        setAt(
+                          Math.max(
+                            0,
+                            drivers.findIndex((one) => one.transporterId === event.target.value),
+                          ),
+                        )
+                      }
+                      className="h-8 max-w-[16rem] rounded-md border border-line-strong bg-sunken px-2 text-sm text-fg"
+                      data-testid="perf-preview-jump"
+                    >
+                      {drivers.map((one) => (
+                        <option key={one.transporterId} value={one.transporterId}>
+                          {one.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <span className="text-sm text-muted">
+                    Weeks {rangeWords(range)}. The arrow keys move between drivers too.
+                  </span>
+                </div>
+                <p className="m-0 mb-1 font-semibold" data-testid="perf-preview-name">
+                  {driver.name}
+                </p>
+              </>
+            )}
+            {preview.problem ? (
               <p role="alert" className="problem text-sm">
-                {sample.problem}
+                {preview.problem}
               </p>
             ) : (
               <ZoomedPreview
-                html={sample.html}
-                title="Sample report, page 1"
-                testId="perf-sample-frame"
+                html={preview.html}
+                title={driver ? `Report for ${driver.name}` : 'Sample report, page 1'}
+                testId={driver ? 'perf-driver-frame' : 'perf-sample-frame'}
               />
             )}
           </div>
-        </div>
-      </section>
-
-      <section
-        className="card mb-4"
-        aria-labelledby="perf-preview-title"
-        onKeyDown={onPreviewKey}
-        tabIndex={-1}
-        data-testid="perf-driver-preview"
-      >
-        <h2 id="perf-preview-title" className="mt-0 text-[1.15rem] font-semibold">
-          Preview a driver
-        </h2>
-        {!range ? (
-          <p className="text-sm text-muted">
-            Bring in some scorecards first. The Imports tab does that.
-          </p>
-        ) : !driver ? (
-          <p className="text-sm text-muted">
-            No drivers are shown on the Performance tab. Change its filters to preview a report.
-          </p>
-        ) : (
-          <>
-            <div className="mb-2 flex flex-wrap items-center gap-2">
-              <Button
-                size="sm"
-                onClick={() => step(-1)}
-                aria-label="Previous driver"
-                data-testid="perf-preview-prev"
-              >
-                <ChevronLeft aria-hidden="true" />
-                Previous
-              </Button>
-              <Button
-                size="sm"
-                onClick={() => step(1)}
-                aria-label="Next driver"
-                data-testid="perf-preview-next"
-              >
-                Next
-                <ChevronRight aria-hidden="true" />
-              </Button>
-              <span className="text-sm tabular-nums" data-testid="perf-preview-position">
-                Driver {index + 1} of {drivers.length}
-              </span>
-              <label className="flex items-center gap-1.5 text-sm text-muted">
-                Go to
-                <select
-                  value={driver.transporterId}
-                  onChange={(event) =>
-                    setAt(
-                      Math.max(
-                        0,
-                        drivers.findIndex((one) => one.transporterId === event.target.value),
-                      ),
-                    )
-                  }
-                  className="h-8 max-w-[16rem] rounded-md border border-line-strong bg-sunken px-2 text-sm text-fg"
-                  data-testid="perf-preview-jump"
-                >
-                  {drivers.map((one) => (
-                    <option key={one.transporterId} value={one.transporterId}>
-                      {one.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <span className="text-sm text-muted">
-                Weeks {rangeWords(range)}. The arrow keys move between drivers too.
-              </span>
-            </div>
-            <p className="m-0 mb-1 font-semibold" data-testid="perf-preview-name">
-              {driver.name}
-            </p>
-            {driverHtml.problem ? (
-              <p role="alert" className="problem text-sm">
-                {driverHtml.problem}
-              </p>
-            ) : (
-              <ReportFrame
-                html={driverHtml.html}
-                title={`Report for ${driver.name}`}
-                testId="perf-driver-frame"
-              />
-            )}
-          </>
-        )}
-      </section>
-
-      <section className="card" aria-labelledby="perf-thresholds-title">
-        <div className="mb-2 flex flex-wrap items-center gap-3">
-          <h2 id="perf-thresholds-title" className="m-0 text-[1.15rem] font-semibold">
-            Thresholds
-          </h2>
-          <Button
-            onClick={() => void bringInThresholds()}
-            disabled={importing}
-            data-testid="perf-import-thresholds"
-          >
-            Bring in thresholds
-          </Button>
-        </div>
-        <p className="m-0 mb-2 text-sm text-muted">
-          The cut-off for each tier, and how much each metric counts towards the score.
-        </p>
-        <div className="flex h-[22rem] flex-col">
-          <DataGrid
-            view="performance-thresholds"
-            label="Thresholds"
-            columns={thresholdColumns}
-            rows={thresholds}
-            getRowId={(row) => row.metricName}
-            layoutStore={databaseLayoutStore}
-            empty={{
-              title: 'No thresholds yet',
-              body: 'Bring in the scoring metadata file (DSP_Thresholds_Scoring_Metadata_…csv) from the DSP portal.',
-            }}
-          />
         </div>
       </section>
       {host}

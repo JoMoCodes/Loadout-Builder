@@ -413,13 +413,13 @@ export const TOURS: Record<string, Tour> = {
       {
         element: `${SCORECARDS} [data-testid="perf-save-colours"]`,
         title: 'Keep your colours',
-        text: 'Change the colours, look at the sample, then click Save colours. Reset puts the old colours back.',
+        text: 'Change the colours, look at the preview, then click Save colours. Reset puts the old colours back.',
         side: 'top',
       },
       {
         element: `${SCORECARDS} [data-testid="perf-driver-preview"]`,
         title: 'Preview a driver',
-        text: "See a driver's report before you send it. The arrows go to the next driver on the Performance tab.",
+        text: "See a driver's report, in your colours, before you send it. The arrows go to the next driver on the Performance tab.",
         side: 'top',
       },
       {

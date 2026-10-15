@@ -1,8 +1,16 @@
 // Builds the route sheet as email-safe HTML (tables + inline styles only) so it looks the same
 // pasted into Outlook, Gmail, or opened on a phone. Values are copied verbatim from the PDF.
-// Ported from the old emailRender.js: the output must stay the same, byte for byte.
+// Ported from the old emailRender.js: with the default wording the output must stay the same,
+// byte for byte. The subject and the opening lines come from a wording (template.ts) that can be
+// changed on the Route Sheets page; everything under them is fixed.
 
 import type { SheetWithPad } from '../types';
+import {
+  DEFAULT_ROUTE_SHEET_WORDING,
+  fillRouteSheetTemplate,
+  type RouteSheetValues,
+  type RouteSheetWording,
+} from './template';
 
 const ESC_MAP: Record<string, string> = {
   '&': '&amp;',
@@ -55,9 +63,35 @@ export function titleCase(s: unknown): string {
     .replace(/\b[a-z]/g, (c) => c.toUpperCase());
 }
 
-export function subjectFor(sheet: SheetWithPad): string {
+/** Who the email is for; only the name is used (for the greeting). */
+export interface EmailRecipient {
+  name?: string;
+}
+
+/** What the placeholders become for this sheet and this driver. `date` differs by place. */
+function valuesFor(
+  sheet: SheetWithPad,
+  recipient: EmailRecipient | null | undefined,
+  date: string,
+): RouteSheetValues {
+  return {
+    name: recipient && recipient.name ? firstName(recipient.name) : '',
+    route: String(sheet.routeCode),
+    date,
+    staging: sheet.staging || '',
+    wave: sheet.waveTime || '',
+    pad: sheet.pad ? String(sheet.pad) : '',
+  };
+}
+
+/** The subject. Its {date} is the short date printed on the sheet ("Thu, Sep 24, 2026"). */
+export function subjectFor(
+  sheet: SheetWithPad,
+  recipient?: EmailRecipient | null,
+  wording: RouteSheetWording = DEFAULT_ROUTE_SHEET_WORDING,
+): string {
   const date = sheet.dateLabel ? titleCase(sheet.dateLabel) : sheet.date || '';
-  return `Route Sheet: ${sheet.routeCode} · ${sheet.staging || ''} · ${date}${sheet.waveTime ? ' · ' + sheet.waveTime : ''}${sheet.pad ? ' · Pad ' + sheet.pad : ''}`;
+  return fillRouteSheetTemplate(wording.subjectTemplate, valuesFor(sheet, recipient, date));
 }
 
 const WEEKDAYS: Record<string, string> = {
@@ -91,18 +125,40 @@ interface Box {
   valueColor: string;
 }
 
-/** Who the email is for; only the name is used (for the greeting). */
-export interface EmailRecipient {
-  name?: string;
+const INTRO = 'margin:0 0 14px;font-size:15px;color:#1b2430;';
+
+/**
+ * The opening lines of the message as HTML. The wording is escaped as typed and the values as
+ * they are filled in; the date and the punctuation right after it never wrap (as before). A
+ * blank line in the wording starts a new paragraph.
+ */
+function introHtml(template: string, values: RouteSheetValues): string {
+  const safe = esc(template).replace(
+    /\{date\}([.,;:!?]*)/g,
+    '<span style="white-space:nowrap;">{date}$1</span>',
+  );
+  const escaped = Object.fromEntries(
+    Object.entries(values).map(([key, value]) => [key, esc(value)]),
+  ) as RouteSheetValues;
+  const filled = fillRouteSheetTemplate(safe, escaped);
+  if (!filled) return '';
+  return filled
+    .split(/\n{2,}/)
+    .map((paragraph) => `<p style="${INTRO}">${paragraph.replace(/\n/g, '<br>')}</p>`)
+    .join('');
 }
 
-/** `sheet` is the full parsed sheet, plus `pad` when one is set for its wave. */
-export function renderEmailHtml(sheet: SheetWithPad, recipient?: EmailRecipient | null): string {
+/**
+ * `sheet` is the full parsed sheet, plus `pad` when one is set for its wave. The message's
+ * {date} has the full day name ("Thursday, Sep 24, 2026").
+ */
+export function renderEmailHtml(
+  sheet: SheetWithPad,
+  recipient?: EmailRecipient | null,
+  wording: RouteSheetWording = DEFAULT_ROUTE_SHEET_WORDING,
+): string {
   const date = dateLines(sheet);
-  const greet =
-    recipient && recipient.name
-      ? `<p style="margin:0 0 14px;font-size:15px;color:#1b2430;">Hi ${esc(firstName(recipient.name))}, here is your route sheet for <span style="white-space:nowrap;">${esc(date.join(', '))}.</span></p>`
-      : '';
+  const greet = introHtml(wording.bodyTemplate, valuesFor(sheet, recipient, date.join(', ')));
 
   // "Pad #" and "Date" are what a driver must not miss, so their labels are big, bold and white.
   const BIG_LABEL =
@@ -188,7 +244,7 @@ export function renderEmailHtml(sheet: SheetWithPad, recipient?: EmailRecipient 
     : '';
 
   return `<!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(subjectFor(sheet))}</title></head>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(subjectFor(sheet, recipient, wording))}</title></head>
 <body style="margin:0;padding:0;background:#ffffff;">
 <div style="${FONT}max-width:560px;margin:0 auto;padding:16px;color:#1b2430;background:#ffffff;">
   ${greet}
@@ -221,11 +277,15 @@ export function renderEmailHtml(sheet: SheetWithPad, recipient?: EmailRecipient 
 }
 
 /** Plain-text version for the email's text part and for pasting where HTML isn't supported. */
-export function renderEmailText(sheet: SheetWithPad, recipient?: EmailRecipient | null): string {
+export function renderEmailText(
+  sheet: SheetWithPad,
+  recipient?: EmailRecipient | null,
+  wording: RouteSheetWording = DEFAULT_ROUTE_SHEET_WORDING,
+): string {
   const date = dateLines(sheet).join(', ');
   const lines: string[] = [];
-  if (recipient && recipient.name)
-    lines.push(`Hi ${firstName(recipient.name)}, here is your route sheet for ${date}.`, '');
+  const intro = fillRouteSheetTemplate(wording.bodyTemplate, valuesFor(sheet, recipient, date));
+  if (intro) lines.push(...intro.split('\n'), '');
   lines.push(`ROUTE: ${String(sheet.routeCode)}    STAGING: ${String(sheet.staging)}`);
   lines.push(`WAVE: ${String(sheet.waveTime)}    DATE: ${date}`);
   if (sheet.pad) lines.push(`PAD #: ${sheet.pad}`);

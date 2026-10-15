@@ -9,6 +9,28 @@ import {
 } from './performanceSettings';
 import type { EmailSettings, PerformanceSettings } from './performanceSettings';
 
+/**
+ * The wording of the route sheet emails (Route Sheets page, Sheets tab, Settings): the subject
+ * and the opening of the message. Placeholders: {name} {route} {date} {staging} {wave} {pad}.
+ */
+export interface RouteSheetsEmailWording {
+  subjectTemplate: string;
+  bodyTemplate: string;
+}
+
+/**
+ * The old Route Sheet Distributor's wording. The same words as the route sheets package's
+ * DEFAULT_ROUTE_SHEET_WORDING (a test keeps them equal; the pages must not load that package).
+ */
+export const DEFAULT_ROUTE_SHEETS_EMAIL: RouteSheetsEmailWording = {
+  subjectTemplate: 'Route Sheet: {route} · {staging} · {date} · {wave} · Pad {pad}',
+  bodyTemplate: 'Hi {name}, here is your route sheet for {date}.',
+};
+
+/** The longest subject and message the app keeps (the same as the weekly reports' wording). */
+export const SUBJECT_MAX = 300;
+export const BODY_MAX = 5000;
+
 export const THEMES = ['light', 'dark', 'high-contrast'] as const;
 export type ThemeName = (typeof THEMES)[number];
 
@@ -56,14 +78,20 @@ export interface AppSettings {
    * The app password is not here: the main process keeps it sealed.
    */
   email: EmailSettings;
+  /** The subject and opening lines of the route sheet emails. */
+  routeSheetsEmail: RouteSheetsEmailWording;
 }
 
 /** What a screen may ask to change. Anything left out stays as it was. */
-export type SettingsPatch = Partial<Omit<AppSettings, 'performance' | 'email'>> & {
+export type SettingsPatch = Partial<
+  Omit<AppSettings, 'performance' | 'email' | 'routeSheetsEmail'>
+> & {
   /** Only the fields given change; the rest of the performance choices stay. */
   performance?: DeepPartial<PerformanceSettings>;
   /** Only the fields given change. (An older `performance.email` patch is read as this.) */
   email?: Partial<EmailSettings>;
+  /** Only the fields given change. */
+  routeSheetsEmail?: Partial<RouteSheetsEmailWording>;
 };
 
 type DeepPartial<T> = {
@@ -90,6 +118,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   routeSheetsNoteSeen: false,
   performance: DEFAULT_PERFORMANCE,
   email: DEFAULT_EMAIL,
+  routeSheetsEmail: DEFAULT_ROUTE_SHEETS_EMAIL,
 };
 
 /** A tour's name: lower case words with dashes. */
@@ -157,11 +186,36 @@ export function sanitizePatch(raw: unknown): SettingsPatch {
   if (typeof input.email === 'object' && input.email !== null && !Array.isArray(input.email)) {
     patch.email = input.email as SettingsPatch['email'];
   }
+  // Checked field by field when it is merged (mergeRouteSheetsEmail).
+  if (
+    typeof input.routeSheetsEmail === 'object' &&
+    input.routeSheetsEmail !== null &&
+    !Array.isArray(input.routeSheetsEmail)
+  ) {
+    patch.routeSheetsEmail = input.routeSheetsEmail as SettingsPatch['routeSheetsEmail'];
+  }
   return patch;
 }
 
+/** Keeps only the valid fields of a route sheet wording patch, merged onto `current`. */
+export function mergeRouteSheetsEmail(
+  current: RouteSheetsEmailWording,
+  raw: unknown,
+): RouteSheetsEmailWording {
+  const next = { ...current };
+  if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) return next;
+  const input = raw as Record<string, unknown>;
+  if (typeof input.subjectTemplate === 'string' && input.subjectTemplate.length <= SUBJECT_MAX) {
+    next.subjectTemplate = input.subjectTemplate;
+  }
+  if (typeof input.bodyTemplate === 'string' && input.bodyTemplate.length <= BODY_MAX) {
+    next.bodyTemplate = input.bodyTemplate;
+  }
+  return next;
+}
+
 export function mergeSettings(current: AppSettings, raw: unknown): AppSettings {
-  const { performance, email, ...rest } = sanitizePatch(raw);
+  const { performance, email, routeSheetsEmail, ...rest } = sanitizePatch(raw);
   const base = { ...current, ...rest };
   // Older settings files have no performance part; it starts from the defaults.
   const perf = mergePerformance(current.performance ?? DEFAULT_PERFORMANCE, performance);
@@ -172,5 +226,15 @@ export function mergeSettings(current: AppSettings, raw: unknown): AppSettings {
     current.email ?? current.performance?.email ?? DEFAULT_EMAIL,
     email ?? older,
   );
-  return { ...base, email: now, performance: { ...perf, email: { ...now } } };
+  // Older settings files have no route sheet wording; it starts from the old app's words.
+  const wording = mergeRouteSheetsEmail(
+    current.routeSheetsEmail ?? DEFAULT_ROUTE_SHEETS_EMAIL,
+    routeSheetsEmail,
+  );
+  return {
+    ...base,
+    email: now,
+    performance: { ...perf, email: { ...now } },
+    routeSheetsEmail: wording,
+  };
 }

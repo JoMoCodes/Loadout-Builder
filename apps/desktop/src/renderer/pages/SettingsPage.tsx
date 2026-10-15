@@ -170,7 +170,6 @@ export function SettingsPage({
 
       <PerformanceSettingsSection
         performance={settings.performance}
-        email={settings.email}
         changeSettings={changeSettings}
       />
 
