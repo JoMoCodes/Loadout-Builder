@@ -21,7 +21,7 @@ which test or harness check proved it.
 The page has four tabs.
 
 - [x] There are four tabs: **Roster**, **Print**, **Available Vans** and **Previous Roster**.
-      Proved by `apps/desktop/e2e/load-out.spec.ts`: "the page has five tabs, and remembers the one you were on" (the fifth, **Name and ID Links**, is new in 2.8.0). The Print tab holds a plain placeholder until the Print tab work lands.
+      Proved by `apps/desktop/e2e/load-out.spec.ts`: "the page has five tabs, and remembers the one you were on" (the fifth, **Name and ID Links**, is new in 2.7.0). The Print tab holds a plain placeholder until the Print tab work lands.
 
 ### 1.1 Previous Roster tab
 
