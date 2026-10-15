@@ -218,6 +218,8 @@ export interface PerfDriverRow {
   name: string;
   /** "ACTIVE", "INACTIVE", "OFFBOARDED", ... (a blank status counts as OFFBOARDED). */
   status: string;
+  /** Lifetime Routes from the associate record, or null when there is no count. */
+  tenure: number | null;
   latestWeek: string | null;
   latestTier: string | null;
   latestScore: number | null;
