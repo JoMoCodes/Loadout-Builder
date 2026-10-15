@@ -4,7 +4,7 @@
 // It builds the app, starts it with a throwaway data folder, turns on demo mode, and saves one
 // picture per place the help needs into src/renderer/help/ (1200 pixels wide, PNG): the first
 // day's pages (with the Route Sheets page's two pictures, of the made-up route sheet day demo mode
-// loads), then the Performance page (Drivers, Imports, Reports) and the Dashboard with the
+// loads), then the Scorecards page (Performance, Imports, Reports) and the Dashboard with the
 // made-up weekly data. Run
 // `python3 scripts/shrink-help-shots.py` afterwards to keep each picture under 300 kB.
 //
@@ -153,21 +153,22 @@ try {
   await shot('print');
 
   // The made-up weekly data. The main process loads it shortly after demo mode opens, so wait
-  // for the Performance page's rows before each picture.
-  await page.evaluate(() => window.localStorage.setItem('loadout.performance-tab', 'drivers'));
-  await goTo('performance');
-  await page.waitForSelector('[data-page="performance"] [role="rowgroup"] [role="row"]', {
+  // for the Scorecards page's rows before each picture. (The picture keeps its old file name,
+  // perf-drivers, so the help pages need no change.)
+  await page.evaluate(() => window.localStorage.setItem('loadout.scorecards-tab', 'performance'));
+  await goTo('scorecards');
+  await page.waitForSelector('[data-page="scorecards"] [role="rowgroup"] [role="row"]', {
     timeout: 60_000,
   });
   await page.waitForTimeout(600);
   await shot('perf-drivers');
 
-  await page.click('[data-testid="performance-tab-imports"]');
+  await page.click('[data-testid="scorecards-tab-imports"]');
   await page.waitForSelector('[data-testid="perf-card-scorecards"]', { timeout: 10_000 });
   await page.waitForTimeout(600);
   await shot('perf-imports');
 
-  await page.click('[data-testid="performance-tab-reports"]');
+  await page.click('[data-testid="scorecards-tab-reports"]');
   await page.waitForSelector('[data-testid="perf-preview-name"]', { timeout: 20_000 });
   await page.waitForTimeout(1500);
   await shot('perf-reports');

@@ -30,7 +30,7 @@
 //     as a PDF, Export all writes its folder, and the page's three tabs show the run
 //   - weekly performance: demo mode holds the made-up weekly data; on the real data every kind
 //     of fixture export comes in through the real bridge (the folder window replaced), the
-//     Performance page shows the drivers, one report is generated and previewed as a real PDF,
+//     Scorecards page shows the drivers, one report is generated and previewed as a real PDF,
 //     the check file has a row per scorecard, and the next start's auto-import finds nothing new
 //   - the window comes back at the size it was left at
 //   - nothing printed an error: not the page, not the main process
@@ -87,8 +87,7 @@ const EXPECTED_PAGES = [
   'route-data',
   'vehicle-data',
   'associates',
-  'performance',
-  'previous-roster',
+  'scorecards',
   'how-to-use',
   'features-log',
   'settings',
@@ -944,7 +943,9 @@ try {
   });
 
   await check('Clear Previous Roster asks, clears it, and the page follows', async () => {
-    await goTo(page, 'previous-roster');
+    // Previous Roster is a tab on Load Out (there is no page of its own any more).
+    await goTo(page, 'load-out');
+    await page.click('[data-tab-button="previous-roster"]');
     const count = page.locator('[data-testid="previous-roster-count"]');
     await until(
       async () => /^[1-9]\d* drivers/.test(await count.innerText()),
@@ -1116,13 +1117,13 @@ try {
     return `${rows} rows, ${perfIds.length} drivers with scores`;
   });
 
-  await check('the Performance page shows the drivers', async () => {
-    await goTo(page, 'performance');
-    await page.waitForSelector('[data-page="performance"] [role="rowgroup"] [role="row"]', {
+  await check('the Scorecards page shows the drivers', async () => {
+    await goTo(page, 'scorecards');
+    await page.waitForSelector('[data-page="scorecards"] [role="rowgroup"] [role="row"]', {
       timeout: 10_000,
     });
     const rows = await page
-      .locator('[data-page="performance"] [role="rowgroup"] [role="row"]')
+      .locator('[data-page="scorecards"] [role="rowgroup"] [role="row"]')
       .count();
     assert(rows > 5, `only ${rows} rows drawn`);
     return `${rows} rows drawn`;

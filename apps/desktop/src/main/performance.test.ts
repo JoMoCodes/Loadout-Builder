@@ -585,10 +585,11 @@ describe('with every fixture brought in', () => {
     ).toMatchObject({ ok: false, reason: 'refused' });
   });
 
-  it('answers the Directory, the thresholds and the ID-expiry list', async () => {
-    const directory = await rig.ok<Array<{ name: string; email: string }>>('performance:directory');
-    expect(directory).toHaveLength(92);
-    expect(directory.filter((d) => d.email !== '').length).toBeGreaterThan(50);
+  it('answers the thresholds and the ID-expiry list, with the emails on the Associates list', async () => {
+    // There is no directory of its own any more: emails and phones are on the Associates list.
+    const people = (await snapshot(rig)).associates;
+    expect(people).toHaveLength(92);
+    expect(people.filter((one) => one.associate.email !== '').length).toBeGreaterThan(50);
 
     const thresholds = await rig.ok<Array<Record<string, string>>>('performance:thresholds');
     const old = expected<Array<Record<string, unknown>>>('thresholds.json');
@@ -867,9 +868,10 @@ describe('with every fixture brought in', () => {
     const view = await rig.ok<PerfDriversView>('performance:drivers', { range: null });
     const withEmail = view.rows.filter((r) => r.hasEmail && r.activeInRange).slice(0, 3);
     const without = view.rows.find((r) => !r.hasEmail && r.activeInRange)!;
-    const directory =
-      await rig.ok<Array<{ transporterId: string; email: string }>>('performance:directory');
-    const refused = directory.find((d) => d.transporterId === withEmail[2]!.transporterId)!.email;
+    const people = (await snapshot(rig)).associates;
+    const refused = people.find(
+      (one) => one.associate.transporterId === withEmail[2]!.transporterId,
+    )!.associate.email;
     rig.mail.refuse.add(refused);
 
     const out = await rig.ok<EmailOutcome>('performance:email', {

@@ -100,7 +100,7 @@ test('ticks itself off as the weekly data changes', async ({ page }) => {
   await expect(step(page, 'perf-reports').locator('[data-step-do]')).toHaveText('Set up email');
   await changePerf(page, { emailReady: true });
   await expect(step(page, 'perf-reports').locator('[data-step-do]')).toHaveText(
-    'Open the Drivers tab',
+    'Open the Performance tab',
   );
 });
 

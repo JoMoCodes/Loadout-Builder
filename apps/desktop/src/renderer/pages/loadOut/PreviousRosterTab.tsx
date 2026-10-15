@@ -58,17 +58,14 @@ export function previousHeader(snapshot: AppSnapshot) {
 interface PreviousRosterTabProps {
   snapshot: AppSnapshot;
   say: (text: string) => void;
-  /** The left-menu page shows the title as its main heading. */
-  headingLevel?: 1 | 2;
 }
 
-export function PreviousRosterTab({ snapshot, say, headingLevel = 2 }: PreviousRosterTabProps) {
+export function PreviousRosterTab({ snapshot, say }: PreviousRosterTabProps) {
   const { confirm, dialog } = useAsk();
   const [heldOnly, setHeldOnly] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
   const [gridKey, setGridKey] = useState(0);
   const header = previousHeader(snapshot);
-  const Heading = headingLevel === 1 ? 'h1' : 'h2';
 
   const lines = useMemo(
     () => snapshot.previousRoster.rows.map((row, index) => ({ index, row })),
@@ -108,16 +105,7 @@ export function PreviousRosterTab({ snapshot, say, headingLevel = 2 }: PreviousR
     <div className="flex min-h-0 flex-1 flex-col" data-tab-panel="previous-roster">
       <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-2 border-b border-line bg-surface px-6 py-3">
         <div className="min-w-0">
-          <Heading
-            id={headingLevel === 1 ? 'title-previous-roster' : undefined}
-            className={
-              headingLevel === 1
-                ? 'text-[1.6rem] leading-tight font-semibold'
-                : 'text-lg font-semibold'
-            }
-          >
-            {header.title}
-          </Heading>
+          <h2 className="text-lg font-semibold">{header.title}</h2>
           <p className="text-sm text-muted">{header.source}</p>
         </div>
         <div className="text-right">

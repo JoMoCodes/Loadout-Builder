@@ -3,7 +3,7 @@
 //
 // Top to bottom: the week bar, four tiles, "Who needs a word" beside the ID-expiry list, the
 // movers, and the trend. Every number has a "How is this worked out?" button. A driver's line
-// opens a small menu: open them on the Performance page, or preview their report.
+// opens a small menu: open them on the Scorecards page, or preview their report.
 
 import { X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -86,7 +86,7 @@ export function DashboardPage({ settings, changeSettings, goTo }: PageProps) {
     () => ({
       openOnPerformance: (transporterId) => {
         handDriverToPerformance(transporterId);
-        goTo('performance');
+        goTo('scorecards');
       },
       previewReport: (transporterId) => {
         setProblem(null);
@@ -171,7 +171,7 @@ export function DashboardPage({ settings, changeSettings, goTo }: PageProps) {
             data-testid="dashboard-go-imports"
             onClick={() => {
               handTabToPerformance('imports');
-              goTo('performance');
+              goTo('scorecards');
             }}
           >
             Go to Imports

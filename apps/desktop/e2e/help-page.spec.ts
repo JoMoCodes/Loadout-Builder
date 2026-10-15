@@ -64,8 +64,8 @@ test('the weekly part walks through the routine and lists all nine weekly export
   await expect(weekly.locator('[data-export]')).toHaveCount(9);
   await expect(weekly.locator('[data-export="safety"]')).toContainText('safety dashboard export');
   await expect(weekly.locator('figure.help-shot')).toHaveCount(4);
-  await weekly.getByRole('button', { name: 'Performance' }).first().click();
-  await expect(page.locator('[data-page="performance"]')).toBeVisible();
+  await weekly.getByRole('button', { name: 'Scorecards' }).first().click();
+  await expect(page.locator('[data-page="scorecards"]')).toBeVisible();
 });
 
 test('the route sheets part walks through the day and names the buttons on the page', async ({

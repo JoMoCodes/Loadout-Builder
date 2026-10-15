@@ -1,15 +1,15 @@
 import type { ComponentType } from 'react';
-import { PAGE_IDS, PAGE_LABELS } from '../../shared/windows';
+import { PAGE_IDS, PAGE_LABELS, currentTarget } from '../../shared/windows';
+import type { WindowTarget } from '../../shared/windows';
 import { AssociatesPage } from './AssociatesPage';
 import { DashboardPage } from './DashboardPage';
 import { FeaturesLogPage } from './FeaturesLogPage';
 import { HomePage } from './HomePage';
 import { HowToUsePage } from './HowToUsePage';
 import { LoadOutPage } from './LoadOutPage';
-import { PerformancePage } from './PerformancePage';
-import { PreviousRosterPage } from './PreviousRosterPage';
 import { RouteDataPage } from './RouteDataPage';
 import { RouteSheetsPage } from './RouteSheetsPage';
+import { ScorecardsPage } from './ScorecardsPage';
 import { SettingsPage } from './SettingsPage';
 import { VehicleDataPage } from './VehicleDataPage';
 import type { PageId, PageProps } from './types';
@@ -30,8 +30,7 @@ const COMPONENTS: Record<PageId, ComponentType<PageProps>> = {
   'route-data': RouteDataPage,
   'vehicle-data': VehicleDataPage,
   associates: AssociatesPage,
-  performance: PerformancePage,
-  'previous-roster': PreviousRosterPage,
+  scorecards: ScorecardsPage,
   'how-to-use': HowToUsePage,
   'features-log': FeaturesLogPage,
   settings: SettingsPage,
@@ -45,7 +44,16 @@ export const PAGES: readonly PageEntry[] = PAGE_IDS.map((id) => ({
 
 export const DEFAULT_PAGE: PageId = 'home';
 
+/**
+ * Where a remembered page name leads: the page itself, the new place when the name is from
+ * before a page was renamed or folded into another page's tab (Previous Roster is now a tab on
+ * Load Out), or the home page if it is not one.
+ */
+export function rememberedPlace(value: string | null): WindowTarget {
+  return currentTarget(value) ?? { page: DEFAULT_PAGE };
+}
+
 /** Turns a remembered text into a page id, or the home page if it is not one. */
 export function pageIdFrom(value: string | null): PageId {
-  return PAGES.find((page) => page.id === value)?.id ?? DEFAULT_PAGE;
+  return rememberedPlace(value).page;
 }

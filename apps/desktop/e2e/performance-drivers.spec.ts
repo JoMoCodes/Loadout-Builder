@@ -1,4 +1,4 @@
-// The Performance page, Drivers tab, on the stand-in bridge: the grid and its columns, the filter
+// The Scorecards page, Performance tab, on the stand-in bridge: the grid and its columns, the filter
 // chips and week range (remembered in the settings), ticking drivers, making, exporting and
 // emailing reports (a dry run first), the safety events list, the right-click items and the
 // keys. The numbers themselves are proved by the performance package's tests.
@@ -21,29 +21,26 @@ import {
 
 const rows = (page: Page) => page.locator('[role="rowgroup"] [role="row"]');
 const row = (page: Page, text: string) => page.locator('[role="row"]', { hasText: text });
-const status = (page: Page) => page.getByTestId('performance-status');
+const status = (page: Page) => page.getByTestId('scorecards-status');
 const dialog = (page: Page, name: string) => page.locator(`dialog[data-dialog="${name}"]`);
 
 async function settingsPatches(page: Page): Promise<Array<Record<string, unknown>>> {
   return (await callsTo(page, 'settings:set')) as Array<Record<string, unknown>>;
 }
 
-test('sits after Associates in the menu, with four tabs, and says where to start when empty', async ({
+test('sits after Associates in the menu, with three tabs, and says where to start when empty', async ({
   page,
 }) => {
   await openPerformance(page, { brief: { hasData: false, weeks: [] }, data: { drivers: [] } });
   const menu = (await page
     .locator('[data-nav]')
     .evaluateAll((items) => items.map((item) => item.getAttribute('data-nav')))) as string[];
-  expect(menu.indexOf('performance')).toBe(menu.indexOf('associates') + 1);
-  await expect(page.getByRole('tab')).toHaveText(['Drivers', 'Reports', 'Directory', 'Imports']);
+  expect(menu.indexOf('scorecards')).toBe(menu.indexOf('associates') + 1);
+  await expect(page.getByRole('tab')).toHaveText(['Performance', 'Reports', 'Imports']);
   await expect(page.getByText('No weekly performance data yet')).toBeVisible();
   await expect(page.getByTestId('perf-week-from')).toBeDisabled();
   await page.getByTestId('perf-go-imports').click();
-  await expect(page.getByTestId('performance-tab-imports')).toHaveAttribute(
-    'aria-selected',
-    'true',
-  );
+  await expect(page.getByTestId('scorecards-tab-imports')).toHaveAttribute('aria-selected', 'true');
 });
 
 test('shows the drivers with the old columns, tier chips, trend words and red safety counts', async ({

@@ -1,5 +1,5 @@
 // The Reports tab: the report colours with a live preview of page 1, a preview of any driver's
-// report (stepping through the drivers shown on the Drivers tab), and the thresholds table.
+// report (stepping through the drivers shown on the Performance tab), and the thresholds table.
 // Ported from the old app's PDF settings window, its Preview tab and its thresholds window.
 
 import { ChevronLeft, ChevronRight, RotateCcw, ZoomIn, ZoomOut } from 'lucide-react';
@@ -229,7 +229,7 @@ export function ReportsTab({
   settings: AppSettings;
   changeSettings(patch: SettingsPatch): Promise<void>;
   range: WeekRange | null;
-  /** The drivers shown on the Drivers tab, in its order. */
+  /** The drivers shown on the Performance tab, in its order. */
   drivers: readonly PerfDriverRow[];
   messages: Messages;
 }) {
@@ -473,7 +473,7 @@ export function ReportsTab({
           </p>
         ) : !driver ? (
           <p className="text-sm text-muted">
-            No drivers are shown on the Drivers tab. Change its filters to preview a report.
+            No drivers are shown on the Performance tab. Change its filters to preview a report.
           </p>
         ) : (
           <>

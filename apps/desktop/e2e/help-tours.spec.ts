@@ -99,45 +99,52 @@ test('each Load Out tab has its own tour', async ({ page }) => {
     .toEqual(['home', 'load-out-roster', 'load-out-available-vans']);
 });
 
-test('each Performance tab has its own tour', async ({ page }) => {
+test('each Scorecards tab has its own tour', async ({ page }) => {
   await openPerformance(page, {
-    tab: 'drivers',
+    tab: 'performance',
     settings: { autoTours: true, toursSeen: ['home'] },
   });
-  await expect(tour(page)).toHaveAttribute('data-tour-name', 'performance-drivers');
+  await expect(tour(page)).toHaveAttribute('data-tour-name', 'scorecards-performance');
   await expect(tour(page)).toContainText('Step 1 of 6');
-  await expect(tour(page)).toContainText('Four tabs');
+  await expect(tour(page)).toContainText('Three tabs');
   await page.keyboard.press('Enter');
   await expect(tour(page)).toContainText('Pick the weeks');
   await page.keyboard.press('Escape');
   await expect(tour(page)).toHaveCount(0);
 
-  await page.getByTestId('performance-tab-imports').click();
-  await expect(tour(page)).toHaveAttribute('data-tour-name', 'performance-imports');
+  await page.getByTestId('scorecards-tab-imports').click();
+  await expect(tour(page)).toHaveAttribute('data-tour-name', 'scorecards-imports');
   await expect(tour(page)).toContainText('One card for each file');
   await page.keyboard.press('Escape');
 
-  await page.getByTestId('performance-tab-reports').click();
-  await expect(tour(page)).toHaveAttribute('data-tour-name', 'performance-reports');
-  await page.keyboard.press('Escape');
-
-  await page.getByTestId('performance-tab-directory').click();
-  await expect(tour(page)).toHaveAttribute('data-tour-name', 'performance-directory');
+  await page.getByTestId('scorecards-tab-reports').click();
+  await expect(tour(page)).toHaveAttribute('data-tour-name', 'scorecards-reports');
   await page.keyboard.press('Escape');
   await expect
     .poll(() => seenSaved(page))
-    .toEqual([
-      'home',
-      'performance-drivers',
-      'performance-imports',
-      'performance-reports',
-      'performance-directory',
-    ]);
+    .toEqual(['home', 'scorecards-performance', 'scorecards-imports', 'scorecards-reports']);
 
   // Help > Take the tour runs the one for the tab on screen.
   await page.getByTestId('help-menu').click();
   await page.getByTestId('take-tour').click();
-  await expect(tour(page)).toHaveAttribute('data-tour-name', 'performance-directory');
+  await expect(tour(page)).toHaveAttribute('data-tour-name', 'scorecards-reports');
+  await page.keyboard.press('Escape');
+});
+
+test('a Scorecards tour seen when the page was called Performance does not run again', async ({
+  page,
+}) => {
+  await openPerformance(page, {
+    tab: 'performance',
+    settings: { autoTours: true, toursSeen: ['home', 'performance-drivers'] },
+  });
+  await expect(page.getByTestId('perf-week-range')).toBeVisible();
+  await page.waitForTimeout(800);
+  await expect(tour(page)).toHaveCount(0);
+  // It still runs on request.
+  await page.getByTestId('help-menu').click();
+  await page.getByTestId('take-tour').click();
+  await expect(tour(page)).toHaveAttribute('data-tour-name', 'scorecards-performance');
   await page.keyboard.press('Escape');
 });
 

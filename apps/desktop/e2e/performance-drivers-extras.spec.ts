@@ -7,7 +7,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { callsTo, emit, onCall } from './support/fakeBridge';
 import { ARCHER, CARMEN, DESMOND, TOBIAS, openPerformance } from './support/performance';
 
-const status = (page: Page) => page.getByTestId('performance-status');
+const status = (page: Page) => page.getByTestId('scorecards-status');
 const dialog = (page: Page, name: string) => page.locator(`dialog[data-dialog="${name}"]`);
 const gridRow = (page: Page, id: string) =>
   page.locator(`[role="grid"] [role="row"][data-row-id="${id}"]`);
@@ -72,7 +72,7 @@ test('after saving the check file, "Show in folder" shows it, and a refusal is s
     'Saved the check file "check.csv": 3 drivers, 10 weeks, 30 rows.',
   );
   await page.getByTestId('perf-show-in-folder').click();
-  await expect(page.getByTestId('performance-problem')).toContainText(
+  await expect(page.getByTestId('scorecards-problem')).toContainText(
     'That file is not there now. It may have been moved or deleted.',
   );
   expect(await callsTo(page, 'performance:show-last-output')).toEqual([{ what: 'check-file' }]);

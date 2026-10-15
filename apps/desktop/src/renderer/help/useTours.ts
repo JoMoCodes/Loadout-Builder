@@ -1,4 +1,4 @@
-// When the page tours run. Each page (and each Load Out and Performance tab) runs its tour by
+// When the page tours run. Each page (and each Load Out and Scorecards tab) runs its tour by
 // itself the first time it opens, once per person: the names of the tours that have run are kept
 // in the settings. "Take the tour" in the Help menu runs it again at any time.
 
@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { AppSettings, SettingsPatch } from '../../shared/settings';
 import type { PageId } from '../pages/types';
 import { runTour, stepsOnScreen, tourIsRunning } from './tourRunner';
-import { TOURS, openLoadOutTab, openPerformanceTab, tourNameFor } from './tours';
+import { TOURS, openLoadOutTab, openScorecardsTab, tourNameFor, tourSeen } from './tours';
 
 interface Options {
   page: PageId;
@@ -38,12 +38,12 @@ function whenDrawn(name: string, ms: number, done: () => void): () => void {
 }
 
 export function useTours({ page, settings, changeSettings, blocked }: Options) {
-  // Which Load Out or Performance tab is open, read from the page so the page needs no changes.
+  // Which Load Out or Scorecards tab is open, read from the page so the page needs no changes.
   const [openTab, setOpenTab] = useState<string | null>(null);
   useEffect(() => {
     const frame = document.getElementById('page-frame');
     if (!frame) return;
-    const read = () => setOpenTab(page === 'performance' ? openPerformanceTab() : openLoadOutTab());
+    const read = () => setOpenTab(page === 'scorecards' ? openScorecardsTab() : openLoadOutTab());
     read();
     const watch = new MutationObserver(read);
     watch.observe(frame, {
@@ -100,7 +100,7 @@ export function useTours({ page, settings, changeSettings, blocked }: Options) {
 
   useEffect(() => {
     if (!settings || blocked || !settings.autoTours || !tourName) return;
-    if (settings.toursSeen.includes(tourName)) return;
+    if (tourSeen(settings.toursSeen, tourName)) return;
     if (skipPage.current === page) return;
     return whenDrawn(tourName, 3000, () => {
       // Not over a question the page is asking, and not on top of another tour.

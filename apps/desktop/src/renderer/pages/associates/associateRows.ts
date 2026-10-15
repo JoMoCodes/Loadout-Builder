@@ -37,6 +37,10 @@ export const ASSOCIATES_EMPTY = {
 
 export const idOf = (view: AssociateView) => view.associate.transporterId || view.associate.name;
 
+/** The number to reach someone on: their personal phone, else their work phone. */
+export const phoneOf = (view: AssociateView) =>
+  view.associate.personalPhone || view.associate.workPhone;
+
 export type Tone = 'bad' | 'warn' | '';
 
 /** "2026-11-30", "2026-11-30  (expired)" or "2026-11-30  (12d left)", with the colour to show it in. */
@@ -59,6 +63,8 @@ export function associateCell(view: AssociateView, columnId: string): string {
       return associate.transporterId;
     case 'status':
       return associate.status;
+    case 'position':
+      return associate.position;
     case 'tenure':
       return tenureLabel(associate);
     case 'vans':
@@ -84,6 +90,7 @@ export const ASSOCIATE_COLUMNS = [
   { id: 'name', header: 'Name' },
   { id: 'transporter_id', header: 'Transporter ID', mono: true },
   { id: 'status', header: 'Status' },
+  { id: 'position', header: 'Position' },
   { id: 'tenure', header: 'Lifetime Routes', align: 'center' },
   { id: 'vans', header: 'Vans' },
   { id: 'id_expiration', header: 'ID Expires' },

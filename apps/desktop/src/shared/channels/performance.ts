@@ -1,4 +1,4 @@
-// Weekly performance: bringing in the exports, the Drivers / Reports / Directory / Imports tabs,
+// Weekly performance: bringing in the exports, the Scorecards page's Performance / Reports / Imports tabs,
 // the PDF reports, emailing them, and the Dashboard. The reading, the numbers and the files all
 // happen in the main process; a page only sees rows, counts and words. A page never names a
 // place on the computer: folders are chosen in the main process's own window and remembered
@@ -13,7 +13,6 @@ import type {
   GenerateOutcome,
   PerfComplianceRow,
   PerfDashboardView,
-  PerfDirectoryRow,
   PerfDriversView,
   PerfImportCard,
   PerfImportSummary,
@@ -71,8 +70,6 @@ export const performanceChannels = [
     input: shape({ transporterId, range, metricType: nullable(filled(60)) }),
     result: as<SafetyEventView[]>(),
   }),
-  /** The Directory tab: everyone on the driver list with how to reach them. */
-  defineQuery('performance:directory', { input: nothing, result: as<PerfDirectoryRow[]>() }),
   /** The thresholds table. */
   defineQuery('performance:thresholds', { input: nothing, result: as<PerfThresholdRow[]>() }),
   /** The ID-expiry list, worked out for today with the window from Settings. */

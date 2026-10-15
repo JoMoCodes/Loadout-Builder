@@ -1,6 +1,7 @@
 // The Associates page, driven in a real browser on the stand-in bridge: the list and its colours,
-// the filters, bringing the list in (and being asked before it is replaced), the Tenured Workforce
-// file, Lifetime Routes, and clearing. The rules are proved by the core's tests.
+// the filters, copying an email address or phone number, bringing the list in (and being asked
+// before it is replaced), the Tenured Workforce file, Lifetime Routes, and clearing. The rules are
+// proved by the core's tests.
 
 import { expect, test, type Page } from '@playwright/test';
 import {
@@ -25,9 +26,19 @@ const tab = (page: Page, id: string) => page.getByTestId(`associates-tab-${id}`)
 const dialog = (page: Page, name: string) => page.locator(`dialog[data-dialog="${name}"]`);
 const row = (page: Page, text: string) => page.locator('[role="row"]', { hasText: text });
 
+/** What the page copied, oldest first (the stand-in clipboard is installed by `openLoaded`). */
+const copied = (page: Page) =>
+  page.evaluate(() => (window as unknown as { __copied: string[] }).__copied);
+
 const PEOPLE = () => [
   associate(CARMEN, {
-    associate: { idExpiration: '2026-09-30', qualifications: ['EDV', 'DOT'], tenure: 158 },
+    associate: {
+      idExpiration: '2026-09-30',
+      qualifications: ['EDV', 'DOT'],
+      tenure: 158,
+      email: 'driver076@example.com',
+      personalPhone: '4885550141',
+    },
     idState: 'expiring',
     daysUntilIdExpiry: 19,
     onRoster: true,
@@ -39,6 +50,7 @@ const PEOPLE = () => [
       status: 'INACTIVE',
       qualifications: ['Step Van'],
       tenure: 0,
+      workPhone: '+17535550146',
     },
     idState: 'expired',
     daysUntilIdExpiry: -41,
@@ -77,6 +89,19 @@ const LOADED = () => ({
 });
 
 async function openLoaded(page: Page) {
+  // The page copies with the clipboard; the test reads what it copied.
+  await page.addInitScript(() => {
+    const w = window as unknown as { __copied: string[] };
+    w.__copied = [];
+    Object.defineProperty(navigator, 'clipboard', {
+      value: {
+        writeText: async (text: string) => {
+          w.__copied.push(text);
+        },
+      },
+      configurable: true,
+    });
+  });
   await openPage(page, 'associates', { snapshot: LOADED() });
 }
 
@@ -89,6 +114,8 @@ test('an empty list says what to import, and offers both files', async ({ page }
   await expect(page.getByTestId('import-associates')).toBeVisible();
   await expect(page.getByTestId('import-tenure')).toBeVisible();
   await expect(page.getByTestId('clear-associates')).toBeVisible();
+  await expect(page.getByTestId('copy-email')).toBeVisible();
+  await expect(page.getByTestId('copy-phone')).toBeVisible();
 });
 
 test('shows the old columns, the counts, and the ID state as a chip with words', async ({
@@ -110,6 +137,7 @@ test('shows the old columns, the counts, and the ID state as a chip with words',
     'Name',
     'Transporter ID',
     'Status',
+    'Position',
     'Lifetime Routes',
     'Vans',
     'ID Expires',
@@ -131,6 +159,7 @@ test('shows the old columns, the counts, and the ID state as a chip with words',
   );
   await expect(carmen).toHaveAttribute('data-tone', 'warn');
   await expect(carmen.locator('[data-col-id="tenure"]')).toHaveText('158');
+  await expect(carmen.locator('[data-col-id="position"]')).toHaveText('Delivery Associate');
   await expect(carmen.locator('[data-col-id="on_loadout"]')).toHaveText('Yes');
   await expect(carmen.locator('[data-col-id="qualifications"]')).toHaveText('EDV, DOT');
 
@@ -202,6 +231,58 @@ test('filters by status, one qualification, the load out, and the search box', a
 
   await page.getByRole('searchbox', { name: 'Search this table' }).fill('zane');
   await expect(page.getByText('Showing 1 of 4')).toBeVisible();
+  // Emails and phone numbers are searched too.
+  await page.getByRole('searchbox', { name: 'Search this table' }).fill('driver076');
+  await expect(page.getByText('Showing 1 of 4')).toBeVisible();
+  await expect(rowsOf(page).first()).toContainText(CARMEN.name);
+  await page.getByRole('searchbox', { name: 'Search this table' }).fill('+17535550146');
+  await expect(rowsOf(page).first()).toContainText(BARRETT.name);
+});
+
+test('Copy email and Copy phone copy the picked driver’s details', async ({ page }) => {
+  await openLoaded(page);
+  await expect(page.getByTestId('associates-current')).toHaveText(
+    'Click a driver, then copy their details.',
+  );
+  await page.getByTestId('copy-email').click();
+  await expect(status(page)).toHaveText('Pick a driver in the table first.');
+
+  await row(page, CARMEN.name).locator('[role="gridcell"][data-col-id="name"]').click();
+  await expect(page.getByTestId('associates-current')).toHaveText(`${CARMEN.name} is picked.`);
+  await page.getByTestId('copy-email').click();
+  await expect(status(page)).toHaveText(`Copied the email address for ${CARMEN.name}.`);
+  await page.getByTestId('copy-phone').click();
+  await expect(status(page)).toHaveText(`Copied the phone number for ${CARMEN.name}.`);
+  expect(await copied(page)).toEqual(['driver076@example.com', '4885550141']);
+
+  // No email on file: it says so, and copies nothing. The work phone stands in for a personal one.
+  await row(page, BARRETT.name).locator('[role="gridcell"][data-col-id="name"]').click();
+  await page.getByTestId('copy-email').click();
+  await expect(status(page)).toHaveText(`There is no email address on file for ${BARRETT.name}.`);
+  await page.getByTestId('copy-phone').click();
+  await expect(status(page)).toHaveText(`Copied the phone number for ${BARRETT.name}.`);
+  expect(await copied(page)).toEqual(['driver076@example.com', '4885550141', '+17535550146']);
+});
+
+test('right-click copies too, and a missing address is greyed out', async ({ page }) => {
+  await openLoaded(page);
+  await row(page, BARRETT.name)
+    .locator('[role="gridcell"][data-col-id="name"]')
+    .click({ button: 'right' });
+  await page.getByRole('menuitem', { name: 'Copy phone number' }).click();
+  expect(await copied(page)).toEqual(['+17535550146']);
+
+  await row(page, COLTON.name)
+    .locator('[role="gridcell"][data-col-id="name"]')
+    .click({ button: 'right' });
+  await expect(page.getByRole('menuitem', { name: 'Copy email address' })).toHaveAttribute(
+    'data-disabled',
+    '',
+  );
+  await expect(page.getByRole('menuitem', { name: 'Copy phone number' })).toHaveAttribute(
+    'data-disabled',
+    '',
+  );
 });
 
 test('bringing the list in on an empty app does not ask, and says how many drivers were found', async ({

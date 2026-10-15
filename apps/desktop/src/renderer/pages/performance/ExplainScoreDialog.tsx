@@ -2,7 +2,7 @@
 // newest first; a week picker shows any other), with a small chart of the points lost each week.
 // Each metric's score counts for its weight, so it earns score x weight / 100 points and loses
 // the rest of its weight. The metric losing the most comes first; it is the same one the
-// Dashboard's "Who needs a word" list names. Opened from the Drivers tab and the Dashboard.
+// Dashboard's "Who needs a word" list names. Opened from the Performance tab and the Dashboard.
 
 import { useEffect, useMemo, useState } from 'react';
 import type { PerfScoreExplanation, WeekRange } from '../../../shared/performance';

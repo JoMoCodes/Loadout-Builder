@@ -1,4 +1,4 @@
-// The weeks the Drivers tab (and the reports) work on: a From and a To list over every week
+// The weeks the Performance tab (and the reports) work on: a From and a To list over every week
 // brought in, and quick picks. The choice is remembered between runs (settings.performance).
 
 import type { WeekRange } from '../../../shared/performance';
