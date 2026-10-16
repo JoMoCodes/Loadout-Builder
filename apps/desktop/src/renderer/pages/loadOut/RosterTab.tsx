@@ -907,7 +907,8 @@ export function RosterTab({
       onDropped={(token) => void importSheet(token)}
       onProblem={dropProblem}
     >
-      <div className="flex min-h-0 flex-1 flex-col" data-tab-panel="roster">
+      {/* On a short screen the tab scrolls, so the table never shrinks to nothing. */}
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto" data-tab-panel="roster">
         <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-2 border-b border-line bg-surface px-6 py-3">
           <div className="min-w-0">
             <h2 className="text-lg font-semibold" data-testid="roster-title">
@@ -992,7 +993,7 @@ export function RosterTab({
           onClearRoute={() => void clearRouteData()}
           onClearDwp={() => void clearDwpData()}
         />
-        <div className="min-h-0 flex-1">
+        <div className="min-h-[16rem] flex-1">
           <DataGrid
             key={gridKey}
             view="roster"

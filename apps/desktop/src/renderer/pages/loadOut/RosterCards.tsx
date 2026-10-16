@@ -45,22 +45,29 @@ function Card({
   disabled,
   extra,
 }: CardProps) {
+  // Kept short (two lines of words) so the roster table below keeps its room on a small screen.
   const body = (
     <>
-      <span className="text-xs font-semibold tracking-wider text-muted uppercase">{label}</span>
-      {count !== undefined ? (
-        <span className="text-xl font-bold tabular-nums">
-          {count} <span className="text-sm font-normal text-muted">{unit}</span>
-        </span>
-      ) : null}
+      <span className="flex items-baseline gap-2">
+        <span className="text-xs font-semibold tracking-wider text-muted uppercase">{label}</span>
+        {count !== undefined ? (
+          <span className="font-bold whitespace-nowrap tabular-nums">
+            {count} <span className="text-sm font-normal text-muted">{unit}</span>
+          </span>
+        ) : null}
+      </span>
       <span
-        className={cn('min-w-0 text-sm break-all', empty ? 'text-muted' : 'font-mono text-muted')}
+        className={cn(
+          'w-full min-w-0 truncate text-sm',
+          empty ? 'text-muted' : 'font-mono text-muted',
+        )}
+        title={line}
         data-testid={`${testId}-line`}
       >
         {line}
       </span>
       <span
-        className="absolute top-2 right-3 text-xs font-medium text-accent"
+        className="absolute top-1.5 right-3 text-xs font-medium text-accent"
         data-testid={`${testId}-hint`}
       >
         {hint}
@@ -68,23 +75,24 @@ function Card({
     </>
   );
   const frame = cn(
-    'relative flex min-w-0 flex-col items-start gap-0.5 rounded-lg border bg-surface p-3 pt-6 text-left',
+    'relative flex min-w-0 items-end gap-2 rounded-lg border bg-surface px-3 pt-5 pb-2 text-left',
     empty ? 'border-dashed border-line-strong' : 'border-line',
   );
+  const inner = 'flex min-w-0 flex-1 flex-col items-start gap-0.5 text-left';
   return (
-    <div className={cn(frame, 'gap-2')} data-testid={testId}>
+    <div className={frame} data-testid={testId}>
       {onOpen ? (
         <button
           type="button"
           onClick={onOpen}
           disabled={disabled}
-          className="flex w-full min-w-0 flex-col items-start gap-0.5 text-left disabled:cursor-not-allowed disabled:opacity-60"
+          className={cn(inner, 'disabled:cursor-not-allowed disabled:opacity-60')}
           data-testid={`${testId}-open`}
         >
           {body}
         </button>
       ) : (
-        <div className="flex w-full min-w-0 flex-col items-start gap-0.5">{body}</div>
+        <div className={inner}>{body}</div>
       )}
       {extra}
     </div>
@@ -114,7 +122,7 @@ export function RosterCards({
   const drivers = snapshot.roster.rows.length;
   return (
     <div
-      className="grid grid-cols-[repeat(auto-fit,minmax(14rem,1fr))] gap-2 border-b border-line bg-app px-6 py-3"
+      className="grid grid-cols-[repeat(auto-fit,minmax(14rem,1fr))] gap-2 border-b border-line bg-app px-6 py-2"
       data-testid="roster-cards"
     >
       <Card

@@ -483,12 +483,20 @@ export async function otherPagesChecks({ app, page, check, assert, until, ask, g
         await page.click('[data-testid="skip-to-dwp"]');
         await choose(day.dwp);
         await page.click('[data-testid="choose-dwp"]');
-        await until(async () => {
-          const no = page.locator('[data-testid="confirm-no"]');
-          if (await no.isVisible().catch(() => false)) await no.click();
-          const open = await page.locator('dialog[open]').count();
-          return open === 0 && (await snapshot()).dwp.set.rows.length > 0;
-        }, 'the DWP sheet did not come in');
+        // The sheet is saved before the day question opens, so wait for the status line that
+        // says how it ended (put on the roster, or left off), not just for the sheet.
+        const ended = /^(DWP: |DWP data left alone|Imported \d+ routes)/;
+        await until(
+          async () => {
+            const no = page.locator('[data-testid="confirm-no"]');
+            if (await no.isVisible().catch(() => false)) await no.click();
+            const open = await page.locator('dialog[open]').count();
+            return open === 0 && ended.test(await text(status('load-out')));
+          },
+          'the DWP step did not end with a word on the status line',
+          20_000,
+        );
+        assert((await snapshot()).dwp.set.rows.length > 0, 'the DWP sheet did not come in');
         await page.click('[data-tab-button="dwp"]');
         const metric = await text('[data-testid="dwp-metric"]');
         assert(metric === `${inputs.dwp.row_count} routes`, `the DWP header said "${metric}"`);

@@ -107,7 +107,10 @@ async function check(name, work) {
     const detail = await work();
     pass(name, detail ?? '');
   } catch (error) {
-    const detail = String(error.message ?? error).split('\n')[0];
+    const lines = String(error.message ?? error).split('\n');
+    // A timed-out click says only "Timeout"; its call log names what it was waiting for.
+    const waiting = lines.find((line) => /waiting for/.test(line))?.trim();
+    const detail = waiting ? `${lines[0]} (${waiting})` : lines[0];
     results.push({ ok: false, name, detail });
     console.log(`  FAIL ${name} - ${detail}`);
   }
