@@ -457,7 +457,7 @@ export function describeSource(dataset: RouteDataSet): string[] {
 
   const lines = [`${dataset.rows.length} rows  -  brings ${brings.join(', ')}`, times.join('   ')];
   if (unassignedTimes(dataset).length > 0)
-    lines.push('Some rows have no PAD - assign them on the Route Data page.');
+    lines.push('Some rows have no PAD - use Assign PADs on its tab on Load Out.');
   return lines;
 }
 

@@ -118,14 +118,20 @@ try {
   await app.evaluate(({ dialog }, file) => {
     dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [file] });
   }, routesFile);
-  await goTo('route-data');
-  await page.click('[data-testid="import-routes"]');
+  // Import Route Data on the Roster: the big Routes box, then the PAD and DWP questions, which
+  // are closed unanswered. The picture is of the Routes tab it leaves behind.
+  await goTo('load-out');
+  await page.click('[data-page="load-out"] [data-tab-button="roster"]');
+  await page.click('[data-action="import-route-data"]');
+  await page.click('[data-testid="choose-routes"]');
   await page.waitForTimeout(1500);
-  for (let i = 0; i < 3 && (await page.locator('dialog[open]').count()) > 0; i++) {
+  for (let i = 0; i < 6 && (await page.locator('dialog[open]').count()) > 0; i++) {
     await page.keyboard.press('Escape');
     await page.waitForTimeout(400);
   }
-  await shot('route-data');
+  await page.click('[data-page="load-out"] [data-tab-button="routes"]');
+  await page.waitForSelector('[data-page="load-out"] [data-testid="data-grid"]');
+  await shot('load-out-routes');
 
   await page.evaluate(() => window.localStorage.setItem('loadout.load-out-tab', 'roster'));
   await goTo('load-out');

@@ -55,12 +55,9 @@ function problems(goTo: (id: PageId) => void): Problem[] {
             would be for different routes.
           </li>
           <li>
-            Download the DWP sheet for the roster's day. On {go('route-data', 'Route Data')}, open
-            the <strong>DWP</strong> tab and click <strong>Import DWP</strong> again. It replaces
-            the old one.
-          </li>
-          <li>
-            Then click <strong>Bring Over DWP</strong> on {go('load-out', 'Load Out')}.
+            Download the DWP sheet for the roster's day. On {go('load-out', 'Load Out')}, click{' '}
+            <strong>Import Route Data</strong>, then <strong>Skip to DWP Data</strong>, and pick it.
+            It replaces the old sheet and puts the new numbers on the roster.
           </li>
           <li>
             Only click <strong>Yes</strong> on the warning if you are sure the sheet is right, for
@@ -132,7 +129,7 @@ function problems(goTo: (id: PageId) => void): Problem[] {
           <p>Also check:</p>
           <ul>
             <li>
-              Drivers with no route get no van. Click <strong>Bring Over Route Data</strong> first.
+              Drivers with no route get no van. Click <strong>Import Route Data</strong> first.
             </li>
             <li>
               Grounded vans and vans marked <strong>Manual</strong> are never given out by Assign
@@ -152,7 +149,7 @@ function problems(goTo: (id: PageId) => void): Problem[] {
           <li>
             Check you are on the right page for that file. The load-out sheet goes on Load Out, the
             driver list on Associates, the vans on Vehicle Data, and the route files and the DWP
-            sheet on Route Data.
+            sheet through Import Route Data on the Roster.
           </li>
           <li>If the file is open in Excel, close it there and try again.</li>
           <li>
@@ -250,8 +247,9 @@ function problems(goTo: (id: PageId) => void): Problem[] {
             <strong>Driver list</strong> card must say how many drivers are in it.
           </li>
           <li>
-            If one is missing, bring it in: the Routes file on {go('route-data', 'Route Data')} and
-            the driver list on {go('associates', 'Associates')}.
+            If one is missing, bring it in: on the <strong>Route data</strong> card, click{' '}
+            <strong>Use the Roster&apos;s Route Data</strong> or <strong>Import a new file</strong>,
+            and the driver list on {go('associates', 'Associates')}.
           </li>
           <li>
             If the driver list says <strong>Over a month old</strong>, download a fresh one from
@@ -369,7 +367,10 @@ function problems(goTo: (id: PageId) => void): Problem[] {
           <li>
             Or open <strong>History</strong> and click <strong>New run</strong> to start over.
           </li>
-          <li>The Routes file is not brought in here. Bring in the right one on Route Data.</li>
+          <li>
+            The Routes file is separate. Click <strong>Import a new file</strong> on the{' '}
+            <strong>Route data</strong> card to bring in the right one.
+          </li>
         </ul>
       ),
     },
@@ -500,15 +501,18 @@ export function HowToUsePage({
               load-out sheet.
             </li>
             <li>
-              Open {go('route-data', 'Route Data')}. Click <strong>Import Routes</strong> and pick
-              the Routes file. Click <strong>Assign PADs</strong> and put each time on its PAD.
+              Click <strong>Import Route Data</strong>. Pick the Routes file (the big box), then put
+              each time on its PAD. Need a different file? Click{' '}
+              <strong>Use a different file</strong>.
             </li>
             <li>
-              Using a DWP sheet? On the <strong>DWP</strong> tab, click <strong>Import DWP</strong>.
+              It then asks <strong>Do you want to import DWP Data?</strong> Pick the DWP sheet, or
+              click <strong>Not today</strong>. You land back on the roster.
             </li>
             <li>
-              Back on {go('load-out', 'Load Out')}, click <strong>Bring Over Route Data</strong>.
-              Wave times, PADs and route codes go onto the roster. The DWP numbers come over too.
+              Wave times, PADs and route codes are now on the roster, and the DWP numbers too. The
+              cards above the roster show each file. Click a card to see that file on its own tab.
+              To start again, click <strong>Clear Route Data</strong>.
             </li>
             <li>
               Click <strong>Assign Vans</strong>. A window shows who got which van, and anyone who
@@ -544,8 +548,8 @@ export function HowToUsePage({
             Every day, the route sheet PDF has one page for each route. The app works out which
             driver each page belongs to, shows you the email that driver will get, and sends it. It
             matches by Transporter ID, and it never guesses. The driver list is the one on{' '}
-            {go('associates', 'Associates')}, and the Routes file is the one on{' '}
-            {go('route-data', 'Route Data')}, so you don't bring them in twice. The{' '}
+            {go('associates', 'Associates')}, and the route data is the one on the Roster (or a new
+            file you bring in here), so you don't bring them in twice. The{' '}
             <strong>Route Sheets</strong> page has three tabs: <strong>Distribute</strong>,{' '}
             <strong>Sheets</strong> and <strong>History</strong>.
           </p>
@@ -578,10 +582,10 @@ export function HowToUsePage({
               <strong>?</strong> next to <strong>Bring in the route sheet PDF</strong> shows where.
             </li>
             <li>
-              Bring in today&apos;s <strong>Routes</strong> file on {go('route-data', 'Route Data')}
-              : click <strong>Import Routes</strong>. You may have done this already for the roster.
-              The PADs come from there too: click <strong>Assign PADs</strong> and put each time on
-              its PAD. Each route gets the PAD you gave its dispatch time.
+              Check the <strong>Route data</strong> card. Click{' '}
+              <strong>Use the Roster&apos;s Route Data</strong> to use the file you brought in on{' '}
+              {go('load-out', 'Load Out')}, or <strong>Import a new file</strong> (Routes works
+              best). Each route gets the PAD you gave its dispatch time.
             </li>
             <li>
               Open {go('route-sheets', 'Route Sheets')}. Click{' '}
@@ -895,8 +899,8 @@ export function HowToUsePage({
               red once it has run out.
             </li>
             <li>
-              On Route Data, amber rows are drivers who are not in your driver list. Grey rows have
-              no PAD yet.
+              On a route file's tab on Load Out, amber rows are drivers who are not in your driver
+              list. Grey rows have no PAD yet.
             </li>
             <li>
               A blue bar at the top of the window that says <strong>Demo mode is on</strong> means

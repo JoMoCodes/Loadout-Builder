@@ -85,7 +85,6 @@ const EXPECTED_PAGES = [
   'dashboard',
   'load-out',
   'route-sheets',
-  'route-data',
   'vehicle-data',
   'associates',
   'scorecards',
@@ -809,7 +808,7 @@ try {
 
       await bringIn('routes', join(fixtures, 'routes', day.routes.file));
       // The harness pins each export's dispatch times to PADs 1, 2, 3 in clock order; the same
-      // pins are set below, the way the Route Data page sets them.
+      // pins are set below, the way Assign PADs on each file's tab sets them.
       const routesByTime = JSON.parse(
         readFileSync(join(expectedDir, PARITY_DAY, 'routes.json'), 'utf8'),
       ).scenarios['routes/by_time'];
@@ -822,21 +821,17 @@ try {
         const pinned = await ask('routeData:set-pads', { kind, pads: sources[kind].pads });
         assert(pinned.ok, `the ${kind} PADs were not set`);
       }
-      await bringIn('dwp', join(fixtures, 'dwp', day.dwp.file));
+      // The roster takes its route data from Routes, the way Import Route Data puts it on.
+      const brought = await ask('loadOut:bring-over-route-data', { kind: 'routes' });
+      assert(brought.ok, 'the route data did not come over');
 
-      // Bring Over Route Data: three exports are in, so it asks which. The harness takes Routes.
-      await page.click('[data-action="bring-over-route-data"]');
-      const source = page.locator('[data-testid="source-dialog"]');
-      await source.waitFor({ state: 'visible', timeout: 5_000 });
-      assert(
-        (await source.locator('input[type="radio"]').count()) === 3,
-        'not three exports offered',
-      );
-      await source.locator('input[value="routes"]').check();
-      await source.getByRole('button', { name: 'Bring Over' }).click();
-      // Notes come first (who route data added, and needs a look). Then the DWP: this day's
-      // sheet is named like "XXXX DWP 9.2", with no year, so the app cannot tell its day and
-      // must ask before bringing it over.
+      // Import Route Data, straight to its DWP question. This day's sheet is named like
+      // "XXXX DWP 9.2", with no year, so the app cannot tell its day and must ask before
+      // bringing it over.
+      await page.click('[data-action="import-route-data"]');
+      await page.locator('[data-testid="skip-to-dwp"]').click({ timeout: 5_000 });
+      await answerFileWindow(join(fixtures, 'dwp', day.dwp.file));
+      await page.locator('[data-testid="choose-dwp"]').click({ timeout: 5_000 });
       const question = page.locator('[data-testid="confirm-dialog"]');
       await until(async () => {
         if (await question.isVisible().catch(() => false)) return true;

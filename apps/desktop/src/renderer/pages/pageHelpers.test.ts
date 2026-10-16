@@ -313,7 +313,7 @@ describe('the DWP tab', () => {
       'the roster carries no route codes yet   1 route code(s) listed twice',
     );
     expect(dwpImportedMessage(snap, '/a/b/DWP_X.xlsx')).toBe(
-      "Imported 2 routes from DWP_X.xlsx. No driver has a route code yet - use 'Bring Over Route Data' on the Load Out page first. Listed twice: cx 1 - the first line is used.",
+      'Imported 2 routes from DWP_X.xlsx. No driver has a route code yet - use Import Route Data on the Roster first. Listed twice: cx 1 - the first line is used.',
     );
     expect(dwpImportedMessage(snapshotWith({ dwp: snap.dwp }), 'DWP_X.xlsx')).toContain(
       'No roster loaded to match them against yet.',

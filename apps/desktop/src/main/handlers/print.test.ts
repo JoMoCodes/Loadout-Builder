@@ -372,7 +372,7 @@ describe('the two fixed exports', () => {
     expect(sheet!.cells.filter((c) => c.address.startsWith('B')).length).toBe(view.rows.length + 1);
   });
 
-  it('Export with DWP points at Bring Over DWP when nobody carries bags, OVS or staging', async () => {
+  it('Export with DWP stops when nobody carries bags, OVS or staging', async () => {
     const state = rig.host.state;
     for (const row of state.roster.rows) {
       row.bags = '';

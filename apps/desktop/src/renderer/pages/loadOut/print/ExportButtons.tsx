@@ -36,10 +36,9 @@ export function ExportButtons({ onStatus }: ExportButtonsProps) {
       return asker.tell(
         'Nothing to put in those columns',
         'No driver is carrying staging, bags or OVS, so all three would print blank.\n\n' +
-          "Use 'Bring Over DWP' first - that is what puts them on the roster." +
-          (done.reason === 'no-dwp-sheet'
-            ? '\n\nThere is no DWP sheet loaded either; import one on Route Data > DWP.'
-            : ''),
+          'Bring in the DWP sheet with Import Route Data on the Roster first - that is what ' +
+          'puts them on the roster.' +
+          (done.reason === 'no-dwp-sheet' ? '\n\nThere is no DWP sheet loaded yet.' : ''),
       );
     }
     const tail = withDwp ? ` ${done.carryingDwp} of them with bags, OVS and staging.` : '';

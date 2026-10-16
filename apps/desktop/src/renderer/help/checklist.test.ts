@@ -226,9 +226,9 @@ describe("what each step's button does", () => {
     expect(stepAction('sheet', nothing)).toBe('import-loadout');
   });
 
-  it('brings in a route export first, then brings it over', () => {
+  it('imports route data on the Roster, which puts it on the roster too', () => {
     expect(stepAction('route-data', nothing)).toBe('import-routes');
-    expect(stepAction('route-data', { ...nothing, routeExportRows: 12 })).toBe('bring-over');
+    expect(stepAction('route-data', { ...nothing, routeExportRows: 12 })).toBe('import-routes');
   });
 
   it('gives out vans first, then opens the Print tab', () => {

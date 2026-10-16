@@ -137,30 +137,18 @@ export const WHERE_TO_GET: Record<StepId, Note> = {
       {
         text: (
           <>
-            In this app, open <strong>Route Data</strong>, click <strong>Import Routes</strong> and
-            pick the file. Then click <strong>Assign PADs</strong> and put each time on its PAD.
+            In this app, open <strong>Load Out</strong> and click <strong>Import Route Data</strong>
+            . Pick the Routes file. When asked, put each time on its PAD.
           </>
         ),
         shot: {
-          name: 'route-data',
-          caption: 'The Route Data page, with Import Routes and Assign PADs',
+          name: 'load-out-routes',
+          caption: 'The Routes tab on Load Out, after Import Route Data',
         },
       },
       {
-        text: (
-          <>
-            Using a DWP sheet too? Open the <strong>DWP</strong> tab and click{' '}
-            <strong>Import DWP</strong>. Its name starts with DWP.
-          </>
-        ),
+        text: <>Using a DWP sheet too? The next question asks for it. Its name starts with DWP.</>,
         toCome: { name: 'dwp-download', what: 'where the DWP sheet is downloaded' },
-      },
-      {
-        text: (
-          <>
-            Back on <strong>Load Out</strong>, click <strong>Bring Over Route Data</strong>.
-          </>
-        ),
       },
     ],
   },

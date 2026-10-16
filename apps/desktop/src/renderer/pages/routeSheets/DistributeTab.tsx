@@ -124,7 +124,7 @@ export function DistributeTab({ state, dist, snapshot, messages, openSheet }: Di
         <h2 className="m-0 text-[1.15rem] font-semibold">Start a run</h2>
         <p className="m-0 mt-2 text-sm">
           Bring in today&apos;s route sheet PDF. The drivers come from the Associates page and the
-          routes from the Route Data page.
+          routes from the Route data card above.
         </p>
       </div>
     );
@@ -313,14 +313,15 @@ function WavePads({ dist, messages }: { dist: RouteSheetsDistributionView; messa
     noPad.length > 0 ? (
       <p className="m-0 mt-1 text-sm text-warn" data-testid="route-sheets-pads-missing">
         {plural(noPad.length, 'wave')} {noPad.length === 1 ? 'has' : 'have'} no pad yet. Set{' '}
-        {noPad.length === 1 ? 'it' : 'them'} with Assign PADs on the Route Data page.
+        {noPad.length === 1 ? 'it' : 'them'} with Assign PADs on the route file&apos;s tab on Load
+        Out.
       </p>
     ) : null;
   if (dist.typedPadWaves.length === 0) {
     return (
       <>
         <p className="m-0 mt-3 text-sm text-muted" data-testid="route-sheets-pads-note">
-          The pad for each wave comes from the Route Data page.
+          The pad for each wave comes from the route file&apos;s PADs on Load Out.
         </p>
         {missing}
       </>

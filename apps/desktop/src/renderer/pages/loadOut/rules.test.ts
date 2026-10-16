@@ -423,7 +423,7 @@ describe('bringing data over', () => {
     expect(describeSource(set)).toEqual([
       '2 rows  -  brings dispatch time, route code, service type, PAD',
       '9:50am -> PAD 1 (1)   10:20am -> no PAD yet (1)',
-      'Some rows have no PAD - assign them on the Route Data page.',
+      'Some rows have no PAD - use Assign PADs on its tab on Load Out.',
     ]);
     // The schedule names no routes, so it brings only the time and the PAD.
     const schedule = createRouteDataSet({

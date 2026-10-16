@@ -69,6 +69,7 @@ import type {
   SentHow,
 } from '../../shared/routeSheets';
 import { ChannelRefusal } from '../channels';
+import type { RouteSheetsRouteData } from '../../shared/settings';
 import type { EmailAccount } from '../mail/emailAccount';
 import {
   describeConnectProblem,
@@ -129,6 +130,8 @@ export interface RouteSheetsHostOptions {
   lastRun?: LastRunMemory;
   /** The subject and opening lines of the emails, as set now (AppSettings.routeSheetsEmail). */
   wording?: () => RouteSheetWording;
+  /** Which route data to match with, as set now (AppSettings.routeSheetsRouteData). */
+  routeDataChoice?: () => RouteSheetsRouteData;
   /** Counts and codes only. */
   log?: (message: string) => void;
 }
@@ -278,11 +281,21 @@ export class RouteSheetsHost {
   // ---- the matcher's input, from the app's own data ------------------------------------------
 
   /**
-   * The route data the matcher reads: the Routes export if it is loaded, else the Itineraries,
-   * else the Weekly Schedule, when it carries Transporter IDs per route code. Null when none is.
+   * The route data the matcher reads: the file chosen on the page (the roster's by default), when
+   * it is loaded and carries Transporter IDs per route code. Otherwise the Routes export if it is
+   * loaded, else the Itineraries, else the Weekly Schedule, the same way. Null when none is.
    */
   routeSource(): RouteSource | null {
     const { state } = this.options;
+    const choice = this.options.routeDataChoice?.() ?? 'roster';
+    const wanted = choice === 'roster' ? state.roster.routeSource : choice;
+    const chosen = ORDER.find((kind) => kind === wanted);
+    if (chosen) {
+      const set = state.routeSet(chosen);
+      if (set.rows.length > 0 && (chosen === ROUTE_ROUTES || hasRouteDrivers(set))) {
+        return { kind: chosen, set };
+      }
+    }
     for (const kind of ORDER) {
       const set = state.routeSet(kind);
       if (set.rows.length === 0) continue;
@@ -302,7 +315,7 @@ export class RouteSheetsHost {
     ].sort((a, b) => waveSortKey(a).localeCompare(waveSortKey(b)));
   }
 
-  /** The pad for each wave time: the Route Data page's, else the one typed for that wave. */
+  /** The pad for each wave time: the route file's PADs, else the one typed for that wave. */
   wavePads(source = this.routeSource()): Record<string, string> {
     return wavePadsFromRouteSet(this.waveTimes(), source?.set ?? null, this.run.wavePads);
   }
@@ -607,7 +620,7 @@ export class RouteSheetsHost {
     if (!unmatchedWaves([wave], this.routeSource()?.set ?? null).length) {
       throw new ChannelRefusal(
         'refused',
-        'That wave already gets its pad from the Route Data page.',
+        'That wave already gets its pad from the route file on Load Out.',
       );
     }
     const value = pad.replace(/\s+/g, ' ').trim().slice(0, 10);

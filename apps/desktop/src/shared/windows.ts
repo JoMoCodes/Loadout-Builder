@@ -12,7 +12,6 @@ export const PAGE_IDS = [
   'dashboard',
   'load-out',
   'route-sheets',
-  'route-data',
   'vehicle-data',
   'associates',
   'scorecards',
@@ -29,7 +28,6 @@ export const PAGE_LABELS: Record<PageId, string> = {
   dashboard: 'Dashboard',
   'load-out': 'Load Out',
   'route-sheets': 'Route Sheets',
-  'route-data': 'Route Data',
   'vehicle-data': 'Vehicle Data',
   associates: 'Associates',
   scorecards: 'Scorecards',
@@ -43,14 +41,22 @@ export interface TabItem {
   label: string;
 }
 
-const ROUTE_LABELS: Record<(typeof ROUTE_KINDS)[number], string> = {
+export const ROUTE_LABELS: Record<(typeof ROUTE_KINDS)[number], string> = {
   routes: 'Routes',
   itineraries: 'Itineraries',
   schedule: 'Weekly Schedule',
 };
 
+/**
+ * The Load Out tabs. The route files and the DWP sheet (brought in with Import Route Data on the
+ * Roster) have a tab each, shown only while that file is loaded.
+ */
 export const LOAD_OUT_TABS = [
   { id: 'roster', label: 'Roster' },
+  { id: 'routes', label: ROUTE_LABELS.routes },
+  { id: 'itineraries', label: ROUTE_LABELS.itineraries },
+  { id: 'schedule', label: ROUTE_LABELS.schedule },
+  { id: 'dwp', label: 'DWP' },
   { id: 'print', label: 'Print' },
   { id: 'available-vans', label: 'Available Vans' },
   { id: 'previous-roster', label: 'Previous Roster' },
@@ -68,10 +74,6 @@ export const PAGE_TABS: Record<PageId, readonly TabItem[]> = {
     { id: 'distribute', label: 'Distribute' },
     { id: 'sheets', label: 'Sheets' },
     { id: 'history', label: 'History' },
-  ],
-  'route-data': [
-    ...ROUTE_KINDS.map((kind) => ({ id: kind, label: ROUTE_LABELS[kind] })),
-    { id: 'dwp', label: 'DWP' },
   ],
   'vehicle-data': [
     { id: 'management', label: 'Vehicle Management' },
@@ -116,10 +118,12 @@ export function isTabOf(page: PageId, tab: unknown): tab is string {
  *   performance (page)          ->  Scorecards
  *   performance, tab drivers    ->  Scorecards, Performance tab
  *   previous-roster (page)      ->  Load Out, Previous Roster tab
+ *   route-data (page)           ->  Load Out (its tabs, Routes to DWP, are Load Out tabs now)
  */
 const OLD_PAGES: Record<string, WindowTarget> = {
   performance: { page: 'scorecards' },
   'previous-roster': { page: 'load-out', tab: 'previous-roster' },
+  'route-data': { page: 'load-out' },
 };
 
 const OLD_TABS: Partial<Record<PageId, Record<string, string>>> = {

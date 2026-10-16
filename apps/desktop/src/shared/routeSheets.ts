@@ -43,7 +43,7 @@ export const EMPTY_ROUTE_SHEETS: RouteSheetsCounts = {
   runs: 0,
 };
 
-/** Which route export the matcher reads, of the ones on the Route Data page. */
+/** Which route export the matcher reads, of the ones brought in with Import Route Data. */
 export type RouteDataKindInUse = 'routes' | 'itineraries' | 'schedule';
 
 /** The open run. */

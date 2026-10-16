@@ -150,8 +150,8 @@ test('the route sheet problems are folded up with the others', async ({ page }) 
 test('a link inside a problem opens that page', async ({ page }) => {
   const dwp = page.locator('details[data-problem="wrong-day-dwp"]');
   await dwp.locator('summary').click();
-  await dwp.getByRole('button', { name: 'Route Data' }).click();
-  await expect(page.locator('[data-page="route-data"]')).toBeVisible();
+  await dwp.getByRole('button', { name: 'Load Out' }).click();
+  await expect(page.locator('[data-page="load-out"]')).toBeVisible();
 });
 
 test('the colours part shows the chips with their words', async ({ page }) => {

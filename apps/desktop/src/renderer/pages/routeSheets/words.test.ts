@@ -14,9 +14,9 @@ import {
 } from './words';
 
 describe('the Route Sheets page’s words', () => {
-  it('names the route data it reads, and asks for the Routes export when none is loaded', () => {
+  it('names the route data it reads, and offers the two ways in when none is loaded', () => {
     expect(routeDataWords(null)).toMatch(
-      /^No Routes export is loaded\. Bring in the Routes export/,
+      /^No route data yet\. Use the Roster's Route Data, or import a new file/,
     );
     expect(routeDataWords({ kind: 'routes', label: 'Routes', fileName: 'Routes_XXX1.xlsx' })).toBe(
       'Matching with the Routes export: Routes_XXX1.xlsx.',

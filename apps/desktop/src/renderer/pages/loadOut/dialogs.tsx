@@ -11,7 +11,7 @@ import {
   type KeepVans,
 } from '@loadout/core';
 import { useMemo, useState } from 'react';
-import type { RosterRowView, RouteSetView } from '../../../shared/snapshot';
+import type { RosterRowView } from '../../../shared/snapshot';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Modal } from './Modal';
@@ -19,7 +19,6 @@ import { PickTable, type PickColumn } from './PickTable';
 import {
   assignHeading,
   assignLines,
-  describeSource,
   holdingText,
   linkCandidates,
   type AssignLine,
@@ -388,61 +387,6 @@ export function KeepVansDialog({ byHand, fromSheet, remember, onAnswer }: KeepVa
       {remember ? (
         <Subtitle text="Your answer is remembered for next time. Change it in Load Out settings, next to the page title." />
       ) : null}
-    </Modal>
-  );
-}
-
-// ------------------------------------------------------------ the source
-
-interface SourceDialogProps {
-  sets: readonly RouteSetView[];
-  current: string;
-  onAnswer: (kind: string | null) => void;
-}
-
-/** Which export the roster takes route data from (`SourceDialog`). */
-export function SourceDialog({ sets, current, onAnswer }: SourceDialogProps) {
-  const [choice, setChoice] = useState(
-    sets.some((set) => set.kind === current) ? current : (sets[0]?.kind ?? ''),
-  );
-  return (
-    <Modal
-      title="Which export should the roster take?"
-      onCancel={() => onAnswer(null)}
-      onEnter={() => onAnswer(choice)}
-      testId="source-dialog"
-      footer={
-        <>
-          <Button onClick={() => onAnswer(null)}>Cancel</Button>
-          <Button variant="primary" onClick={() => onAnswer(choice)}>
-            Bring Over
-          </Button>
-        </>
-      }
-    >
-      <Subtitle text="Dispatch times differ between them - a schedule start time is not a planned departure." />
-      <fieldset className="flex flex-col gap-3 overflow-y-auto">
-        <legend className="sr-only">Route exports</legend>
-        {sets.map((set) => (
-          <label key={set.kind} className="flex flex-col gap-0.5 text-sm">
-            <span className="flex items-center gap-2 font-medium">
-              <input
-                type="radio"
-                name="route-source"
-                value={set.kind}
-                checked={choice === set.kind}
-                onChange={() => setChoice(set.kind)}
-              />
-              {set.label}
-            </span>
-            {describeSource(set).map((line, index) => (
-              <span key={index} className="pl-6 text-muted">
-                {line}
-              </span>
-            ))}
-          </label>
-        ))}
-      </fieldset>
     </Modal>
   );
 }

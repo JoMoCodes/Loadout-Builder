@@ -21,22 +21,17 @@ export const FILE_KINDS = [
 export type FileKind = (typeof FILE_KINDS)[number];
 
 /** The pages a file can be dropped on. */
-export const DROP_PAGES = [
-  'load-out',
-  'route-data',
-  'vehicle-data',
-  'associates',
-  'route-sheets',
-] as const;
+export const DROP_PAGES = ['load-out', 'vehicle-data', 'associates', 'route-sheets'] as const;
 export type DropPage = (typeof DROP_PAGES)[number];
 
 /** Which kinds of file each page takes when one is dropped on it. */
 export const DROP_KINDS: Record<DropPage, readonly FileKind[]> = {
-  'load-out': ['loadout'],
-  'route-data': ['routes', 'itineraries', 'schedule', 'dwp'],
+  // The load-out sheet on the Roster, and the route files and DWP sheet in Import Route Data.
+  'load-out': ['loadout', 'routes', 'itineraries', 'schedule', 'dwp'],
   'vehicle-data': ['vehicles'],
   associates: ['associates', 'tenure'],
-  'route-sheets': ['route-sheets'],
+  // The PDF, and a route file brought in just for the route sheets.
+  'route-sheets': ['route-sheets', 'routes', 'itineraries', 'schedule'],
 };
 
 /** How each kind of file is named to the person, and the endings it may have. */

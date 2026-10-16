@@ -443,6 +443,48 @@ describe('hand-made links', () => {
   });
 });
 
+describe('clearing route data off the roster', () => {
+  function brought(): AppState {
+    const store = new Store(':memory:', { now: () => new Date(2000, 0, 1) });
+    const st = build();
+    Object.assign(st, { store });
+    st.setPads('routes', { '10:20am': 1, '10:25am': 2 });
+    st.applyRouteData('routes');
+    st.applyDwp();
+    return st;
+  }
+
+  it('blanks what route data put on the roster and empties every route export', () => {
+    const st = brought();
+    const drivers = st.roster.rows.map((r) => r.driver);
+    const staging = st.roster.rows.map((r) => r.stagingLocation);
+    expect(st.roster.rows.some((r) => r.routes)).toBe(true);
+
+    expect(st.clearRosterRouteData({ routes: true, dwp: false })).toBeGreaterThan(0);
+
+    expect(st.roster.rows.map((r) => r.driver)).toEqual(drivers);
+    for (const row of st.roster.rows) {
+      expect([row.routes, row.waveTime, row.serviceType, row.pad]).toEqual(['', '', '', '']);
+    }
+    expect(st.roster.routeSource).toBe('');
+    expect(st.loadedRouteSources()).toEqual([]);
+    // The DWP stays when it was not asked for.
+    expect(st.roster.rows.map((r) => r.stagingLocation)).toEqual(staging);
+    expect(st.dwp.rows.length).toBeGreaterThan(0);
+  });
+
+  it('takes the DWP sheet and its columns when asked, alone or with the routes', () => {
+    const st = brought();
+    st.clearRosterRouteData({ routes: false, dwp: true });
+    expect(st.roster.rows.some((r) => r.routes)).toBe(true);
+    expect(st.loadedRouteSources()).not.toEqual([]);
+    expect(st.dwp.rows).toEqual([]);
+    for (const row of st.roster.rows) {
+      expect([row.stagingLocation, row.bags, row.ovs]).toEqual(['', '', '']);
+    }
+  });
+});
+
 describe('saved data', () => {
   it('pins links and saves new associates and the roster when route data adds someone', () => {
     const store = new Store(':memory:', { now: () => new Date(2000, 0, 1) });

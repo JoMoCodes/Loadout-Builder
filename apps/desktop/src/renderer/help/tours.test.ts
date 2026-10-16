@@ -10,7 +10,7 @@ describe('the page tours', () => {
       'load-out-print',
       'load-out-available-vans',
       'load-out-previous-roster',
-      'route-data',
+      'load-out-routes',
       'route-sheets',
       'vehicle-data',
       'associates',

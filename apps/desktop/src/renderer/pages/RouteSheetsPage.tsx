@@ -9,7 +9,8 @@ import { PAGE_TABS, isTabOf } from '../../shared/windows';
 import { FileDrop } from '../components/FileDrop';
 import { call, explain } from '../lib/channels';
 import { useAppSnapshot } from '../lib/useAppSnapshot';
-import { chooseFile } from './dataPages/bringIn';
+import type { RouteKindName } from '../../shared/channels/routeData';
+import { bringInFile, chooseFile, dropRefused, readNow } from './dataPages/bringIn';
 import { ProblemBanner, StatusLine, useMessages } from './dataPages/PageParts';
 import { TabPanel, Tabs } from './dataPages/Tabs';
 import { useDialogs } from './dataPages/useDialogs';
@@ -17,6 +18,8 @@ import { DistributeTab } from './routeSheets/DistributeTab';
 import { HistoryTab } from './routeSheets/HistoryTab';
 import { SheetsTab } from './routeSheets/SheetsTab';
 import { OldAppNote, TopStrip } from './routeSheets/TopStrip';
+import { assignPads, resolveShared } from './routeData/followUp';
+import { ROUTE_FILE_WORDS, RouteFileWindow, type FilePick } from './routeData/ImportWindows';
 import type { PageProps } from './types';
 
 const TABS = PAGE_TABS['route-sheets'];
@@ -43,9 +46,11 @@ export function RouteSheetsPage({ settings, changeSettings, goTo, startTab }: Pa
   const [picked, setPicked] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  // The open run and who gets what: read again whenever the app says the data changed.
+  // The open run and who gets what: read again whenever the app says the data changed, or the
+  // route data to match with is changed.
   const revision = snapshot?.revision ?? 0;
   const ready = snapshot !== null;
+  const routeChoice = settings.routeSheetsRouteData;
   useEffect(() => {
     if (!ready) return;
     let off = false;
@@ -65,7 +70,7 @@ export function RouteSheetsPage({ settings, changeSettings, goTo, startTab }: Pa
     return () => {
       off = true;
     };
-  }, [revision, ready]);
+  }, [revision, ready, routeChoice]);
 
   const choose = useCallback(
     (id: string) => {
@@ -102,6 +107,44 @@ export function RouteSheetsPage({ settings, changeSettings, goTo, startTab }: Pa
       setStatus(read?.message ?? `Read ${done.value.rows} route sheets.`);
       setWarnings(read?.warnings ?? []);
       setPicked(null);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  /** Matches with whichever route file the roster took its routes from. */
+  async function matchWithRoster() {
+    await changeSettings({ routeSheetsRouteData: 'roster' });
+    setStatus("Route sheets now match with the Roster's Route Data.");
+  }
+
+  /** "Import a new file": a route file just for the route sheets, Routes up front. */
+  async function importRouteFile() {
+    if (busy) return;
+    setBusy(true);
+    try {
+      const pick = await ask<FilePick<RouteKindName>>((done) => (
+        <RouteFileWindow
+          page="route-sheets"
+          title="Which file should the route sheets use?"
+          lead="Routes matches route sheets best."
+          onDone={done}
+          onProblem={(words) => dropRefused(messages, words)}
+        />
+      ));
+      if (pick === null) return;
+      const done = await bringInFile(pick.kind, messages, pick.token);
+      if (!done) return;
+      let fresh = await readNow();
+      if (fresh) {
+        await resolveShared(ask, messages, pick.kind, fresh, true);
+        fresh = (await readNow()) ?? fresh;
+        await assignPads(ask, messages, pick.kind, { afterImport: true, from: fresh });
+      }
+      await changeSettings({ routeSheetsRouteData: pick.kind });
+      setStatus(
+        `Route sheets now match with the new ${ROUTE_FILE_WORDS[pick.kind].name} file: ${done.rows} rows.`,
+      );
     } finally {
       setBusy(false);
     }
@@ -151,7 +194,16 @@ export function RouteSheetsPage({ settings, changeSettings, goTo, startTab }: Pa
           </p>
         ) : (
           <>
-            <TopStrip state={view.state} busy={busy} onBringIn={() => void bringIn()} goTo={goTo} />
+            <TopStrip
+              state={view.state}
+              busy={busy}
+              onBringIn={() => void bringIn()}
+              goTo={goTo}
+              rosterKind={snapshot.roster.routeSource}
+              choice={routeChoice}
+              onUseRoster={() => void matchWithRoster()}
+              onImportRouteFile={() => void importRouteFile()}
+            />
             <TabPanel name="route-sheets" id={tab}>
               {tab === 'distribute' ? (
                 <div className="min-h-0 flex-1 overflow-auto">

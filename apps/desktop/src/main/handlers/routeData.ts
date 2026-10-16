@@ -3,7 +3,7 @@ import type { routeDataChannels } from '../../shared/channels/routeData';
 import { ChannelRefusal } from '../channels';
 import type { HandlersFor } from './types';
 
-// Handlers for the Route Data page (4c). One per channel declared in shared/channels/routeData.ts.
+// Handlers for the route files' tabs on Load Out (4c). One per channel declared in shared/channels/routeData.ts.
 // Each one checks what it was given and calls the core; the rules live in the core.
 
 export const routeDataHandlers: HandlersFor<typeof routeDataChannels> = {

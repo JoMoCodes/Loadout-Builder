@@ -10,7 +10,6 @@ import { demoRosterSnapshot } from './support/rosterRows';
 const PAGES = [
   'home',
   'load-out',
-  'route-data',
   'vehicle-data',
   'associates',
   'scorecards',

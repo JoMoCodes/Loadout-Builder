@@ -2,18 +2,26 @@
 // had (loadout_page.py `LoadoutPage`): Roster, Print, Available Vans, Previous Roster, and a
 // fifth, Name and ID Links, that lists the links made by hand on the Roster tab.
 // Print sits next to the Roster because it is the roster it prints.
+//
+// Between them, a tab for each file brought in with Import Route Data (Routes, Itineraries,
+// Weekly Schedule, DWP), shown only while that file is loaded. They were the Route Data page.
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { RouteKindName } from '../../shared/channels/routeData';
+import type { AppSnapshot } from '../../shared/snapshot';
 import { LOAD_OUT_TABS, type LoadOutTab } from '../../shared/windows';
 import { OpenInNewWindow } from '../components/OpenInNewWindow';
 import { useAppSnapshot } from '../lib/useAppSnapshot';
 import { cn } from '../ui/cn';
+import { ProblemBanner, useMessages } from './dataPages/PageParts';
 import { AvailableVansTab } from './loadOut/AvailableVansTab';
 import { LinksTab } from './loadOut/LinksTab';
 import { LoadOutSettingsButton, LoadOutSettingsDialog } from './loadOut/LoadOutSettings';
 import { PreviousRosterTab } from './loadOut/PreviousRosterTab';
 import { PrintTab } from './loadOut/print';
 import { RosterTab } from './loadOut/RosterTab';
+import { DwpTab } from './routeData/DwpTab';
+import { RouteSourceTab } from './routeData/RouteSourceTab';
 import type { PageProps } from './types';
 
 export type { LoadOutTab };
@@ -24,6 +32,17 @@ const TAB_KEY = 'loadout.load-out-tab';
 
 const isTab = (id: string | null | undefined): id is LoadOutTab =>
   TABS.some((tab) => tab.id === id);
+
+/** The tabs of the files brought in with Import Route Data. */
+const FILE_TABS: readonly string[] = ['routes', 'itineraries', 'schedule', 'dwp'];
+
+/** Whether a file's tab has something to show: its file is loaded. Every other tab always does. */
+function loaded(snapshot: AppSnapshot | null, id: LoadOutTab): boolean {
+  if (!FILE_TABS.includes(id)) return true;
+  if (!snapshot) return false;
+  if (id === 'dwp') return snapshot.dwp.set.rows.length > 0;
+  return snapshot.routeSets.some((set) => set.kind === id && set.rows.length > 0);
+}
 
 function rememberedTab(): LoadOutTab {
   try {
@@ -44,7 +63,8 @@ export function LoadOutPage({
 }: PageProps) {
   const { snapshot, loading, error } = useAppSnapshot();
   const [tab, setTab] = useState<LoadOutTab>(() => (isTab(startTab) ? startTab : rememberedTab()));
-  const [status, setStatus] = useState('');
+  const messages = useMessages();
+  const { setStatus, clearProblem } = messages;
   const [pendingPrint, setPendingPrint] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const printTaken = useCallback(() => setPendingPrint(false), []);
@@ -54,6 +74,7 @@ export function LoadOutPage({
       setTab(next);
       // What a tab said last is not news on the next one.
       setStatus('');
+      clearProblem();
       // A page-only window does not change which tab the main window opens on next time.
       if (ownWindow) return;
       try {
@@ -62,7 +83,7 @@ export function LoadOutPage({
         // The tab is then remembered until the window closes.
       }
     },
-    [ownWindow],
+    [ownWindow, setStatus, clearProblem],
   );
 
   // Ctrl+O (from any page; the shell brings it here) brings in a load-out sheet on the Roster tab.
@@ -71,7 +92,9 @@ export function LoadOutPage({
     takeRequest();
     choose('roster');
   }, [takeRequest, choose]);
-  const shown: LoadOutTab = pendingImport ? 'roster' : tab;
+  // A file's tab whose file is gone (cleared) shows the Roster instead.
+  const shown: LoadOutTab = pendingImport || !loaded(snapshot, tab) ? 'roster' : tab;
+  const tabs = useMemo(() => TABS.filter((entry) => loaded(snapshot, entry.id)), [snapshot]);
 
   // Ctrl+P runs Print Page, the Print tab's main button, from any tab of this page.
   useEffect(() => {
@@ -99,7 +122,7 @@ export function LoadOutPage({
           Load Out
         </h1>
         <div role="tablist" aria-label="Load Out tabs" className="flex gap-1">
-          {TABS.map((entry) => (
+          {tabs.map((entry) => (
             <OpenInNewWindow key={entry.id} target={{ page: 'load-out', tab: entry.id }}>
               <button
                 type="button"
@@ -116,6 +139,13 @@ export function LoadOutPage({
                     : 'border-transparent text-muted hover:text-fg',
                 )}
               >
+                {FILE_TABS.includes(entry.id) ? (
+                  // A small green dot: this tab is a file brought in with Import Route Data.
+                  <span
+                    aria-hidden="true"
+                    className="mr-1.5 inline-block size-1.5 rounded-full bg-ok align-middle"
+                  />
+                ) : null}
                 {entry.label}
               </button>
             </OpenInNewWindow>
@@ -132,6 +162,7 @@ export function LoadOutPage({
         aria-labelledby={`tab-${shown}`}
         className="flex min-h-0 flex-1 flex-col"
       >
+        <ProblemBanner problem={messages.problem} onClose={clearProblem} name="load-out-import" />
         {error ? (
           <p role="alert" className="problem p-6" data-testid="load-out-problem">
             {error}
@@ -146,6 +177,20 @@ export function LoadOutPage({
             onImportTaken={importTaken}
             settings={settings}
             changeSettings={changeSettings}
+            messages={messages}
+            // Back to the tab already open says nothing new, so the status line keeps its words.
+            showTab={(next) => {
+              if (next !== shown) choose(next);
+            }}
+          />
+        ) : shown === 'dwp' ? (
+          <DwpTab snapshot={snapshot} messages={messages} />
+        ) : FILE_TABS.includes(shown) ? (
+          <RouteSourceTab
+            key={shown}
+            kind={shown as RouteKindName}
+            snapshot={snapshot}
+            messages={messages}
           />
         ) : shown === 'print' ? (
           <div data-tab="print" className="flex min-h-0 flex-1 flex-col">
@@ -165,7 +210,7 @@ export function LoadOutPage({
         className="min-h-[2rem] border-t border-line bg-surface px-6 py-1.5 text-sm text-muted"
         data-testid="load-out-status"
       >
-        {status}
+        {messages.status}
       </div>
       {settingsOpen ? (
         <LoadOutSettingsDialog
