@@ -123,20 +123,38 @@ export async function otherPagesChecks({ app, page, check, assert, until, ask, g
     if (await shared.isVisible()) await shared.getByRole('button', { name: 'Cancel' }).click();
   }
 
-  /** Brings a route export in through its tab and assigns PADs in the cycle. Returns the sharing. */
+  /** Answers the notes Import Route Data may show (who route data added), until `done` is true. */
+  async function closeNotesUntil(done, message) {
+    await until(
+      async () => {
+        if (await done()) return true;
+        const ok = page.locator('[data-testid="inform-ok"]');
+        if (await ok.isVisible().catch(() => false)) await ok.click();
+        return false;
+      },
+      message,
+      20_000,
+    );
+  }
+
+  /**
+   * Brings a route export in with Import Route Data on the Roster and assigns PADs in the cycle,
+   * then says Not today to the DWP question. Ends back on the Roster.
+   */
   async function importRoute(kind, parts) {
-    await page.click(`[data-testid="route-data-tab-${kind}"]`);
+    await page.click('[data-tab-button="roster"]');
+    await page.click('[data-action="import-route-data"]');
+    if (kind !== 'routes') await page.click('[data-testid="other-route-files"]');
     await choose(parts);
-    await page.click(`[data-testid="import-${kind}"]`);
+    await page.click(`[data-testid="choose-${kind}"]`);
     await skipSharedRoutes();
     await assignCycle();
-    const label = { routes: 'Routes', itineraries: 'Itineraries', schedule: 'Weekly Schedule' }[
-      kind
-    ];
+    const dwpWindow = page.locator('dialog[data-dialog="import-dwp"]');
+    await closeNotesUntil(() => dwpWindow.isVisible(), `${kind}: the DWP question never came`);
+    await page.click('[data-testid="dwp-not-today"]');
     await until(
-      async () => (await text(status('route-data'))).startsWith(`${label}: `),
-      `${kind}: the PAD window did not finish`,
-      20_000,
+      async () => (await page.locator('dialog[open]').count()) === 0,
+      `${kind}: a window stayed open`,
     );
   }
 
@@ -380,7 +398,7 @@ export async function otherPagesChecks({ app, page, check, assert, until, ask, g
     },
   );
 
-  // ------------------------------------------------------------------- Route Data
+  // --------------------------------------------- Route Data (Import Route Data on Load Out)
   for (const day of DAYS) {
     await check(
       `Route Data on ${day.day}: every export comes in on the harness’s counts`,
@@ -389,7 +407,7 @@ export async function otherPagesChecks({ app, page, check, assert, until, ask, g
         await startDay(day);
         // Leave and come back, so the page starts with a fresh status line.
         await goTo(page, 'home');
-        await goTo(page, 'route-data');
+        await goTo(page, 'load-out');
 
         const summary = [];
         for (const kind of KINDS) {
@@ -406,6 +424,8 @@ export async function otherPagesChecks({ app, page, check, assert, until, ask, g
           );
           assert(set.day === want.day, `${kind}: read for another day`);
           const times = new Set(set.rows.map((row) => row.dispatchTime)).size;
+          // The file has its own tab on Load Out now.
+          await page.click(`[data-tab-button="${kind}"]`);
           const metric = await text(`[data-testid="route-${kind}-metric"]`);
           assert(
             metric === `${want.row_count} rows - ${times} dispatch times`,
@@ -427,12 +447,12 @@ export async function otherPagesChecks({ app, page, check, assert, until, ask, g
       `Route Data on ${day.day}: PADs from the schedule give the harness’s counts`,
       async () => {
         const routes = expected(day.day, 'routes.json').scenarios['itineraries/adopted'];
-        await page.click('[data-testid="route-data-tab-itineraries"]');
+        await page.click('[data-tab-button="itineraries"]');
         await page.click('[data-testid="pads-from-schedule"]');
         if (routes.skipped) {
           await until(
             async () =>
-              (await text(status('route-data'))) ===
+              (await text(status('load-out'))) ===
               'Import a Weekly Schedule export first - its PADs are what come over.',
             'the page did not say the schedule is missing',
           );
@@ -444,8 +464,8 @@ export async function otherPagesChecks({ app, page, check, assert, until, ask, g
         if (noPad) bits.push(`${noPad} scheduled but with no PAD there`);
         if (missing) bits.push(`${missing} not on the schedule`);
         await until(
-          async () => (await text(status('route-data'))) === `${bits.join('. ')}.`,
-          `the page said "${await text(status('route-data'))}"`,
+          async () => (await text(status('load-out'))) === `${bits.join('. ')}.`,
+          `the page said "${await text(status('load-out'))}"`,
         );
         return `${copied} copied, ${noPad} without a PAD, ${missing} not on it`;
       },
@@ -456,13 +476,28 @@ export async function otherPagesChecks({ app, page, check, assert, until, ask, g
       async () => {
         const inputs = expected(day.day, 'inputs.json');
         const harness = expected(day.day, 'dwp.json').after_route_bring_over.before;
-        await page.click('[data-testid="route-data-tab-dwp"]');
+        // Import Route Data, straight to its DWP question. If the app is unsure of the sheet's
+        // day it asks before putting it on the roster: No keeps it off, as the old page did.
+        await page.click('[data-tab-button="roster"]');
+        await page.click('[data-action="import-route-data"]');
+        await page.click('[data-testid="skip-to-dwp"]');
         await choose(day.dwp);
-        await page.click('[data-testid="import-dwp"]');
+        await page.click('[data-testid="choose-dwp"]');
+        // The sheet is saved before the day question opens, so wait for the status line that
+        // says how it ended (put on the roster, or left off), not just for the sheet.
+        const ended = /^(DWP: |DWP data left alone|Imported \d+ routes)/;
         await until(
-          async () => /^Imported \d+ routes from /.test(await text(status('route-data'))),
-          'the DWP sheet did not come in',
+          async () => {
+            const no = page.locator('[data-testid="confirm-no"]');
+            if (await no.isVisible().catch(() => false)) await no.click();
+            const open = await page.locator('dialog[open]').count();
+            return open === 0 && ended.test(await text(status('load-out')));
+          },
+          'the DWP step did not end with a word on the status line',
+          20_000,
         );
+        assert((await snapshot()).dwp.set.rows.length > 0, 'the DWP sheet did not come in');
+        await page.click('[data-tab-button="dwp"]');
         const metric = await text('[data-testid="dwp-metric"]');
         assert(metric === `${inputs.dwp.row_count} routes`, `the DWP header said "${metric}"`);
         const snap = await snapshot();
@@ -479,8 +514,8 @@ export async function otherPagesChecks({ app, page, check, assert, until, ask, g
   }
 
   await check('Route Data: Clear empties one export and asks first', async () => {
-    await goTo(page, 'route-data');
-    await page.click('[data-testid="route-data-tab-routes"]');
+    await goTo(page, 'load-out');
+    await page.click('[data-tab-button="routes"]');
     const before = (await snapshot()).counts.routeRows;
     assert(before.routes > 0, 'no routes to clear');
     await page.click('[data-testid="clear-routes"]');
@@ -498,10 +533,13 @@ export async function otherPagesChecks({ app, page, check, assert, until, ask, g
   });
 
   // ------------------------------------------------------------------ Route Sheets
-  // The fixture day's Routes export and driver list (Clear above emptied the Routes export), then
-  // the synthetic route sheet PDF, all through the real bridge with the file window answered.
+  // The fixture day's Routes export and driver list, then the synthetic route sheet PDF, all
+  // through the real bridge with the file window answered. Clear Route Data first, so the roster
+  // names no route file and the route sheets fall back to the Routes export.
   let sheetRun = null;
   await check('Route Sheets: the synthetic PDF comes in through the bridge', async () => {
+    const cleared = await ask('loadOut:clear-route-data', { routes: true, dwp: false });
+    assert(cleared.ok, 'Clear Route Data did not go through');
     const routeRows = await load('routes', ['routes', 'Routes_XXX1_2026-09-01_12_20 (CDT).xlsx']);
     assert(routeRows > 0, 'the Routes export brought in no rows');
     await load('associates', ['associates', 'AssociateData.csv']);

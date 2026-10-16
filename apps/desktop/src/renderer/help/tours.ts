@@ -23,7 +23,6 @@ export interface Tour {
 }
 
 const LOAD_OUT = '[data-page="load-out"]';
-const ROUTE_DATA = '[data-page="route-data"]';
 const VEHICLE_DATA = '[data-page="vehicle-data"]';
 const ASSOCIATES = '[data-page="associates"]';
 const ROUTE_SHEETS = '[data-page="route-sheets"]';
@@ -69,8 +68,8 @@ export const TOURS: Record<string, Tour> = {
     steps: [
       {
         element: `${LOAD_OUT} [role="tablist"]`,
-        title: 'Five tabs',
-        text: "Roster is today's drivers. Print makes the sheet. Available Vans lists free vans. Previous Roster is the last one kept. Name and ID Links are the links you made by hand.",
+        title: 'The tabs',
+        text: "Roster is today's drivers. Each file you import gets a tab with a green dot. Print makes the sheet, Available Vans lists free vans, and Previous Roster is the last one.",
         side: 'bottom',
       },
       {
@@ -80,9 +79,9 @@ export const TOURS: Record<string, Tour> = {
         side: 'bottom',
       },
       {
-        element: `${LOAD_OUT} [data-action="bring-over-route-data"]`,
-        title: 'Then bring over route data',
-        text: 'This adds wave times, PADs and route codes from the Route Data page. It brings over the DWP numbers too, if you loaded the DWP sheet.',
+        element: `${LOAD_OUT} [data-action="import-route-data"]`,
+        title: 'Then import route data',
+        text: 'Pick the Routes file (or another one), then the DWP sheet if you want it. Wave times, PADs, route codes and DWP numbers go on the roster.',
         side: 'bottom',
       },
       {
@@ -193,37 +192,27 @@ export const TOURS: Record<string, Tour> = {
     ],
   },
 
-  'route-data': {
-    name: 'route-data',
-    label: 'Route Data',
+  'load-out-routes': {
+    name: 'load-out-routes',
+    label: 'Load Out: Routes tab',
     steps: [
       {
-        element: `${ROUTE_DATA} [role="tablist"]`,
-        title: 'One tab for each file',
-        text: 'Routes, Itineraries and Weekly Schedule say when each driver leaves. Any one of them is enough. DWP has the bags, OVS and staging.',
+        element: `${LOAD_OUT} [role="tablist"]`,
+        title: 'A tab for each file',
+        text: 'Each file you bring in with Import Route Data gets a tab with a green dot. The DWP tab has the bags, OVS and staging.',
         side: 'bottom',
       },
       {
-        element: `${ROUTE_DATA} [data-testid="import-routes"]`,
-        title: 'Bring in a file',
-        text: 'Click Import and pick the file you downloaded. You can also drop the file on this tab.',
-        side: 'bottom',
-      },
-      {
-        element: `${ROUTE_DATA} [data-testid="assign-pads-routes"]`,
+        element: `${LOAD_OUT} [data-testid="assign-pads-routes"]`,
         title: 'Put each wave on a PAD',
-        text: 'Assign PADs asks which PAD each dispatch time goes to. The app never guesses this.',
+        text: 'Assign PADs asks which PAD each dispatch time goes to. The app never guesses this. The roster gets the new PADs too.',
         side: 'bottom',
       },
       {
-        element: `${ROUTE_DATA} [data-testid="route-data-tab-dwp"]`,
-        title: 'The DWP sheet',
-        text: 'Bring in the DWP sheet here. Check it is for the same day as the roster: the app warns you if it is not.',
+        element: `${LOAD_OUT} [data-testid="clear-routes"]`,
+        title: 'Clear this file',
+        text: 'Clear takes this file out. To take route data off the roster as well, use Clear Route Data on the Roster tab.',
         side: 'bottom',
-      },
-      {
-        title: 'Then go to Load Out',
-        text: 'Click Bring Over Route Data on the Load Out page. That puts the times, PADs and DWP numbers on the roster.',
       },
     ],
   },
@@ -235,7 +224,7 @@ export const TOURS: Record<string, Tour> = {
       {
         element: `${ROUTE_SHEETS} [data-testid="route-sheets-top"]`,
         title: 'What the app reads',
-        text: 'These cards show the route data, driver list and email setup in use. They come from Route Data, Associates and Settings.',
+        text: 'These cards show the route data, driver list and email setup in use. They come from the Roster, Associates and Settings.',
         side: 'bottom',
       },
       {
@@ -540,6 +529,7 @@ export const TOURS: Record<string, Tour> = {
  * seen: it does not run again by itself.
  */
 const OLD_TOUR_NAMES: Record<string, string> = {
+  'load-out-routes': 'route-data',
   'scorecards-performance': 'performance-drivers',
   'scorecards-reports': 'performance-reports',
   'scorecards-imports': 'performance-imports',

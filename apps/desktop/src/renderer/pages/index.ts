@@ -7,7 +7,6 @@ import { FeaturesLogPage } from './FeaturesLogPage';
 import { HomePage } from './HomePage';
 import { HowToUsePage } from './HowToUsePage';
 import { LoadOutPage } from './LoadOutPage';
-import { RouteDataPage } from './RouteDataPage';
 import { RouteSheetsPage } from './RouteSheetsPage';
 import { ScorecardsPage } from './ScorecardsPage';
 import { SettingsPage } from './SettingsPage';
@@ -27,7 +26,6 @@ const COMPONENTS: Record<PageId, ComponentType<PageProps>> = {
   dashboard: DashboardPage,
   'load-out': LoadOutPage,
   'route-sheets': RouteSheetsPage,
-  'route-data': RouteDataPage,
   'vehicle-data': VehicleDataPage,
   associates: AssociatesPage,
   scorecards: ScorecardsPage,

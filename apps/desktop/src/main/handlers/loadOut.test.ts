@@ -179,6 +179,22 @@ describe('Load Out commands', () => {
     expect(after.roster.rows.every((r) => r.assignMethodLabel === '')).toBe(true);
   });
 
+  it('clears route data off the roster, and the DWP only when asked', async () => {
+    await morning();
+    await rig.call('loadOut:bring-over-route-data', { kind: 'routes' });
+    await rig.call('loadOut:bring-over-dwp');
+    const cleared = await rig.call('loadOut:clear-route-data', { routes: true, dwp: false });
+    expect(cleared.ok).toBe(true);
+    expect(cleared.value as number).toBeGreaterThan(0);
+    const after = await snapshot();
+    expect(after.roster.rows.every((r) => !r.row.routes && !r.row.pad)).toBe(true);
+    expect(after.roster.routeSource).toBe('');
+    expect(after.routeSets.every((set) => set.rows.length === 0)).toBe(true);
+    expect(after.dwp.set.rows.length).toBeGreaterThan(0);
+    await rig.call('loadOut:clear-route-data', { routes: false, dwp: true });
+    expect((await snapshot()).dwp.set.rows).toHaveLength(0);
+  });
+
   it('refuses a row command sent from an old snapshot, in plain words', async () => {
     const snap = await snapshot();
     await rig.call('loadOut:clear-vans'); // anything that changes the data moves the revision on

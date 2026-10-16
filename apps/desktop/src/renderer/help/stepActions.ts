@@ -29,11 +29,10 @@ export const STEP_TARGETS: Record<StepAction | WeeklyStepAction, Target> = {
     loadOutTab: 'roster',
     press: '[data-page="load-out"] [data-action="import-sheet"]',
   },
-  'import-routes': { page: 'route-data', press: '[data-testid="import-routes"]' },
-  'bring-over': {
+  'import-routes': {
     page: 'load-out',
     loadOutTab: 'roster',
-    press: '[data-page="load-out"] [data-action="bring-over-route-data"]',
+    press: '[data-page="load-out"] [data-action="import-route-data"]',
   },
   'assign-vans': {
     page: 'load-out',

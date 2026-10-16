@@ -28,7 +28,7 @@ describe('checking a dropped file', () => {
     expect(checkDroppedFile('associates', 'associates', file('list.csv'))).toEqual({ ok: true });
     expect(checkDroppedFile('associates', 'tenure', file('tenure.csv'))).toEqual({ ok: true });
     for (const kind of ['routes', 'itineraries', 'schedule', 'dwp'] as const) {
-      expect(checkDroppedFile('route-data', kind, file(`${kind}.xlsx`))).toEqual({ ok: true });
+      expect(checkDroppedFile('load-out', kind, file(`${kind}.xlsx`))).toEqual({ ok: true });
     }
     expect(checkDroppedFile('vehicle-data', 'vehicles', file('fleet.xlsx'))).toEqual({ ok: true });
   });
@@ -43,8 +43,8 @@ describe('checking a dropped file', () => {
       ok: false,
       reason: 'not-allowed',
     });
-    // Every page takes only its own kinds, and every kind has a page.
-    const taken = Object.values(DROP_KINDS).flat().sort();
+    // Every kind has a page. (A route file is taken in Import Route Data and on Route Sheets.)
+    const taken = [...new Set(Object.values(DROP_KINDS).flat())].sort();
     expect(taken).toEqual([...FILE_KINDS].sort());
   });
 
@@ -59,7 +59,7 @@ describe('checking a dropped file', () => {
       reason: 'refused',
       message: "That file doesn't look like an associate export. It should end in .csv.",
     });
-    expect(checkDroppedFile('route-data', 'schedule', file('notes'))).toMatchObject({
+    expect(checkDroppedFile('load-out', 'schedule', file('notes'))).toMatchObject({
       reason: 'refused',
       message: "That file doesn't look like a Weekly Schedule. It should end in .xlsx.",
     });

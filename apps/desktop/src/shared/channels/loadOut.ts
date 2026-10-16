@@ -45,6 +45,15 @@ export const loadOutChannels = [
     result: as<RouteApplyResult>(),
   }),
 
+  /**
+   * Clear Route Data and Clear DWP Data: empties the route exports (`routes`) and the DWP sheet
+   * (`dwp`), and blanks what they put on the roster. How many drivers had something taken off.
+   */
+  defineCommand('loadOut:clear-route-data', {
+    input: shape({ routes: boolean, dwp: boolean }),
+    result: as<number>(),
+  }),
+
   /** Copies staging, bags and OVS from the DWP sheet, matched on route code. */
   defineCommand('loadOut:bring-over-dwp', { input: nothing, result: as<DwpApplyResult>() }),
 

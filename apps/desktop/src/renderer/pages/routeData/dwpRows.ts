@@ -81,8 +81,7 @@ export function dwpImportedMessage(snapshot: AppSnapshot, filePath: string): str
   } else if (matched) {
     tail = ` ${matched} of ${snapshot.roster.rows.length} drivers matched by route code.`;
   } else if (!rosterHasRouteCodes(snapshot)) {
-    tail =
-      " No driver has a route code yet - use 'Bring Over Route Data' on the Load Out page first.";
+    tail = ' No driver has a route code yet - use Import Route Data on the Roster first.';
   } else {
     tail = ' No route code on the roster matches this sheet.';
   }

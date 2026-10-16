@@ -99,7 +99,6 @@ export type StepAction =
   | 'import-vehicles'
   | 'import-loadout'
   | 'import-routes'
-  | 'bring-over'
   | 'assign-vans'
   | 'open-print'
   | 'import-route-sheets'
@@ -114,8 +113,8 @@ export function stepAction(id: StepId, facts: ChecklistFacts): StepAction {
     case 'sheet':
       return 'import-loadout';
     case 'route-data':
-      // Route data is brought in on its own page first, then brought over onto the roster.
-      return facts.routeExportRows > 0 ? 'bring-over' : 'import-routes';
+      // Import Route Data on the Roster brings the file in and puts it on the roster in one go.
+      return 'import-routes';
     case 'assign-print':
       return facts.driversWithVan > 0 ? 'open-print' : 'assign-vans';
     case 'route-sheets':

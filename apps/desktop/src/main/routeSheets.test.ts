@@ -124,6 +124,7 @@ function makeRig(today = '2026-09-01'): Rig {
       set: (id) => void file.updateMainOnly((kept) => ({ ...kept, lastRunId: id })),
     },
     routeSheetsWording: () => settings.routeSheetsEmail,
+    routeSheetsRouteData: () => settings.routeSheetsRouteData,
   });
   source.open(false);
   host.rebuild();
@@ -445,6 +446,15 @@ describe('the join with the app’s own route data, driver list and pads', () =>
       fileName: path.basename(ROUTES_FILE),
     });
     expect(state.run.routesFileName).toBe(path.basename(ROUTES_FILE));
+    // A file picked on the page wins over Routes; the Roster's (none here) falls back to Routes.
+    rig.setSettings({ routeSheetsRouteData: 'itineraries' });
+    expect((await rig.ok<RouteSheetsStateView>('routeSheets:state')).routeData?.kind).toBe(
+      'itineraries',
+    );
+    rig.setSettings({ routeSheetsRouteData: 'roster' });
+    expect((await rig.ok<RouteSheetsStateView>('routeSheets:state')).routeData?.kind).toBe(
+      'routes',
+    );
     // The driver list's age, for the "over a month old" reminder.
     expect(state.driverList.count).toBeGreaterThan(50);
     expect(state.driverList.fileName).toBe('AssociateData.csv');
@@ -500,7 +510,7 @@ describe('every route sheets channel, through the real handlers', () => {
       message: "That file doesn't look like a route sheet PDF. It should end in .pdf.",
     });
     expect(
-      await rig.call('files:dropped', { page: 'route-data', kind: 'route-sheets', path: PDF_FILE }),
+      await rig.call('files:dropped', { page: 'load-out', kind: 'route-sheets', path: PDF_FILE }),
     ).toEqual({ ok: false, reason: 'not-allowed' });
     const { token } = await rig.ok<{ token: string }>('files:dropped', {
       page: 'route-sheets',
@@ -696,7 +706,7 @@ describe('every route sheets channel, through the real handlers', () => {
     const fromRouteData = {
       ok: false,
       reason: 'refused',
-      message: 'That wave already gets its pad from the Route Data page.',
+      message: 'That wave already gets its pad from the route file on Load Out.',
     };
     expect(await rig.call('routeSheets:set-wave-pad', { waveTime: '02:30 PM', pad: '4' })).toEqual(
       fromRouteData,

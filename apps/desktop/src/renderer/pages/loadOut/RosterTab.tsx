@@ -3,6 +3,7 @@
 // command, and the core does the work.
 
 import {
+  dispatchTimes,
   isActive,
   KEEP_ALL_VANS,
   needsVan,
@@ -21,6 +22,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { RouteKindName } from '../../../shared/channels/routeData';
 import type { AppSnapshot, RosterRowView } from '../../../shared/snapshot';
 import type { AppSettings, SettingsPatch } from '../../../shared/settings';
 import { DataGrid, type RowAction } from '../../components/DataGrid';
@@ -36,17 +38,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../../ui/dropdown-menu';
+import { bringInFile, dropRefused, readNow } from '../dataPages/bringIn';
+import type { Messages } from '../dataPages/PageParts';
+import { useDialogs } from '../dataPages/useDialogs';
+import { assignPads, resolveShared } from '../routeData/followUp';
+import { DwpWindow, ROUTE_FILE_WORDS, RouteFileWindow } from '../routeData/ImportWindows';
+import { dwpImportedMessage } from '../routeData/dwpRows';
+import { importedMessage } from '../routeData/routeRows';
 import { Badges, checkTone, ROSTER_COLUMNS, VAN_COLUMNS } from './columns';
 import {
   AssignDialog,
   KeepVansDialog,
   LinkDialog,
   RosterPickDialog,
-  SourceDialog,
   VanPickDialog,
   type LinkAnswer,
 } from './dialogs';
 import { useAsk } from './Modal';
+import { RosterCards, rosterRouteSet } from './RosterCards';
 import { ExportButtons } from './print';
 import {
   ALL_SHIFTS,
@@ -81,6 +90,10 @@ interface RosterTabProps {
   /** Load Out settings: whether Assign Vans remembers which vans drivers already have to keep. */
   settings: Pick<AppSettings, 'rememberKeepVans' | 'keepVans'>;
   changeSettings(patch: SettingsPatch): Promise<void>;
+  /** The page's status line and problem banner, for Import Route Data. */
+  messages: Messages;
+  /** Opens another Load Out tab (a card's "Click me to View"). */
+  showTab: (tab: 'roster' | RouteKindName | 'dwp') => void;
 }
 
 const needsAttention = (view: RosterRowView) => checkSeverity(view.check) !== '';
@@ -93,8 +106,12 @@ export function RosterTab({
   onImportTaken,
   settings,
   changeSettings,
+  messages,
+  showTab,
 }: RosterTabProps) {
   const { ask, confirm, inform, dialog } = useAsk();
+  // Import Route Data's windows, and the PAD and shared-route windows after it.
+  const { ask: askWindow, host: windows } = useDialogs();
   const [shift, setShift] = useState(ALL_SHIFTS);
   // Remounting the table clears its search, filters and sort, as the old Reset did after an
   // import or a clear.
@@ -180,22 +197,18 @@ export function RosterTab({
 
   // -------------------------------------------------------- bring over
 
-  /** Brings the DWP over. Returns what to say, so Bring Over Route Data can add it to its line. */
+  /** Puts the DWP sheet on the roster. Returns what to say (empty when it said nothing). */
   const bringOverDwp = useCallback(
     async (afterRouteData: boolean): Promise<string> => {
-      const now = snapshot;
+      // Read again: the sheet may have come in a moment ago.
+      const now = (await readNow()) ?? snapshot;
       if (now.roster.rows.length === 0) {
         if (!afterRouteData) say('Import a load-out sheet first.');
         return '';
       }
       if (now.dwp.set.rows.length === 0) {
         if (afterRouteData) return '';
-        await inform(
-          'No DWP sheet loaded',
-          'Staging, bags and OVS come from the DWP sheet.\n\nImport it on Route Data > DWP, ' +
-            'then bring it over.',
-        );
-        say('Nothing to bring over - no DWP sheet loaded.');
+        say('No DWP sheet loaded - bring it in with Import Route Data.');
         return '';
       }
       const problem = dwpDayProblem(now);
@@ -217,72 +230,176 @@ export function RosterTab({
       if (!afterRouteData) say(message);
       return message;
     },
-    [snapshot, confirm, inform, failed, say],
+    [snapshot, confirm, failed, say],
   );
 
-  const bringOverRouteData = useCallback(async () => {
-    const now = snapshot;
-    if (now.roster.rows.length === 0) {
-      say('Import a load-out sheet first.');
-      return;
-    }
-    const available = now.routeSets.filter((set) => set.rows.length > 0);
-    if (available.length === 0) {
-      await inform(
-        'No route data',
-        'Import a Routes, Itineraries or Weekly Schedule export on the Route Data page ' +
-          'first.\n\nAny one of the three is enough.',
-      );
-      return;
-    }
-    if (now.counts.associates === 0) {
-      await inform(
-        'No associate data',
-        "Route data is matched to drivers by Transporter ID, and the load-out sheet doesn't " +
-          'carry one.\n\nImport the associate export on the Associates page first.',
-      );
-      return;
-    }
-    let kind = available[0]!.kind;
-    if (available.length > 1) {
-      const chosen = await ask<string | null>((done) => (
-        <SourceDialog sets={available} current={now.roster.routeSource} onAnswer={done} />
+  /**
+   * Puts one route file's data on the roster: dispatch time, route code, service type and PAD.
+   * Says why when it can't yet (no roster, no driver list). Returns what it said.
+   */
+  const bringOverRouteData = useCallback(
+    async (kind: RouteKindName): Promise<string> => {
+      const now = (await readNow()) ?? snapshot;
+      if (now.roster.rows.length === 0) {
+        const words =
+          'Import a load-out sheet, then use Import Route Data again to put it on the roster.';
+        say(words);
+        return words;
+      }
+      if (now.counts.associates === 0) {
+        await inform(
+          'No associate data',
+          "Route data is matched to drivers by Transporter ID, and the load-out sheet doesn't " +
+            'carry one.\n\nImport the associate export on the Associates page first, then use ' +
+            'Import Route Data again.',
+        );
+        return '';
+      }
+      const reply = await call('loadOut:bring-over-route-data', { kind });
+      if (failed(reply)) return '';
+      const result = reply.value;
+      const summary = applySummary(result, now.roster.rows.length + result.addedDrivers.length);
+      say(summary);
+      if (result.needsReview.length > 0) {
+        const shown = result.needsReview.slice(0, 15);
+        const tail =
+          result.needsReview.length > 15
+            ? `\n\n...and ${result.needsReview.length - 15} more.`
+            : '';
+        await inform(
+          'Check these before assigning vans',
+          "Route data was the only record of these drivers, so EDV is all they were given - it's " +
+            'the one qualification route data can stand behind on its own.\n\nAssign Vans ' +
+            "won't put them in a van their route calls for until the rest is set on the " +
+            `Associates page:\n\n${shown.join('\n')}${tail}`,
+        );
+      }
+      if (result.filled && !result.pads) {
+        const label = now.routeSets.find((set) => set.kind === kind)?.label ?? kind;
+        await inform(
+          'No PADs assigned',
+          `${label} has no PAD assigned to any of its dispatch times yet, so the PAD column is ` +
+            `still empty.\n\nUse 'Assign PADs' on the ${label} tab; the roster gets them too.`,
+        );
+      }
+      return summary;
+    },
+    [snapshot, inform, failed, say],
+  );
+
+  /**
+   * Brings the DWP sheet in (from the file window, or a dropped file) and onto the roster.
+   * Returns what it said about putting it on the roster ('' when it was not put on).
+   */
+  const importDwpFile = useCallback(
+    async (token?: string): Promise<string> => {
+      const done = await bringInFile('dwp', messages, token);
+      if (!done) return '';
+      const note = await bringOverDwp(false);
+      if (note) return note;
+      const fresh = await readNow();
+      if (fresh) say(dwpImportedMessage(fresh, done.path));
+      return '';
+    },
+    [messages, bringOverDwp, say],
+  );
+
+  /**
+   * Import Route Data: which route file (Routes up front), brought in and put on the roster, then
+   * whether to bring in the DWP sheet too. Ends on the Roster tab.
+   */
+  const importRouteData = useCallback(
+    async (startAt: 'route' | 'dwp' = 'route') => {
+      const refused = (words: string) => dropRefused(messages, words);
+      let broughtIn: string | undefined;
+      let routeWords = '';
+      if (startAt === 'route') {
+        const pick = await askWindow<{ kind: RouteKindName | 'skip'; token?: string }>((done) => (
+          <RouteFileWindow
+            page="load-out"
+            step="Step 1 of 2"
+            onDone={done}
+            onProblem={refused}
+            onSkip={() => done({ kind: 'skip' })}
+          />
+        ));
+        if (pick === null) return;
+        // "Skip to DWP Data" goes straight to the second question.
+        if (pick.kind !== 'skip') {
+          const { kind } = pick;
+          const done = await bringInFile(kind, messages, pick.token);
+          if (!done) return;
+          let fresh = await readNow();
+          const set = fresh?.routeSets.find((candidate) => candidate.kind === kind);
+          if (fresh && set) {
+            say(importedMessage(set.rows.length, baseName(done.path), dispatchTimes(set).length));
+            await resolveShared(askWindow, messages, kind, fresh, true);
+            fresh = (await readNow()) ?? fresh;
+            await assignPads(askWindow, messages, kind, { afterImport: true, from: fresh });
+          }
+          routeWords = await bringOverRouteData(kind);
+          broughtIn = `${ROUTE_FILE_WORDS[kind].name} is in`;
+        }
+      }
+      const dwp = await askWindow<{ kind: 'dwp'; token?: string }>((done) => (
+        <DwpWindow
+          step={broughtIn ? 'Step 2 of 2' : undefined}
+          broughtIn={broughtIn}
+          onDone={done}
+          onProblem={refused}
+        />
       ));
-      if (chosen === null) return;
-      kind = chosen;
+      if (dwp !== null) {
+        const dwpWords = await importDwpFile(dwp.token);
+        // Both went on the roster: say both, as the old Bring Over Route Data did.
+        if (routeWords && dwpWords) say(`${routeWords}  ${dwpWords}`);
+      }
+      // Whatever was brought in, the person lands back on the roster to see it.
+      showTab('roster');
+    },
+    [askWindow, messages, say, bringOverRouteData, importDwpFile, showTab],
+  );
+
+  /** Clear Route Data: the route files, and what they put on the roster. The DWP sheet if asked. */
+  const clearRouteData = useCallback(async () => {
+    const now = snapshot;
+    const route = rosterRouteSet(now);
+    if (!route && !now.roster.routeSource) {
+      say('Nothing to clear - no route data brought in.');
+      return;
     }
-    const reply = await call('loadOut:bring-over-route-data', {
-      kind: kind as 'routes' | 'itineraries' | 'schedule',
-    });
+    const withDwp = now.dwp.set.rows.length > 0;
+    const yes = await confirm(
+      'Clear Route Data?',
+      `This takes ${route ? `the ${route.label} file` : 'the route data'} out of the app and ` +
+        'blanks dispatch times, route codes, service types and PADs on the roster. Drivers and ' +
+        'vans stay.' +
+        (withDwp ? '\n\nThe DWP sheet is kept. Use Clear DWP Data to take it off too.' : ''),
+      { danger: true },
+    );
+    if (!yes) return;
+    const reply = await call('loadOut:clear-route-data', { routes: true, dwp: false });
     if (failed(reply)) return;
-    const result = reply.value;
-    const summary = applySummary(result, now.roster.rows.length + result.addedDrivers.length);
-    say(summary);
-    if (result.needsReview.length > 0) {
-      const shown = result.needsReview.slice(0, 15);
-      const tail =
-        result.needsReview.length > 15 ? `\n\n...and ${result.needsReview.length - 15} more.` : '';
-      await inform(
-        'Check these before assigning vans',
-        "Route data was the only record of these drivers, so EDV is all they were given - it's " +
-          'the one qualification route data can stand behind on its own.\n\nAssign Vans ' +
-          "won't put them in a van their route calls for until the rest is set on the " +
-          `Associates page:\n\n${shown.join('\n')}${tail}`,
-      );
+    say('Route data cleared. Use Import Route Data to bring a file in again.');
+  }, [snapshot, confirm, failed, say]);
+
+  /** Clear DWP Data: the DWP sheet, and staging, bags and OVS on the roster. */
+  const clearDwpData = useCallback(async () => {
+    if (snapshot.dwp.set.rows.length === 0) {
+      say('Nothing to clear - no DWP sheet loaded.');
+      return;
     }
-    if (result.filled && !result.pads) {
-      const label = available.find((set) => set.kind === kind)?.label ?? kind;
-      await inform(
-        'No PADs assigned',
-        `${label} has no PAD assigned to any of its dispatch times yet, so the PAD column is ` +
-          "still empty.\n\nUse 'Assign PADs' on the Route Data page, then bring the data over " +
-          'again.',
-      );
-    }
-    // Last, because the DWP joins on the route code this pass just put on the roster.
-    const note = await bringOverDwp(true);
-    if (note) say(`${summary}  ${note}`);
-  }, [snapshot, ask, inform, failed, say, bringOverDwp]);
+    const yes = await confirm(
+      'Clear DWP Data?',
+      'This takes the DWP sheet out of the app and blanks staging, bags and OVS on the roster. ' +
+        'The route data stays.',
+      { danger: true },
+    );
+    if (!yes) return;
+    const reply = await call('loadOut:clear-route-data', { routes: false, dwp: true });
+    if (failed(reply)) return;
+    say('DWP data cleared.');
+  }, [snapshot, confirm, failed, say]);
 
   // ------------------------------------------------------------- vans
 
@@ -790,7 +907,8 @@ export function RosterTab({
       onDropped={(token) => void importSheet(token)}
       onProblem={dropProblem}
     >
-      <div className="flex min-h-0 flex-1 flex-col" data-tab-panel="roster">
+      {/* On a short screen the tab scrolls, so the table never shrinks to nothing. */}
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto" data-tab-panel="roster">
         <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-2 border-b border-line bg-surface px-6 py-3">
           <div className="min-w-0">
             <h2 className="text-lg font-semibold" data-testid="roster-title">
@@ -826,12 +944,18 @@ export function RosterTab({
           <Button onClick={() => void importSheet()} data-action="import-sheet" title="Ctrl+O">
             Import Sheet
           </Button>
-          <Button onClick={() => void bringOverRouteData()} data-action="bring-over-route-data">
-            Bring Over Route Data
+          <Button onClick={() => void importRouteData()} data-action="import-route-data">
+            Import Route Data
           </Button>
-          <Button onClick={() => void bringOverDwp(false)} data-action="bring-over-dwp">
-            Bring Over DWP
-          </Button>
+          {snapshot.roster.routeSource || rosterRouteSet(snapshot) ? (
+            <Button
+              variant="danger"
+              onClick={() => void clearRouteData()}
+              data-action="clear-route-data"
+            >
+              Clear Route Data
+            </Button>
+          ) : null}
           <Button variant="primary" onClick={() => void assignVans()} data-action="assign-vans">
             Assign Vans
           </Button>
@@ -861,7 +985,15 @@ export function RosterTab({
             <ExportButtons onStatus={say} />
           </div>
         </div>
-        <div className="min-h-0 flex-1">
+        <RosterCards
+          snapshot={snapshot}
+          onView={showTab}
+          onImport={() => void importRouteData()}
+          onImportDwp={() => void importRouteData('dwp')}
+          onClearRoute={() => void clearRouteData()}
+          onClearDwp={() => void clearDwpData()}
+        />
+        <div className="min-h-[16rem] flex-1">
           <DataGrid
             key={gridKey}
             view="roster"
@@ -909,6 +1041,7 @@ export function RosterTab({
           />
         </div>
         {dialog}
+        {windows}
       </div>
     </FileDrop>
   );

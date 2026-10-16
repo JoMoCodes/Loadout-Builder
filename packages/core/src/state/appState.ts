@@ -640,6 +640,48 @@ export class AppState {
     return result;
   }
 
+  /**
+   * Clear Route Data and Clear DWP Data (the Roster tab). `routes` takes the route exports out of
+   * the app and blanks what they put on the roster (dispatch time, route code, service type, PAD).
+   * `dwp` does the same for the DWP sheet (staging, bags, OVS). Drivers, vans and links stay.
+   * Answers how many drivers had something taken off.
+   */
+  clearRosterRouteData(parts: { routes: boolean; dwp: boolean }): number {
+    let changed = 0;
+    for (const row of this.roster.rows) {
+      const had =
+        (parts.routes && (row.waveTime || row.routes || row.serviceType || row.pad)) ||
+        (parts.dwp && (row.stagingLocation || row.bags || row.ovs));
+      if (!had) continue;
+      if (parts.routes) {
+        row.waveTime = '';
+        row.routes = '';
+        row.serviceType = '';
+        row.pad = '';
+      }
+      if (parts.dwp) {
+        row.stagingLocation = '';
+        row.bags = '';
+        row.ovs = '';
+      }
+      changed += 1;
+    }
+    if (parts.routes) {
+      this.roster.routeSource = '';
+      for (const kind of ROUTE_KINDS) {
+        this.store.clearRouteData(kind);
+        this.routeData.set(kind, createRouteDataSet({ kind }));
+      }
+    }
+    if (parts.dwp) {
+      this.store.clearDwp();
+      this.dwp = createDwpDataSet();
+    }
+    if (!isRosterEmpty(this.roster)) this.saveRoster();
+    this.notify();
+    return changed;
+  }
+
   // -------------------------------------------------------------- vehicles
 
   /** Store a vehicle export read by `importVehicleData`. Overrides and priorities are kept. */

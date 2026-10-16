@@ -128,10 +128,10 @@ test('a file dropped where nothing takes one does nothing', async ({ page }) => 
   expect(await callsTo(page, 'files:dropped')).toEqual([]);
 });
 
-test('Route Data takes each export on its own tab, and the DWP sheet on the DWP tab', async ({
+test('Import Route Data takes each file on its own box, and the DWP sheet on the DWP box', async ({
   page,
 }) => {
-  await openPage(page, 'route-data', {
+  await openPage(page, 'load-out', {
     snapshot: {
       associates: [associate(CARMEN)] as never,
       routeSets: [
@@ -148,7 +148,8 @@ test('Route Data takes each export on its own tab, and the DWP sheet on the DWP 
     `(input) => ({ ok: true, value: { kind: input.kind, rows: 0 } })`,
   );
 
-  await page.getByTestId('route-data-tab-schedule').click();
+  await page.getByRole('button', { name: 'Import Route Data' }).click();
+  await page.getByTestId('other-route-files').click();
   await dropFile(page, zone(page, 'schedule'), 'Week-38-Schedule.xlsx', false);
   await expect(highlight(page)).toHaveText('Drop the Weekly Schedule here');
   await zone(page, 'schedule').dispatchEvent('drop', {
@@ -160,13 +161,14 @@ test('Route Data takes each export on its own tab, and the DWP sheet on the DWP 
   });
   await expect.poll(() => callsTo(page, 'files:import')).toHaveLength(1);
 
-  await page.getByTestId('route-data-tab-dwp').click();
+  // Then the DWP question, with its own box.
+  await expect(page.locator('dialog[data-dialog="import-dwp"]')).toBeVisible();
   await dropFile(page, zone(page, 'dwp'), 'DWP_sheet.xlsx');
   await expect.poll(() => callsTo(page, 'files:import')).toHaveLength(2);
 
   expect(await callsTo(page, 'files:dropped')).toEqual([
-    { page: 'route-data', kind: 'schedule', file: 'Week-38-Schedule.xlsx' },
-    { page: 'route-data', kind: 'dwp', file: 'DWP_sheet.xlsx' },
+    { page: 'load-out', kind: 'schedule', file: 'Week-38-Schedule.xlsx' },
+    { page: 'load-out', kind: 'dwp', file: 'DWP_sheet.xlsx' },
   ]);
   expect(await callsTo(page, 'files:import')).toEqual([
     { kind: 'schedule', path: 'dropped-1/Week-38-Schedule.xlsx' },

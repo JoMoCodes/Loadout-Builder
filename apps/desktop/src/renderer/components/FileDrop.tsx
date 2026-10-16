@@ -23,18 +23,34 @@ interface FileDropProps {
   onDropped: (token: string) => void;
   /** The file was refused: plain words to show. */
   onProblem: (words: string) => void;
+  /**
+   * The drop place is inside a window (Import Route Data): drops are taken while it is open. Left
+   * out, a drop is ignored while any window is open, so it never lands on the page behind one.
+   */
+  inDialog?: boolean;
+  /** Classes for the drop place, in place of filling the space it is in. */
+  className?: string;
   children: ReactNode;
 }
 
 const carriesFiles = (event: DragEvent) => event.dataTransfer?.types?.includes('Files') ?? false;
 const questionOpen = () => document.querySelector('dialog[open]') !== null;
 
-export function FileDrop({ page, kind, onDropped, onProblem, children }: FileDropProps) {
+export function FileDrop({
+  page,
+  kind,
+  onDropped,
+  onProblem,
+  inDialog,
+  className,
+  children,
+}: FileDropProps) {
   const [over, setOver] = useState(false);
   const busy = useRef(false);
+  const blocked = () => !inDialog && questionOpen();
 
   function onDragOver(event: DragEvent<HTMLDivElement>) {
-    if (!carriesFiles(event) || questionOpen()) return;
+    if (!carriesFiles(event) || blocked()) return;
     // Taken here, so the window's own "do nothing" below never sees it.
     event.preventDefault();
     event.stopPropagation();
@@ -52,7 +68,7 @@ export function FileDrop({ page, kind, onDropped, onProblem, children }: FileDro
     event.preventDefault();
     event.stopPropagation();
     setOver(false);
-    if (questionOpen() || busy.current) return;
+    if (blocked() || busy.current) return;
     const file = event.dataTransfer.files?.[0];
     if (!file) return;
     busy.current = true;
@@ -70,7 +86,7 @@ export function FileDrop({ page, kind, onDropped, onProblem, children }: FileDro
 
   return (
     <div
-      className="relative flex min-h-0 flex-1 flex-col"
+      className={className ?? 'relative flex min-h-0 flex-1 flex-col'}
       data-drop-kind={kind}
       onDragEnter={onDragOver}
       onDragOver={onDragOver}

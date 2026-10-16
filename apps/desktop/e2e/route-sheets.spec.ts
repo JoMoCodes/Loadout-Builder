@@ -421,27 +421,56 @@ test('sits under Load Out in the menu, with Distribute, Sheets and History tabs'
   await expect(page.getByText('No saved runs yet.')).toBeVisible();
 });
 
-test('the cards ask for the Routes export, the driver list and the email setup, and open those pages', async ({
+test('the cards ask for route data, the driver list and the email setup, and open those pages', async ({
   page,
 }) => {
   await installFakeBridge(page, { settings: { demoMode: false } });
   await page.addInitScript(() => window.localStorage.setItem('loadout.page', 'route-sheets'));
   await page.goto('/');
   await expect(page.getByTestId('route-sheets-route-data-words')).toHaveText(
-    'No Routes export is loaded. Bring in the Routes export on the Route Data page, so each route sheet can be matched to its driver.',
+    "No route data yet. Use the Roster's Route Data, or import a new file (Routes works best), so each route sheet can be matched to its driver.",
   );
   await expect(page.getByTestId('route-sheets-driver-list-missing')).toHaveText('Not loaded');
   await expect(page.getByTestId('route-sheets-email-problem')).toHaveText(
     'Add the from address and the app password in Settings first.',
   );
-  await page.getByTestId('route-sheets-open-route-data').click();
-  await expect(page.locator('[data-page="route-data"]')).toBeVisible();
-  await page.click('[data-nav="route-sheets"]');
+  // No route data on the Roster yet, so only a new file can be brought in here.
+  await expect(page.getByTestId('route-sheets-use-roster')).toBeDisabled();
+  await page.getByTestId('route-sheets-import-route-file').click();
+  const pick = page.locator('dialog[data-dialog="import-route-data"]');
+  await expect(pick).toContainText('Which file should the route sheets use?');
+  await expect(pick).toContainText('Routes matches route sheets best.');
+  await expect(pick).toContainText('Best for today');
+  // Not part of the Roster's two steps: no step count, and no DWP question to skip to.
+  await expect(pick).not.toContainText('Step 1 of 2');
+  await expect(page.getByTestId('skip-to-dwp')).toHaveCount(0);
+  await pick.getByRole('button', { name: 'Cancel' }).click();
+  await expect(pick).toHaveCount(0);
   await page.getByTestId('route-sheets-open-associates').click();
   await expect(page.locator('[data-page="associates"]')).toBeVisible();
   await page.click('[data-nav="route-sheets"]');
   await page.getByTestId('route-sheets-open-settings').click();
   await expect(page.locator('[data-page="settings"]')).toBeVisible();
+});
+
+test("Use the Roster's Route Data matches with the file the roster took its routes from", async ({
+  page,
+}) => {
+  await installFakeBridge(page, {
+    settings: { demoMode: false, routeSheetsRouteData: 'routes' },
+    snapshot: {
+      roster: { sourceFile: '', importedAt: null, routeSource: 'itineraries', rows: [] },
+    },
+  });
+  await page.addInitScript(() => window.localStorage.setItem('loadout.page', 'route-sheets'));
+  await page.goto('/');
+  await page.getByTestId('route-sheets-use-roster').click();
+  await expect
+    .poll(() => callsTo(page, 'settings:set'))
+    .toContainEqual({ routeSheetsRouteData: 'roster' });
+  await expect(page.getByTestId('route-sheets-status')).toHaveText(
+    "Route sheets now match with the Roster's Route Data.",
+  );
 });
 
 test('the cards name the route data in use, an old driver list and a ready email setup', async ({
@@ -690,7 +719,7 @@ test('the pad box shows only for a wave the route data does not know', async ({ 
   await change(page, { dist: { typedPadWaves: [] } });
   await expect(section(page, 'pads')).toHaveCount(0);
   await expect(page.getByTestId('route-sheets-pads-note')).toHaveText(
-    'The pad for each wave comes from the Route Data page.',
+    "The pad for each wave comes from the route file's PADs on Load Out.",
   );
 });
 
@@ -1272,7 +1301,7 @@ test('Distribute says how many waves still have no pad from Route Data', async (
     },
   });
   await expect(page.getByTestId('route-sheets-pads-missing')).toHaveText(
-    '2 waves have no pad yet. Set them with Assign PADs on the Route Data page.',
+    "2 waves have no pad yet. Set them with Assign PADs on the route file's tab on Load Out.",
   );
   await change(page, {
     dist: {

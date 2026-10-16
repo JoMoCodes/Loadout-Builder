@@ -33,7 +33,7 @@ const STEP_WORDS: Record<StepId, { title: string; why: string }> = {
     why: 'This is the list of who is working today.',
   },
   'route-data': {
-    title: 'Bring over route data',
+    title: 'Import route data',
     why: 'Adds wave times, PADs and route codes to the roster.',
   },
   'assign-print': {
@@ -51,7 +51,6 @@ const BUTTON_WORDS: Record<StepAction, string> = {
   'import-vehicles': 'Import vans',
   'import-loadout': 'Import load-out sheet',
   'import-routes': 'Import route data',
-  'bring-over': 'Bring over route data',
   'assign-vans': 'Assign vans',
   'open-print': 'Open the Print tab',
   'import-route-sheets': 'Bring in the route sheet PDF',

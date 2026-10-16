@@ -464,7 +464,7 @@ test('Export Roster and Export with DWP say what they wrote, or why not', async 
     'Nothing to put in those columns',
   );
   await expect(page.locator('[data-dialog="print-ask"]')).toContainText(
-    'There is no DWP sheet loaded either',
+    'There is no DWP sheet loaded yet.',
   );
   await page.getByTestId('print-ask-ok').click();
   await expect(page.getByTestId('load-out-status')).toHaveText(

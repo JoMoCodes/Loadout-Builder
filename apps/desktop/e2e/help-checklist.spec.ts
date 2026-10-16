@@ -79,11 +79,9 @@ test('ticks itself off as the data changes', async ({ page }) => {
   await expect(step(page, 'route-data')).toHaveAttribute('data-step-current', 'true');
   await expect(step(page, 'route-data').locator('[data-step-do]')).toHaveText('Import route data');
 
-  // A route export brought in: the button now brings it over.
+  // A route export brought in but not on the roster: Import Route Data does both in one go.
   await change(page, '(s) => { s.counts.routeRows = { routes: 30 }; }');
-  await expect(step(page, 'route-data').locator('[data-step-do]')).toHaveText(
-    'Bring over route data',
-  );
+  await expect(step(page, 'route-data').locator('[data-step-do]')).toHaveText('Import route data');
 
   await change(page, `(s) => { s.roster.rows.forEach((v) => { v.row.waveTime = '10:20 AM'; }); }`);
   await expect(page.getByTestId('checklist-count')).toHaveText('4 of 6 done');

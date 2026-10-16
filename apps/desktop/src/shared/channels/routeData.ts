@@ -1,4 +1,5 @@
-// Channels for the Route Data page (4c): PADs, shared routes, clearing an export.
+// Channels for the route files' tabs on Load Out (they were the Route Data page, 4c): PADs,
+// shared routes, clearing an export.
 // Bringing a file in goes through `files:pick` and `files:import`; bringing route data over to the
 // roster is the Load Out page's job, so it is not here.
 

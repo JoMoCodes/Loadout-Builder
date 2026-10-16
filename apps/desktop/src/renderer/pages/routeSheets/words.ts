@@ -74,7 +74,7 @@ export function routeMeta(r: RouteResult): string {
 /** What the page says about the route data the matching reads. */
 export function routeDataWords(routeData: RouteSheetsStateView['routeData']): string {
   if (!routeData) {
-    return 'No Routes export is loaded. Bring in the Routes export on the Route Data page, so each route sheet can be matched to its driver.';
+    return "No route data yet. Use the Roster's Route Data, or import a new file (Routes works best), so each route sheet can be matched to its driver.";
   }
   const what: Record<RouteDataKindInUse, string> = {
     routes: 'the Routes export',

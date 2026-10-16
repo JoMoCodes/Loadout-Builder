@@ -61,6 +61,8 @@ export const loadOutHandlers: HandlersFor<typeof loadOutChannels> = {
 
   'loadOut:bring-over-dwp': (_input, ctx) => ctx.state.applyDwp(),
 
+  'loadOut:clear-route-data': (parts, ctx) => ctx.state.clearRosterRouteData(parts),
+
   'loadOut:assign-vans': (keep, ctx) => ctx.state.assignVans(keep),
 
   'loadOut:clear-vans': (_input, ctx) => ctx.state.clearVans(),

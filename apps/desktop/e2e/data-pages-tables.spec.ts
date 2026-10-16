@@ -67,17 +67,19 @@ async function check(page: Page, view: string, heading: string, order: [string, 
   );
 }
 
-test('the Route Data tables sort by heading and keep their layout under their own names', async ({
+test('the route file tables on Load Out sort by heading and keep their layout under their own names', async ({
   page,
 }) => {
-  await openPage(page, 'route-data', { snapshot: SNAPSHOT() });
+  await openPage(page, 'load-out', { snapshot: SNAPSHOT() });
+  const tab = (id: string) => page.locator(`[data-tab-button="${id}"]`).click();
   // Clock times sort as clock times: 9:50am comes before 10:20am.
+  await tab('routes');
   await check(page, 'route-data-routes', 'Dispatch Time', ['9:50am', '10:20am']);
-  await page.getByTestId('route-data-tab-itineraries').click();
+  await tab('itineraries');
   await check(page, 'route-data-itineraries', 'Driver', [CARMEN.name, CARMEN.name]);
-  await page.getByTestId('route-data-tab-schedule').click();
+  await tab('schedule');
   await check(page, 'route-data-schedule', 'Associate', [CARMEN.name, CARMEN.name]);
-  await page.getByTestId('route-data-tab-dwp').click();
+  await tab('dwp');
   await check(page, 'dwp', 'Route Code', ['CX1', 'CX2']);
 });
 

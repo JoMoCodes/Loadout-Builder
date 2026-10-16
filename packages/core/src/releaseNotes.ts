@@ -11,6 +11,21 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.12.0',
+    items: [
+      'The Route Data page is gone. Route files now come in from one place: the Import Route Data button on the Roster. It used to be called Bring Over Route Data.',
+      'Import Route Data asks "What file do you want to import for Route Data?" Routes is the big box, since it is the best pick on the day.',
+      'Need another file? Click Use a different file. Itineraries is for today. Week-##-Schedule is mostly for a preview of tomorrow, but works for today too. Dispatch is coming in a later update.',
+      'Drop the file on its box, or click Choose. The app then asks which PAD each time goes to, and puts the routes on the roster.',
+      'Next it asks "Do you want to import DWP Data?" Pick the DWP sheet, or click Not today. Then you are back on the Roster.',
+      'The Bring Over DWP button is gone too. The DWP sheet comes in the same way. To bring in just a new DWP sheet, click Import Route Data, then Skip to DWP Data.',
+      'Cards above the roster show what came in: the Roster, the route file and the DWP sheet, with how many routes and the file name.',
+      'Click a card to see that file. Each file you bring in gets its own tab on Load Out, with a small green dot.',
+      'Clear Route Data takes the route file off the roster again. Clear DWP Data does the same for the DWP sheet. Both ask first.',
+      "On Route Sheets, the Route data card has two buttons: Use the Roster's Route Data, or Import a new file. Routes works best there too.",
+    ],
+  },
+  {
     version: '2.11.0',
     items: [
       'On Load Out, Assign Vans now keeps the vans drivers already have. That means vans you gave by hand, and vans that were already on the load-out sheet.',

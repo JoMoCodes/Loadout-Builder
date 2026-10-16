@@ -75,11 +75,12 @@ The page has four tabs.
       Ctrl+O works from every page, as the old window's shortcut did: proved by `apps/desktop/e2e/shortcuts-and-drops.spec.ts`: "Ctrl+O works from any page: it opens Load Out and runs Import Sheet" and the smoke test: "Ctrl+O and Ctrl+I work from another page".
 - [x] Importing asks first before it replaces the roster.
       Proved by `apps/desktop/e2e/load-out.spec.ts`: "Import Sheet (and Ctrl+O) asks before replacing the roster", and the smoke test: "a fixture day on the Load Out page ends as the old app did (2026-09-01)".
-- [x] **Bring Over Route Data** fills Wave Time, PAD, Routes and Service Type from an imported
-      route export, then brings the DWP over as well.
-      Proved by `apps/desktop/e2e/load-out.spec.ts`: "Bring Over Route Data asks which export, then brings the DWP over after a day check", `apps/desktop/src/main/handlers/loadOut.test.ts`: "brings route data and the DWP over, assigns vans, and clears them again", and the smoke test: "a fixture day on the Load Out page ends as the old app did (2026-09-01)".
-- [x] **Bring Over DWP** fills Staging, Bags and OVS, matched on route code. It is also its own
-      button, for when the DWP arrives after the route data is already over.
+- [x] **Import Route Data** (the old Bring Over Route Data) brings a route export in and fills
+      Wave Time, PAD, Routes and Service Type from it, then asks about the DWP sheet.
+      Proved by `apps/desktop/e2e/load-out.spec.ts`: "Import Route Data: Routes up front, the file comes in and goes on the roster, then the DWP question", `apps/desktop/src/main/handlers/loadOut.test.ts`: "brings route data and the DWP over, assigns vans, and clears them again", and the smoke test: "a fixture day on the Load Out page ends as the old app did (2026-09-01)".
+- [x] The DWP step of Import Route Data fills Staging, Bags and OVS, matched on route code.
+      **Skip to DWP Data** brings in just the sheet, for when it arrives after the route data
+      is already over (it was the Bring Over DWP button).
       Proved by `apps/desktop/e2e/load-out.spec.ts`: "Bring Over DWP on its own can be stopped at the day check", and `apps/desktop/src/main/handlers/loadOut.test.ts`: "brings route data and the DWP over, assigns vans, and clears them again".
 - [x] **Assign Vans** fills the Vehicle and VIN columns from the fleet.
       Proved by the parity diff `vans` on all three days (`roster_after`) and `state/vans.test.ts`: "works out again the vans it gave out, and takes one off a driver with no route".
@@ -96,7 +97,7 @@ The page has four tabs.
       Proved by `apps/desktop/e2e/print-tab.spec.ts`: "Export Roster and Export with DWP say what they wrote, or why not" (the buttons on the Roster tab's toolbar), `apps/desktop/src/main/handlers/print.test.ts`: "Export Roster writes every driver to the file chosen", and the smoke test: "in demo mode the sheets are written as PDF and Excel files where chosen". There is no File menu in the new app; the toolbar button is the way in.
 - [x] **Export with DWP** (toolbar, or File > Export with DWP...) writes the same sheet with
       Bags, OVS and Staging.
-      Proved by `apps/desktop/e2e/print-tab.spec.ts`: "Export Roster and Export with DWP say what they wrote, or why not" (on the Roster tab's toolbar) and `apps/desktop/src/main/handlers/print.test.ts`: "Export with DWP points at Bring Over DWP when nobody carries bags, OVS or staging".
+      Proved by `apps/desktop/e2e/print-tab.spec.ts`: "Export Roster and Export with DWP say what they wrote, or why not" (on the Roster tab's toolbar) and `apps/desktop/src/main/handlers/print.test.ts`: "Export with DWP stops when nobody carries bags, OVS or staging".
 
 #### Columns and tables on the Roster
 
@@ -223,11 +224,10 @@ The page has four tabs.
 
 - [x] Any single export is enough.
       Proved by the parity check: `routes.json` brings each export over on its own, on all three days.
-- [x] If only one export is imported, the button takes it.
-      Proved by `apps/desktop/e2e/load-out.spec.ts`: "Bring Over Route Data takes the one export there is without asking".
-- [x] If more than one export is imported, it asks which to use (their times are on different
-      clocks).
-      Proved by `apps/desktop/e2e/load-out.spec.ts`: "Bring Over Route Data asks which export, then brings the DWP over after a day check" and the smoke test: "a fixture day on the Load Out page ends as the old app did (2026-09-01)" (three exports, Routes picked).
+- [x] **Changed.** Import Route Data asks which file first (Routes up front, the others behind
+      Use a different file), so the roster always takes the file just brought in. The old
+      "which export?" window is gone: one source at a time.
+      Proved by `apps/desktop/e2e/load-out.spec.ts`: "Import Route Data: Routes up front, the file comes in and goes on the roster, then the DWP question" and the smoke test: "a fixture day on the Load Out page ends as the old app did (2026-09-01)" (Routes taken).
 - [x] The header next to the shift breakdown names which export was taken.
       Proved by `pages/loadOut/rules.test.ts`: "names the day, the file, the shift mix, the vans, the source and the matching".
 - [ ] Bringing over again replaces what was there, so you can switch sources freely.
@@ -319,10 +319,10 @@ The page has four tabs.
       Proved by the parity diff `export` on all three days (`rows.with_dwp`, read off the roster rows).
 - [x] Asking to export with DWP before anything has been brought over says so, instead of
       printing three blank columns.
-      Proved by `apps/desktop/src/main/handlers/print.test.ts`: "Export with DWP points at Bring Over DWP when nobody carries bags, OVS or staging", and `apps/desktop/e2e/print-tab.spec.ts`: "Export Roster and Export with DWP say what they wrote, or why not".
-- [x] Export with DWP stops if no driver carries any of the three, and points at **Bring Over
-      DWP**.
-      Proved by `apps/desktop/src/main/handlers/print.test.ts`: "Export with DWP points at Bring Over DWP when nobody carries bags, OVS or staging".
+      Proved by `apps/desktop/src/main/handlers/print.test.ts`: "Export with DWP stops when nobody carries bags, OVS or staging", and `apps/desktop/e2e/print-tab.spec.ts`: "Export Roster and Export with DWP say what they wrote, or why not".
+- [x] Export with DWP stops if no driver carries any of the three, and points at **Import Route
+      Data** (it was Bring Over DWP).
+      Proved by `apps/desktop/src/main/handlers/print.test.ts`: "Export with DWP stops when nobody carries bags, OVS or staging".
 - [ ] Driver, Vehicle and Staging columns are sized never to trim a value.
       _The new export draws exactly what the old one did (the print parity test, `export-plain` and `export-dwp`). On the made-up days a few long made-up names are trimmed in the DWP version, in both apps, so this is not ticked._
 - [x] Shift Type can be cut short with an ellipsis (for example a long "ATTN NEEDED" type).
@@ -572,10 +572,15 @@ The columns, page and who prints are the user's to set. The two fixed exports ab
 
 The Amazon exports that say who has scheduled work and when they dispatch.
 
+**Changed (2.12.0).** The page is gone. Each file is brought in with **Import Route Data** on the
+Roster, and each loaded file has its own tab on Load Out (Routes, Itineraries, Weekly Schedule,
+DWP), with the same table, header, PADs and Clear. The tests below moved with it, to
+`apps/desktop/e2e/load-out-route-files.spec.ts`.
+
 ### 3.1 Sub-tabs and files
 
 - [x] One sub-tab per export, each with its own file, table and PADs.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "has a tab for each export and one for the DWP sheet, and says what an empty one wants", and the Electron smoke check (`apps/desktop/scripts/smokeOtherPages.mjs`), which brings in each export on its own tab.
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "a file has a tab on Load Out only while it is loaded, right after the Roster", and the Electron smoke check (`apps/desktop/scripts/smokeOtherPages.mjs`), which brings in each export on its own tab.
 - [x] **Routes** reads `Routes_<station>_<date>.xlsx`; dispatch time comes from Planned
       Departure Time; it also carries route code, service type and route progress.
       Proved by `routedata.test.ts`: "Routes and Itineraries fixtures" and "route export scenarios".
@@ -598,18 +603,18 @@ The Amazon exports that say who has scheduled work and when they dispatch.
       Proved by `routedata.test.ts`: the same scenario, and the Itineraries fixture's route durations.
 - [x] The first three sub-tabs are keyed by Transporter ID, so they anchor straight to
       associates with no name matching.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "shows an export with the old columns, a header that counts, and the old colours" (rows are checked against the associate list by Transporter ID, not by name) and `apps/desktop/src/renderer/pages/pageHelpers.test.ts`: "Route Data tables".
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "shows an export with the old columns, a header that counts, and the old colours" (rows are checked against the associate list by Transporter ID, not by name) and `apps/desktop/src/renderer/pages/pageHelpers.test.ts`: "Route Data tables".
 - [x] Rows whose ID has no associate record are coloured amber.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "shows an export with the old columns, a header that counts, and the old colours" and `apps/desktop/src/renderer/pages/pageHelpers.test.ts`: "colour rows as the old page did".
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "shows an export with the old columns, a header that counts, and the old colours" and `apps/desktop/src/renderer/pages/pageHelpers.test.ts`: "colour rows as the old page did".
 - [x] Rows with no PAD yet are greyed.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "shows an export with the old columns, a header that counts, and the old colours" and `apps/desktop/src/renderer/pages/pageHelpers.test.ts`: "colour rows as the old page did".
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "shows an export with the old columns, a header that counts, and the old colours" and `apps/desktop/src/renderer/pages/pageHelpers.test.ts`: "colour rows as the old page did".
 - [x] The day of a route export is read from its file name.
       Proved by `routedata.test.ts`: fixture days, and the "file name" scenarios.
 
 ### 3.2 DWP
 
-- [x] The DWP sits on this page because it is read for the same day.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "has a tab for each export and one for the DWP sheet, and says what an empty one wants".
+- [x] The DWP sits with the route files because it is read for the same day.
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "a file has a tab on Load Out only while it is loaded, right after the Roster".
 - [x] It carries no dispatch times and no PADs.
       Proved by `dwp.test.ts`: "DWP fixtures" (sample rows hold only the four fields).
 - [x] It is keyed by route code, not Transporter ID (a person can appear on several lines, a
@@ -619,15 +624,15 @@ The Amazon exports that say who has scheduled work and when they dispatch.
       Proved by `dwp.test.ts`: "DWP fixtures".
 - [x] A file missing any of the four is refused as not being the sheet asked for.
       Proved by `dwp.test.ts`: scenario "a column is missing".
-- [x] **Import DWP** and **Clear** are the whole of the tab, plus a search box and a **Not on
-      the roster** filter.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "the DWP tab says how many drivers matched, calls out a route listed twice and greys what is not on the roster" (search box and **Not on the roster**), "importing a DWP sheet says how many routes came in...", "clearing the DWP sheet asks first".
+- [x] **Clear** is the whole of the tab, plus a search box and a **Not on the roster** filter.
+      The sheet comes in with Import Route Data.
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "the DWP tab says how many drivers matched, calls out a route listed twice and greys what is not on the roster" (search box and **Not on the roster**), "clearing the DWP sheet asks first".
 - [x] The header says how many of the roster's drivers it matched.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "the DWP tab says how many drivers matched..." and, against the harness numbers, `apps/desktop/src/main/handlers/pageViews.test.ts`: "are worded the way the old pages worded them".
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "the DWP tab says how many drivers matched..." and, against the harness numbers, `apps/desktop/src/main/handlers/pageViews.test.ts`: "are worded the way the old pages worded them".
 - [x] Rows that match nothing on the roster are greyed.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "the DWP tab says how many drivers matched..." and `apps/desktop/src/renderer/pages/pageHelpers.test.ts`: "the DWP tab".
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "the DWP tab says how many drivers matched..." and `apps/desktop/src/renderer/pages/pageHelpers.test.ts`: "the DWP tab".
 - [x] A route code listed twice is called out. The first line wins.
-      Called out in the header and in the import message: `apps/desktop/e2e/route-data.spec.ts`: "the DWP tab says how many drivers matched..." and "importing a DWP sheet...". The first line winning is the core: `models.test.ts`: "compares route codes without caring about case or spacing, first line winning".
+      Called out in the header and in the import message: `apps/desktop/e2e/load-out-route-files.spec.ts`: "the DWP tab says how many drivers matched...". The first line winning is the core: `models.test.ts`: "compares route codes without caring about case or spacing, first line winning".
 - [x] The sheet's day is read only from the file name, since nothing inside the sheet says.
       Proved by `dwp.test.ts`: "the day a DWP file is for".
 - [x] `DWP_DSP-<code>_08-14-2026` reads as August 14th 2026.
@@ -653,28 +658,28 @@ The Amazon exports that say who has scheduled work and when they dispatch.
       pipe sign.
       Proved by `routedata.test.ts`: scenarios "shared routes, placeholders, clock spellings" and the "shared" counts of the fixtures.
 - [x] Importing asks who each shared route belongs to rather than guessing.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "bringing a file in asks who shared routes belong to, then which PAD each time is in".
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "bringing a file in asks who shared routes belong to, then which PAD each time is in".
 - [x] Both names are kept either way.
       Proved by `apps/desktop/src/main/handlers/dataPages.test.ts`: "sets who a shared route belongs to, and only for the table the page saw" (the joined names and IDs are unchanged after the choice).
 - [x] The row reads `<name>   (+1 more)` and is coloured amber.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "shows an export with the old columns, a header that counts, and the old colours". Like the old page, a shared route with no PAD yet is grey first and turns amber once it has one (`apps/desktop/src/renderer/pages/pageHelpers.test.ts`: "colour rows as the old page did").
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "shows an export with the old columns, a header that counts, and the old colours". Like the old page, a shared route with no PAD yet is grey first and turns amber once it has one (`apps/desktop/src/renderer/pages/pageHelpers.test.ts`: "colour rows as the old page did").
 - [x] Right-clicking the Driver or Transporter ID column reopens the choice.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "right-clicking the Driver column of a shared route reopens the choice, and says when there is none".
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "right-clicking the Driver column of a shared route reopens the choice, and says when there is none".
 - [x] Skipping the prompt costs nothing.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "skipping both windows costs nothing, and says how to come back to them".
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "skipping both windows costs nothing, and says how to come back to them".
 - [x] Itineraries write names as `First,Last` and Routes as `First Last`; both read the same.
       Proved by `routedata.test.ts`: scenario "morning export on a second sheet, duration split off".
 
 ### 3.4 Assigning PADs
 
 - [x] Importing lists the distinct dispatch times found and asks which PAD each belongs in.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "bringing a file in asks who shared routes belong to, then which PAD each time is in" and the Electron smoke check, which assigns PADs through the window on all three days.
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "bringing a file in asks who shared routes belong to, then which PAD each time is in" and the Electron smoke check, which assigns PADs through the window on all three days.
 - [x] The mapping is made by hand, never inferred.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "Assign PADs reopens the window with what was chosen, and asks before leaving a time empty" (a time starts on None until someone chooses).
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "Assign PADs reopens the window with what was chosen, and asks before leaving a time empty" (a time starts on None until someone chooses).
 - [x] Skipping the dialog leaves rows unassigned until **Assign PADs** is pressed.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "skipping both windows costs nothing, and says how to come back to them".
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "skipping both windows costs nothing, and says how to come back to them".
 - [x] **Assign PADs** reopens the dialog at any time.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "Assign PADs reopens the window with what was chosen..." and "double-clicking a row opens the PAD window too".
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "Assign PADs reopens the window with what was chosen..." and "double-clicking a row opens the PAD window too".
 - [x] Assignments are saved.
       _Proved by `packages/storage/src/store.test.ts`: "round-trips a dataset with its PAD
       assignments" and "saves PAD assignments on their own"._
@@ -684,12 +689,12 @@ The Amazon exports that say who has scheduled work and when they dispatch.
 ### 3.5 PADs from the schedule
 
 - [x] The morning Itineraries tab has a **PADs from Schedule** button.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "has a tab for each export..." (only the Itineraries tab has the button).
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "has a tab for each export..." (only the Itineraries tab has the button).
 - [x] It copies each driver's PAD from the Weekly Schedule tab, joined on Transporter ID.
       Proved by the parity check (`routes.json`, the "adopted" scenarios on 2026-09-01 and 2026-09-14) and `appState.test.ts`.
 - [x] The status bar says how many came over, how many are scheduled but unassigned there, and
       how many are not on the schedule at all.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "PADs from Schedule says how many came over...", `apps/desktop/src/main/handlers/dataPages.test.ts`: "copies PADs from the schedule, stopping with the old words when it cannot", and the Electron smoke check, whose counts are the harness's `adopt_result` for 2026-09-01 and 2026-09-14 (`routes.json`).
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "PADs from Schedule says how many came over...", `apps/desktop/src/main/handlers/dataPages.test.ts`: "copies PADs from the schedule, stopping with the old words when it cannot", and the Electron smoke check, whose counts are the harness's `adopt_result` for 2026-09-01 and 2026-09-14 (`routes.json`).
 - [x] Re-grabbing restates every row.
       Proved by `appState.test.ts`: "the day state, against the old app".
 - [x] Confirming the Assign PADs dialog afterwards replaces the copied PADs with what the dialog
@@ -711,7 +716,7 @@ The Amazon exports that say who has scheduled work and when they dispatch.
       Proved by `routedata.test.ts`: "weekly schedule fixtures" and scenario "the year in the day does not matter".
 - [x] With no roster loaded, it reads today.
       `routedata.test.ts`: "the weekly schedule without a day" shows the reader defaults to today. The app's choice of day (the load-out date, else today) is checked in phase 2.
-      Proved by `apps/desktop/src/main/handlers/dataPages.test.ts`: "reads the weekly schedule for today when no roster is loaded", and `apps/desktop/e2e/route-data.spec.ts`: "has a tab for each export..." (the tab says which day it reads for).
+      Proved by `apps/desktop/src/main/handlers/dataPages.test.ts`: "reads the weekly schedule for today when no roster is loaded", and `apps/desktop/e2e/load-out-route-files.spec.ts`: "has a tab for each export..." (the tab says which day it reads for).
 - [x] Asking for a day the file does not cover says which days it does have.
       Proved by `routedata.test.ts`: "refuses" tests of the weekly schedule fixtures.
 - [x] A day cell holds the service type and the start time together; both are split out.
@@ -1141,9 +1146,9 @@ Rules that apply to every file the app reads.
 - [x] **Van pick dialog:** which free van, best fit first.
       Proved by `apps/desktop/e2e/load-out.spec.ts`: "Unassign this van, and Assign a Van from the free ones, best fit first".
 - [x] **Shared route dialog:** who a multi-driver route belongs to.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "bringing a file in asks who shared routes belong to..." and "right-clicking the Driver column of a shared route reopens the choice...".
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "bringing a file in asks who shared routes belong to..." and "right-clicking the Driver column of a shared route reopens the choice...".
 - [x] **PAD dialog:** dispatch time to PAD.
-      Proved by `apps/desktop/e2e/route-data.spec.ts`: "bringing a file in asks who shared routes belong to..." and "Assign PADs reopens the window with what was chosen...".
+      Proved by `apps/desktop/e2e/load-out-route-files.spec.ts`: "bringing a file in asks who shared routes belong to..." and "Assign PADs reopens the window with what was chosen...".
 - [x] **Source dialog:** which export the roster takes route data from.
       Proved by `apps/desktop/e2e/load-out.spec.ts`: "Bring Over Route Data asks which export, then brings the DWP over after a day check" and "Bring Over Route Data takes the one export there is without asking", `pages/loadOut/rules.test.ts`: "describes each route export in the source window", and the smoke test: "a fixture day on the Load Out page ends as the old app did (2026-09-01)". One window, opened by Bring Over Route Data on the Load Out page.
 - [x] **Driver dialog:** associate to van affinity slot.

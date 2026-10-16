@@ -12,6 +12,7 @@ import { ChannelRefusal } from './channels';
 import { buildSnapshot } from './snapshot';
 import type { AppSnapshot } from '../shared/snapshot';
 import type { GridLayoutRecord } from '../shared/channels/layout';
+import type { RouteSheetsRouteData } from '../shared/settings';
 import { loadDemoPerformance } from './performance/demo';
 import { NO_PERF_STATUS, PerfHost, type PerfStatus } from './performance/perfHost';
 import { loadDemoRouteSheets } from './routeSheets/demo';
@@ -36,6 +37,8 @@ export interface StateHostOptions {
   lastRouteSheetRun?: LastRunMemory;
   /** The route sheet emails' subject and opening lines, as set now. The old app's words without it. */
   routeSheetsWording?: () => RouteSheetWording;
+  /** Which route data the route sheets match with, as set now (the Roster's without it). */
+  routeSheetsRouteData?: () => RouteSheetsRouteData;
   /** The clock for the route sheet runs' times. Defaults to the computer's. */
   now?: () => Date;
 }
@@ -100,6 +103,7 @@ export class StateHost {
       demo,
       lastRun: demo ? this.demoLastRun : (this.options.lastRouteSheetRun ?? memoryLastRun()),
       wording: this.options.routeSheetsWording,
+      routeDataChoice: this.options.routeSheetsRouteData,
       log: this.options.log,
     });
     const fixtures = this.options.demoFixturesFolder;

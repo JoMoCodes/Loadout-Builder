@@ -14,13 +14,12 @@ import {
 } from './windows';
 
 describe('the pages and their tabs', () => {
-  it('lists the eleven pages in menu order', () => {
+  it('lists the ten pages in menu order', () => {
     expect(PAGE_IDS).toEqual([
       'home',
       'dashboard',
       'load-out',
       'route-sheets',
-      'route-data',
       'vehicle-data',
       'associates',
       'scorecards',
@@ -30,9 +29,13 @@ describe('the pages and their tabs', () => {
     ]);
   });
 
-  it('knows the tabs of the six tabbed pages, and that the others have none', () => {
+  it('knows the tabs of the five tabbed pages, and that the others have none', () => {
     expect(PAGE_TABS['load-out'].map((tab) => tab.id)).toEqual([
       'roster',
+      'routes',
+      'itineraries',
+      'schedule',
+      'dwp',
       'print',
       'available-vans',
       'previous-roster',
@@ -42,12 +45,6 @@ describe('the pages and their tabs', () => {
       'distribute',
       'sheets',
       'history',
-    ]);
-    expect(PAGE_TABS['route-data'].map((tab) => tab.id)).toEqual([
-      'routes',
-      'itineraries',
-      'schedule',
-      'dwp',
     ]);
     expect(PAGE_TABS['vehicle-data'].map((tab) => tab.id)).toEqual([
       'management',
@@ -68,7 +65,7 @@ describe('the pages and their tabs', () => {
 
   it('tells a tab of a page from one of another page', () => {
     expect(isTabOf('load-out', 'roster')).toBe(true);
-    expect(isTabOf('route-data', 'roster')).toBe(false);
+    expect(isTabOf('route-sheets', 'roster')).toBe(false);
     expect(isTabOf('settings', 'roster')).toBe(false);
     expect(isTabOf('load-out', null)).toBe(false);
   });
@@ -168,6 +165,12 @@ describe('an old page or tab name', () => {
     expect(currentTarget('previous-roster')).toEqual({
       page: 'load-out',
       tab: 'previous-roster',
+    });
+    // Route Data's tabs are Load Out tabs now.
+    expect(currentTarget('route-data')).toEqual({ page: 'load-out' });
+    expect(currentTarget('route-data', 'itineraries')).toEqual({
+      page: 'load-out',
+      tab: 'itineraries',
     });
   });
 

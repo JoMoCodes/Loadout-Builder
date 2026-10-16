@@ -325,6 +325,7 @@ the snapshot's `revision` and refuse when it has moved on.
 | `loadOut:move-to-previous-roster` | command | none | Copies today's roster to the Previous Roster, then empties today's roster. Rows copied. |
 | `loadOut:clear-roster` | command | none | Empties today's roster. Associate data and manual links are kept. |
 | `loadOut:bring-over-route-data` | command | `{ kind }` | Copies dispatch time, route code, service type and PAD from one route export. |
+| `loadOut:clear-route-data` | command | `{ routes, dwp }` | Clear Route Data / Clear DWP Data: empties the route exports and/or the DWP sheet, and blanks what they put on the roster. |
 | `loadOut:bring-over-dwp` | command | none | Copies staging, bags and OVS from the DWP sheet, matched on route code. |
 | `loadOut:assign-vans` | command | none | Works out a van for every driver who needs one. Vans given by hand or on the load-out sheet stay put unless `{ byHand, fromSheet }` says otherwise. |
 | `loadOut:clear-vans` | command | none | Empties the Vehicle and VIN columns. How many drivers lost a van. |
@@ -392,7 +393,7 @@ the snapshot's `revision` and refuse when it has moved on.
 
 ## Parts the data pages share (4c)
 
-The Route Data, Vehicle Data and Associates pages share a few small parts in
+The route file tabs on Load Out, the Vehicle Data and Associates pages share a few small parts in
 `src/renderer/pages/dataPages/`. Use them if they fit; they are plain and have no page rules in them.
 
 - `Modal.tsx`: `Modal`, `ConfirmDialog`, `MessageDialog`, `PromptDialog`. Native `<dialog>`, so

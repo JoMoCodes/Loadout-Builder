@@ -20,6 +20,9 @@ async function open(page: Page, changes: Record<string, unknown> = {}) {
 
 const status = (page: Page) => page.getByTestId('load-out-status');
 
+/** The file window answers with a made-up file of the kind asked for. */
+const PICK = `(input) => ({ ok: true, value: { path: 'C:\\\\Exports\\\\' + input.kind + '.xlsx' } })`;
+
 /** What the app does on a hand move, in the stand-in: trade the fields, then say it changed. */
 const tradeFields = (fields: string[]) => `(input) => {
   const rows = window.__fake.snapshot.roster.rows;
@@ -55,11 +58,17 @@ async function rightClick(page: Page, driver: string, column: string) {
   await expect(page.getByRole('menu')).toBeVisible();
 }
 
-test('the page has five tabs, and remembers the one you were on', async ({ page }) => {
+test('the page has five tabs, one more for each file brought in, and remembers the one you were on', async ({
+  page,
+}) => {
   await open(page);
   const tabs = page.getByRole('tab');
+  // Routes, Itineraries and DWP are loaded in the made-up day; the Weekly Schedule is not.
   expect(await tabs.allInnerTexts()).toEqual([
     'Roster',
+    'Routes',
+    'Itineraries',
+    'DWP',
     'Print',
     'Available Vans',
     'Previous Roster',
@@ -347,54 +356,99 @@ test('an import the reader refuses shows its own words', async ({ page }) => {
   await expect(status(page)).toHaveText('Import failed.');
 });
 
-test('Bring Over Route Data asks which export, then brings the DWP over after a day check', async ({
+test('Import Route Data: Routes up front, the file comes in and goes on the roster, then the DWP question', async ({
   page,
 }) => {
   await open(page);
+  await onCall(page, 'files:pick', PICK);
+  await onCall(page, 'files:import', `() => ({ ok: true, value: { rows: 2 } })`);
   await onCall(
     page,
     'loadOut:bring-over-route-data',
-    `() => ({ ok: true, value: { kind: 'itineraries', filled: 3, dispatchTimes: 3, routeCodes: 3, serviceTypes: 3, pads: 2, noAssociate: 1, notInExport: 1, duplicates: 0, addedDrivers: [], needsReview: [] } })`,
+    `() => ({ ok: true, value: { kind: 'routes', filled: 3, dispatchTimes: 3, routeCodes: 3, serviceTypes: 3, pads: 2, noAssociate: 1, notInExport: 1, duplicates: 0, addedDrivers: [], needsReview: [] } })`,
   );
   await onCall(
     page,
     'loadOut:bring-over-dwp',
     `() => ({ ok: true, value: { filled: 1, staging: 1, bags: 1, ovs: 1, noRouteCode: 2, notInSheet: 2, cleared: 0 } })`,
   );
-  await page.getByRole('button', { name: 'Bring Over Route Data' }).click();
-  const source = page.getByTestId('source-dialog');
-  await expect(source).toContainText('Which export should the roster take?');
-  // Only the exports that have rows are offered, each described.
-  await expect(source.getByRole('radio')).toHaveCount(2);
-  await expect(source).toContainText(
-    '2 rows  -  brings dispatch time, route code, service type, PAD',
-  );
-  await source.getByLabel('Itineraries').check();
-  await source.getByRole('button', { name: 'Bring Over' }).click();
-  expect(await callsTo(page, 'loadOut:bring-over-route-data')).toEqual([{ kind: 'itineraries' }]);
-  // The DWP sheet is another day's: it asks before bringing it over.
+  await page.getByRole('button', { name: 'Import Route Data' }).click();
+  const first = page.locator('dialog[data-dialog="import-route-data"]');
+  await expect(first).toContainText('Step 1 of 2');
+  await expect(first).toContainText('What file do you want to import for Route Data?');
+  await expect(first).toContainText('Best for today');
+  // The other files wait behind "Use a different file", grouped by when they are used.
+  await expect(page.getByTestId('choose-itineraries')).toHaveCount(0);
+  await page.getByTestId('other-route-files').click();
+  const others = page.getByTestId('other-route-file-boxes');
+  await expect(others).toContainText('For today');
+  await expect(others).toContainText("For tomorrow's preview");
+  await expect(others).toContainText('Week-##-Schedule');
+  await expect(page.getByTestId('dispatch-box')).toContainText('In Development');
+  await expect(page.getByTestId('dispatch-box').getByRole('button')).toHaveCount(0);
+
+  await page.getByTestId('choose-routes').click();
+  await expect.poll(() => callsTo(page, 'files:pick')).toEqual([{ kind: 'routes' }]);
+  // Then the PAD window, as after any route file.
+  const pads = page.locator('dialog[data-dialog="assign-pads"]');
+  await expect(pads).toBeVisible();
+  await pads.getByRole('button', { name: 'Cancel' }).click();
+  await expect
+    .poll(() => callsTo(page, 'loadOut:bring-over-route-data'))
+    .toEqual([{ kind: 'routes' }]);
+
+  // Step 2: the DWP sheet. It is another day's, so it asks before putting it on the roster.
+  const second = page.locator('dialog[data-dialog="import-dwp"]');
+  await expect(second).toContainText('Step 2 of 2');
+  await expect(second).toContainText('Do you want to import DWP Data?');
+  await expect(page.getByTestId('route-file-in')).toHaveText('Routes is in');
+  await page.getByTestId('choose-dwp').click();
   const ask = page.getByTestId('confirm-dialog');
   await expect(ask).toContainText(
     'DWP_DSP-XXXX_09-17-2026.xlsx is for Thursday, September 17 2026.',
   );
   await page.getByTestId('confirm-yes').click();
-  expect(await callsTo(page, 'loadOut:bring-over-dwp')).toHaveLength(1);
+  await expect.poll(() => callsTo(page, 'loadOut:bring-over-dwp')).toHaveLength(1);
+  // Back on the Roster, which says what came over.
+  await expect(page.locator('dialog[open]')).toHaveCount(0);
+  await expect(page.getByRole('tab', { name: 'Roster', exact: true })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
   await expect(status(page)).toHaveText(
-    'Brought over Itineraries to 3 of 5 drivers - 3 dispatch times, 3 routes, 3 service types, ' +
+    'Brought over Routes to 3 of 5 drivers - 3 dispatch times, 3 routes, 3 service types, ' +
       '2 PADs. 1 not in the export. 1 not found in the driver list.  DWP: 1 staging, 1 bags, ' +
       '1 OVS onto 1 drivers. 4 without a match.',
   );
 });
 
-test('Bring Over DWP on its own can be stopped at the day check', async ({ page }) => {
+test('Skip to DWP Data brings in just the sheet, and Not today ends on the Roster', async ({
+  page,
+}) => {
   await open(page);
-  await page.getByRole('button', { name: 'Bring Over DWP' }).click();
+  await onCall(page, 'files:pick', PICK);
+  await onCall(page, 'files:import', `() => ({ ok: true, value: { rows: 1 } })`);
+  await page.getByRole('button', { name: 'Import Route Data' }).click();
+  await page.getByTestId('skip-to-dwp').click();
+  const second = page.locator('dialog[data-dialog="import-dwp"]');
+  await expect(second).toContainText('Do you want to import DWP Data?');
+  // On its own it is not step 2 of anything.
+  await expect(second).not.toContainText('Step 2 of 2');
+  await page.getByTestId('choose-dwp').click();
+  // The day check can still stop it.
   await expect(page.getByTestId('confirm-dialog')).toContainText(
     "Is this the right day's DWP sheet?",
   );
   await page.getByTestId('confirm-no').click();
   await expect(status(page)).toHaveText("DWP data left alone - the sheet may be the wrong day's.");
   expect(await callsTo(page, 'loadOut:bring-over-dwp')).toEqual([]);
+  expect(await callsTo(page, 'loadOut:bring-over-route-data')).toEqual([]);
+
+  await page.getByRole('button', { name: 'Import Route Data' }).click();
+  await page.getByTestId('skip-to-dwp').click();
+  await page.getByTestId('dwp-not-today').click();
+  await expect(page.locator('dialog[open]')).toHaveCount(0);
+  expect(await callsTo(page, 'files:import')).toHaveLength(1);
 });
 
 test('Assign Vans shows what the run did, with anyone not placed first', async ({ page }) => {
@@ -550,27 +604,73 @@ test('Previous Roster shows yesterday, greys out those without a van, and filter
   await expect(rows).toHaveCount(1);
 });
 
-test('Bring Over Route Data takes the one export there is without asking', async ({ page }) => {
+test('the cards show each file with its name, and Click me to View opens its tab', async ({
+  page,
+}) => {
   const day = loadOutDay();
-  const sets = (day.routeSets ?? []).map((set) =>
-    set.kind === 'routes' ? set : { ...set, rows: [] },
+  const named = (day.routeSets ?? []).map((set) =>
+    set.kind === 'routes' ? { ...set, sourceFile: 'C:\\Exports\\Routes_XXX1.xlsx' } : set,
   );
-  await open(page, { routeSets: sets, dwp: { ...day.dwp!, set: { ...day.dwp!.set, rows: [] } } });
-  await onCall(
-    page,
-    'loadOut:bring-over-route-data',
-    `() => ({ ok: true, value: { kind: 'routes', filled: 0, dispatchTimes: 0, routeCodes: 0, serviceTypes: 0, pads: 0, noAssociate: 0, notInExport: 5, duplicates: 0, addedDrivers: [], needsReview: [] } })`,
-  );
-  await page.getByRole('button', { name: 'Bring Over Route Data' }).click();
+  await open(page, { routeSets: named });
+  const cards = page.getByTestId('roster-cards');
+  await expect(cards.getByTestId('card-roster')).toContainText('Roster');
+  await expect(cards.getByTestId('card-route')).toContainText('Routes');
+  await expect(cards.getByTestId('card-route')).toContainText('2 routes');
+  await expect(cards.getByTestId('card-route-line')).toHaveText('Routes_XXX1.xlsx');
+  await expect(cards.getByTestId('card-dwp-line')).toHaveText('DWP_DSP-XXXX_09-17-2026.xlsx');
+  // Labels, not sentences: no dots between the bits.
+  expect(await cards.innerText()).not.toContain('·');
+  await expect(cards.getByTestId('card-route-hint')).toHaveText('Click me to View');
+
+  await cards.getByTestId('card-route-open').click();
+  await expect(page.getByRole('tab', { name: 'Routes' })).toHaveAttribute('aria-selected', 'true');
+  await expect(page.getByTestId('route-routes-metric')).toBeVisible();
+  await page.getByRole('tab', { name: 'Roster', exact: true }).click();
+  await cards.getByTestId('card-dwp-open').click();
+  await expect(page.getByRole('tab', { name: 'DWP' })).toHaveAttribute('aria-selected', 'true');
+});
+
+test('a file not brought in yet says so on its card, and the card starts Import Route Data', async ({
+  page,
+}) => {
+  const day = loadOutDay();
+  const empty = (day.routeSets ?? []).map((set) => ({ ...set, rows: [] }));
+  await open(page, { routeSets: empty, dwp: { ...day.dwp!, set: { ...day.dwp!.set, rows: [] } } });
+  await expect(page.getByTestId('card-route')).toContainText('Not imported yet');
+  await expect(page.getByTestId('card-route-hint')).toHaveText('Click me to Import');
+  // Nothing to clear, so no Clear Route Data button, and no file tabs.
+  await expect(page.getByRole('button', { name: 'Clear Route Data' })).toHaveCount(0);
+  await expect(page.getByRole('tab', { name: 'Routes' })).toHaveCount(0);
+  await page.getByTestId('card-route-open').click();
+  await expect(page.locator('dialog[data-dialog="import-route-data"]')).toBeVisible();
+});
+
+test('Clear Route Data and Clear DWP Data ask first, then take the file off', async ({ page }) => {
+  await open(page);
+  await onCall(page, 'loadOut:clear-route-data', `() => ({ ok: true, value: 3 })`);
+  await page.getByRole('toolbar').getByRole('button', { name: 'Clear Route Data' }).click();
+  await expect(page.getByTestId('confirm-dialog')).toContainText('Clear Route Data?');
+  await expect(page.getByTestId('confirm-dialog')).toContainText('The DWP sheet is kept.');
+  await page.getByTestId('confirm-no').click();
+  expect(await callsTo(page, 'loadOut:clear-route-data')).toEqual([]);
+  await page.getByTestId('card-clear-route').click();
+  await page.getByTestId('confirm-yes').click();
   await expect
-    .poll(() => callsTo(page, 'loadOut:bring-over-route-data'))
-    .toEqual([{ kind: 'routes' }]);
-  await expect(page.getByTestId('source-dialog')).toHaveCount(0);
-  await expect(page.getByTestId('load-out-status')).toHaveText(
-    "Nothing to bring over from Routes - none of the roster's drivers appear in it.",
+    .poll(() => callsTo(page, 'loadOut:clear-route-data'))
+    .toEqual([{ routes: true, dwp: false }]);
+  await expect(status(page)).toHaveText(
+    'Route data cleared. Use Import Route Data to bring a file in again.',
   );
-  // No DWP sheet is loaded, so the DWP pass after it has nothing to do and says nothing.
-  expect(await callsTo(page, 'loadOut:bring-over-dwp')).toEqual([]);
+
+  await page.getByTestId('card-clear-dwp').click();
+  await expect(page.getByTestId('confirm-dialog')).toContainText('Clear DWP Data?');
+  await page.getByTestId('confirm-yes').click();
+  await expect
+    .poll(() => callsTo(page, 'loadOut:clear-route-data'))
+    .toEqual([
+      { routes: true, dwp: false },
+      { routes: false, dwp: true },
+    ]);
 });
 
 test("a DWP sheet for the roster's own day goes straight over, with no question", async ({
@@ -580,12 +680,16 @@ test("a DWP sheet for the roster's own day goes straight over, with no question"
   await open(page, {
     dwp: { ...day.dwp!, dayStatus: 'ok', set: { ...day.dwp!.set, day: '2026-09-11' } },
   });
+  await onCall(page, 'files:pick', PICK);
+  await onCall(page, 'files:import', `() => ({ ok: true, value: { rows: 1 } })`);
   await onCall(
     page,
     'loadOut:bring-over-dwp',
     `() => ({ ok: true, value: { filled: 1, staging: 1, bags: 1, ovs: 1, noRouteCode: 4, notInSheet: 0, cleared: 0 } })`,
   );
-  await page.getByRole('button', { name: 'Bring Over DWP' }).click();
+  await page.getByRole('button', { name: 'Import Route Data' }).click();
+  await page.getByTestId('skip-to-dwp').click();
+  await page.getByTestId('choose-dwp').click();
   await expect.poll(() => callsTo(page, 'loadOut:bring-over-dwp')).toHaveLength(1);
   await expect(page.getByTestId('confirm-dialog')).toHaveCount(0);
   await expect(page.getByTestId('load-out-status')).toHaveText(

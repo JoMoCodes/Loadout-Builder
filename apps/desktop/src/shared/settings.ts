@@ -45,6 +45,13 @@ export const FONT_SCALE_MAX = 1.5;
 export const FONT_SCALE_STEP = 0.1;
 export const FONT_SCALE_DEFAULT = 1;
 
+/**
+ * Which route data the route sheets are matched with: the roster's (whichever file Import Route
+ * Data put on the roster), or one route file brought in on the Route Sheets page.
+ */
+export const ROUTE_SHEETS_ROUTE_DATA = ['roster', 'routes', 'itineraries', 'schedule'] as const;
+export type RouteSheetsRouteData = (typeof ROUTE_SHEETS_ROUTE_DATA)[number];
+
 /** Which vans drivers already have Assign Vans keeps: given by hand, and from the load-out sheet. */
 export interface KeepVansChoice {
   byHand: boolean;
@@ -93,6 +100,8 @@ export interface AppSettings {
   rememberKeepVans: boolean;
   /** That remembered answer. Null until it is first given. */
   keepVans: KeepVansChoice | null;
+  /** The route data Route Sheets matches with. */
+  routeSheetsRouteData: RouteSheetsRouteData;
 }
 
 /** What a screen may ask to change. Anything left out stays as it was. */
@@ -134,6 +143,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   routeSheetsEmail: DEFAULT_ROUTE_SHEETS_EMAIL,
   rememberKeepVans: true,
   keepVans: null,
+  routeSheetsRouteData: 'roster',
 };
 
 /** A tour's name: lower case words with dashes. */
@@ -187,6 +197,12 @@ export function sanitizePatch(raw: unknown): SettingsPatch {
   }
   if (typeof input.rememberKeepVans === 'boolean') {
     patch.rememberKeepVans = input.rememberKeepVans;
+  }
+  if (
+    typeof input.routeSheetsRouteData === 'string' &&
+    (ROUTE_SHEETS_ROUTE_DATA as readonly string[]).includes(input.routeSheetsRouteData)
+  ) {
+    patch.routeSheetsRouteData = input.routeSheetsRouteData as RouteSheetsRouteData;
   }
   if (input.keepVans === null) patch.keepVans = null;
   else if (

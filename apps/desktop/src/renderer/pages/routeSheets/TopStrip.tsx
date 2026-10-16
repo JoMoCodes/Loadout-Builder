@@ -5,6 +5,7 @@
 import { CircleHelp, FileUp } from 'lucide-react';
 import { useState } from 'react';
 import type { RouteSheetsStateView } from '../../../shared/routeSheets';
+import type { RouteSheetsRouteData } from '../../../shared/settings';
 import { Button } from '../../ui/button';
 import { WhereToGetDialog } from '../../help/whereToGet';
 import { Chip } from '../../ui/chip';
@@ -37,9 +38,24 @@ interface TopStripProps {
   busy: boolean;
   onBringIn: () => void;
   goTo: (page: PageId) => void;
+  /** The route file the roster took its routes from ('' when none). */
+  rosterKind: string;
+  /** The route data the person picked: the roster's, or a file brought in here. */
+  choice: RouteSheetsRouteData;
+  onUseRoster: () => void;
+  onImportRouteFile: () => void;
 }
 
-export function TopStrip({ state, busy, onBringIn, goTo }: TopStripProps) {
+export function TopStrip({
+  state,
+  busy,
+  onBringIn,
+  goTo,
+  rosterKind,
+  choice,
+  onUseRoster,
+  onImportRouteFile,
+}: TopStripProps) {
   const { run, routeData, driverList, emailProblem } = state;
   const old = driverList.count > 0 && isOverdue(driverList.refreshDueAt);
   const failures = run.checkFailures.length;
@@ -114,16 +130,40 @@ export function TopStrip({ state, busy, onBringIn, goTo }: TopStripProps) {
         <p className="m-0" data-testid="route-sheets-route-data-words">
           {routeDataWords(routeData)}
         </p>
-        {routeData ? null : (
+        {routeData ? (
+          <p className="m-0 mt-1">
+            {routeData.kind === rosterKind ? (
+              <Chip tone="ok" data-testid="route-sheets-same-as-roster">
+                Same as the Roster
+              </Chip>
+            ) : (
+              <Chip tone="info" data-testid="route-sheets-own-file">
+                Not the Roster&apos;s file
+              </Chip>
+            )}
+          </p>
+        ) : null}
+        <div className="mt-2 flex flex-wrap gap-2">
           <Button
             size="sm"
-            className="mt-2"
-            onClick={() => goTo('route-data')}
-            data-testid="route-sheets-open-route-data"
+            onClick={onUseRoster}
+            disabled={
+              busy || !rosterKind || (choice === 'roster' && routeData?.kind === rosterKind)
+            }
+            data-testid="route-sheets-use-roster"
           >
-            Open Route Data
+            Use the Roster&apos;s Route Data
           </Button>
-        )}
+          <Button
+            size="sm"
+            variant={routeData ? 'default' : 'primary'}
+            onClick={onImportRouteFile}
+            disabled={busy}
+            data-testid="route-sheets-import-route-file"
+          >
+            Import a new file
+          </Button>
+        </div>
       </TopCard>
 
       <TopCard title="Driver list" testId="route-sheets-driver-list">

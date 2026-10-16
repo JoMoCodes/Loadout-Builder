@@ -12,7 +12,7 @@ import perfDrivers from './shot-perf-drivers.png';
 import perfImports from './shot-perf-imports.png';
 import perfReports from './shot-perf-reports.png';
 import print from './shot-print.png';
-import routeData from './shot-route-data.png';
+import loadOutRoutes from './shot-load-out-routes.png';
 import routeSheetsDistribute from './shot-route-sheets-distribute.png';
 import routeSheetsSheets from './shot-route-sheets-sheets.png';
 import slackDownloadPdf from './slack-download-pdf.png';
@@ -23,7 +23,7 @@ export const SHOTS = {
   associates,
   vehicles,
   'load-out-roster': loadOutRoster,
-  'route-data': routeData,
+  'load-out-routes': loadOutRoutes,
   print,
   'assign-result': assignResult,
   dashboard,
