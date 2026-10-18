@@ -182,10 +182,18 @@ describe('the seven-week rank', () => {
     // Desmond's 200 packages put him ahead of Archer's 100 at the same score.
     expect(strip.meIndex).toBe(2);
     expect(strip.average).toBe(93.3);
+    // The packages behind the tie-break: Archer's own, Carmen's at rank 1, Desmond's at rank 2.
+    expect(strip.packages).toEqual({ mine: 100, first: 100, second: 200 });
     expect(fleetWeekStrip(perf, '2026-W30', ARCHER)).toEqual({
       scores: [],
       meIndex: null,
       average: null,
+      packages: { mine: null, first: null, second: null },
+    });
+    expect(fleetWeekStrip(perf, '2026-W41', 'A0IHV8Z401XHI9').packages).toEqual({
+      mine: null,
+      first: 100,
+      second: 200,
     });
   });
 
@@ -211,6 +219,9 @@ describe('the seven-week rank', () => {
       averageOfRanks: 1,
     });
     expect(model!.fleetAverage.meIndex).toBeNull();
+    // Her three weeks' packages against the ranked drivers' seven-week totals.
+    expect(model!.fleetAverage.packages).toEqual({ mine: 300, first: 800, second: 700 });
+    expect(model!.fleetWeek.packages).toEqual({ mine: 100, first: 100, second: 200 });
     expect(model!.latest.rank).toEqual({ rank: 1, total: 3 });
     // No metrics saved: nothing to work on, nothing in the receipt but the total.
     expect(model!.tip).toBeNull();

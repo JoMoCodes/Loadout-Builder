@@ -18,6 +18,7 @@ export const RELEASE_NOTES: readonly ReleaseNote[] = [
       'The title band, the rank medal, the big score and the tier name on the ring all take the colour of your tier for that page: this week on page 1, the 7-week average on page 2.',
       'With a station photo behind the pages, the medal now starts under the lettering at the top of the photo instead of covering it.',
       'When many drivers tie on the same score, the dots pack tighter or into two or three lanes, so nothing is cut off at the edge of the picture.',
+      "Under the gauge, a new box shows packages delivered: yours against the rank 1 driver's. When scores tie, more packages takes the higher rank. Page 1 counts the week, page 2 the 7 weeks together. A driver who is rank 1 is shown against rank 2.",
     ],
   },
   {

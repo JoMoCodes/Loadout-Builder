@@ -63,6 +63,10 @@ describe('the snapshot pages', () => {
     expect(page).toContain('Gold');
     expect(page).toContain('Fleet Avg 90.3');
     expect(page).toContain('You');
+    const packages = model.fleetWeek.packages;
+    expect(page).toContain(
+      `Packages delivered in Week 40 You ${packages.mine!.toLocaleString('en-US')} vs Rank 1 ${packages.first!.toLocaleString('en-US')}`,
+    );
     expect(page).toContain('Try this next');
     expect(page).toContain("Clear the 2 packages brought back and you're Platinum (+6.4 points).");
     expect(page).toContain('Safety × 5 (0 events) +58.0');
@@ -83,6 +87,7 @@ describe('the snapshot pages', () => {
     expect(page).toContain('7 WEEK SCORECARD 34 - 40');
     expect(page).toContain('#53 of 67');
     expect(page).toContain('by 7-week average score');
+    expect(page).toMatch(/Total packages delivered over 7 weeks You [\d,]+ vs Rank 1 [\d,]+/);
     expect(page).toContain('89.3');
     expect(page).toContain('Needs Improvement');
     expect(page).toContain('Photos Average Bronze');
@@ -174,6 +179,34 @@ describe('the snapshot pages', () => {
     expect(page).toContain('7 WEEK SCORECARD 35 - 41');
     expect(page).toContain('#7 of 42');
     expect(page).not.toContain('Sample Driver'); // the name never shows on the pages themselves
+  });
+
+  it('shows packages delivered against rank 1, or rank 2 for the driver who is rank 1', () => {
+    const model = sampleSnapshotModel();
+    const page1 = text(buildSnapshotHtml(model, PLAIN, [1]));
+    expect(page1).toContain('Packages delivered in Week 41 You 1,042 vs Rank 1 1,180');
+    expect(page1).toContain('A tie in score goes to more packages.');
+    const page2 = text(buildSnapshotHtml(model, PLAIN, [2]));
+    expect(page2).toContain('Total packages delivered over 7 weeks You 7,128 vs Rank 1 7,842');
+    // The driver's own count takes the tier colour.
+    expect(buildSnapshotHtml(model, PLAIN, [1])).toContain(
+      '<span class="n" style="color:#f2bd1b">1,042</span>',
+    );
+    const leader = {
+      ...model,
+      latest: { ...model.latest, rank: { rank: 1, total: 42 } },
+      fleetWeek: {
+        ...model.fleetWeek,
+        meIndex: 0,
+        packages: { mine: 1180, first: 1180, second: 1133 },
+      },
+    };
+    expect(text(buildSnapshotHtml(leader, PLAIN, [1]))).toContain('You (#1) 1,180 vs Rank 2 1,133');
+    const unknown = {
+      ...model,
+      fleetWeek: { ...model.fleetWeek, packages: { mine: null, first: null, second: null } },
+    };
+    expect(text(buildSnapshotHtml(unknown, PLAIN, [1]))).toContain('You — vs Rank 1 —');
   });
 
   it('says so when a driver was not ranked over the seven weeks, or has empty weeks', () => {

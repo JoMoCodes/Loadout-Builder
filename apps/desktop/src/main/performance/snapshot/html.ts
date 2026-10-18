@@ -11,6 +11,7 @@
 
 import type {
   FleetStrip,
+  PackageCount,
   Receipt,
   SnapshotCutOffs,
   SnapshotMetric,
@@ -148,6 +149,12 @@ svg text { font-family: inherit; }
 .sect { display: flex; flex-direction: column; gap: 10px; }
 .receipt { font-family: "Cascadia Mono", Consolas, "Courier New", monospace; font-size: 12.5px; display: flex; flex-direction: column; gap: 2px; }
 .receipt .row { border-radius: 6px; padding: 4px 6px; }
+.vs { background: ${THEME.card}; border-radius: 12px; padding: 10px 14px 9px; display: flex; flex-direction: column; gap: 4px; }
+.vs .row { gap: 10px; }
+.vs .side { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 1px; }
+.vs .who { font-size: 11px; font-weight: 700; color: ${THEME.muted}; text-transform: uppercase; letter-spacing: .06em; }
+.vs .n { font-size: 22px; font-weight: 800; line-height: 1.1; }
+.vs .mid { font-size: 12px; font-weight: 800; color: ${THEME.muted}; }
 .tip { background: ${THEME.accent}; color: ${THEME.accentText}; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
 .tip .k { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; opacity: .85; }
 .tip .t { font-size: 16px; font-weight: 700; line-height: 1.3; }
@@ -535,6 +542,29 @@ function gaugeBox(block: GaugeBlock): string {
   return `<div class="gbox gauge" style="margin-top:-${up}px">${gaugeBlockSvg(block)}</div>`;
 }
 
+/**
+ * Packages delivered, the driver's against rank 1's, since more packages wins a tie in the rank.
+ * A driver who is rank 1 is shown against rank 2 instead.
+ */
+function packagesBox(
+  count: PackageCount,
+  rank: { rank: number; total: number } | null,
+  tier: SnapshotTier | null,
+  what: string,
+): string {
+  const n = (v: number | null) => (v === null ? '—' : v.toLocaleString('en-US'));
+  const leader = rank?.rank === 1;
+  const other = leader ? count.second : count.first;
+  const colour = tier ? THEME.arc[tier] : THEME.fg;
+  return (
+    `<div class="vs"><p class="eyebrow">${esc(what)}</p><div class="row">` +
+    `<div class="side"><span class="who">You${leader ? ' (#1)' : ''}</span><span class="n" style="color:${colour}">${n(count.mine)}</span></div>` +
+    `<div class="mid">vs</div>` +
+    `<div class="side"><span class="who">Rank ${leader ? 2 : 1}</span><span class="n">${n(other)}</span></div>` +
+    `</div><p class="small muted">A tie in score goes to more packages.</p></div>`
+  );
+}
+
 function tipBox(model: SnapshotModel): string {
   const tip = model.tip;
   if (!tip) {
@@ -694,6 +724,7 @@ export function snapshotPageBody(
     sections =
       rank +
       gauge +
+      `<div class="sect">${packagesBox(model.fleetWeek.packages, latest.rank, latest.tier, `Packages delivered in Week ${latest.number}`)}</div>` +
       `<div class="sect">${tipBox(model)}</div>` +
       `<div class="sect">${receiptBox(model.receipt)}</div>`;
   } else {
@@ -724,6 +755,7 @@ export function snapshotPageBody(
     sections =
       rank +
       gauge +
+      `<div class="sect">${packagesBox(model.fleetAverage.packages, avg.rank, avg.tier, `Total packages delivered over ${count} weeks`)}</div>` +
       `<div class="sect">${focusBox(model, tiers)}</div>` +
       `<div class="sect">${scoreChartSvg(model, tiers)}</div>` +
       `<div class="sect">${dotGrid(model, tiers)}</div>`;
