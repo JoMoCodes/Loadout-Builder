@@ -8,6 +8,7 @@ export * from './grid';
 export * from './coaching';
 export * from './explain';
 export * from './compliance';
+export * from './snapshot';
 export {
   compareNoCase,
   compareOrdinal,

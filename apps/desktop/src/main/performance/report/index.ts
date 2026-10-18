@@ -18,3 +18,6 @@ export {
   type PrintResult,
 } from './print';
 export { reportFileName } from './fileName';
+// The Weekly Snapshot's picture maker rides along with the report maker (main.ts hands this
+// whole module to the performance service).
+export { renderSnapshotBatch } from '../snapshot';

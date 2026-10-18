@@ -110,6 +110,9 @@ interface Rig {
   printed: string[];
   /** The size of each batch printed in one window (when the rig has the batch printer). */
   batches: number[];
+  /** How many snapshot pages the stand-in picture maker drew, per batch. */
+  snapshots: number[];
+  snapshot: { fail: boolean };
   print: { fail: boolean };
   opened: string[];
   /** What "Show in folder" opened: ['folder', place] or ['file', place]. */
@@ -166,6 +169,8 @@ function makeRig(options: { settingsJson?: unknown; batch?: boolean } = {}): Rig
   const shown: Array<[string, string]> = [];
   const progress: PerfProgress[] = [];
   const batches: number[] = [];
+  const snapshots: number[] = [];
+  const snapshotFail = { fail: false };
   const oldWpaFile = { path: path.join(base, 'no-such-app.db') };
 
   // The app's one email account, shared with the route sheets (main/mail/emailAccount.ts).
@@ -230,6 +235,18 @@ function makeRig(options: { settingsJson?: unknown; batch?: boolean } = {}): Rig
         mkdirSync(path.dirname(outFile), { recursive: true });
         writeFileSync(outFile, `%PDF-1.4 stand-in\n${html.length}\n`);
         printed.push(outFile);
+      },
+      renderSnapshotBatch: async (pages: ReadonlyArray<readonly string[]>) => {
+        if (snapshotFail.fail) throw new Error('no pictures');
+        snapshots.push(pages.reduce((sum, one) => sum + one.length, 0));
+        return pages.map((one) =>
+          one.map((html, index) => ({
+            bytes: Buffer.from(`PNG stand-in ${html.length}`),
+            contentType: 'image/png' as const,
+            width: 360,
+            height: 1000 + index,
+          })),
+        );
       },
       ...(options.batch
         ? {
@@ -349,6 +366,8 @@ function makeRig(options: { settingsJson?: unknown; batch?: boolean } = {}): Rig
     mail,
     printed,
     batches,
+    snapshots,
+    snapshot: snapshotFail,
     print,
     opened,
     shown,
@@ -737,6 +756,84 @@ describe('with every fixture brought in', () => {
     }
   });
 
+  it('gives the snapshot HTML for a driver (both pages) and a made-up sample', async () => {
+    const view = await rig.ok<PerfDriversView>('performance:drivers', { range: null });
+    const id = view.rows.find((r) => r.latestScore !== null)!.transporterId;
+    const mine = await rig.ok<{ html: string }>('performance:snapshot-html', {
+      transporterId: id,
+      range: view.range,
+    });
+    expect(mine.html).toContain('data-page="1"');
+    expect(mine.html).toContain('data-page="2"');
+    expect(mine.html).toContain(`Transporter ID ${id}`);
+    const sample = await rig.ok<{ html: string }>('performance:snapshot-html', {
+      transporterId: null,
+      range: null,
+    });
+    expect(sample.html).toContain('SCORECARD WEEK 41');
+    expect(
+      await rig.call('performance:snapshot-html', { transporterId: 'NOBODY1', range: null }),
+    ).toMatchObject({ ok: false, reason: 'refused' });
+  });
+
+  it('keeps the snapshot photo on this computer only, and says when it cannot be used', async () => {
+    expect(await rig.ok('performance:snapshot-photo')).toEqual({ fileName: null, problem: null });
+    const png = path.join(folder, 'band.png');
+    writeFileSync(
+      png,
+      Buffer.from(
+        'iVBORw0KGgoAAAANSUhEUgAAAAIAAAADCAIAAADGQ7uBAAAADklEQVR4nGP4z8DAwAAABQQCAHjSg5EAAAAASUVORK5CYII=',
+        'base64',
+      ),
+    );
+    // The window was closed: nothing changes.
+    rig.dialog.next.push(null);
+    expect(await rig.ok('performance:choose-snapshot-photo')).toBeNull();
+    // A file that is not a picture is refused and not kept.
+    const notes = path.join(folder, 'notes.txt');
+    writeFileSync(notes, 'words');
+    rig.dialog.next.push(notes);
+    expect(await rig.call('performance:choose-snapshot-photo')).toMatchObject({
+      ok: false,
+      message: "That file isn't a JPEG or PNG picture. Choose another.",
+    });
+    expect(await rig.ok('performance:snapshot-photo')).toEqual({ fileName: null, problem: null });
+    // A picture is kept by its place, in the main-only part of the settings file.
+    rig.dialog.next.push(png);
+    expect(await rig.ok('performance:choose-snapshot-photo')).toEqual({
+      fileName: 'band.png',
+      problem: null,
+    });
+    expect(rig.dialog.asked.at(-1)?.title).toBe('Choose the photo for the weekly snapshot');
+    expect(JSON.parse(readFileSync(rig.settingsPath, 'utf8')).snapshotPhoto).toBe(png);
+    expect(JSON.stringify(rig.settings())).not.toContain('band.png');
+    const html = await rig.ok<{ html: string }>('performance:snapshot-html', {
+      transporterId: null,
+      range: null,
+    });
+    expect(html.html).toContain('class="ph-band"');
+    expect(html.html).toContain('data:image/png;base64,');
+    // The file goes missing: the page is told, in words, and the pages are plain again.
+    rmSync(png);
+    expect(await rig.ok('performance:snapshot-photo')).toEqual({
+      fileName: 'band.png',
+      problem: 'The photo file is not where it was. Choose it again, or remove it.',
+    });
+    expect(
+      (
+        await rig.ok<{ html: string }>('performance:snapshot-html', {
+          transporterId: null,
+          range: null,
+        })
+      ).html,
+    ).not.toContain('class="ph-band"');
+    expect(await rig.ok('performance:clear-snapshot-photo')).toEqual({
+      fileName: null,
+      problem: null,
+    });
+    expect(JSON.parse(readFileSync(rig.settingsPath, 'utf8')).snapshotPhoto ?? null).toBeNull();
+  });
+
   it('writes one PDF per driver into the chosen folder', async () => {
     const view = await rig.ok<PerfDriversView>('performance:drivers', { range: null });
     const ids = view.rows
@@ -924,9 +1021,22 @@ describe('with every fixture brought in', () => {
     expect(first.from).toEqual({ name: 'Dispatch', address: 'dispatch@example.com' });
     expect(first.bcc).toBe('lead@example.com');
     expect(first.text).toContain(`Hi ${withEmail[0]!.name},`);
-    expect(first.attachments?.[0]?.filename).toMatch(/\.pdf$/);
+    // The two snapshot pictures ride inside the email, then the PDF.
+    expect(first.text).toContain('Your two-page weekly snapshot is in this email as two pictures.');
+    expect(first.html).toContain('src="cid:snapshot-page-1-1@loadout-builder" width="360"');
+    expect(first.html).toContain('src="cid:snapshot-page-2-1@loadout-builder" width="360"');
+    expect(first.attachments?.map((a) => [a.filename, a.cid ?? null])).toEqual([
+      ['snapshot-page-1.png', 'snapshot-page-1-1@loadout-builder'],
+      ['snapshot-page-2.png', 'snapshot-page-2-1@loadout-builder'],
+      [first.attachments![2]!.filename, null],
+    ]);
+    expect(first.attachments?.[2]?.filename).toMatch(/\.pdf$/);
+    expect(first.attachments?.[0]?.contentType).toBe('image/png');
+    // Three recipients, two pages each, drawn in one go.
+    expect(rig.snapshots).toEqual([6]);
+    expect(rig.logs).toContain('snapshot: 3 drawn, 0 not drawn');
     // The temporary PDFs are gone afterwards.
-    expect(existsSync(first.attachments![0]!.path!)).toBe(false);
+    expect(existsSync(first.attachments![2]!.path!)).toBe(false);
     expect((await snapshot(rig)).performance.reportsEmailed).toBe(true);
     // Nobody's address or name went to the log.
     expect(rig.logs.join('\n')).not.toContain('@example.com');
@@ -942,6 +1052,33 @@ describe('with every fixture brought in', () => {
       done: 3,
       total: 3,
     });
+  });
+
+  it('sends the PDF alone when the snapshot is turned off or cannot be drawn', async () => {
+    const view = await rig.ok<PerfDriversView>('performance:drivers', { range: null });
+    const one = view.rows.find((r) => r.hasEmail && r.activeInRange)!;
+    const sendOne = async () => {
+      const out = await rig.ok<EmailOutcome>('performance:email', {
+        transporterIds: [one.transporterId],
+        range: view.range,
+        dryRun: false,
+      });
+      expect(out.sent).toBe(1);
+      return rig.transports.at(-1)!.sent[0]!;
+    };
+    rig.setSettings({ performance: { includeSnapshot: false } });
+    const plain = await sendOne();
+    expect(plain.html).toBeUndefined();
+    expect(plain.attachments).toHaveLength(1);
+    expect(plain.text).not.toContain('snapshot');
+
+    rig.setSettings({ performance: { includeSnapshot: true } });
+    rig.snapshot.fail = true;
+    const unlucky = await sendOne();
+    expect(unlucky.html).toBeUndefined();
+    expect(unlucky.attachments).toHaveLength(1);
+    expect(rig.logs).toContain('snapshot: none drawn (1 asked)');
+    rig.snapshot.fail = false;
   });
 
   it('a login the server turns down sends nothing and says why in plain words', async () => {

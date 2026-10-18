@@ -19,9 +19,10 @@ const htmlAsks = async (page: Page) =>
 test('Thresholds is at the top, and the preview is part of the colours card', async ({ page }) => {
   await openPerformance(page, { tab: 'reports' });
   const cards = page.locator('[data-testid="perf-reports"] section');
-  await expect(cards).toHaveCount(2);
+  await expect(cards).toHaveCount(3);
   await expect(cards.nth(0)).toHaveAttribute('aria-labelledby', 'perf-thresholds-title');
   await expect(cards.nth(1)).toHaveAttribute('aria-labelledby', 'perf-colours-title');
+  await expect(cards.nth(2)).toHaveAttribute('aria-labelledby', 'perf-snapshot-title');
   await expect(cards.nth(1).getByTestId('perf-driver-preview')).toBeVisible();
   await expect(page.getByText('Preview a driver')).toHaveCount(0);
   // The Settings button sits above the cards, on the right.
@@ -256,4 +257,77 @@ test('the preview zooms: Fit width, 100%, in and out, remembered in this window'
   await page.getByTestId('perf-zoom-fit').click();
   await page.reload();
   await expect(page.getByTestId('perf-zoom-fit')).toHaveAttribute('aria-pressed', 'true');
+});
+
+test('the Weekly snapshot card: the switch, the photo, and a preview of the driver picked', async ({
+  page,
+}) => {
+  await openPerformance(page, { tab: 'reports' });
+  const card = page.locator('section[aria-labelledby="perf-snapshot-title"]');
+  await expect(card.getByTestId('perf-include-snapshot')).toBeChecked();
+  await expect(card.getByTestId('perf-snapshot-photo-name')).toHaveText(
+    'None. The pages are plain navy.',
+  );
+  await expect(card.getByTestId('perf-clear-snapshot-photo')).toBeDisabled();
+  // The preview shows the same driver as Report colours, and follows the stepping.
+  await expect(frame(page, 'perf-snapshot-frame').locator('h1')).toHaveText(
+    `Snapshot ${ARCHER.id}`,
+  );
+  await page.getByTestId('perf-preview-next').click();
+  await expect(frame(page, 'perf-snapshot-frame').locator('h1')).toHaveText(
+    `Snapshot ${DESMOND.id}`,
+  );
+  expect(await callsTo(page, 'performance:snapshot-html')).toContainEqual({
+    transporterId: DESMOND.id,
+    range: { from: '2026-W31', to: '2026-W40' },
+  });
+
+  // Turning the snapshot off is saved at once.
+  await card.getByTestId('perf-include-snapshot').uncheck();
+  await expect(status(page)).toHaveText('Report emails go out with the PDF only.');
+  expect(await callsTo(page, 'settings:set')).toContainEqual({
+    performance: { includeSnapshot: false },
+  });
+
+  // Choosing a photo: the main process opens the window and answers with the file's name only.
+  await onCall(
+    page,
+    'performance:choose-snapshot-photo',
+    `() => ({ ok: true, value: { fileName: 'team-banner.jpg', problem: null } })`,
+  );
+  await card.getByTestId('perf-choose-snapshot-photo').click();
+  await expect(status(page)).toHaveText('Snapshot photo saved.');
+  await expect(card.getByTestId('perf-snapshot-photo-name')).toHaveText('team-banner.jpg');
+  await expect(card.getByTestId('perf-choose-snapshot-photo')).toHaveText('Change photo');
+  // The preview is asked for again with the photo in place.
+  await expect
+    .poll(async () => (await callsTo(page, 'performance:snapshot-html')).length)
+    .toBeGreaterThan(2);
+  await onCall(
+    page,
+    'performance:clear-snapshot-photo',
+    `() => ({ ok: true, value: { fileName: null, problem: null } })`,
+  );
+  await card.getByTestId('perf-clear-snapshot-photo').click();
+  await expect(status(page)).toHaveText('Snapshot photo removed. The pages are plain navy.');
+  await expect(card.getByTestId('perf-clear-snapshot-photo')).toBeDisabled();
+});
+
+test('the Weekly snapshot card shows the sample and a photo problem', async ({ page }) => {
+  await openPerformance(page, {
+    tab: 'reports',
+    performance: { filters: ['tier:Silver'] },
+    data: {
+      photo: {
+        fileName: 'gone.jpg',
+        problem: 'The photo file is not where it was. Choose it again, or remove it.',
+      },
+    },
+  });
+  await expect(frame(page, 'perf-snapshot-sample-frame').locator('h1')).toHaveText(
+    'Sample snapshot',
+  );
+  await expect(page.getByTestId('perf-snapshot-photo-problem')).toHaveText(
+    'The photo file is not where it was. Choose it again, or remove it.',
+  );
 });

@@ -21,10 +21,19 @@ export interface MailAddress {
   address: string;
 }
 
-/** A file to attach: one on the disk (the reports), or bytes already in hand (a route sheet). */
+/**
+ * A file to attach: one on the disk (the reports), or bytes already in hand (a route sheet). Bytes
+ * with a `cid` are a picture shown inside the HTML part (`<img src="cid:...">`), not a download.
+ */
 export type MailAttachment =
-  | { filename: string; path: string; content?: undefined; contentType?: undefined }
-  | { filename: string; content: Uint8Array; contentType: string; path?: undefined };
+  | {
+      filename: string;
+      path: string;
+      content?: undefined;
+      contentType?: undefined;
+      cid?: undefined;
+    }
+  | { filename: string; content: Uint8Array; contentType: string; path?: undefined; cid?: string };
 
 export interface MailMessage {
   from: MailAddress;
@@ -87,6 +96,7 @@ export const nodemailerTransport: TransportFactory = (config) => {
                 filename: a.filename,
                 content: Buffer.from(a.content),
                 contentType: a.contentType,
+                ...(a.cid ? { cid: a.cid, contentDisposition: 'inline' as const } : {}),
               },
         ),
       });

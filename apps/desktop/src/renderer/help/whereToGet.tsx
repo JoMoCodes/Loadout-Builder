@@ -360,7 +360,9 @@ export const WEEKLY_WHERE_TO_GET: Record<WeeklyStepId, Note> = {
         text: (
           <>
             Want to see a report first? Double-click a driver, or look at the preview in{' '}
-            <strong>Report colours</strong> on the <strong>Reports</strong> tab.
+            <strong>Report colours</strong> on the <strong>Reports</strong> tab. The{' '}
+            <strong>Weekly snapshot</strong> card under it shows the two phone-sized pages that go
+            at the top of each email, and lets you pick a photo for behind them.
           </>
         ),
         shot: { name: 'perf-reports', caption: 'The Reports tab: colours and a preview' },

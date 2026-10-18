@@ -126,6 +126,8 @@ export interface PerfData {
   thresholds?: Json[];
   cards?: Json[];
   safety?: Json[];
+  /** What `performance:snapshot-photo` answers (none chosen when left out). */
+  photo?: Json;
 }
 
 export interface OpenPerformance {
@@ -255,6 +257,14 @@ export async function openPerformance(page: Page, options: OpenPerformance = {})
           html: `<html><body><h1>${ask.transporterId ? `Report ${ask.transporterId}` : 'Sample report'}</h1></body></html>`,
         });
       };
+      hooks['performance:snapshot-html'] = (input) => {
+        const ask = input as { transporterId: string | null };
+        return ok({
+          html: `<html><body><h1>${ask.transporterId ? `Snapshot ${ask.transporterId}` : 'Sample snapshot'}</h1></body></html>`,
+        });
+      };
+      hooks['performance:snapshot-photo'] = () =>
+        ok(w.__perf.photo ?? { fileName: null, problem: null });
     },
     { given: data as Json, answers: options.answers ?? {} },
   );

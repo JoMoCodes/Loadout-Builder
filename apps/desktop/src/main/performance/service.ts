@@ -9,11 +9,13 @@
 import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import {
+  buildSnapshotModel,
   getDriverReport,
   getPsbImportedWeeks,
   getThresholds,
   buildVerificationExport,
   type PerfData,
+  type SnapshotModel,
 } from '@loadout/performance';
 import type { IsoDate } from '@loadout/core';
 import type {
@@ -25,6 +27,7 @@ import type {
   PerfKind,
   PerfOutput,
   PerfProgress,
+  SnapshotPhotoStatus,
   SyncSummary,
   WeekRange,
 } from '../../shared/performance';
@@ -40,6 +43,18 @@ import type { PerfHost, PerfStatus } from './perfHost';
 import { LEDGER_SOURCE, importExportFiles, type ExportFile } from './readExports';
 import type { ReportInput } from './report';
 import { reportFileName } from './report';
+import {
+  buildSnapshotHtml,
+  inlineImages,
+  PHOTO_EXTENSIONS,
+  readSnapshotPhoto,
+  sampleSnapshotModel,
+  snapshotEmailHtml,
+  snapshotEmailText,
+  type PhotoProblem,
+  type SnapshotImage,
+  type SnapshotLook,
+} from './snapshot';
 import { resolveRange, type CardFolder } from './views';
 
 export type { Sealer } from '../mail/emailAccount';
@@ -54,6 +69,14 @@ export interface ReportMaker {
     items: ReadonlyArray<{ html: string; outFile: string }>,
     onProgress?: (done: number, total: number) => void,
   ): Promise<Array<{ ok: boolean }>>;
+  /**
+   * Pictures of many Weekly Snapshots (one list of page HTML each), in one hidden window. An
+   * entry is null when that snapshot could not be drawn. Without this, emails carry no snapshot.
+   */
+  renderSnapshotBatch?(
+    snapshots: ReadonlyArray<readonly string[]>,
+    onProgress?: (done: number, total: number) => void,
+  ): Promise<Array<SnapshotImage[] | null>>;
 }
 
 export interface PerfDialogs {
@@ -116,6 +139,13 @@ const WINDOW_TITLES: Record<PerfKind, string> = {
   dcr: 'Choose the folder with the returned-package files',
   'dcr-totals': 'Choose the folder with the DCR weekly totals',
   safety: 'Choose the folder with the safety files',
+};
+
+/** Why the header photo cannot be used, in plain words. */
+const PHOTO_PROBLEM_WORDS: Record<PhotoProblem, string> = {
+  missing: 'The photo file is not where it was. Choose it again, or remove it.',
+  'too-big': 'The photo file is too big (over 6 MB). Choose a smaller copy.',
+  'not-an-image': "That file isn't a JPEG or PNG picture. Choose another.",
 };
 
 function stamp(date: Date): string {
@@ -509,6 +539,113 @@ export class PerfService {
     return { opened: await this.deps.openFile(file) };
   }
 
+  // ---- the weekly snapshot -------------------------------------------------------------------
+
+  /** The chosen header photo, read now, or null (none chosen, or it cannot be read). */
+  private snapshotPhoto(): { photo: SnapshotLook['photo']; problem: PhotoProblem | null } {
+    const file = this.deps.mainOnly().snapshotPhoto ?? null;
+    if (!file) return { photo: null, problem: null };
+    const read = readSnapshotPhoto(file);
+    if (read.problem !== null) this.deps.log(`snapshot photo: ${read.problem}`);
+    return read;
+  }
+
+  private snapshotLook(): SnapshotLook {
+    return { colours: this.deps.performance().colours, photo: this.snapshotPhoto().photo };
+  }
+
+  private snapshotModel(
+    data: PerfData,
+    transporterId: string,
+    range: WeekRange,
+  ): SnapshotModel | null {
+    return buildSnapshotModel(data, transporterId, range.from, range.to);
+  }
+
+  /** Both snapshot pages as one HTML document, for the Reports tab's preview. */
+  snapshotHtml(transporterId: string | null, range: WeekRange | null): { html: string } {
+    const look = this.snapshotLook();
+    if (transporterId === null) return { html: buildSnapshotHtml(sampleSnapshotModel(), look) };
+    const data = this.deps.host().data();
+    const driver = data.drivers.find((d) => d.transporterId === transporterId);
+    if (!driver) {
+      throw new ChannelRefusal('refused', 'That driver is not on the driver list any more.');
+    }
+    const resolved = resolveRange(data, range);
+    const model = resolved === null ? null : this.snapshotModel(data, transporterId, resolved);
+    if (model === null) {
+      throw new ChannelRefusal('refused', `${driver.name} has no scores in these weeks.`);
+    }
+    return { html: buildSnapshotHtml(model, look) };
+  }
+
+  snapshotPhotoStatus(): SnapshotPhotoStatus {
+    const file = this.deps.mainOnly().snapshotPhoto ?? null;
+    if (!file) return { fileName: null, problem: null };
+    const { problem } = this.snapshotPhoto();
+    return {
+      fileName: path.basename(file),
+      problem: problem ? PHOTO_PROBLEM_WORDS[problem] : null,
+    };
+  }
+
+  /** Opens the file window for a picture and keeps the choice. Null when the window was closed. */
+  async chooseSnapshotPhoto(): Promise<SnapshotPhotoStatus | null> {
+    const current = this.deps.mainOnly().snapshotPhoto ?? null;
+    const chosen = await this.deps.dialogs.chooseFile(
+      'Choose the photo for the weekly snapshot',
+      [{ name: 'Pictures', extensions: [...PHOTO_EXTENSIONS] }],
+      current ? path.dirname(current) : null,
+    );
+    if (chosen === null) return null;
+    const read = readSnapshotPhoto(chosen);
+    if (read.problem !== null) {
+      this.deps.log(`snapshot photo: ${read.problem}`);
+      throw new ChannelRefusal('refused', PHOTO_PROBLEM_WORDS[read.problem]);
+    }
+    this.deps.updateMainOnly((kept) => ({ ...kept, snapshotPhoto: chosen }));
+    return this.snapshotPhotoStatus();
+  }
+
+  clearSnapshotPhoto(): SnapshotPhotoStatus {
+    this.deps.updateMainOnly((kept) => ({ ...kept, snapshotPhoto: null }));
+    return this.snapshotPhotoStatus();
+  }
+
+  /**
+   * Pictures of each recipient's snapshot (page 1 and page 2), or null where there is none to
+   * send: the setting is off, the app cannot draw pictures, or that one could not be drawn.
+   */
+  private async snapshotsFor(
+    data: PerfData,
+    ids: readonly string[],
+    range: WeekRange,
+  ): Promise<Array<SnapshotImage[] | null>> {
+    const none = ids.map(() => null);
+    const render = this.deps.report.renderSnapshotBatch;
+    if (!this.deps.performance().includeSnapshot || !render) return none;
+    const look = this.snapshotLook();
+    const pages = ids.map((id) => {
+      const model = this.snapshotModel(data, id, range);
+      return model
+        ? [buildSnapshotHtml(model, look, [1]), buildSnapshotHtml(model, look, [2])]
+        : null;
+    });
+    const toDraw = pages.filter((p): p is string[] => p !== null);
+    let drawn: Array<SnapshotImage[] | null>;
+    try {
+      drawn = await render(toDraw);
+    } catch {
+      this.deps.log(`snapshot: none drawn (${toDraw.length} asked)`);
+      return none;
+    }
+    let at = 0;
+    const out = pages.map((p) => (p === null ? null : (drawn[at++] ?? null)));
+    const ok = out.filter((one) => one !== null).length;
+    this.deps.log(`snapshot: ${ok} drawn, ${ids.length - ok} not drawn`);
+    return out;
+  }
+
   // ---- the check file ------------------------------------------------------------------------
 
   async exportCheckFile(ids: readonly string[]): Promise<CheckFileOutcome> {
@@ -634,6 +771,11 @@ export class PerfService {
     }));
     try {
       const printed = await this.printAll(items, 'generate');
+      const snapshots = await this.snapshotsFor(
+        data,
+        recipients.map((r) => r.id),
+        range,
+      );
       const count = this.counter('email', recipients.length);
       count(0);
       for (const [index, r] of recipients.entries()) {
@@ -647,14 +789,25 @@ export class PerfService {
           });
           continue;
         }
+        const body = fill(settings.bodyTemplate, r.name);
+        const pictures = inlineImages(snapshots[index] ?? [], String(index + 1));
         try {
           await transport.send({
             from: sender(settings),
             to: { name: r.name, address: r.to },
             bcc: settings.bccAddress.trim() || undefined,
             subject: fill(settings.subjectTemplate, r.name),
-            text: fill(settings.bodyTemplate, r.name),
-            attachments: [{ filename: path.basename(file), path: file }],
+            text: snapshotEmailText(body, pictures.length > 0),
+            ...(pictures.length > 0 ? { html: snapshotEmailHtml(body, pictures) } : {}),
+            attachments: [
+              ...pictures.map((one) => ({
+                filename: one.filename,
+                content: new Uint8Array(one.image.bytes),
+                contentType: one.image.contentType,
+                cid: one.cid,
+              })),
+              { filename: path.basename(file), path: file },
+            ],
           });
           outcome.sent++;
         } catch (error) {

@@ -369,6 +369,14 @@ export interface EmailOutcome {
 }
 
 /** Whether emailing is set up. */
+/** The Weekly Snapshot's header photo, as the Reports tab shows it: the file's name only. */
+export interface SnapshotPhotoStatus {
+  /** The last part of the chosen file's name, or null when none is chosen. */
+  fileName: string | null;
+  /** Why the chosen file cannot be used right now, in plain words, or null when it can. */
+  problem: string | null;
+}
+
 export interface EmailStatus {
   passwordSaved: boolean;
   /** The computer can keep a password safely (it always can on Windows). */
