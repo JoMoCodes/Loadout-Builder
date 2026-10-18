@@ -2,7 +2,12 @@
 // and the photo reader. Names and IDs are the made-up people from packages/fixtures/manifest.json.
 
 import { beforeAll, describe, expect, it } from 'vitest';
-import { buildSnapshotModel, DEFAULT_CUT_OFFS, type PerfData } from '@loadout/performance';
+import {
+  buildSnapshotModel,
+  DEFAULT_CUT_OFFS,
+  tierForScore,
+  type PerfData,
+} from '@loadout/performance';
 import { loadFixtureData } from '../../../../../../packages/performance/src/analysis/fixtureData';
 import { DEFAULT_REPORT_COLOURS } from '../../../shared/performanceSettings';
 import { decode } from '../report/testkit';
@@ -185,9 +190,10 @@ describe('the snapshot pages', () => {
     const model = sampleSnapshotModel();
     const page1 = text(buildSnapshotHtml(model, PLAIN, [1]));
     expect(page1).toContain('Packages delivered in Week 41 You 1,042 vs Rank 1 1,180');
-    expect(page1).toContain('A tie in score goes to more packages.');
+    expect(page1).toContain('Tie Breaks are decided based on Packages Delivered');
     const page2 = text(buildSnapshotHtml(model, PLAIN, [2]));
     expect(page2).toContain('Total packages delivered over 7 weeks You 7,128 vs Rank 1 7,842');
+    expect(page2).toContain('Tie Breaks are decided based on Total Packages Delivered');
     // The driver's own count takes the tier colour.
     expect(buildSnapshotHtml(model, PLAIN, [1])).toContain(
       '<span class="n" style="color:#f2bd1b">1,042</span>',
@@ -429,6 +435,57 @@ describe('the gauge block', () => {
     const height = Number(/viewBox="0 0 360 (\d+)"/.exec(svg)?.[1]);
     const lowest = Math.max(...two.dots.map((d) => d.y + d.r));
     expect(height).toBeGreaterThanOrEqual(lowest + 14);
+  });
+
+  it('never lets a dot or a label run out of the picture, whatever the fleet looks like', () => {
+    // A simple seeded generator, so the fleets are the same every run.
+    let seed = 7;
+    const random = () => {
+      seed = (seed * 1103515245 + 12345) % 2147483648;
+      return seed / 2147483648;
+    };
+    for (let round = 0; round < 60; round++) {
+      const size = 20 + Math.floor(random() * 90);
+      const tie = round % 3 === 0 ? Math.floor(random() * 30) : 0;
+      const scores = [
+        ...Array<number>(tie).fill(100),
+        ...Array.from({ length: size }, () => Math.round((70 + random() * 30) * 10) / 10),
+      ].sort((a, b) => b - a);
+      const meIndex = Math.floor(random() * scores.length);
+      const average = Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10) / 10;
+      const strip = { scores, meIndex, average, packages: { mine: 1, first: 1, second: 1 } };
+      const score = scores[meIndex]!;
+      for (const page of [1, 2] as const) {
+        const svg = gaugeBlockSvg({
+          score,
+          tier: tierForScore(score, cutOffs),
+          cutOffs,
+          strip,
+          page,
+          top: { noteHeight: page === 1 ? 0 : 24 },
+          label: 'x',
+        });
+        const height = Number(/viewBox="0 0 360 (\d+)"/.exec(svg)?.[1]);
+        for (const m of svg.matchAll(
+          /<circle cx="([\d.]+)" cy="([\d.]+)" r="([\d.]+)" fill="[^"]*"( opacity)?/g,
+        )) {
+          const [x, y, r] = [Number(m[1]), Number(m[2]), Number(m[3])];
+          // The faint glow behind the driver's dot may be cut by the card's side, nothing else may.
+          if (!m[4]) {
+            expect(x - r).toBeGreaterThanOrEqual(0);
+            expect(x + r).toBeLessThanOrEqual(360);
+          }
+          expect(y - r).toBeGreaterThanOrEqual(0);
+          expect(y + r).toBeLessThanOrEqual(height - 14);
+        }
+        for (const m of svg.matchAll(/<text x="([\d.]+)" y="([\d.]+)"/g)) {
+          expect(Number(m[1])).toBeGreaterThanOrEqual(0);
+          expect(Number(m[1])).toBeLessThanOrEqual(360);
+          expect(Number(m[2])).toBeGreaterThanOrEqual(0);
+          expect(Number(m[2])).toBeLessThanOrEqual(height - 14);
+        }
+      }
+    }
   });
 
   it('keeps a column straight up from running into the medal above', () => {

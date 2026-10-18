@@ -149,7 +149,9 @@ svg text { font-family: inherit; }
 .sect { display: flex; flex-direction: column; gap: 10px; }
 .receipt { font-family: "Cascadia Mono", Consolas, "Courier New", monospace; font-size: 12.5px; display: flex; flex-direction: column; gap: 2px; }
 .receipt .row { border-radius: 6px; padding: 4px 6px; }
-.vs { background: ${THEME.card}; border-radius: 12px; padding: 10px 14px 9px; display: flex; flex-direction: column; gap: 4px; }
+.vs { background: transparent; border: 1.5px solid rgba(255,255,255,.35); border-radius: 12px; padding: 10px 14px 9px;
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
+.vs .row { width: 100%; }
 .vs .row { gap: 10px; }
 .vs .side { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 1px; }
 .vs .who { font-size: 11px; font-weight: 700; color: ${THEME.muted}; text-transform: uppercase; letter-spacing: .06em; }
@@ -364,7 +366,8 @@ export function gaugeBlockSvg(block: GaugeBlock): string {
       s += `<circle cx="${P(d.x)}" cy="${P(d.y)}" r="${P(d.r * 1.2)}" fill="${col}" opacity=".28"/>`;
     }
     s += `<circle cx="${P(d.x)}" cy="${P(d.y)}" r="${P(d.r)}" fill="${col}"/>`;
-    low(d.y + d.r);
+    // The glow is only a halo: it may be cut by the card's side, never by the bottom.
+    low(d.y + (d.me ? d.r * 2.4 : d.r));
   }
   // "You" beside the driver's dot: past the column when it is short, else to its emptier side.
   const me = layout.dots.find((d) => d.me);
@@ -551,6 +554,7 @@ function packagesBox(
   rank: { rank: number; total: number } | null,
   tier: SnapshotTier | null,
   what: string,
+  note: string,
 ): string {
   const n = (v: number | null) => (v === null ? '—' : v.toLocaleString('en-US'));
   const leader = rank?.rank === 1;
@@ -561,7 +565,7 @@ function packagesBox(
     `<div class="side"><span class="who">You${leader ? ' (#1)' : ''}</span><span class="n" style="color:${colour}">${n(count.mine)}</span></div>` +
     `<div class="mid">vs</div>` +
     `<div class="side"><span class="who">Rank ${leader ? 2 : 1}</span><span class="n">${n(other)}</span></div>` +
-    `</div><p class="small muted">A tie in score goes to more packages.</p></div>`
+    `</div><p class="small muted">${esc(note)}</p></div>`
   );
 }
 
@@ -724,7 +728,7 @@ export function snapshotPageBody(
     sections =
       rank +
       gauge +
-      `<div class="sect">${packagesBox(model.fleetWeek.packages, latest.rank, latest.tier, `Packages delivered in Week ${latest.number}`)}</div>` +
+      `<div class="sect">${packagesBox(model.fleetWeek.packages, latest.rank, latest.tier, `Packages delivered in Week ${latest.number}`, 'Tie Breaks are decided based on Packages Delivered')}</div>` +
       `<div class="sect">${tipBox(model)}</div>` +
       `<div class="sect">${receiptBox(model.receipt)}</div>`;
   } else {
@@ -755,7 +759,7 @@ export function snapshotPageBody(
     sections =
       rank +
       gauge +
-      `<div class="sect">${packagesBox(model.fleetAverage.packages, avg.rank, avg.tier, `Total packages delivered over ${count} weeks`)}</div>` +
+      `<div class="sect">${packagesBox(model.fleetAverage.packages, avg.rank, avg.tier, `Total packages delivered over ${count} weeks`, 'Tie Breaks are decided based on Total Packages Delivered')}</div>` +
       `<div class="sect">${focusBox(model, tiers)}</div>` +
       `<div class="sect">${scoreChartSvg(model, tiers)}</div>` +
       `<div class="sect">${dotGrid(model, tiers)}</div>`;
