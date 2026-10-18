@@ -1,23 +1,36 @@
 // Draws the two Weekly Snapshot pages as standalone HTML (inline styles and SVG, no scripts),
 // phone width (360 px), from a SnapshotModel. The pages are the design chosen in the
-// "DA Snapshot Co-Edit" artifact: navy and amber, a colour ribbon at the top, a medal ring with
-// the rank above a 75–100 half-ring gauge filled in tier colours, everyone's scores as dots, then
-// the body sections (Page 1: "Try this next" and the points receipt; Page 2: "Needs
-// Improvement", the score-by-week chart and the tier dot grid), and a boxed pointer to the PDF.
+// "DA Snapshot Co-Edit" artifact: navy with a ribbon in the driver's tier colour at the top, a
+// medal ring with the rank, a 75–100 ring gauge filled in tier colours with everyone's scores
+// fanned out around it as dots (./gauge.ts has the geometry), then the body sections (Page 1:
+// "Try this next" and the points receipt; Page 2: "Needs Improvement", the score-by-week chart
+// and the tier dot grid), and a boxed pointer to the PDF.
 //
 // The desktop app turns each page into a picture for the email (./render.ts) and shows the same
 // HTML in the Reports tab's preview. Mail apps strip SVG, so the HTML itself never goes out.
 
 import type {
   FleetStrip,
+  PackageCount,
   Receipt,
   SnapshotCutOffs,
   SnapshotMetric,
   SnapshotModel,
   SnapshotTier,
 } from '@loadout/performance';
+import { tierForScore } from '@loadout/performance';
 import type { ReportColours } from '../../../shared/performanceSettings';
 import { esc } from '../report/format';
+import {
+  angleFor,
+  at,
+  binFor,
+  GAUGE,
+  gaugeCentre,
+  layoutFleetDots,
+  type GaugeTop,
+  type Point,
+} from './gauge';
 
 /** The header photo, already read from disk: a data URL and its size in pixels. */
 export interface SnapshotPhoto {
@@ -40,6 +53,14 @@ export const SNAPSHOT_WIDTH = 360;
 /** The design's photo rules: the top 22% is the name band, shown at its true shape. */
 const PHOTO_BAND_PERCENT = 22;
 const PHOTO_DIM = 0.6;
+
+/** The body's side padding and the gap between the things in it (also in SNAPSHOT_CSS). */
+const BODY_PAD = 14;
+const BODY_GAP = 12;
+/** The text under the medal on page 2 is this tall, so the gauge knows where it starts. */
+const NOTE_HEIGHT = 24;
+/** The gauge's top edge sits this far above the medal's bottom edge (its dots fan up beside it). */
+const GAUGE_OVERLAP = GAUGE.medal.bottom;
 
 /** The design's navy-and-amber theme, with the tier colours from the report colours. */
 const THEME = {
@@ -99,10 +120,10 @@ body { width: ${SNAPSHOT_WIDTH}px; -webkit-print-color-adjust: exact; print-colo
 .page + .page { border-top: 1px solid ${THEME.line}; }
 .ribbon { background: ${THEME.accent}; color: ${THEME.accentText}; padding: 16px 16px 14px; text-align: center;
   font-weight: 800; line-height: 1.15; position: relative; z-index: 2; }
-.body { position: relative; padding: 14px 16px 22px; display: flex; flex-direction: column; gap: 12px; min-height: 560px; }
+.body { position: relative; padding: ${BODY_PAD}px 16px 22px; display: flex; flex-direction: column; gap: ${BODY_GAP}px; min-height: 560px; }
 .body > * { position: relative; z-index: 1; }
 .ph-band, .ph-rest { position: absolute; left: 0; right: 0; z-index: 0; }
-.body.photo .gbox svg text, .body.photo .eyebrow, .body.photo .center { text-shadow: 0 1px 2px rgba(0,0,0,.5); }
+.body.photo .gauge svg text, .body.photo .eyebrow, .body.photo .center { text-shadow: 0 1px 2px rgba(0,0,0,.5); }
 .center { text-align: center; }
 .small { font-size: 12px; }
 .muted { color: ${THEME.muted}; }
@@ -111,10 +132,11 @@ p { margin: 0; }
 h2 { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.15; }
 .medal { width: 104px; height: 104px; border-radius: 50%; margin: 0 auto; border: 6px solid ${THEME.muted};
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
-  font-size: 36px; font-weight: 800; line-height: 1; background: rgba(11,37,69,.35); }
+  font-size: 36px; font-weight: 800; line-height: 1; background: rgba(11,37,69,.4); }
 .medal > span { line-height: 1; }
 .medal > small { display: block; font-size: 11px; font-weight: 600; color: ${THEME.muted}; letter-spacing: 0.02em; line-height: 1; }
-.gbox { display: flex; flex-direction: column; gap: 8px; }
+.note { margin-top: 4px; height: ${NOTE_HEIGHT - 4}px; line-height: ${NOTE_HEIGHT - 4}px; white-space: nowrap; }
+.gauge { margin: 0 -16px; }
 svg { display: block; width: 100%; height: auto; }
 svg text { font-family: inherit; }
 .chip { display: inline-block; border-radius: 999px; padding: 2px 9px; font-size: 12px; font-weight: 700; line-height: 1.4; white-space: nowrap; }
@@ -127,6 +149,15 @@ svg text { font-family: inherit; }
 .sect { display: flex; flex-direction: column; gap: 10px; }
 .receipt { font-family: "Cascadia Mono", Consolas, "Courier New", monospace; font-size: 12.5px; display: flex; flex-direction: column; gap: 2px; }
 .receipt .row { border-radius: 6px; padding: 4px 6px; }
+.vs { background: transparent; border: 1.5px solid rgba(255,255,255,.35); border-radius: 12px; padding: 10px 10px 9px;
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
+.vs .row { width: 100%; padding: 0 4px; }
+.vs .tie { font-size: 10.5px; white-space: nowrap; letter-spacing: -0.01em; }
+.vs .row { gap: 10px; }
+.vs .side { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 1px; }
+.vs .who { font-size: 11px; font-weight: 700; color: ${THEME.muted}; text-transform: uppercase; letter-spacing: .06em; }
+.vs .n { font-size: 22px; font-weight: 800; line-height: 1.1; }
+.vs .mid { font-size: 12px; font-weight: 800; color: ${THEME.muted}; }
 .tip { background: ${THEME.accent}; color: ${THEME.accentText}; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
 .tip .k { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; opacity: .85; }
 .tip .t { font-size: 16px; font-weight: 700; line-height: 1.3; }
@@ -152,120 +183,248 @@ svg text { font-family: inherit; }
 
 // ---- SVG parts -------------------------------------------------------------------------------
 
-interface GaugeMarker {
-  v: number;
-  text: string;
+/** What the gauge block of one page shows. */
+export interface GaugeBlock {
+  score: number;
+  tier: SnapshotTier | null;
+  cutOffs: SnapshotCutOffs;
+  /** Everyone's scores, best first, with the driver's own place among them. */
+  strip: FleetStrip;
+  /** Which page, so the ids inside the SVG stay unique in a document holding both pages. */
+  page: SnapshotPage;
+  top: GaugeTop;
+  label: string;
 }
+
+const BAND_FONT = `Bahnschrift, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif`;
+
+/** A rough width of a line of text, enough to keep labels off each other and inside the card. */
+const textWidth = (text: string, size: number, spacing = 0) =>
+  text.length * size * 0.62 + Math.max(0, text.length - 1) * spacing;
+
+interface Box {
+  x0: number;
+  x1: number;
+  y0: number;
+  y1: number;
+}
+
+const overlaps = (a: Box, b: Box) => a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
 
 /**
- * The 75–100 half-ring gauge, filled in tier colours up to the score (the rest dimmed), with
- * straight cuts at the tier boundaries, the score and a tier pill inside, and tier markers
- * labelled away from the arc.
+ * The gauge block: a 75–100 ring gauge sweeping 270 degrees, filled in tier colours up to the
+ * score with the tier names along the band, the score and a tier pill inside, and everyone's
+ * score as a dot fanned out around the ring over its own tier (rank 1 nearest, "You" bigger with
+ * a glow), the fleet average as a dashed ray. The SVG is as tall as what it draws.
  */
-export function gaugeSvg(
-  score: number,
-  inside: string,
-  pill: SnapshotTier | null,
-  cutOffs: SnapshotCutOffs,
-  markers: GaugeMarker[],
-  label: string,
-): string {
-  const lo = 75;
-  const start = Math.PI;
-  const sweep = Math.PI;
-  const pad = 14;
-  const r = 84;
-  const t = 18;
-  const W = 260 + 2 * pad;
-  const cx = 130 + pad;
-  const cy = 114 + pad;
-  const H = 134 + pad;
-  const f = (s: number) => Math.max(0, Math.min(1, (s - lo) / (100 - lo)));
-  const pt = (a: number, rr: number): [number, number] => [
-    cx + rr * Math.cos(start + a * sweep),
-    cy + rr * Math.sin(start + a * sweep),
-  ];
-  const arc = (a0: number, a1: number, col: string, op = 1, cap = 'butt') => {
-    if (a1 <= a0) return '';
-    const [x0, y0] = pt(a0, r);
-    const [x1, y1] = pt(a1, r);
-    return `<path d="M${P(x0)} ${P(y0)} A${r} ${r} 0 0 1 ${P(x1)} ${P(y1)}" fill="none" stroke="${col}" stroke-width="${t}" opacity="${op}" stroke-linecap="${cap}"/>`;
+export function gaugeBlockSvg(block: GaugeBlock): string {
+  const { r, band, lo, hi } = GAUGE;
+  const c = gaugeCentre(block.top);
+  const cx = c.x;
+  const cy = c.y;
+  const id = `g${block.page}`;
+  const own = block.tier ? THEME.arc[block.tier] : THEME.muted;
+  const tierColour = (score: number) => THEME.arc[tierForScore(score, block.cutOffs)];
+  const half = band / 2;
+  /** The lowest thing drawn so far: the band's own ends to start with. */
+  let bottom = cy + (r + half) * Math.SQRT1_2 + 2;
+  const low = (y: number) => {
+    bottom = Math.max(bottom, y);
   };
-  const tick = (v: number, inner: number, outer: number, col: string, w: number) => {
-    const [x0, y0] = pt(f(v), inner);
-    const [x1, y1] = pt(f(v), outer);
-    return `<line x1="${P(x0)}" y1="${P(y0)}" x2="${P(x1)}" y2="${P(y1)}" stroke="${col}" stroke-width="${w}" stroke-linecap="round"/>`;
+  const pt = (angle: number, radius: number, across = 0) => at(c, angle, radius, across);
+  const xy = (p: Point) => `x="${P(p.x)}" y="${P(p.y)}"`;
+  const arcPath = (a0: number, a1: number, radius: number) => {
+    const p0 = pt(a0, radius);
+    const p1 = pt(a1, radius);
+    const large = a1 - a0 > Math.PI ? 1 : 0;
+    return `M${P(p0.x)} ${P(p0.y)} A${radius} ${radius} 0 ${large} 1 ${P(p1.x)} ${P(p1.y)}`;
   };
-  const bands: Array<[number, number, SnapshotTier]> = [
-    [lo, cutOffs.silver, 'Bronze'],
-    [cutOffs.silver, cutOffs.gold, 'Silver'],
-    [cutOffs.gold, cutOffs.platinum, 'Gold'],
-    [cutOffs.platinum, 100, 'Platinum'],
-  ];
-  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)}">`;
-  for (const [a, b, tier] of bands) s += arc(f(a), f(b), THEME.arc[tier], 0.28);
-  // A round tip only at the leading end: a butt segment plus a short round-capped arc.
-  const capped = (a0: number, a1: number, col: string) => {
-    const d = t / 2 / r / sweep;
-    return arc(a0, a1, col, 1, 'butt') + (a1 - a0 > d ? arc(a1 - d, a1, col, 1, 'round') : '');
-  };
-  for (const [a, b, tier] of bands) {
-    if (score <= a) continue;
-    const end = Math.min(b, score);
-    s += score < b ? capped(f(a), f(end), THEME.arc[tier]) : arc(f(a), f(end), THEME.arc[tier]);
-  }
-  for (const v of [cutOffs.silver, cutOffs.gold, cutOffs.platinum]) {
-    if (v > lo && v < 100) s += tick(v, r - t / 2 - 1, r + t / 2 + 1, THEME.bg, 3.5);
-  }
-  for (const m of markers) {
-    const a = f(m.v);
-    s += tick(m.v, r + t / 2 + 3, r + t / 2 + 11, THEME.fg, 2);
-    const [px] = pt(a, r);
-    const side = px < cx - 14 ? 'end' : px > cx + 14 ? 'start' : 'middle';
-    const [lx, ly] = pt(a, r + t / 2 + (side === 'middle' ? 21 : 15));
-    s += `<text x="${P(lx)}" y="${P(ly + 3)}" font-size="9" text-anchor="${side}" fill="${THEME.muted}">${esc(m.text)}</text>`;
-  }
-  const ny = cy - 12;
-  s += `<text x="${cx}" y="${ny}" font-size="40" font-weight="800" text-anchor="middle" fill="${THEME.fg}">${esc(inside)}</text>`;
-  if (pill) {
-    const w = pill.length * 7.2 + 18;
-    s += `<rect x="${P(cx - w / 2)}" y="${ny + 6}" width="${P(w)}" height="19" rx="9.5" fill="${THEME.arc[pill]}"/>`;
-    s += `<text x="${cx}" y="${ny + 19.5}" font-size="12" font-weight="700" text-anchor="middle" fill="${arcText(pill)}">${pill}</text>`;
-  }
-  s += `<text x="${cx - r - t / 2}" y="${cy + 18}" font-size="10" fill="${THEME.muted}">75</text>`;
-  s += `<text x="${cx + r + t / 2}" y="${cy + 18}" font-size="10" text-anchor="end" fill="${THEME.muted}">100</text>`;
-  return s + '</svg>';
-}
+  const arc = (s0: number, s1: number, col: string, op = 1, cap = 'butt') =>
+    s1 <= s0
+      ? ''
+      : `<path d="${arcPath(angleFor(s0), angleFor(s1), r)}" fill="none" stroke="${col}" stroke-width="${band}" opacity="${op}" stroke-linecap="${cap}"/>`;
+  // A round tip only at the leading end: a butt segment plus a short round-capped arc whose cap
+  // ends exactly at the score. `tip` is half the band's width in score points.
+  const unit = (r * GAUGE.sweep) / (hi - lo);
+  const tip = half / unit;
+  const capped = (s0: number, s1: number, col: string) =>
+    s1 - s0 > 3 * tip
+      ? arc(s0, s1 - tip, col) + arc(s1 - 2 * tip, s1 - tip, col, 1, 'round')
+      : arc(s0, s1, col);
+  const cuts = block.cutOffs;
+  const bands: Array<[number, number, SnapshotTier]> = (
+    [
+      [lo, cuts.silver, 'Bronze'],
+      [cuts.silver, cuts.gold, 'Silver'],
+      [cuts.gold, cuts.platinum, 'Gold'],
+      [cuts.platinum, hi, 'Platinum'],
+    ] as Array<[number, number, SnapshotTier]>
+  ).map(([a, b, tier]) => [Math.max(lo, a), Math.min(hi, b), tier]);
 
-/** Everyone's scores as anonymous dots on a 65–100 line, "You" picked out, the fleet average dashed. */
-export function fleetStripSvg(strip: FleetStrip, what: string): string {
-  const W = 328;
-  const H = 84;
-  const L = 14;
-  const R = 14;
-  const lo = 65;
-  const hi = 100;
-  const x = (v: number) =>
-    (L + ((Math.max(lo, Math.min(hi, v)) - lo) * (W - L - R)) / (hi - lo)).toFixed(1);
-  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`Every driver's ${what} score, with you highlighted`)}">`;
-  for (const g of [70, 80, 90, 100]) {
-    s += `<line x1="${x(g)}" x2="${x(g)}" y1="16" y2="56" stroke="${THEME.line}"/>`;
-    s += `<text x="${x(g)}" y="68" font-size="9.5" text-anchor="middle" fill="${THEME.muted}">${g}</text>`;
+  let defs = `<filter id="${id}-glow" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="0.9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
+  let s = '';
+  // The band, dimmed, then filled up to the score.
+  for (const [a, b, tier] of bands) s += arc(a, b, THEME.arc[tier], 0.28);
+  for (const [a, b, tier] of bands) {
+    if (block.score <= a) continue;
+    const end = Math.min(b, block.score);
+    s += block.score < b ? capped(a, end, THEME.arc[tier]) : arc(a, end, THEME.arc[tier]);
   }
+  // Dark separators across the band at the cut-offs, with the threshold numbers just inside.
+  for (const v of [cuts.silver, cuts.gold, cuts.platinum]) {
+    if (!(v > lo && v < hi)) continue;
+    const p0 = pt(angleFor(v), r - half - 1);
+    const p1 = pt(angleFor(v), r + half + 1);
+    s += `<line x1="${P(p0.x)}" y1="${P(p0.y)}" x2="${P(p1.x)}" y2="${P(p1.y)}" stroke="${THEME.bg}" stroke-width="3"/>`;
+    s += `<text ${xy(pt(angleFor(v), r - half - 9))} font-size="9" text-anchor="middle" dominant-baseline="central" fill="${THEME.muted}">${v}</text>`;
+  }
+  // The tier names along the band, centred on each segment; the driver's own tier glows white.
+  for (const [a, b, tier] of bands) {
+    if (b <= a) continue;
+    const name = tier.toUpperCase();
+    const room = (b - a) * unit - 12;
+    let size = 9.5;
+    if (textWidth(name, size, 0.6) > room) {
+      size = Math.max(4.5, (room - (name.length - 1) * 0.6) / (name.length * 0.62));
+    }
+    defs += `<path id="${id}-${tier}" d="${arcPath(angleFor(a), angleFor(b), r)}" fill="none"/>`;
+    const mine = tier === block.tier;
+    const look = mine
+      ? `font-weight="800" fill="#fff" filter="url(#${id}-glow)"`
+      : `font-weight="700" fill="#000" opacity=".75"`;
+    s += `<text font-size="${P(size)}" ${look} letter-spacing="0.6" dominant-baseline="central" font-family="${BAND_FONT}"><textPath href="#${id}-${tier}" startOffset="50%" text-anchor="middle">${name}</textPath></text>`;
+  }
+  // 75 and 100 just past the band's two ends, in the gap underneath.
+  for (const [v, angle] of [
+    [lo, GAUGE.start - 0.22],
+    [hi, angleFor(hi) + 0.22],
+  ] as Array<[number, number]>) {
+    const p = pt(angle, r);
+    s += `<text ${xy(p)} font-size="10" text-anchor="middle" dominant-baseline="central" fill="${THEME.muted}">${v}</text>`;
+    low(p.y + 6);
+  }
+  // The score with a shadow in the tier colour, and the tier pill under it.
+  const ny = cy - 12;
+  const inside = score1(block.score);
+  const scoreSize = inside.length > 4 ? 35 : 40;
+  if (block.tier) {
+    s += `<text x="${cx + 2}" y="${ny + 2}" font-size="${scoreSize}" font-weight="800" text-anchor="middle" fill="${own}">${esc(inside)}</text>`;
+  }
+  s += `<text x="${cx}" y="${ny}" font-size="${scoreSize}" font-weight="800" text-anchor="middle" fill="${THEME.fg}">${esc(inside)}</text>`;
+  if (block.tier) {
+    const w = block.tier.length * 7.2 + 18;
+    s += `<rect x="${P(cx - w / 2)}" y="${ny + 6}" width="${P(w)}" height="19" rx="9.5" fill="${own}"/>`;
+    s += `<text x="${cx}" y="${ny + 19.5}" font-size="12" font-weight="700" text-anchor="middle" fill="${arcText(block.tier)}">${block.tier}</text>`;
+  }
+
+  // Everyone's dots, with the fleet average's ray under them.
+  const strip = block.strip;
+  const layout = layoutFleetDots(strip, block.cutOffs, block.top);
+  const medal = GAUGE.medal;
+  const medalBox: Box = {
+    x0: cx - (block.top.noteHeight > 0 ? medal.noteHalfWidth : medal.r) - 4,
+    x1: cx + (block.top.noteHeight > 0 ? medal.noteHalfWidth : medal.r) + 4,
+    y0: -1000,
+    y1: medal.bottom + block.top.noteHeight + 4,
+  };
+  /** A label's x once pushed sideways off the medal, to whichever side it was nearer. */
+  const aside = (x: number, halfWidth: number) =>
+    x < cx ? medalBox.x0 - halfWidth : medalBox.x1 + halfWidth;
+  const clampX = (
+    x: number,
+    halfWidth: number,
+    min: number = GAUGE.edge,
+    max: number = GAUGE.width - GAUGE.edge,
+  ) => Math.max(min + halfWidth, Math.min(max - halfWidth, x));
+  let avgBox: Box | null = null;
   if (strip.average !== null) {
-    s += `<line x1="${x(strip.average)}" x2="${x(strip.average)}" y1="12" y2="60" stroke="${THEME.accent}" stroke-width="2.5" stroke-dasharray="4 3"/>`;
-    s += `<text x="${x(strip.average)}" y="80" font-size="10" font-weight="700" text-anchor="middle" fill="${THEME.fg}">Fleet Average ${score1(strip.average)}</text>`;
+    const avg = strip.average;
+    const angle = angleFor(avg);
+    const column = layout.columns.get(binFor(avg));
+    const end = column ? column.reach + 4 : GAUGE.r0 + 24;
+    const col = tierColour(avg);
+    const p0 = pt(angle, GAUGE.r0 - 6);
+    const p1 = pt(angle, end);
+    s += `<line x1="${P(p0.x)}" y1="${P(p0.y)}" x2="${P(p1.x)}" y2="${P(p1.y)}" stroke="${col}" stroke-width="1.4" stroke-dasharray="3 3"/>`;
+    const halfWidth = 28;
+    const centre = pt(angle, end + 16);
+    let x = clampX(centre.x, halfWidth, 30 - halfWidth, 330 + halfWidth);
+    const y = Math.max(13, centre.y);
+    let box: Box = { x0: x - halfWidth, x1: x + halfWidth, y0: y - 10, y1: y + 14 };
+    if (overlaps(box, medalBox)) {
+      x = clampX(aside(x, halfWidth), halfWidth);
+      box = { ...box, x0: x - halfWidth, x1: x + halfWidth };
+    }
+    s += `<text x="${P(x)}" y="${P(y - 1)}" font-size="10.5" font-weight="600" text-anchor="middle" fill="${col}">Fleet Avg</text>`;
+    s += `<text x="${P(x)}" y="${P(y + 11)}" font-size="11" font-weight="700" text-anchor="middle" fill="${col}">${score1(avg)}</text>`;
+    avgBox = box;
+    low(box.y1);
   }
-  strip.scores.forEach((v, i) => {
-    const me = i === strip.meIndex;
-    const cy = 26 + (i % 3) * 11;
-    s += `<circle cx="${x(v)}" cy="${cy}" r="${me ? 6.5 : 3.5}" fill="${me ? THEME.accent : THEME.muted}" opacity="${me ? 1 : 0.55}" stroke="${THEME.bg}" stroke-width="1.5"/>`;
-  });
-  if (strip.meIndex !== null) {
-    const v = strip.scores[strip.meIndex] as number;
-    s += `<text x="${x(v)}" y="11" font-size="10" font-weight="700" text-anchor="middle" fill="${THEME.fg}">You</text>`;
+  for (const d of layout.dots) {
+    const col = THEME.arc[d.tier];
+    if (d.me) {
+      s += `<circle cx="${P(d.x)}" cy="${P(d.y)}" r="${P(d.r * 2.4)}" fill="${col}" opacity=".16"/>`;
+      s += `<circle cx="${P(d.x)}" cy="${P(d.y)}" r="${P(d.r * 1.2)}" fill="${col}" opacity=".28"/>`;
+    }
+    s += `<circle cx="${P(d.x)}" cy="${P(d.y)}" r="${P(d.r)}" fill="${col}"/>`;
+    // The glow is only a halo: it may be cut by the card's side, never by the bottom.
+    low(d.y + (d.me ? d.r * 2.4 : d.r));
   }
-  return s + '</svg>';
+  // "You" beside the driver's dot: past the column when it is short, else to its emptier side.
+  const me = layout.dots.find((d) => d.me);
+  if (me) {
+    const column = layout.columns.get(me.bin)!;
+    const halfWidth = 11;
+    let p: Point;
+    if (column.reach - GAUGE.r0 < 36) {
+      p = pt(column.angle, column.reach + 9);
+    } else {
+      const count = (bin: number) => layout.columns.get(bin)?.count ?? 0;
+      const up = count(me.bin + 1);
+      const down = count(me.bin - 1);
+      const plus = pt(column.angle, me.radius, 19);
+      const minus = pt(column.angle, me.radius, -19);
+      p =
+        up < down
+          ? plus
+          : up > down
+            ? minus
+            : Math.abs(plus.x - cx) >= Math.abs(minus.x - cx)
+              ? plus
+              : minus;
+    }
+    let x = clampX(p.x, halfWidth);
+    let y = Math.max(10, p.y);
+    let box: Box = { x0: x - halfWidth, x1: x + halfWidth, y0: y - 6, y1: y + 6 };
+    if (overlaps(box, medalBox)) {
+      x = clampX(aside(x, halfWidth), halfWidth);
+      box = { ...box, x0: x - halfWidth, x1: x + halfWidth };
+    }
+    if (avgBox && overlaps(box, avgBox)) {
+      y += 26;
+      box = { ...box, y0: y - 6, y1: y + 6 };
+    }
+    s += `<text x="${P(x)}" y="${P(y)}" font-size="11" font-weight="700" text-anchor="middle" dominant-baseline="central" fill="${own}">You</text>`;
+    low(box.y1);
+  }
+  // 80 and 90 outside the dots (75 and 100 are the gauge's own).
+  for (const v of [80, 90]) {
+    const reach =
+      Math.max(GAUGE.r0 + 10, ...[v - 1, v].map((bin) => layout.columns.get(bin)?.reach ?? 0)) + 10;
+    const p = pt(angleFor(v), reach);
+    let x = clampX(p.x, 7);
+    const y = Math.max(8, p.y);
+    if (overlaps({ x0: x - 7, x1: x + 7, y0: y - 5, y1: y + 5 }, medalBox)) {
+      x = clampX(aside(x, 7), 7);
+    }
+    s += `<text x="${P(x)}" y="${P(y)}" font-size="10" text-anchor="middle" dominant-baseline="central" fill="${THEME.muted}">${v}</text>`;
+    low(y + 5);
+  }
+  const height = Math.ceil(bottom + 14);
+  return (
+    `<svg viewBox="0 0 ${GAUGE.width} ${height}" role="img" aria-label="${esc(block.label)}">` +
+    `<defs>${defs}</defs>${s}</svg>`
+  );
 }
 
 /** The Overall Score by week as an area chart over tier bands, 75–100 up the side. */
@@ -352,34 +511,63 @@ function chip(
 const dot = (tier: SnapshotTier, tiers: Tiers, extra = '') =>
   `<span class="dot" style="background:${tiers.fill[tier]}${extra}"></span>`;
 
-function ribbon(text: string, size: number): string {
-  return `<div class="ribbon" style="font-size:${size}px">${esc(text)}</div>`;
+/** The title band, in the driver's tier colour for that page (amber with no tier). */
+function ribbon(text: string, size: number, tier: SnapshotTier | null): string {
+  const bg = tier ? THEME.arc[tier] : THEME.accent;
+  return `<div class="ribbon" style="font-size:${size}px;background:${bg}">${esc(text)}</div>`;
 }
 
+/**
+ * The rank in a ring, both in the tier colour. `style` goes on the block around it (the margin
+ * that puts the medal under the photo's name band). `under` is the note under the medal, which
+ * is exactly NOTE_HEIGHT tall so the gauge below knows where it ends.
+ */
 function medal(
   rank: { rank: number; total: number } | null,
   tier: SnapshotTier | null,
-  tiers: Tiers,
   under: string | null,
   unranked: string,
+  style: string,
 ): string {
-  const ring = tier ? tiers.fill[tier] : THEME.muted;
+  const colour = tier ? THEME.arc[tier] : THEME.muted;
   const inner = rank
-    ? `<span>#${rank.rank}</span><small>of ${rank.total}</small>`
+    ? `<span style="color:${tier ? colour : THEME.fg}">#${rank.rank}</span><small>of ${rank.total}</small>`
     : `<span style="font-size:26px">—</span><small>${esc(unranked)}</small>`;
   return (
-    `<div class="center"><div class="medal" style="border-color:${ring}">${inner}</div>` +
-    (under ? `<p class="small muted" style="margin-top:6px">${esc(under)}</p>` : '') +
+    `<div class="center"${style}><div class="medal" style="border-color:${colour}">${inner}</div>` +
+    (under ? `<p class="small muted note">${esc(under)}</p>` : '') +
     '</div>'
   );
 }
 
-function markersFor(c: SnapshotCutOffs): GaugeMarker[] {
-  return [
-    { v: c.silver, text: `Silver ${c.silver}` },
-    { v: c.gold, text: `Gold ${c.gold}` },
-    { v: c.platinum, text: `Platinum ${c.platinum}` },
-  ].filter((m) => m.v > 75 && m.v < 100);
+/** The gauge block on the page, pulled up so its dots can fan out beside the medal above it. */
+function gaugeBox(block: GaugeBlock): string {
+  const up = BODY_GAP + GAUGE_OVERLAP + block.top.noteHeight;
+  return `<div class="gbox gauge" style="margin-top:-${up}px">${gaugeBlockSvg(block)}</div>`;
+}
+
+/**
+ * Packages delivered, the driver's against rank 1's, since more packages wins a tie in the rank.
+ * A driver who is rank 1 is shown against rank 2 instead.
+ */
+function packagesBox(
+  count: PackageCount,
+  rank: { rank: number; total: number } | null,
+  tier: SnapshotTier | null,
+  what: string,
+  note: string,
+): string {
+  const n = (v: number | null) => (v === null ? '—' : v.toLocaleString('en-US'));
+  const leader = rank?.rank === 1;
+  const other = leader ? count.second : count.first;
+  const colour = tier ? THEME.arc[tier] : THEME.fg;
+  return (
+    `<div class="vs"><p class="eyebrow">${esc(what)}</p><div class="row">` +
+    `<div class="side"><span class="who">You${leader ? ' (#1)' : ''}</span><span class="n" style="color:${colour}">${n(count.mine)}</span></div>` +
+    `<div class="mid">vs</div>` +
+    `<div class="side"><span class="who">Rank ${leader ? 2 : 1}</span><span class="n">${n(other)}</span></div>` +
+    `</div><p class="muted tie">${esc(note)}</p></div>`
+  );
 }
 
 function tipBox(model: SnapshotModel): string {
@@ -489,9 +677,10 @@ function footer(page: SnapshotPage, transporterId: string): string {
 
 /**
  * The photo behind the body: the top band at its true shape under the ribbon, the rest
- * stretched down to the bottom of the page, both darkened so the numbers stay readable.
+ * stretched down to the bottom of the page, both darkened so the numbers stay readable. Also
+ * says how tall the band is on the page, so the medal can start under it.
  */
-function photoLayers(photo: SnapshotPhoto): string {
+function photoLayers(photo: SnapshotPhoto): { html: string; bandHeight: number } {
   const cut = Math.max(
     1,
     Math.min(photo.height - 1, Math.round((photo.height * PHOTO_BAND_PERCENT) / 100)),
@@ -500,10 +689,10 @@ function photoLayers(photo: SnapshotPhoto): string {
   const restPercent = ((photo.height - cut) / photo.height) * 100;
   const dim = `linear-gradient(rgba(0,0,0,${PHOTO_DIM}), rgba(0,0,0,${PHOTO_DIM}))`;
   // The stretched part starts 2px under the band so no seam shows between them.
-  return (
+  const html =
     `<div class="ph-rest" style="top:${bandH - 2}px;bottom:0;background:${dim}, url(${photo.dataUrl}) center bottom / 100% ${(10000 / restPercent).toFixed(2)}% no-repeat"></div>` +
-    `<div class="ph-band" style="top:0;height:${bandH}px;background:${dim}, url(${photo.dataUrl}) center top / 100% auto no-repeat"></div>`
-  );
+    `<div class="ph-band" style="top:0;height:${bandH}px;background:${dim}, url(${photo.dataUrl}) center top / 100% auto no-repeat"></div>`;
+  return { html, bandHeight: bandH };
 }
 
 /** The body of one page (the ribbon and everything under it), without the document around it. */
@@ -513,67 +702,72 @@ export function snapshotPageBody(
   look: SnapshotLook,
 ): string {
   const tiers = tierColours(look.colours);
-  const markers = markersFor(model.cutOffs);
   const latest = model.latest;
+  const photo = look.photo ? photoLayers(look.photo) : null;
+  // With a photo, the medal starts under its name band so nothing covers the lettering.
+  const medalStyle =
+    photo && photo.bandHeight > BODY_PAD
+      ? ` style="margin-top:${photo.bandHeight - BODY_PAD}px"`
+      : '';
   let head: string;
-  let gauge: string;
-  let strip: string;
   let sections: string;
   if (page === 1) {
-    head = ribbon(`SCORECARD WEEK ${latest.number}`, 27);
-    const rank = medal(latest.rank, latest.tier, tiers, null, 'no rank');
-    gauge = gaugeSvg(
-      latest.score as number,
-      score1(latest.score as number),
-      latest.tier,
-      model.cutOffs,
-      markers,
-      `Score ${score1(latest.score as number)} on a gauge from 75 to 100`,
-    );
-    strip = fleetStripSvg(model.fleetWeek, `Week ${latest.number}`);
+    head = ribbon(`SCORECARD WEEK ${latest.number}`, 27, latest.tier);
+    const rank = medal(latest.rank, latest.tier, null, 'no rank', medalStyle);
+    const gauge =
+      latest.score === null
+        ? ''
+        : gaugeBox({
+            score: latest.score,
+            tier: latest.tier,
+            cutOffs: model.cutOffs,
+            strip: model.fleetWeek,
+            page,
+            top: { noteHeight: 0 },
+            label: `Score ${score1(latest.score)} on a gauge from 75 to 100, with every driver's Week ${latest.number} score as a dot around it and you highlighted`,
+          });
     sections =
       rank +
-      `<div class="gbox">${gauge}</div>` +
-      `<div class="gbox">${strip}</div>` +
+      gauge +
+      `<div class="sect">${packagesBox(model.fleetWeek.packages, latest.rank, latest.tier, `Packages delivered in Week ${latest.number}`, 'Tie Breaks are decided based on Packages Delivered')}</div>` +
       `<div class="sect">${tipBox(model)}</div>` +
       `<div class="sect">${receiptBox(model.receipt)}</div>`;
   } else {
     const count = model.weeks.length;
-    head = ribbon(`${count} WEEK SCORECARD  ${weekLabel(model)}`, 22);
+    head = ribbon(`${count} WEEK SCORECARD  ${weekLabel(model)}`, 22, model.average.tier);
     const avg = model.average;
     const rank = medal(
       avg.rank,
       avg.tier,
-      tiers,
       avg.rank
         ? `by ${count}-week average score`
         : `ranked after ${avg.minWeeks} scored weeks (you have ${avg.weeksScored})`,
       'not yet',
+      medalStyle,
     );
-    gauge =
+    const gauge =
       avg.score === null
         ? ''
-        : gaugeSvg(
-            avg.score,
-            score1(avg.score),
-            avg.tier,
-            model.cutOffs,
-            markers,
-            `Average score ${score1(avg.score)} over ${count} weeks on a gauge from 75 to 100`,
-          );
-    strip = fleetStripSvg(model.fleetAverage, `${count}-week average`);
+        : gaugeBox({
+            score: avg.score,
+            tier: avg.tier,
+            cutOffs: model.cutOffs,
+            strip: model.fleetAverage,
+            page,
+            top: { noteHeight: NOTE_HEIGHT },
+            label: `Average score ${score1(avg.score)} over ${count} weeks on a gauge from 75 to 100, with every driver's ${count}-week average as a dot around it and you highlighted`,
+          });
     sections =
       rank +
-      `<div class="gbox">${gauge}</div>` +
-      `<div class="gbox">${strip}</div>` +
+      gauge +
+      `<div class="sect">${packagesBox(model.fleetAverage.packages, avg.rank, avg.tier, `Total packages delivered over ${count} weeks`, 'Tie Breaks are decided based on Total Packages Delivered')}</div>` +
       `<div class="sect">${focusBox(model, tiers)}</div>` +
       `<div class="sect">${scoreChartSvg(model, tiers)}</div>` +
       `<div class="sect">${dotGrid(model, tiers)}</div>`;
   }
-  const photo = look.photo ? photoLayers(look.photo) : '';
   return (
     `<section class="page" data-page="${page}">${head}` +
-    `<div class="body${look.photo ? ' photo' : ''}">${photo}${sections}${footer(page, model.transporterId)}</div></section>`
+    `<div class="body${photo ? ' photo' : ''}">${photo?.html ?? ''}${sections}${footer(page, model.transporterId)}</div></section>`
   );
 }
 

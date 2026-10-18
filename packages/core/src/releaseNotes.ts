@@ -11,6 +11,17 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.14.0',
+    items: [
+      'The snapshot pages in the report email have a new look around the score gauge. Every driver in the fleet is now a dot fanned out around the gauge, sitting over the part of the ring for their tier, in that tier colour: Bronze, Silver, Gold or Platinum.',
+      'Your own dot is bigger, glows, and sits in your rank place in its column: the best score in a column is closest to the gauge. A "You" label points it out, and a dashed line marks the fleet average.',
+      'The title band, the rank medal, the big score and the tier name on the ring all take the colour of your tier for that page: this week on page 1, the 7-week average on page 2.',
+      'With a station photo behind the pages, the medal now starts under the lettering at the top of the photo instead of covering it.',
+      'When many drivers tie on the same score, the dots pack tighter or into two or three lanes, so nothing is cut off at the edge of the picture.',
+      "Under the gauge, a new box shows packages delivered: yours against the rank 1 driver's. When scores tie, more packages takes the higher rank. Page 1 counts the week, page 2 the 7 weeks together. A driver who is rank 1 is shown against rank 2.",
+    ],
+  },
+  {
     version: '2.13.1',
     items: [
       'Report emails were going out without the two snapshot pictures. The app could not draw them on Windows, so each email had the PDF only. This is fixed: the pictures are drawn a different way now and show up in the email.',

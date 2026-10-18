@@ -115,7 +115,12 @@ export function sampleSnapshotModel(): SnapshotModel {
       tier: 'Gold',
       toPlatinum: 3.7,
     },
-    fleetWeek: { scores: FIELD_WEEK, meIndex: 8, average: average(FIELD_WEEK) },
+    fleetWeek: {
+      scores: FIELD_WEEK,
+      meIndex: 8,
+      average: average(FIELD_WEEK),
+      packages: { mine: 1042, first: 1180, second: 1133 },
+    },
     tip: {
       metric: 'CDF DPMO',
       name: cdf.name,
@@ -131,7 +136,12 @@ export function sampleSnapshotModel(): SnapshotModel {
       rank: { rank: 7, total: 42 },
       averageOfRanks: 12.7,
     },
-    fleetAverage: { scores: FIELD_AVG, meIndex: 6, average: average(FIELD_AVG) },
+    fleetAverage: {
+      scores: FIELD_AVG,
+      meIndex: 6,
+      average: average(FIELD_AVG),
+      packages: { mine: 7128, first: 7842, second: 7615 },
+    },
     focus: [
       {
         metric: 'CDF DPMO',
