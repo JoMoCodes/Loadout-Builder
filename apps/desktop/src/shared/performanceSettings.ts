@@ -109,6 +109,11 @@ export interface PerformanceSettings {
   recurringCategoryWeeks: number;
   colours: ReportColours;
   /**
+   * Put the two-page Weekly Snapshot (pictures) in each driver's report email, beside the PDF.
+   * The header photo behind it is kept by the main process only (a place on the computer).
+   */
+  includeSnapshot: boolean;
+  /**
    * A copy of the app's Email settings (AppSettings.email), kept equal to it by mergeSettings so
    * the pages that still read it here see the same thing. The Email settings live at the top.
    */
@@ -127,6 +132,7 @@ export const DEFAULT_PERFORMANCE: PerformanceSettings = {
   atRiskDecliningWeeks: 3,
   recurringCategoryWeeks: 3,
   colours: DEFAULT_REPORT_COLOURS,
+  includeSnapshot: true,
   email: DEFAULT_EMAIL,
   weekRange: { from: null, to: null },
   filters: ['status:ACTIVE'],
@@ -191,6 +197,7 @@ export function mergePerformance(current: PerformanceSettings, raw: unknown): Pe
   if (typeof input.autoImportOnStartup === 'boolean') {
     next.autoImportOnStartup = input.autoImportOnStartup;
   }
+  if (typeof input.includeSnapshot === 'boolean') next.includeSnapshot = input.includeSnapshot;
   next.complianceWindowDays =
     intIn(input.complianceWindowDays, 1, 365) ?? current.complianceWindowDays;
   next.topN = intIn(input.topN, 1, 50) ?? current.topN;

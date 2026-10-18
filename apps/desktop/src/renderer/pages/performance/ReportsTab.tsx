@@ -1,12 +1,26 @@
-// The Reports tab: the Settings button (the report emails' wording), the thresholds table, and the
+// The Reports tab: the Settings button (the report emails' wording), the thresholds table, the
 // report colours with a live preview of the report of any driver shown on the Performance tab
-// (stepping through them), or of a sample page when there is nobody to show. Ported from the old
-// app's PDF settings window, its Preview tab and its thresholds window.
+// (stepping through them), or of a sample page when there is nobody to show, and the Weekly
+// Snapshot (the two phone-sized pages in the report email) with its own preview of the same
+// driver. Ported from the old app's PDF settings window, its Preview tab and its thresholds window.
 
-import { ChevronLeft, ChevronRight, RotateCcw, ZoomIn, ZoomOut } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  ImagePlus,
+  RotateCcw,
+  Trash2,
+  ZoomIn,
+  ZoomOut,
+} from 'lucide-react';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import { DataGrid, type GridColumn } from '../../components/DataGrid';
-import type { PerfDriverRow, PerfThresholdRow, WeekRange } from '../../../shared/performance';
+import type {
+  PerfDriverRow,
+  PerfThresholdRow,
+  SnapshotPhotoStatus,
+  WeekRange,
+} from '../../../shared/performance';
 import { COLOUR_KEYS, type ReportColours } from '../../../shared/performanceSettings';
 import type { AppSnapshot } from '../../../shared/snapshot';
 import type { AppSettings, SettingsPatch } from '../../../shared/settings';
@@ -70,6 +84,42 @@ function useReportHtml(
   }, [key, revision]);
   return { html, problem };
 }
+
+/** The snapshot HTML (both pages) from the main process, asked again a moment after a change. */
+function useSnapshotHtml(
+  ask: { transporterId: string | null; range: WeekRange | null },
+  revision: number,
+  photoRevision: number,
+) {
+  const [html, setHtml] = useState('');
+  const [problem, setProblem] = useState<string | null>(null);
+  const key = JSON.stringify(ask);
+  useEffect(() => {
+    let off = false;
+    const timer = window.setTimeout(() => {
+      void call('performance:snapshot-html', {
+        transporterId: ask.transporterId,
+        range: ask.range,
+      }).then((reply) => {
+        if (off) return;
+        if (reply.ok) {
+          setHtml(reply.value?.html ?? '');
+          setProblem(null);
+        } else setProblem(explain(reply));
+      });
+    }, 250);
+    return () => {
+      off = true;
+      window.clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `key` stands for what is asked
+  }, [key, revision, photoRevision]);
+  return { html, problem };
+}
+
+/** The snapshot pages are drawn phone width; both pages stacked are about this tall. */
+const SNAPSHOT_WIDTH = 360;
+const SNAPSHOT_HEIGHT = 2800;
 
 /** A report page is US Letter: 8.5 by 11 inches at 96 dots an inch. */
 const PAGE_WIDTH = 816;
@@ -304,6 +354,67 @@ export function ReportsTab({
       event.preventDefault();
       step(1);
     }
+  }
+
+  // ------------------------------------------------------------ the snapshot
+
+  const includeSnapshot = settings.performance.includeSnapshot;
+  const [photo, setPhoto] = useState<SnapshotPhotoStatus>({ fileName: null, problem: null });
+  const [photoRevision, setPhotoRevision] = useState(0);
+  const [photoBusy, setPhotoBusy] = useState(false);
+  useEffect(() => {
+    let off = false;
+    void call('performance:snapshot-photo').then((reply) => {
+      if (!off && reply.ok && reply.value) setPhoto(reply.value);
+    });
+    return () => {
+      off = true;
+    };
+  }, [snapshot.revision]);
+  const snapshotPreview = useSnapshotHtml(
+    driver && range
+      ? { transporterId: driver.transporterId, range }
+      : { transporterId: null, range: null },
+    snapshot.revision,
+    photoRevision,
+  );
+
+  async function setIncludeSnapshot(on: boolean) {
+    await changeSettings({ performance: { includeSnapshot: on } });
+    setStatus(
+      on
+        ? 'The weekly snapshot goes in each report email.'
+        : 'Report emails go out with the PDF only.',
+    );
+  }
+
+  async function choosePhoto() {
+    if (photoBusy) return;
+    setPhotoBusy(true);
+    try {
+      const reply = await call('performance:choose-snapshot-photo');
+      if (!reply.ok) {
+        setProblem({ title: 'That photo cannot be used', message: explain(reply) });
+        return;
+      }
+      if (!reply.value) return;
+      setPhoto(reply.value);
+      setPhotoRevision((n) => n + 1);
+      setStatus('Snapshot photo saved.');
+    } finally {
+      setPhotoBusy(false);
+    }
+  }
+
+  async function clearPhoto() {
+    const reply = await call('performance:clear-snapshot-photo');
+    if (!reply.ok || !reply.value) {
+      if (!reply.ok) setProblem({ title: 'The photo was not removed', message: explain(reply) });
+      return;
+    }
+    setPhoto(reply.value);
+    setPhotoRevision((n) => n + 1);
+    setStatus('Snapshot photo removed. The pages are plain navy.');
   }
 
   // ---------------------------------------------------------------- thresholds
@@ -573,6 +684,91 @@ export function ReportsTab({
                 testId={driver ? 'perf-driver-frame' : 'perf-sample-frame'}
               />
             )}
+          </div>
+        </div>
+      </section>
+
+      <section className="card mt-4" aria-labelledby="perf-snapshot-title">
+        <h2 id="perf-snapshot-title" className="mt-0 text-[1.15rem] font-semibold">
+          Weekly snapshot in the email
+        </h2>
+        <div className="grid gap-4 lg:grid-cols-[minmax(16rem,22rem)_1fr]">
+          <div>
+            <label className="switch-row mb-3">
+              <input
+                type="checkbox"
+                role="switch"
+                className="switch"
+                checked={includeSnapshot}
+                onChange={(event) => void setIncludeSnapshot(event.target.checked)}
+                data-testid="perf-include-snapshot"
+              />
+              Include the weekly snapshot in the email
+            </label>
+            <p className="m-0 mb-3 text-sm text-muted">
+              Each report email gets two phone-sized pictures above the PDF: this week&apos;s score,
+              rank and what to try next, then the last 7 weeks. The PDF is still attached either
+              way.
+            </p>
+            <p className="m-0 mb-1 text-sm font-semibold">Header photo</p>
+            <p className="m-0 mb-2 text-sm" data-testid="perf-snapshot-photo-name">
+              {photo.fileName ?? 'None. The pages are plain navy.'}
+            </p>
+            {photo.problem ? (
+              <p
+                role="alert"
+                className="problem m-0 mb-2 text-sm"
+                data-testid="perf-snapshot-photo-problem"
+              >
+                {photo.problem}
+              </p>
+            ) : null}
+            <div className="row-of-buttons">
+              <Button
+                onClick={() => void choosePhoto()}
+                disabled={photoBusy}
+                data-testid="perf-choose-snapshot-photo"
+              >
+                <ImagePlus aria-hidden="true" />
+                {photo.fileName ? 'Change photo' : 'Choose a photo'}
+              </Button>
+              <Button
+                variant="ghost"
+                disabled={!photo.fileName}
+                onClick={() => void clearPhoto()}
+                data-testid="perf-clear-snapshot-photo"
+              >
+                <Trash2 aria-hidden="true" />
+                Remove photo
+              </Button>
+            </div>
+            <p className="m-0 mt-3 text-sm text-muted">
+              A JPEG or PNG at least 720 pixels wide works best. The top fifth of it shows at full
+              width under the title, like a name band. The rest sits, darkened, behind the numbers.
+            </p>
+          </div>
+          <div data-testid="perf-snapshot-preview">
+            <p className="m-0 mb-2 text-sm text-muted">
+              {driver
+                ? `How ${driver.name}'s snapshot looks on a phone. The driver picked above is shown.`
+                : 'How the snapshot looks on a phone, with made-up numbers until a driver is shown.'}
+            </p>
+            <div className="h-[32rem] overflow-auto rounded-md border border-line bg-sunken">
+              {snapshotPreview.problem ? (
+                <p role="alert" className="problem m-3 text-sm">
+                  {snapshotPreview.problem}
+                </p>
+              ) : (
+                <iframe
+                  title={driver ? `Weekly snapshot for ${driver.name}` : 'Sample weekly snapshot'}
+                  sandbox=""
+                  srcDoc={snapshotPreview.html}
+                  data-testid={driver ? 'perf-snapshot-frame' : 'perf-snapshot-sample-frame'}
+                  className="mx-auto block border-0"
+                  style={{ width: SNAPSHOT_WIDTH, height: SNAPSHOT_HEIGHT }}
+                />
+              )}
+            </div>
           </div>
         </div>
       </section>

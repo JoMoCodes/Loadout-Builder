@@ -66,6 +66,11 @@ export const performanceHandlers: HandlersFor<typeof performanceChannels> = {
       (raw) => mergePerformance(current, { colours: raw }).colours,
     );
   },
+  'performance:snapshot-html': ({ transporterId, range }, ctx) => {
+    void ctx.host.perf;
+    return ctx.services.performance.snapshotHtml(transporterId, checkRange(range));
+  },
+  'performance:snapshot-photo': (_input, ctx) => ctx.services.performance.snapshotPhotoStatus(),
   'performance:explain-score': ({ transporterId, range }, ctx) => {
     const data = dataOf(ctx);
     const r = resolveRange(data, checkRange(range));
@@ -109,6 +114,10 @@ export const performanceHandlers: HandlersFor<typeof performanceChannels> = {
   'performance:email-test': ({ to }, ctx) => ctx.services.performance.emailTest(to),
   'performance:set-email-password': ({ password }, ctx) =>
     ctx.services.performance.setEmailPassword(password),
+  'performance:choose-snapshot-photo': (_input, ctx) =>
+    ctx.services.performance.chooseSnapshotPhoto(),
+  'performance:clear-snapshot-photo': (_input, ctx) =>
+    ctx.services.performance.clearSnapshotPhoto(),
   'performance:reset-colours': (_input, ctx) =>
     ctx.services.setSettings({ performance: { colours: { ...DEFAULT_REPORT_COLOURS } } })
       .performance.colours,

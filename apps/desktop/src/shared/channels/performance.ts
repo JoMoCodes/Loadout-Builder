@@ -20,6 +20,7 @@ import type {
   PerfScoreExplanation,
   PerfThresholdRow,
   SafetyEventView,
+  SnapshotPhotoStatus,
   SyncSummary,
 } from '../performance';
 import { PERF_KINDS, PERF_OUTPUTS } from '../performance';
@@ -93,6 +94,16 @@ export const performanceChannels = [
     }),
     result: as<{ html: string }>(),
   }),
+  /**
+   * A driver's Weekly Snapshot (the two phone-sized pages the report email carries) as the page
+   * shows it. With no driver, a made-up sample, for the preview on the Reports tab.
+   */
+  defineQuery('performance:snapshot-html', {
+    input: shape({ transporterId: nullable(transporterId), range: nullable(range) }),
+    result: as<{ html: string }>(),
+  }),
+  /** The snapshot's header photo: its file name (never its place) and any problem with it. */
+  defineQuery('performance:snapshot-photo', { input: nothing, result: as<SnapshotPhotoStatus>() }),
   /**
    * "Explain this score": the driver's newest scored week in the range (null: every week), each
    * metric's tier, score, weight and the points it earned and lost. Null when no scored week.
@@ -177,6 +188,18 @@ export const performanceChannels = [
   defineCommand('performance:set-email-password', {
     input: shape({ password: text(200) }),
     result: as<EmailStatus>(),
+    quiet: true,
+  }),
+  /** Opens the file window for a JPEG or PNG and keeps it as the snapshot's header photo. Null when closed. */
+  defineCommand('performance:choose-snapshot-photo', {
+    input: nothing,
+    result: as<SnapshotPhotoStatus | null>(),
+    quiet: true,
+  }),
+  /** Forgets the header photo: the snapshot pages go back to plain navy. */
+  defineCommand('performance:clear-snapshot-photo', {
+    input: nothing,
+    result: as<SnapshotPhotoStatus>(),
     quiet: true,
   }),
   /** Puts the report colours back to the old app's defaults. */

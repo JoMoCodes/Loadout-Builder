@@ -23,6 +23,8 @@ export interface MainOnlySettings {
   performanceFlags: { reportsMade: boolean; reportsEmailed: boolean };
   /** The route sheet run open last (reopened when the app opens, if it is for today). */
   lastRunId?: string | null;
+  /** The photo behind the Weekly Snapshot pages (a JPEG or PNG on this computer), or null. */
+  snapshotPhoto?: string | null;
 }
 
 export const MAIN_ONLY_KEYS = [
@@ -30,6 +32,7 @@ export const MAIN_ONLY_KEYS = [
   'emailPasswordSealed',
   'performanceFlags',
   'lastRunId',
+  'snapshotPhoto',
 ] as const satisfies readonly (keyof MainOnlySettings)[];
 
 export function emptyMainOnly(): MainOnlySettings {
@@ -74,6 +77,13 @@ export function readMainOnly(raw: unknown): MainOnlySettings {
   }
   if (typeof input.lastRunId === 'string' && RUN_ID.test(input.lastRunId)) {
     out.lastRunId = input.lastRunId;
+  }
+  if (
+    typeof input.snapshotPhoto === 'string' &&
+    input.snapshotPhoto.length <= 1000 &&
+    isAbsolute(input.snapshotPhoto)
+  ) {
+    out.snapshotPhoto = input.snapshotPhoto;
   }
   return out;
 }

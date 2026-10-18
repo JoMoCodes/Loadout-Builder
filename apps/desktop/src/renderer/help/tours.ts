@@ -400,6 +400,12 @@ export const TOURS: Record<string, Tour> = {
         side: 'top',
       },
       {
+        element: `${SCORECARDS} [data-testid="perf-include-snapshot"]`,
+        title: 'The weekly snapshot',
+        text: 'Two phone-sized pages go at the top of each report email, with the PDF still attached. Turn them off here, or choose a photo for behind them.',
+        side: 'right',
+      },
+      {
         element: `${SCORECARDS} [data-testid="perf-driver-preview"]`,
         title: 'Preview a driver',
         text: "See a driver's report, in your colours, before you send it. The arrows go to the next driver on the Performance tab.",

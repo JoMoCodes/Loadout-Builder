@@ -11,6 +11,16 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.13.0',
+    items: [
+      'Report emails now start with a two-page snapshot made for a phone. Page 1 is the latest week: the rank, the score on a gauge, where the driver sits among everyone, one thing to try next, and where the points went. Page 2 is the last 7 weeks: the 7-week rank and average, what needs improvement, the score week by week, and a tier dot per metric per week.',
+      'The two pages are pictures inside the email, so they show in Gmail, Outlook and on a phone. The full PDF report is still attached.',
+      'On Scorecards, the Reports tab has a new Weekly snapshot card. Turn the snapshot off there if you want emails with the PDF only. It is on to start with.',
+      'The same card lets you choose a photo for behind the snapshot pages, like a team banner. The top part shows at full width under the title. With no photo the pages are plain navy.',
+      'The card shows a preview of both pages for the driver picked in Report colours, or made-up numbers when nobody is shown.',
+    ],
+  },
+  {
     version: '2.12.0',
     items: [
       'The Route Data page is gone. Route files now come in from one place: the Import Route Data button on the Roster. It used to be called Bring Over Route Data.',
