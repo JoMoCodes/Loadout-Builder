@@ -320,6 +320,16 @@ export interface Receipt {
   toPlatinum: number | null;
 }
 
+/**
+ * Packages delivered, the tie-breaker when scores are equal: the driver's own count, rank 1's
+ * and rank 2's (so a driver who is rank 1 can be shown against the runner-up). Null when unknown.
+ */
+export interface PackageCount {
+  mine: number | null;
+  first: number | null;
+  second: number | null;
+}
+
 /** Everyone's scores as anonymous dots, with the driver's own picked out. */
 export interface FleetStrip {
   /** Best first. */
@@ -327,6 +337,8 @@ export interface FleetStrip {
   /** Where the driver sits in `scores`, or null when they are not among them. */
   meIndex: number | null;
   average: number | null;
+  /** Packages delivered over the same stretch (one week, or the seven weeks' total). */
+  packages: PackageCount;
 }
 
 export interface SnapshotTip {
@@ -431,6 +443,11 @@ export function fleetWeekStrip(data: PerfData, week: string, transporterId: stri
     scores,
     meIndex: index >= 0 ? index : null,
     average: scores.length > 0 ? round1(linqAverage(scores)) : null,
+    packages: {
+      mine: index >= 0 ? (ordered[index]?.packagesDelivered ?? null) : null,
+      first: ordered[0]?.packagesDelivered ?? null,
+      second: ordered[1]?.packagesDelivered ?? null,
+    },
   };
 }
 
@@ -735,10 +752,16 @@ export function buildSnapshotModel(
   const mine = standings.find((s) => s.transporterId === transporterId);
   const averageScore = scored.length > 0 ? linqAverage(scored.map((w) => w.score as number)) : null;
   const myRanks = weeks.map((w) => w.rank?.rank).filter((r): r is number => r !== undefined);
+  const myPackages = scored.map((w) => w.packages).filter((n): n is number => n !== null);
   const fleetAverage: FleetStrip = {
     scores: standings.map((s) => round1(s.average)),
     meIndex: mine ? standings.indexOf(mine) : null,
     average: standings.length > 0 ? round1(linqAverage(standings.map((s) => s.average))) : null,
+    packages: {
+      mine: myPackages.length > 0 ? myPackages.reduce((a, b) => a + b, 0) : null,
+      first: standings[0]?.packages ?? null,
+      second: standings[1]?.packages ?? null,
+    },
   };
 
   // "Needs Improvement": the metrics that lost the most over the weeks.
