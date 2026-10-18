@@ -28,6 +28,8 @@ const MAX_PAGE_HEIGHT = 4000;
  * scrollable size Chromium reports is the page's own height and not the window's.
  */
 const MEASURE_HEIGHT = 100;
+/** After the resize, the paints must stay quiet this long before the last frame is kept. */
+const PAINT_SETTLE_MS = 150;
 const STEP_TIMEOUT_MS = 30_000;
 
 export interface SnapshotImage {
@@ -128,18 +130,25 @@ async function pageHeight(win: BrowserWindow): Promise<number> {
 }
 
 /**
- * Resizes the window to the whole page and gives back the first frame painted at that size.
- * (Reading the page right after the resize races the repaint: the picture can come back stale,
- * short, or not at all.)
+ * Resizes the window to the whole page and gives back the last frame painted at that size once
+ * the painting has stopped. (Reading the page right after the resize races the repaint: the
+ * picture can come back stale, short, or not at all. And the first frame at the new size can
+ * still show the old, shorter layout, scrollbars and all, before the page is laid out again.)
  */
 function paintedAt(win: BrowserWindow, width: number, height: number): Promise<NativeImage> {
   const contents = win.webContents;
   return new Promise<NativeImage>((resolve) => {
+    let latest: NativeImage | null = null;
+    let quiet: NodeJS.Timeout | undefined;
     const onPaint = (_event: unknown, _dirty: unknown, image: NativeImage) => {
       const size = image.getSize();
       if (size.width !== width || size.height !== height) return;
-      contents.off('paint', onPaint);
-      resolve(image);
+      latest = image;
+      if (quiet) clearTimeout(quiet);
+      quiet = setTimeout(() => {
+        contents.off('paint', onPaint);
+        resolve(latest as NativeImage);
+      }, PAINT_SETTLE_MS);
     };
     contents.on('paint', onPaint);
     win.setContentSize(width, height);

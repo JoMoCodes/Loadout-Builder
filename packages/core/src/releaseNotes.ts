@@ -11,6 +11,12 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.14.1',
+    items: [
+      'The first snapshot picture in the report email sometimes had scrollbars drawn along its right and bottom edges. It no longer does.',
+    ],
+  },
+  {
     version: '2.14.0',
     items: [
       'The snapshot pages in the report email have a new look around the score gauge. Every driver in the fleet is now a dot fanned out around the gauge, sitting over the part of the ring for their tier, in that tier colour: Bronze, Silver, Gold or Platinum.',

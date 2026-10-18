@@ -112,6 +112,8 @@ const score1 = (v: number) => v.toFixed(1);
 export const SNAPSHOT_CSS = `
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; background: ${THEME.bg}; }
+/* No scrollbars, ever: the picture is taken while the window is shorter than the page. */
+html { overflow: hidden; }
 body { width: ${SNAPSHOT_WIDTH}px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .page { width: ${SNAPSHOT_WIDTH}px; overflow: hidden; position: relative;
   background: ${THEME.bg}; color: ${THEME.fg}; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
