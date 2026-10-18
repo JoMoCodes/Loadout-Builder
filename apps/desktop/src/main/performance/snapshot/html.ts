@@ -149,9 +149,10 @@ svg text { font-family: inherit; }
 .sect { display: flex; flex-direction: column; gap: 10px; }
 .receipt { font-family: "Cascadia Mono", Consolas, "Courier New", monospace; font-size: 12.5px; display: flex; flex-direction: column; gap: 2px; }
 .receipt .row { border-radius: 6px; padding: 4px 6px; }
-.vs { background: transparent; border: 1.5px solid rgba(255,255,255,.35); border-radius: 12px; padding: 10px 14px 9px;
+.vs { background: transparent; border: 1.5px solid rgba(255,255,255,.35); border-radius: 12px; padding: 10px 10px 9px;
   display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
-.vs .row { width: 100%; }
+.vs .row { width: 100%; padding: 0 4px; }
+.vs .tie { font-size: 10.5px; white-space: nowrap; letter-spacing: -0.01em; }
 .vs .row { gap: 10px; }
 .vs .side { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 1px; }
 .vs .who { font-size: 11px; font-weight: 700; color: ${THEME.muted}; text-transform: uppercase; letter-spacing: .06em; }
@@ -565,7 +566,7 @@ function packagesBox(
     `<div class="side"><span class="who">You${leader ? ' (#1)' : ''}</span><span class="n" style="color:${colour}">${n(count.mine)}</span></div>` +
     `<div class="mid">vs</div>` +
     `<div class="side"><span class="who">Rank ${leader ? 2 : 1}</span><span class="n">${n(other)}</span></div>` +
-    `</div><p class="small muted">${esc(note)}</p></div>`
+    `</div><p class="muted tie">${esc(note)}</p></div>`
   );
 }
 
