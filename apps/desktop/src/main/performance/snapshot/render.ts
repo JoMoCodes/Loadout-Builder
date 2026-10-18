@@ -86,7 +86,6 @@ function createCaptureWindow(electron: Electron): BrowserWindow {
       spellcheck: false,
       devTools: false,
       backgroundThrottling: false,
-      offscreen: true,
     },
   });
   win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
