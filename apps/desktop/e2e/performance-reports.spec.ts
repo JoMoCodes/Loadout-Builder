@@ -277,6 +277,17 @@ test('the Weekly snapshot card: the switch, the photo, and a preview of the driv
   await expect(frame(page, 'perf-snapshot-frame').locator('h1')).toHaveText(
     `Snapshot ${DESMOND.id}`,
   );
+  // The frame is exactly as tall as the pages in it: no page colour left showing under them.
+  await expect
+    .poll(() =>
+      page.getByTestId('perf-snapshot-frame').evaluate((element) => {
+        const frameEl = element as HTMLIFrameElement;
+        const root = frameEl.contentDocument?.documentElement;
+        const pageHeight = Math.ceil(root?.getBoundingClientRect().height ?? 0);
+        return pageHeight > 0 && pageHeight < 500 && frameEl.clientHeight === pageHeight;
+      }),
+    )
+    .toBe(true);
   expect(await callsTo(page, 'performance:snapshot-html')).toContainEqual({
     transporterId: DESMOND.id,
     range: { from: '2026-W31', to: '2026-W40' },

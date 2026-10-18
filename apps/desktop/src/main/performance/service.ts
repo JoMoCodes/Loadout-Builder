@@ -54,6 +54,7 @@ import {
   type PhotoProblem,
   type SnapshotImage,
   type SnapshotLook,
+  type SnapshotRenderFailure,
 } from './snapshot';
 import { resolveRange, type CardFolder } from './views';
 
@@ -70,12 +71,14 @@ export interface ReportMaker {
     onProgress?: (done: number, total: number) => void,
   ): Promise<Array<{ ok: boolean }>>;
   /**
-   * Pictures of many Weekly Snapshots (one list of page HTML each), in one hidden window. An
-   * entry is null when that snapshot could not be drawn. Without this, emails carry no snapshot.
+   * Pictures of many Weekly Snapshots (one list of page HTML each), in one offscreen window. An
+   * entry is null when that snapshot could not be drawn, and `onFailure` hears why (a reason
+   * code). Without this, emails carry no snapshot.
    */
   renderSnapshotBatch?(
     snapshots: ReadonlyArray<readonly string[]>,
     onProgress?: (done: number, total: number) => void,
+    onFailure?: (reason: SnapshotRenderFailure) => void,
   ): Promise<Array<SnapshotImage[] | null>>;
 }
 
@@ -633,8 +636,11 @@ export class PerfService {
     });
     const toDraw = pages.filter((p): p is string[] => p !== null);
     let drawn: Array<SnapshotImage[] | null>;
+    const reasons = new Map<string, number>();
     try {
-      drawn = await render(toDraw);
+      drawn = await render(toDraw, undefined, (reason) =>
+        reasons.set(reason, (reasons.get(reason) ?? 0) + 1),
+      );
     } catch {
       this.deps.log(`snapshot: none drawn (${toDraw.length} asked)`);
       return none;
@@ -642,7 +648,9 @@ export class PerfService {
     let at = 0;
     const out = pages.map((p) => (p === null ? null : (drawn[at++] ?? null)));
     const ok = out.filter((one) => one !== null).length;
-    this.deps.log(`snapshot: ${ok} drawn, ${ids.length - ok} not drawn`);
+    // Reason codes only (why a picture could not be drawn), never anything about a driver.
+    const why = [...reasons].map(([reason, count]) => `${reason} x${count}`).join(', ');
+    this.deps.log(`snapshot: ${ok} drawn, ${ids.length - ok} not drawn${why ? ` (${why})` : ''}`);
     return out;
   }
 
