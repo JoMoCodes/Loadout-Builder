@@ -11,6 +11,13 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.13.1',
+    items: [
+      'Report emails were going out without the two snapshot pictures. The app could not draw them on Windows, so each email had the PDF only. This is fixed: the pictures are drawn a different way now and show up in the email.',
+      'On the Reports tab, the Weekly snapshot preview no longer shows an empty navy strip under the second page. The preview is exactly as tall as the two pages.',
+    ],
+  },
+  {
     version: '2.13.0',
     items: [
       'Report emails now start with a two-page snapshot made for a phone. Page 1 is the latest week: the rank, the score on a gauge, where the driver sits among everyone, one thing to try next, and where the points went. Page 2 is the last 7 weeks: the 7-week rank and average, what needs improvement, the score week by week, and a tier dot per metric per week.',

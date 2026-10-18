@@ -13,7 +13,15 @@ import {
   ZoomIn,
   ZoomOut,
 } from 'lucide-react';
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
+import {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type SyntheticEvent,
+} from 'react';
 import { DataGrid, type GridColumn } from '../../components/DataGrid';
 import type {
   PerfDriverRow,
@@ -117,9 +125,13 @@ function useSnapshotHtml(
   return { html, problem };
 }
 
-/** The snapshot pages are drawn phone width; both pages stacked are about this tall. */
+/**
+ * The snapshot pages are drawn phone width. The frame starts about as tall as both pages and
+ * then takes the exact height of the pages once they load, so no empty page colour shows under
+ * them.
+ */
 const SNAPSHOT_WIDTH = 360;
-const SNAPSHOT_HEIGHT = 2800;
+const SNAPSHOT_HEIGHT_GUESS = 2800;
 
 /** A report page is US Letter: 8.5 by 11 inches at 96 dots an inch. */
 const PAGE_WIDTH = 816;
@@ -371,6 +383,14 @@ export function ReportsTab({
       off = true;
     };
   }, [snapshot.revision]);
+  const [snapshotHeight, setSnapshotHeight] = useState(SNAPSHOT_HEIGHT_GUESS);
+  function fitSnapshotFrame(event: SyntheticEvent<HTMLIFrameElement>) {
+    // The page's own box, not scrollHeight: that is never less than the frame, so the frame
+    // could grow but never shrink back to the pages.
+    const root = event.currentTarget.contentDocument?.documentElement;
+    const height = Math.ceil(root?.getBoundingClientRect().height ?? 0);
+    if (height > 0) setSnapshotHeight(height);
+  }
   const snapshotPreview = useSnapshotHtml(
     driver && range
       ? { transporterId: driver.transporterId, range }
@@ -761,11 +781,14 @@ export function ReportsTab({
               ) : (
                 <iframe
                   title={driver ? `Weekly snapshot for ${driver.name}` : 'Sample weekly snapshot'}
-                  sandbox=""
+                  // Same origin (no scripts) so the frame's height can be read; the pages are
+                  // the app's own HTML with no scripts in it.
+                  sandbox="allow-same-origin"
                   srcDoc={snapshotPreview.html}
+                  onLoad={fitSnapshotFrame}
                   data-testid={driver ? 'perf-snapshot-frame' : 'perf-snapshot-sample-frame'}
                   className="mx-auto block border-0"
-                  style={{ width: SNAPSHOT_WIDTH, height: SNAPSHOT_HEIGHT }}
+                  style={{ width: SNAPSHOT_WIDTH, height: snapshotHeight }}
                 />
               )}
             </div>

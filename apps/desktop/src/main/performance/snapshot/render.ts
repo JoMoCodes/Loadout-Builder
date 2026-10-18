@@ -1,24 +1,33 @@
-// Turns snapshot pages (HTML) into pictures for the email, with Chromium in a hidden window
-// that cannot run scripts, reach the network or open anything else (the same kind of window the
-// PDF printer uses). Each page is drawn 360 CSS pixels wide and captured at twice that, so it
-// stays sharp on a phone. A page that comes out too big as a PNG is captured again as a JPEG.
+// Turns snapshot pages (HTML) into pictures for the email, with Chromium in an offscreen window
+// that cannot run scripts, reach the network or open anything else. Each page is drawn 360 CSS
+// pixels wide at twice the size (the window is zoomed to 200%), so it stays sharp on a phone. A
+// page that comes out too big as a PNG is saved as a JPEG instead.
+//
+// Offscreen, not hidden: a hidden window on Windows never paints a frame for the screenshot
+// command, which then waits forever (the email went out without the pictures). An offscreen
+// window paints into memory whether or not it is shown, and `capturePage()` reads that.
 //
 // One capture at a time across the whole app, and nothing about the driver reaches the log: a
 // failure is reported by its place in the batch and a reason code.
 
 import { randomUUID } from 'node:crypto';
-import type { BrowserWindow } from 'electron';
+import type { BrowserWindow, NativeImage } from 'electron';
 import { SNAPSHOT_WIDTH } from './html';
 
 type Electron = typeof import('electron');
 
-/** Pictures above this many bytes are captured again as JPEG. */
+/** Pictures above this many bytes are saved as JPEG. */
 export const IMAGE_MAX_BYTES = 400 * 1024;
 export const JPEG_QUALITY = 85;
 /** How much sharper than the 360 px layout the picture is. */
 export const IMAGE_SCALE = 2;
 /** The tallest page the capture will take (CSS pixels); anything longer is cut there. */
 const MAX_PAGE_HEIGHT = 4000;
+/**
+ * The window's height while a page loads (CSS pixels). It is shorter than any page, so the
+ * scrollable size Chromium reports is the page's own height and not the window's.
+ */
+const MEASURE_HEIGHT = 100;
 const STEP_TIMEOUT_MS = 30_000;
 
 export interface SnapshotImage {
@@ -72,12 +81,15 @@ function createCaptureWindow(electron: Electron): BrowserWindow {
   ses.setPermissionRequestHandler((_wc, _permission, callback) => callback(false));
   const win = new electron.BrowserWindow({
     show: false,
-    width: SNAPSHOT_WIDTH,
-    height: 800,
+    width: SNAPSHOT_WIDTH * IMAGE_SCALE,
+    height: MEASURE_HEIGHT * IMAGE_SCALE,
     useContentSize: true,
-    paintWhenInitiallyHidden: true,
     webPreferences: {
       session: ses,
+      offscreen: true,
+      // 200% zoom: the window is 720 device pixels wide but lays the page out 360 CSS pixels
+      // wide, so the picture is the 360 px design drawn at twice the detail.
+      zoomFactor: IMAGE_SCALE,
       sandbox: true,
       contextIsolation: true,
       nodeIntegration: false,
@@ -102,50 +114,75 @@ interface LayoutMetrics {
   contentSize?: { width: number; height: number };
 }
 
-async function captureOne(win: BrowserWindow, html: string): Promise<SnapshotImage> {
-  await withTimeout(win.loadURL(dataUrl(html)), 'load-failed');
+/** The page's height in CSS pixels, read from Chromium's layout (the window is shorter). */
+async function pageHeight(win: BrowserWindow): Promise<number> {
   const dbg = win.webContents.debugger;
-  const capture = async (): Promise<SnapshotImage> => {
-    if (!dbg.isAttached()) dbg.attach('1.3');
+  if (!dbg.isAttached()) dbg.attach('1.3');
+  try {
     const metrics = (await dbg.sendCommand('Page.getLayoutMetrics')) as LayoutMetrics;
     const size = metrics.cssContentSize ?? metrics.contentSize;
-    const height = Math.min(MAX_PAGE_HEIGHT, Math.max(1, Math.ceil(size?.height ?? 800)));
-    const clip = { x: 0, y: 0, width: SNAPSHOT_WIDTH, height, scale: IMAGE_SCALE };
-    const shot = async (format: 'png' | 'jpeg') =>
-      (await dbg.sendCommand('Page.captureScreenshot', {
-        format,
-        ...(format === 'jpeg' ? { quality: JPEG_QUALITY } : {}),
-        clip,
-        captureBeyondViewport: true,
-        fromSurface: true,
-      })) as { data: string };
-    let bytes = Buffer.from((await shot('png')).data, 'base64');
-    let contentType: SnapshotImage['contentType'] = 'image/png';
-    if (pickFormat(bytes.length) === 'jpeg') {
-      bytes = Buffer.from((await shot('jpeg')).data, 'base64');
-      contentType = 'image/jpeg';
-    }
-    return { bytes, contentType, width: SNAPSHOT_WIDTH, height };
-  };
-  try {
-    return await withTimeout(capture(), 'capture-failed');
+    return Math.min(MAX_PAGE_HEIGHT, Math.max(1, Math.ceil(size?.height ?? MEASURE_HEIGHT)));
   } finally {
     if (dbg.isAttached()) dbg.detach();
   }
 }
 
-function destroy(win: BrowserWindow | null): void {
-  if (win && !win.isDestroyed()) win.destroy();
+/**
+ * Resizes the window to the whole page and gives back the first frame painted at that size.
+ * (Reading the page right after the resize races the repaint: the picture can come back stale,
+ * short, or not at all.)
+ */
+function paintedAt(win: BrowserWindow, width: number, height: number): Promise<NativeImage> {
+  const contents = win.webContents;
+  return new Promise<NativeImage>((resolve) => {
+    const onPaint = (_event: unknown, _dirty: unknown, image: NativeImage) => {
+      const size = image.getSize();
+      if (size.width !== width || size.height !== height) return;
+      contents.off('paint', onPaint);
+      resolve(image);
+    };
+    contents.on('paint', onPaint);
+    win.setContentSize(width, height);
+  });
+}
+
+async function captureOne(win: BrowserWindow, html: string): Promise<SnapshotImage> {
+  win.setContentSize(SNAPSHOT_WIDTH * IMAGE_SCALE, MEASURE_HEIGHT * IMAGE_SCALE);
+  await withTimeout(win.loadURL(dataUrl(html)), 'load-failed');
+  const capture = async (): Promise<SnapshotImage> => {
+    const height = await pageHeight(win);
+    const image = await paintedAt(win, SNAPSHOT_WIDTH * IMAGE_SCALE, height * IMAGE_SCALE);
+    if (image.isEmpty()) throw new SnapshotRenderError('capture-failed');
+    let bytes = image.toPNG();
+    let contentType: SnapshotImage['contentType'] = 'image/png';
+    if (pickFormat(bytes.length) === 'jpeg') {
+      bytes = image.toJPEG(JPEG_QUALITY);
+      contentType = 'image/jpeg';
+    }
+    return { bytes, contentType, width: SNAPSHOT_WIDTH, height };
+  };
+  return withTimeout(capture(), 'capture-failed');
 }
 
 /**
- * Draws every page of several snapshots in one hidden window, one after another. The result has
- * one entry per snapshot: its pictures, or null when one of its pages could not be drawn (the
- * email then goes out without the snapshot). `onProgress(done, total)` after each snapshot.
+ * Lets the window go. Closed, not destroyed: after `destroy()` the next capture window made in
+ * the same app run cannot load its page at all (ERR_FAILED), so only the first batch of emails
+ * would get pictures.
+ */
+function discard(win: BrowserWindow | null): void {
+  if (win && !win.isDestroyed()) win.close();
+}
+
+/**
+ * Draws every page of several snapshots in one offscreen window, one after another. The result
+ * has one entry per snapshot: its pictures, or null when one of its pages could not be drawn (the
+ * email then goes out without the snapshot). `onProgress(done, total)` after each snapshot;
+ * `onFailure(reason)` for each snapshot that could not be drawn.
  */
 export function renderSnapshotBatch(
   snapshots: ReadonlyArray<readonly string[]>,
   onProgress?: (done: number, total: number) => void,
+  onFailure?: (reason: SnapshotRenderFailure) => void,
 ): Promise<Array<SnapshotImage[] | null>> {
   return enqueue(async () => {
     const results: Array<SnapshotImage[] | null> = [];
@@ -159,15 +196,16 @@ export function renderSnapshotBatch(
           const images: SnapshotImage[] = [];
           for (const page of pages) images.push(await captureOne(win, page));
           results.push(images);
-        } catch {
+        } catch (error) {
           results.push(null);
-          destroy(win);
+          onFailure?.(error instanceof SnapshotRenderError ? error.reason : 'capture-failed');
+          discard(win);
           win = null;
         }
         onProgress?.(results.length, snapshots.length);
       }
     } finally {
-      destroy(win);
+      discard(win);
     }
     return results;
   });
@@ -175,7 +213,10 @@ export function renderSnapshotBatch(
 
 /** Draws one snapshot's pages. Throws a SnapshotRenderError when a page cannot be drawn. */
 export async function renderSnapshotPages(pages: readonly string[]): Promise<SnapshotImage[]> {
-  const [images] = await renderSnapshotBatch([pages]);
-  if (!images) throw new SnapshotRenderError('capture-failed');
+  let reason: SnapshotRenderFailure = 'capture-failed';
+  const [images] = await renderSnapshotBatch([pages], undefined, (why) => {
+    reason = why;
+  });
+  if (!images) throw new SnapshotRenderError(reason);
   return images;
 }

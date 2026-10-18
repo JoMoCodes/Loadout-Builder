@@ -22,6 +22,7 @@ export {
   renderSnapshotPages,
   SnapshotRenderError,
   type SnapshotImage,
+  type SnapshotRenderFailure,
 } from './render';
 export {
   PHOTO_EXTENSIONS,
