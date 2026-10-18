@@ -11,6 +11,12 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.13.2',
+    items: [
+      'The first snapshot picture in the report email sometimes had scrollbars drawn along its right and bottom edges. It no longer does.',
+    ],
+  },
+  {
     version: '2.13.1',
     items: [
       'Report emails were going out without the two snapshot pictures. The app could not draw them on Windows, so each email had the PDF only. This is fixed: the pictures are drawn a different way now and show up in the email.',
