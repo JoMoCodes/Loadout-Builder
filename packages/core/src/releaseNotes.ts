@@ -11,6 +11,12 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.14.2',
+    items: [
+      'On the snapshot pages in the report email, the coloured fill on the score gauge ends in a rounded tip at the score. Page 1 lost that rounded tip whenever the score was only a little way into its tier, so it ended square while page 2 was rounded. Both pages now match.',
+    ],
+  },
+  {
     version: '2.14.1',
     items: [
       'The first snapshot picture in the report email sometimes had scrollbars drawn along its right and bottom edges. It no longer does.',
