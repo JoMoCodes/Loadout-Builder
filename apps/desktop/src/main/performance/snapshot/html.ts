@@ -246,11 +246,14 @@ export function gaugeBlockSvg(block: GaugeBlock): string {
       ? ''
       : `<path d="${arcPath(angleFor(s0), angleFor(s1), r)}" fill="none" stroke="${col}" stroke-width="${band}" opacity="${op}" stroke-linecap="${cap}"/>`;
   // A round tip only at the leading end: a butt segment plus a short round-capped arc whose cap
-  // ends exactly at the score. `tip` is half the band's width in score points.
+  // ends exactly at the score. `tip` is half the band's width in score points. When the filled
+  // part of a band is shorter than three tips, the round arc's other cap reaches back into the
+  // band below; that band's fill is drawn afterwards and covers it. Only the lowest band has
+  // nothing below it, so a score that close to 75 keeps a square end.
   const unit = (r * GAUGE.sweep) / (hi - lo);
   const tip = half / unit;
   const capped = (s0: number, s1: number, col: string) =>
-    s1 - s0 > 3 * tip
+    s1 - s0 > 3 * tip || s0 > lo
       ? arc(s0, s1 - tip, col) + arc(s1 - 2 * tip, s1 - tip, col, 1, 'round')
       : arc(s0, s1, col);
   const cuts = block.cutOffs;
@@ -265,9 +268,10 @@ export function gaugeBlockSvg(block: GaugeBlock): string {
 
   let defs = `<filter id="${id}-glow" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="0.9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
   let s = '';
-  // The band, dimmed, then filled up to the score.
+  // The band, dimmed, then filled up to the score: highest band first, so each band's fill
+  // covers the back of the round tip of the band above it.
   for (const [a, b, tier] of bands) s += arc(a, b, THEME.arc[tier], 0.28);
-  for (const [a, b, tier] of bands) {
+  for (const [a, b, tier] of [...bands].reverse()) {
     if (block.score <= a) continue;
     const end = Math.min(b, block.score);
     s += block.score < b ? capped(a, end, THEME.arc[tier]) : arc(a, end, THEME.arc[tier]);
