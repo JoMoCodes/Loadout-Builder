@@ -17,6 +17,7 @@ export const RELEASE_NOTES: readonly ReleaseNote[] = [
       "The Route data card on Route Sheets has new buttons: Clear imported file takes that file out again, Assign PADs asks which PAD each of its times is in, and Use the imported file switches back to it after you used the Roster's data for a while. The card says which one is in use.",
       'Clear Route Data on the Roster now says that the file brought in just for Route Sheets is kept.',
       'A New run button now sits on the This run card at the top of Route Sheets, so you do not have to go to History to start fresh.',
+      'The four cards at the top of Route Sheets take less room: the Driver list and Email cards sit one above the other, so the buttons fit on a line and there is no empty space under two lines of words.',
       'The Route data and Driver list cards on Route Sheets each have a ? that shows where to get that file, with a picture.',
       'The Associates page now says when your driver list is over a month old, the same way the Route Sheets page does.',
       'A route on the Routes file that has nobody on it yet is kept. The route sheets say "Routes file lists no driver for this route" instead of saying the route is not on the file.',

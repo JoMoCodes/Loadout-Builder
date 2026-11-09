@@ -106,7 +106,7 @@ export function TopCard({
 }) {
   return (
     <div
-      className="min-w-[14rem] flex-1 rounded-lg border border-line bg-surface px-3 py-2 text-sm"
+      className="min-w-0 rounded-lg border border-line bg-surface px-3 py-2 text-sm"
       data-testid={testId}
     >
       <p className="m-0 text-xs font-semibold tracking-wide text-muted uppercase">{title}</p>

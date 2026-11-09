@@ -101,8 +101,11 @@ export function TopStrip({
   const ownInUse = routeData?.own === true;
 
   return (
+    // Three columns on a wide window: This run, Route data, and the two short cards (Driver list
+    // and Email) stacked in the third, so the buttons fit on a line and no card has empty room
+    // under two lines of words. A narrow window stacks the cards one under another.
     <div
-      className="flex flex-wrap gap-2 border-b border-line bg-app px-6 py-2"
+      className="grid gap-2 border-b border-line bg-app px-6 py-2 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)_minmax(0,1fr)]"
       data-testid="route-sheets-top"
     >
       <TopCard title="This run" testId="route-sheets-run">
@@ -248,76 +251,78 @@ export function TopStrip({
         </div>
       </TopCard>
 
-      <TopCard title="Driver list" testId="route-sheets-driver-list">
-        <div className="float-right ml-1">
-          <HelpButton
-            question="Where do I get the driver list?"
-            onClick={() => setHelpOpen('drivers')}
-            testId="route-sheets-driver-list-help"
-          />
-        </div>
-        {driverList.count === 0 ? (
-          <p className="m-0 flex flex-wrap items-center gap-2">
-            <Chip tone="warn" data-testid="route-sheets-driver-list-missing">
-              Not loaded
-            </Chip>
-            <span>Bring in the driver list on the Associates page.</span>
-          </p>
-        ) : (
-          <>
+      <div className="grid min-w-0 content-start gap-2">
+        <TopCard title="Driver list" testId="route-sheets-driver-list">
+          <div className="float-right ml-1">
+            <HelpButton
+              question="Where do I get the driver list?"
+              onClick={() => setHelpOpen('drivers')}
+              testId="route-sheets-driver-list-help"
+            />
+          </div>
+          {driverList.count === 0 ? (
             <p className="m-0 flex flex-wrap items-center gap-2">
-              <span data-testid="route-sheets-driver-count">
-                {plural(driverList.count, 'driver')}
-                {driverList.fileName ? ` - ${driverList.fileName}` : ''}
-              </span>
-              {old ? (
-                <Chip tone="warn" data-testid="route-sheets-driver-list-old">
-                  Over a month old
-                </Chip>
-              ) : null}
+              <Chip tone="warn" data-testid="route-sheets-driver-list-missing">
+                Not loaded
+              </Chip>
+              <span>Bring in the driver list on the Associates page.</span>
             </p>
-            {old ? (
-              <p className="m-0 mt-1 text-warn" data-testid="route-sheets-driver-list-old-note">
-                Brought in {plural(daysSince(driverList.importedAt), 'day')} ago. Bring in the
-                latest driver list so new drivers, status changes and email addresses are up to
-                date.
+          ) : (
+            <>
+              <p className="m-0 flex flex-wrap items-center gap-2">
+                <span data-testid="route-sheets-driver-count">
+                  {plural(driverList.count, 'driver')}
+                  {driverList.fileName ? ` - ${driverList.fileName}` : ''}
+                </span>
+                {old ? (
+                  <Chip tone="warn" data-testid="route-sheets-driver-list-old">
+                    Over a month old
+                  </Chip>
+                ) : null}
               </p>
-            ) : null}
-          </>
-        )}
-        <Button
-          size="sm"
-          className="mt-2"
-          onClick={() => goTo('associates')}
-          data-testid="route-sheets-open-associates"
-        >
-          Open Associates
-        </Button>
-      </TopCard>
+              {old ? (
+                <p className="m-0 mt-1 text-warn" data-testid="route-sheets-driver-list-old-note">
+                  Brought in {plural(daysSince(driverList.importedAt), 'day')} ago. Bring in the
+                  latest driver list so new drivers, status changes and email addresses are up to
+                  date.
+                </p>
+              ) : null}
+            </>
+          )}
+          <Button
+            size="sm"
+            className="mt-2"
+            onClick={() => goTo('associates')}
+            data-testid="route-sheets-open-associates"
+          >
+            Open Associates
+          </Button>
+        </TopCard>
 
-      <TopCard title="Email" testId="route-sheets-email">
-        {emailProblem ? (
-          <>
-            <p className="m-0 text-warn" data-testid="route-sheets-email-problem">
-              {emailProblem}
+        <TopCard title="Email" testId="route-sheets-email">
+          {emailProblem ? (
+            <>
+              <p className="m-0 text-warn" data-testid="route-sheets-email-problem">
+                {emailProblem}
+              </p>
+              <Button
+                size="sm"
+                className="mt-2"
+                onClick={() => goTo('settings')}
+                data-testid="route-sheets-open-settings"
+              >
+                Open Settings
+              </Button>
+            </>
+          ) : (
+            <p className="m-0">
+              <Chip tone="ok" data-testid="route-sheets-email-ready">
+                Email is ready
+              </Chip>
             </p>
-            <Button
-              size="sm"
-              className="mt-2"
-              onClick={() => goTo('settings')}
-              data-testid="route-sheets-open-settings"
-            >
-              Open Settings
-            </Button>
-          </>
-        ) : (
-          <p className="m-0">
-            <Chip tone="ok" data-testid="route-sheets-email-ready">
-              Email is ready
-            </Chip>
-          </p>
-        )}
-      </TopCard>
+          )}
+        </TopCard>
+      </div>
     </div>
   );
 }
