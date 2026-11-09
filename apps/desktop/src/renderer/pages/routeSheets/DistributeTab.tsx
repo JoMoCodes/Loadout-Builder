@@ -307,31 +307,18 @@ function Counts({ dist }: { dist: RouteSheetsDistributionView }) {
 // ---------------------------------------------------------------------- the pad for a wave
 
 function WavePads({ dist, messages }: { dist: RouteSheetsDistributionView; messages: Messages }) {
-  // Waves the route data knows but has no PAD for yet (the old app's "N waves without a pad").
-  const noPad = dist.waves.filter((w) => !w.pad && !dist.typedPadWaves.includes(w.waveTime));
-  const missing =
-    noPad.length > 0 ? (
-      <p className="m-0 mt-1 text-sm text-warn" data-testid="route-sheets-pads-missing">
-        {plural(noPad.length, 'wave')} {noPad.length === 1 ? 'has' : 'have'} no pad yet. Set{' '}
-        {noPad.length === 1 ? 'it' : 'them'} with Assign PADs on the route file&apos;s tab on Load
-        Out.
-      </p>
-    ) : null;
   if (dist.typedPadWaves.length === 0) {
     return (
-      <>
-        <p className="m-0 mt-3 text-sm text-muted" data-testid="route-sheets-pads-note">
-          The pad for each wave comes from the route file&apos;s PADs on Load Out.
-        </p>
-        {missing}
-      </>
+      <p className="m-0 mt-3 text-sm text-muted" data-testid="route-sheets-pads-note">
+        Every wave has its pad from the route data.
+      </p>
     );
   }
   return (
     <Section
       id="pads"
       title="Pad for each wave"
-      sub="These wave times are not in the route data. Type the pad number next to each one. It shows in a blue box on every route sheet for that wave."
+      sub="The route data gives no pad for these wave times. Type the pad number next to each one. It shows in a blue box on every route sheet for that wave."
     >
       <div className="flex flex-wrap gap-3">
         {dist.typedPadWaves.map((waveTime) => {
@@ -347,7 +334,6 @@ function WavePads({ dist, messages }: { dist: RouteSheetsDistributionView; messa
           );
         })}
       </div>
-      {missing}
     </Section>
   );
 }

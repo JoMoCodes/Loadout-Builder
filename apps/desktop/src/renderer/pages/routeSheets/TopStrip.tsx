@@ -51,7 +51,6 @@ interface TopStripProps {
   onUseRoster: () => void;
   onUseOwn: () => void;
   onImportRouteFile: () => void;
-  onAssignPads: () => void;
   onClearOwn: () => void;
 }
 
@@ -91,7 +90,6 @@ export function TopStrip({
   onUseRoster,
   onUseOwn,
   onImportRouteFile,
-  onAssignPads,
   onClearOwn,
 }: TopStripProps) {
   const { run, routeData, driverList, emailProblem } = state;
@@ -226,16 +224,6 @@ export function TopStrip({
           >
             Import a new file
           </Button>
-          {ownInUse ? (
-            <Button
-              size="sm"
-              onClick={onAssignPads}
-              disabled={busy}
-              data-testid="route-sheets-assign-pads"
-            >
-              Assign PADs
-            </Button>
-          ) : null}
           {ownFile ? (
             <Button
               size="sm"

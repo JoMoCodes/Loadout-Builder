@@ -40,7 +40,7 @@ import {
   sendProblem,
   staleRunIds,
   subjectFor,
-  unmatchedWaves,
+  unpaddedWaves,
   unsentRoutes,
   wavePadsFromRouteSet,
   waveSortKey,
@@ -430,7 +430,7 @@ export class RouteSheetsHost {
     return {
       ...dist,
       unsent: unsentRoutes(dist, this.run.sent),
-      typedPadWaves: unmatchedWaves(this.waveTimes(), this.routeSource()?.set ?? null),
+      typedPadWaves: unpaddedWaves(this.waveTimes(), this.routeSource()?.set ?? null),
     };
   }
 
@@ -627,11 +627,8 @@ export class RouteSheetsHost {
     if (!wave || !this.waveTimes().includes(wave)) {
       throw new ChannelRefusal('refused', 'That wave time is not in this run.');
     }
-    if (!unmatchedWaves([wave], this.routeSource()?.set ?? null).length) {
-      throw new ChannelRefusal(
-        'refused',
-        'That wave already gets its pad from the route file on Load Out.',
-      );
+    if (!unpaddedWaves([wave], this.routeSource()?.set ?? null).length) {
+      throw new ChannelRefusal('refused', 'That wave already has its pad from the route data.');
     }
     const value = pad.replace(/\s+/g, ' ').trim().slice(0, 10);
     const pads = { ...this.run.wavePads };

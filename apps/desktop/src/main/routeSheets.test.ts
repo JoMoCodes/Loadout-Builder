@@ -14,7 +14,6 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { dispatchTimes } from '@loadout/core';
 import { fileURLToPath } from 'node:url';
 import { clockKey, type Decision, type Distribution } from '@loadout/route-sheets';
 import { RouteSheetsStore, type StoredRun } from '@loadout/storage';
@@ -397,8 +396,9 @@ describe('the join with the app’s own route data, driver list and pads', () =>
     await decideFromInputs(rig);
     const decided = await rig.ok<RouteSheetsDistributionView>('routeSheets:distribution');
     expect(matcherPart(decided)).toEqual(expected('distribution.json'));
-    // Every wave on the PDF has a dispatch time in the route data, so no pad box is needed.
-    expect(decided.typedPadWaves).toEqual([]);
+    // The 2:30 pm wave has a dispatch time in the route data but no PAD, so it alone gets the
+    // "Pad for each wave" box.
+    expect(decided.typedPadWaves).toEqual(['02:30 PM']);
     expect(decided.unsent).toEqual(
       decided.routes
         .filter((r) => r.state === 'ready' && r.recipients.every((p) => p.email))
@@ -471,17 +471,9 @@ describe('the join with the app’s own route data, driver list and pads', () =>
       fileName: path.basename(itineraries),
       own: true,
     });
-    let snap = await snapshot(rig);
+    const snap = await snapshot(rig);
     expect(snap.routeSheetsRoute?.kind).toBe('itineraries');
     expect(snap.routeSheetsRoute?.label).toBe('Itineraries');
-    // Its PADs are its own too.
-    const [firstTime] = dispatchTimes(snap.routeSheetsRoute!)[0]!;
-    await rig.ok('routeSheets:set-route-pads', { pads: { [firstTime]: 2 } });
-    snap = await snapshot(rig);
-    expect(snap.routeSheetsRoute?.pads.get(firstTime)).toBe(2);
-    expect(snap.routeSets.find((set) => set.kind === 'itineraries')?.pads.get(firstTime)).toBe(
-      undefined,
-    );
     // Clearing the Roster's Itineraries leaves the route sheets' file where it is...
     await rig.ok('routeData:clear', { kind: 'itineraries' });
     expect((await rig.ok<RouteSheetsStateView>('routeSheets:state')).routeData?.own).toBe(true);
@@ -762,35 +754,30 @@ describe('every route sheets channel, through the real handlers', () => {
       reason: 'bad-input',
     });
 
-    // A wave the route data knows gets its pad from the Route Data page only, even with none
-    // there yet: the 2:30 pm wave has a dispatch time but no pad, and no box.
+    // The 2:30 pm wave has a dispatch time in the route data but no PAD there, so it gets a
+    // box and a typed pad is used; trimmed, and cleared with a blank.
     const fromRouteData = {
       ok: false,
       reason: 'refused',
-      message: 'That wave already gets its pad from the route file on Load Out.',
+      message: 'That wave already has its pad from the route data.',
     };
-    expect(await rig.call('routeSheets:set-wave-pad', { waveTime: '02:30 PM', pad: '4' })).toEqual(
-      fromRouteData,
-    );
-    // Take that dispatch time off the route data: now the wave matches none, and a typed pad is
-    // used; trimmed, and cleared with a blank.
-    for (const row of rig.host.state.routeSet('routes').rows) {
-      if (row.routeCode === 'AX13') row.dispatchTime = '';
-    }
     expect(await rig.ok('routeSheets:set-wave-pad', { waveTime: '02:30 PM', pad: '  4 ' })).toBe(
       '4',
     );
     dist = await rig.ok<RouteSheetsDistributionView>('routeSheets:distribution');
-    expect(dist.typedPadWaves).toEqual(['02:30 PM']);
+    // No PADs set on the route data yet, so every wave has a box.
+    expect(dist.typedPadWaves).toEqual(['10:20 AM', '10:25 AM', '02:30 PM']);
     expect(dist.waves.find((w) => w.waveTime === '02:30 PM')!.pad).toBe('4');
     expect(
       (await rig.ok<RouteSheetsPreview>('routeSheets:preview', { routeCode: 'AX13' })).subject,
     ).toMatch(/Pad 4$/);
     await padsFromInputs(rig);
+    // With PADs on the route data, only the 2:30 pm wave (no PAD there) keeps its box.
     expect(await rig.call('routeSheets:set-wave-pad', { waveTime: '10:20 AM', pad: '9' })).toEqual(
       fromRouteData,
     );
     dist = await rig.ok<RouteSheetsDistributionView>('routeSheets:distribution');
+    expect(dist.typedPadWaves).toEqual(['02:30 PM']);
     expect(dist.waves.map((w) => w.pad)).toEqual(['1', '2', '4']);
     expect(
       await rig.ok('routeSheets:set-wave-pad', { waveTime: '02:30 PM', pad: '   ' }),

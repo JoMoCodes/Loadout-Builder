@@ -11,7 +11,7 @@ import {
   clockKey,
   hasRouteDrivers,
   routesFromRouteSet,
-  unmatchedWaves,
+  unpaddedWaves,
   wavePadsFromRouteSet,
   type RouteRowLike,
 } from './join';
@@ -211,14 +211,25 @@ describe('wave times and pads', () => {
       wavePadsFromRouteSet(waves, set, { '11:00 AM': 'B12', '10:20 AM': '9', '02:30 PM': '' }),
     ).toEqual({ '10:20 AM': '1', '10:25 AM': '3', '11:00 AM': 'B12' });
     expect(wavePadsFromRouteSet(waves, null, { '02:30 PM': '4' })).toEqual({ '02:30 PM': '4' });
-    expect(unmatchedWaves(waves, set)).toEqual(['11:00 AM']);
-    expect(unmatchedWaves(waves, null)).toEqual(waves);
+    // The 2:30 pm wave is known but has no PAD, so it gets a box too.
+    expect(unpaddedWaves(waves, set)).toEqual(['02:30 PM', '11:00 AM']);
+    expect(unpaddedWaves(waves, null)).toEqual(waves);
   });
 
-  it('never puts a typed pad on a wave the route data knows, even one with no pad there', () => {
-    const set = { rows: [row({ routeCode: 'CX4', dispatchTime: '2:30pm' })], pads: new Map() };
+  it('a typed pad fills in for a wave the route data knows but has no pad for', () => {
+    const set = {
+      rows: [
+        row({ routeCode: 'CX4', dispatchTime: '2:30pm' }),
+        row({ routeCode: 'CX5', dispatchTime: '10:20am' }),
+      ],
+      pads: new Map([['10:20am', 1]]),
+    };
     expect(
-      wavePadsFromRouteSet(['02:30 PM', '11:00 AM'], set, { '02:30 PM': '4', '11:00 AM': '5' }),
-    ).toEqual({ '11:00 AM': '5' });
+      wavePadsFromRouteSet(['10:20 AM', '02:30 PM', '11:00 AM'], set, {
+        '10:20 AM': '9',
+        '02:30 PM': '4',
+        '11:00 AM': '5',
+      }),
+    ).toEqual({ '10:20 AM': '1', '02:30 PM': '4', '11:00 AM': '5' });
   });
 });

@@ -14,7 +14,8 @@ export const RELEASE_NOTES: readonly ReleaseNote[] = [
     version: '2.15.0',
     items: [
       'On Route Sheets, a route file you bring in with Import a new file is now kept just for the route sheets. The Roster never sees it, and Clear Route Data on the Roster never touches it. Before, the two pages shared one file, so bringing one in here could quietly change the other.',
-      "The Route data card on Route Sheets has new buttons: Clear imported file takes that file out again, Assign PADs asks which PAD each of its times is in, and Use the imported file switches back to it after you used the Roster's data for a while. The card says which one is in use.",
+      "The Route data card on Route Sheets has new buttons: Clear imported file takes that file out again, and Use the imported file switches back to it after you used the Roster's data for a while. The card says which one is in use.",
+      'Pad for each wave on Distribute now also shows for a wave whose time is in the route data but has no PAD yet, so every wave without a pad can be given one right there.',
       'Clear Route Data on the Roster now says that the file brought in just for Route Sheets is kept.',
       'A New run button now sits on the This run card at the top of Route Sheets, so you do not have to go to History to start fresh.',
       'The four cards at the top of Route Sheets take less room: the Driver list and Email cards sit one above the other, so the buttons fit on a line and there is no empty space under two lines of words.',

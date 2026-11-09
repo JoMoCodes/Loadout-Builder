@@ -73,7 +73,7 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
       (Itineraries write "Last,First"), so the Name check warning's words can differ from the old
       app's for such a name. Matching by ID is unaffected.
 - [x] **Changed (added 2.15.0).** A route file brought in on the Route Sheets page ("Import a new
-      file") is kept apart from the Roster's route data, with its own PADs. The Roster never reads
+      file") is kept apart from the Roster's route data. The Roster never reads
       it, Clear Route Data on the Roster never touches it, and "Clear imported file" on the Route
       data card takes it out alone. Tests: 'the route sheets’ own route file'
       (`packages/core/src/state/appState.test.ts`), 'says which route data it reads, and asks for
@@ -101,11 +101,13 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
       'drivers with no email address are counted on Distribute',
       `apps/desktop/e2e/route-sheets.spec.ts`; smoke 'Route Sheets: the page shows the counts,
       the sheets and the run in History').
-- [x] **Changed (item 3).** "Pad for each wave" is replaced by the pads the Route Data page knows,
-      matched by clock value; the box stays only for a wave time that matches no dispatch time.
-      Rule: 'Distribute: lists each wave time in clock order with its route count and pad'
-      (`waves`, `wavePadFor`); the join in phase 2; the page in phase 3 ('the pad box shows only
-      for a wave the route data does not know', `apps/desktop/e2e/route-sheets.spec.ts`).
+- [x] **Changed (item 3).** "Pad for each wave" is replaced by the pads the route data knows,
+      matched by clock value; the box stays for a wave time the route data gives no pad (a time it
+      does not know, or one with no PAD yet; widened from "no dispatch time" in 2.15.0). Rule:
+      'Distribute: lists each wave time in clock order with its route count and pad' (`waves`,
+      `wavePadFor`); the join ('a typed pad fills in for a wave the route data knows but has no pad
+      for', `packages/route-sheets/src/join/join.test.ts`); the page ('the pad box shows only for a
+      wave the route data gives no pad', `apps/desktop/e2e/route-sheets.spec.ts`).
 - [x] Ready to send. Test: 'Distribute: exact single match is ready; everything else needs a
       person to decide'; parity.
 - [x] A route listing two or more drivers waits for a choice; the green Suggested tag (only

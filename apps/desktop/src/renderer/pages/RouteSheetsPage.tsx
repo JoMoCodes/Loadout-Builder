@@ -3,7 +3,6 @@
 // History (the saved runs). Ported from Route Sheet Distributor; the driver list, the Routes file
 // and the pads are the app's own (docs/RSD-MIGRATION-PLAN.md, section 3).
 
-import { dispatchTimes, routeDataDateLabel } from '@loadout/core';
 import { useCallback, useEffect, useState } from 'react';
 import type { RouteSheetsDistributionView, RouteSheetsStateView } from '../../shared/routeSheets';
 import type { RouteSetView } from '../../shared/snapshot';
@@ -12,7 +11,7 @@ import { FileDrop } from '../components/FileDrop';
 import { call, explain } from '../lib/channels';
 import { useAppSnapshot } from '../lib/useAppSnapshot';
 import type { RouteKindName } from '../../shared/channels/routeData';
-import { chooseFile, command, dropRefused, readNow } from './dataPages/bringIn';
+import { chooseFile, command, dropRefused } from './dataPages/bringIn';
 import { ConfirmDialog } from './dataPages/Modal';
 import { ProblemBanner, StatusLine, useMessages } from './dataPages/PageParts';
 import { TabPanel, Tabs } from './dataPages/Tabs';
@@ -22,8 +21,6 @@ import { HistoryTab } from './routeSheets/HistoryTab';
 import { SheetsTab } from './routeSheets/SheetsTab';
 import { OldAppNote, TopStrip } from './routeSheets/TopStrip';
 import { RouteFileWindow, type FilePick } from './routeData/ImportWindows';
-import { PadDialog } from './routeData/PadDialog';
-import { padsMessage } from './routeData/routeRows';
 import type { PageProps } from './types';
 
 const TABS = PAGE_TABS['route-sheets'];
@@ -136,38 +133,6 @@ export function RouteSheetsPage({ settings, changeSettings, goTo, startTab }: Pa
   }
 
   /**
-   * Puts the dispatch times of the file brought in here into PADs. The words it leaves say what
-   * happened, with `lead` in front (what the import just did). True when PADs were saved.
-   */
-  async function assignOwnPads(lead = ''): Promise<boolean> {
-    const fresh = await readNow();
-    const own = fresh?.routeSheetsRoute ?? null;
-    if (!own || own.rows.length === 0) {
-      setStatus('Import a new file on the Route data card first.');
-      return false;
-    }
-    const chosen = await ask<Record<string, number>>((done) => (
-      <PadDialog
-        sourceLabel={own.label}
-        dayLabel={routeDataDateLabel(own)}
-        times={dispatchTimes(own)}
-        current={own.pads}
-        onDone={done}
-      />
-    ));
-    if (chosen === null) {
-      setStatus(
-        `${lead}No PADs yet. Use Assign PADs on the Route data card when you're ready.`.trim(),
-      );
-      return false;
-    }
-    const done = await command(messages, 'routeSheets:set-route-pads', { pads: chosen });
-    if (!done.ok) return false;
-    setStatus(`${lead}${padsMessage(own.label, own, chosen)}`.trim());
-    return true;
-  }
-
-  /**
    * "Import a new file": a route file just for the route sheets, Routes up front. It is kept
    * apart from the Roster's route data, so neither side changes the other.
    */
@@ -193,7 +158,9 @@ export function RouteSheetsPage({ settings, changeSettings, goTo, startTab }: Pa
       });
       if (!done.ok) return;
       await changeSettings({ routeSheetsRouteData: 'own' });
-      await assignOwnPads(`Imported ${done.value.rows} rows just for the route sheets. `);
+      setStatus(
+        `Imported ${done.value.rows} rows just for the route sheets. A wave with no pad from the file gets a Pad for each wave box below.`,
+      );
     } finally {
       setBusy(false);
     }
@@ -288,7 +255,6 @@ export function RouteSheetsPage({ settings, changeSettings, goTo, startTab }: Pa
               onUseRoster={() => void matchWithRoster()}
               onUseOwn={() => void matchWithOwn()}
               onImportRouteFile={() => void importRouteFile()}
-              onAssignPads={() => void assignOwnPads()}
               onClearOwn={() => void clearOwnFile()}
             />
             <TabPanel name="route-sheets" id={tab}>

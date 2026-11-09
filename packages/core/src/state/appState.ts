@@ -342,17 +342,6 @@ export class AppState {
     return dataset;
   }
 
-  /** Pin each dispatch time of the Route Sheets' own file to a PAD (the rule of `setPads`). */
-  setRouteSheetsPads(pads: ReadonlyMap<string, number> | Record<string, number>): void {
-    const dataset = this.routeSheetsRoute;
-    if (dataset === null) return;
-    const entries = pads instanceof Map ? [...pads] : Object.entries(pads);
-    dataset.pads = new Map(entries.filter(([, pad]) => pad));
-    for (const row of dataset.rows) row.pad = '';
-    this.saveRouteSheetsRoute(dataset);
-    this.notify();
-  }
-
   /** Take the Route Sheets' own file out. The roster's route data is not touched. */
   clearRouteSheetsRoute(): void {
     for (const kind of ROUTE_KINDS) this.store.clearRouteData(routeSheetsStorageKey(kind));

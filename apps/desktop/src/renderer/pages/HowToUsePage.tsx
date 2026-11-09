@@ -586,8 +586,7 @@ export function HowToUsePage({
               <strong>Use the Roster&apos;s Route Data</strong> to use the file you brought in on{' '}
               {go('load-out', 'Load Out')}, or <strong>Import a new file</strong> (Routes works
               best). A file you import here is kept just for the route sheets: the Roster never sees
-              it, and Clear Route Data on the Roster never touches it. The app asks which PAD each
-              of its times is in; <strong>Assign PADs</strong> on the card asks again later.{' '}
+              it, and Clear Route Data on the Roster never touches it.{' '}
               <strong>Clear imported file</strong> takes it out, and the route sheets go back to the
               Roster&apos;s Route Data. Each route gets the PAD you gave its dispatch time.
             </li>
@@ -597,9 +596,9 @@ export function HowToUsePage({
               anywhere on the page.
             </li>
             <li>
-              Is a time on the PDF missing from the Routes file? The page shows{' '}
-              <strong>Pad for each wave</strong>. Type the PAD next to each of those times. It goes
-              on every route sheet for that wave.
+              Does a time on the PDF have no PAD yet, or is it missing from the Routes file? The
+              page shows <strong>Pad for each wave</strong>. Type the PAD next to each of those
+              times. It goes on every route sheet for that wave.
             </li>
             <li>Look at the coloured counts at the top. Green is good. Amber and red need you.</li>
             <li>

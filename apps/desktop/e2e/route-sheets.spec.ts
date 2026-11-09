@@ -559,7 +559,6 @@ test('the cards name the route data in use, an old driver list and a ready email
   );
   // No file brought in here, so nothing to switch to, give PADs or clear.
   await expect(page.getByTestId('route-sheets-use-own')).toHaveCount(0);
-  await expect(page.getByTestId('route-sheets-assign-pads')).toHaveCount(0);
   await expect(page.getByTestId('route-sheets-clear-own')).toHaveCount(0);
   await expect(page.getByTestId('route-sheets-open-route-data')).toHaveCount(0);
   await expect(page.getByTestId('route-sheets-driver-count')).toHaveText(
@@ -593,9 +592,7 @@ test('the cards name the route data in use, an old driver list and a ready email
   await expect(page.getByTestId('route-sheets-driver-list-old')).toHaveCount(0);
 });
 
-test('the imported file is kept apart from the Roster: used, given PADs, and cleared', async ({
-  page,
-}) => {
+test('the imported file is kept apart from the Roster: used, and cleared', async ({ page }) => {
   await openRouteSheets(page, {
     settings: { routeSheetsRouteData: 'own' },
     snapshot: {
@@ -617,31 +614,6 @@ test('the imported file is kept apart from the Roster: used, given PADs, and cle
   await expect(page.getByTestId('route-sheets-own-file')).toHaveText('Just for the route sheets');
   await expect(page.getByTestId('route-sheets-use-own')).toHaveCount(0);
   await expect(page.getByTestId('route-sheets-use-roster')).toBeEnabled();
-
-  // Assign PADs: the PAD window for the imported file, saved to the route sheets' own PADs.
-  await onCall(
-    page,
-    'routeSheets:set-route-pads',
-    `(input) => {
-      const own = window.__fake.snapshot.routeSheetsRoute;
-      own.pads = new Map(Object.entries(input.pads));
-      window.__rsBump();
-      return { ok: true, value: null };
-    }`,
-  );
-  await page.getByTestId('route-sheets-assign-pads').click();
-  const pads = page.locator('dialog[data-dialog="assign-pads"]');
-  await expect(pads).toBeVisible();
-  await expect(pads).toContainText('Itineraries');
-  await expect(pads).toContainText('2 dispatch times in this export');
-  await pads.locator('[data-testid="pad-10:20am-1"]').check();
-  await pads.locator('[data-testid="pad-10:25am-2"]').check();
-  await pads.getByRole('button', { name: 'Save' }).click();
-  expect(await callsTo(page, 'routeSheets:set-route-pads')).toEqual([
-    { pads: { '10:20am': 1, '10:25am': 2 } },
-  ]);
-  expect(await callsTo(page, 'routeData:set-pads')).toEqual([]);
-  await expect(status(page)).toContainText('PAD');
 
   // Clear it: asks first, says the Roster is left alone, then goes back to the Roster's data.
   await onCall(
@@ -673,7 +645,6 @@ test('the imported file is kept apart from the Roster: used, given PADs, and cle
   );
   await expect(page.getByTestId('route-sheets-same-as-roster')).toBeVisible();
   await expect(page.getByTestId('route-sheets-clear-own')).toHaveCount(0);
-  await expect(page.getByTestId('route-sheets-assign-pads')).toHaveCount(0);
 });
 
 test('an imported file that is kept but not in use can be picked again', async ({ page }) => {
@@ -686,7 +657,6 @@ test('an imported file that is kept but not in use can be picked again', async (
     'Your imported file (Itineraries) is kept, but not in use.',
   );
   await expect(page.getByTestId('route-sheets-clear-own')).toBeVisible();
-  await expect(page.getByTestId('route-sheets-assign-pads')).toHaveCount(0);
   await page.getByTestId('route-sheets-use-own').click();
   await expect
     .poll(() => callsTo(page, 'settings:set'))
@@ -696,9 +666,7 @@ test('an imported file that is kept but not in use can be picked again', async (
   );
 });
 
-test('Import a new file reads it just for the route sheets, then asks for its PADs', async ({
-  page,
-}) => {
+test('Import a new file reads it just for the route sheets', async ({ page }) => {
   await openRouteSheets(page);
   await onCall(
     page,
@@ -730,16 +698,12 @@ test('Import a new file reads it just for the route sheets, then asks for its PA
   await expect
     .poll(() => callsTo(page, 'settings:set'))
     .toContainEqual({ routeSheetsRouteData: 'own' });
-  // Then the PADs for its dispatch times; closing the window leaves them for later.
-  const pads = page.locator('dialog[data-dialog="assign-pads"]');
-  await expect(pads).toBeVisible();
-  await expect(pads).toContainText('Routes');
-  await pads.getByRole('button', { name: 'Cancel' }).click();
+  // No PAD window: a wave the file gives no pad for gets a Pad for each wave box on Distribute.
+  await expect(page.locator('dialog[data-dialog="assign-pads"]')).toHaveCount(0);
   await expect(status(page)).toHaveText(
-    "Imported 2 rows just for the route sheets. No PADs yet. Use Assign PADs on the Route data card when you're ready.",
+    'Imported 2 rows just for the route sheets. A wave with no pad from the file gets a Pad for each wave box below.',
   );
   await expect(page.getByTestId('route-sheets-own-file')).toHaveText('Just for the route sheets');
-  await expect(page.getByTestId('route-sheets-assign-pads')).toBeVisible();
 });
 
 test('New run on the This run card starts fresh, and the ? buttons say where each file comes from', async ({
@@ -945,7 +909,7 @@ test('All routes: Change undoes a choice, by button or by key', async ({ page })
   await expect(page.getByTestId('route-sheets-detail-code')).toContainText('CX101');
 });
 
-test('the pad box shows only for a wave the route data does not know', async ({ page }) => {
+test('the pad box shows only for a wave the route data gives no pad', async ({ page }) => {
   await openRouteSheets(page);
   const pads = section(page, 'pads');
   await expect(pads).toContainText('02:30 PM');
@@ -963,7 +927,7 @@ test('the pad box shows only for a wave the route data does not know', async ({ 
   await change(page, { dist: { typedPadWaves: [] } });
   await expect(section(page, 'pads')).toHaveCount(0);
   await expect(page.getByTestId('route-sheets-pads-note')).toHaveText(
-    "The pad for each wave comes from the route file's PADs on Load Out.",
+    'Every wave has its pad from the route data.',
   );
 });
 
@@ -1531,28 +1495,6 @@ test('with route data loaded but no PDF yet, Distribute says how to start, not t
   await expect(page.getByTestId('route-sheets-start')).toContainText('Start a run');
   await expect(page.locator('[data-testid^="route-sheets-section-"]')).toHaveCount(0);
   await expect(page.getByTestId('route-sheets-count-no-sheet')).toHaveCount(0);
-});
-
-test('Distribute says how many waves still have no pad from Route Data', async ({ page }) => {
-  await openRouteSheets(page, {
-    dist: {
-      typedPadWaves: [],
-      waves: [
-        { waveTime: '10:20 AM', routes: 4, pad: null },
-        { waveTime: '02:30 PM', routes: 1, pad: null },
-        { waveTime: '03:00 PM', routes: 1, pad: '3' },
-      ],
-    },
-  });
-  await expect(page.getByTestId('route-sheets-pads-missing')).toHaveText(
-    "2 waves have no pad yet. Set them with Assign PADs on the route file's tab on Load Out.",
-  );
-  await change(page, {
-    dist: {
-      waves: [{ waveTime: '10:20 AM', routes: 4, pad: '1' }],
-    },
-  });
-  await expect(page.getByTestId('route-sheets-pads-missing')).toHaveCount(0);
 });
 
 test('No exact match: View original PDF page opens the page', async ({ page }) => {

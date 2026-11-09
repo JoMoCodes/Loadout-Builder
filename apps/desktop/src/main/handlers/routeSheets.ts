@@ -32,10 +32,6 @@ export const routeSheetsHandlers: HandlersFor<typeof routeSheetsChannels> = {
 
   'routeSheets:import-route-file': ({ kind, path }, ctx) =>
     importRouteSheetsRouteFile(ctx.state, kind, takeChosenFile(ctx, kind, path), ctx.today()),
-  'routeSheets:set-route-pads': ({ pads }, ctx) => {
-    ctx.state.setRouteSheetsPads(pads);
-    return null;
-  },
   'routeSheets:clear-route-file': (_input, ctx) => {
     ctx.state.clearRouteSheetsRoute();
     return null;

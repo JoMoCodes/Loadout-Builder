@@ -508,15 +508,11 @@ describe('the route sheets’ own route file', () => {
     const rosterItineraries = st.routeSet('itineraries').rows.map((r) => r.routeCode);
     expect(rosterItineraries).not.toContain('CX901');
 
-    st.setRouteSheetsPads({ '10:20am': 3 });
-    expect(st.routeSheetsRoute?.pads.get('10:20am')).toBe(3);
-
     const again = new AppState(st.store);
     again.loadAll();
     expect(again.routeSheetsRoute?.kind).toBe('itineraries');
     expect(again.routeSheetsRoute?.sourceFile).toBe('C:/Downloads/Itineraries_XXX1.xlsx');
     expect(again.routeSheetsRoute?.rows.map((r) => r.routeCode)).toEqual(['CX901']);
-    expect(again.routeSheetsRoute?.pads.get('10:20am')).toBe(3);
     expect(again.routeSet('itineraries').rows.map((r) => r.routeCode)).toEqual(rosterItineraries);
   });
 
