@@ -41,9 +41,18 @@ test('Hide shrinks the menu to icons, the page gets the room, and the pages stil
   await expect(slot(page)).toHaveAttribute('data-menu', 'icons');
   expect(await menuWidth(page)).toBeLessThan(80);
   expect(await pageLeft(page)).toBeLessThan(wideLeft - 100);
-  // The names are out of sight but still there to read out; pointing at an icon names the page.
+  // The names are out of sight but still there to read out; pointing at an icon pops its name
+  // out beside the menu at once, and it goes when the pointer leaves.
   await expect(page.locator('[data-nav="route-sheets"] .nav-label')).not.toBeInViewport();
-  await expect(page.locator('[data-nav="route-sheets"]')).toHaveAttribute('title', 'Route Sheets');
+  await page.locator('[data-nav="route-sheets"]').hover();
+  await expect(page.getByRole('tooltip')).toHaveText('Route Sheets');
+  const tipBox = await page.getByRole('tooltip').boundingBox();
+  expect(tipBox!.x).toBeGreaterThan(await menuWidth(page));
+  await page.mouse.move(700, 400);
+  await expect(page.getByRole('tooltip')).toHaveCount(0);
+  // The two buttons name themselves the same way.
+  await page.getByRole('button', { name: 'Show the menu' }).hover();
+  await expect(page.getByRole('tooltip')).toHaveText('Show the menu');
   await page.locator('[data-nav="settings"]').click();
   await expect(page.locator('[data-page="settings"]')).toBeVisible();
   // Locked, pointing at the icons changes nothing.
@@ -85,6 +94,8 @@ test('the keyboard opens an unlocked menu too', async ({ page }) => {
   await expect(slot(page)).toHaveAttribute('data-menu', 'icons');
   await page.locator('[data-nav="dashboard"]').focus();
   await expect(slot(page)).toHaveAttribute('data-menu', 'peek');
+  // Open wide, the names are on show, so no label pops out.
+  await expect(page.getByRole('tooltip')).toHaveCount(0);
   await page.locator('[data-action="font-bigger"]').focus();
   await expect(slot(page)).toHaveAttribute('data-menu', 'icons');
 });

@@ -145,6 +145,36 @@
   padding-inline: 0;
 }
 
+/* The name of the icon under the pointer, beside the small menu, shown at once. */
+.rail-tip {
+  position: absolute;
+  left: calc(100% + 0.6rem);
+  z-index: 6;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+  color: var(--text);
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: var(--shadow-popover);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.rail-tip::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -0.3rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-left: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  transform: translateY(-50%) rotate(45deg);
+}
+
 /* The page names stay for screen readers and tests; only the eye loses them. */
 .sidebar-slot[data-menu='icons'] .nav-label {
   position: absolute;

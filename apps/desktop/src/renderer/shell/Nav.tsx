@@ -63,6 +63,22 @@ export function Nav({ current, onGo, menu, onMenu }: NavProps) {
   const view = menuView(menu, peeking);
   const iconsOnly = view === 'icons';
 
+  // With the names out of sight, a label pops out beside the icon the pointer (or focus) is on,
+  // at once. It is drawn outside the menu, which clips anything wider than itself.
+  const [tip, setTip] = useState<{ label: string; top: number } | null>(null);
+  const showTip = (item: HTMLElement, label: string) => {
+    const box = item.closest('.sidebar-slot')?.getBoundingClientRect();
+    if (!box) return;
+    const own = item.getBoundingClientRect();
+    setTip({ label, top: own.top - box.top + own.height / 2 });
+  };
+  const tipFor = (label: string) => ({
+    onMouseEnter: (event: MouseEvent<HTMLElement>) => showTip(event.currentTarget, label),
+    onFocus: (event: FocusEvent<HTMLElement>) => showTip(event.currentTarget, label),
+    onMouseLeave: () => setTip(null),
+    onBlur: () => setTip(null),
+  });
+
   const leave = useCallback((event: MouseEvent | FocusEvent) => {
     // Focus moving from one button of the menu to another is not leaving.
     const next = 'relatedTarget' in event ? event.relatedTarget : null;
@@ -88,7 +104,8 @@ export function Nav({ current, onGo, menu, onMenu }: NavProps) {
                 variant="ghost"
                 className="menu-button"
                 aria-label={SHOW_MENU}
-                title={SHOW_MENU}
+                title={iconsOnly ? undefined : SHOW_MENU}
+                {...(iconsOnly ? tipFor(SHOW_MENU) : {})}
                 data-action="menu-show"
                 onClick={() => onMenu('show')}
               >
@@ -100,7 +117,8 @@ export function Nav({ current, onGo, menu, onMenu }: NavProps) {
                 variant="ghost"
                 className="menu-button"
                 aria-label={HIDE_MENU}
-                title={HIDE_MENU}
+                title={iconsOnly ? undefined : HIDE_MENU}
+                {...(iconsOnly ? tipFor(HIDE_MENU) : {})}
                 data-action="menu-hide"
                 onClick={() => onMenu('hide')}
               >
@@ -113,7 +131,8 @@ export function Nav({ current, onGo, menu, onMenu }: NavProps) {
                 variant="ghost"
                 className="menu-button"
                 aria-label={UNLOCK_MENU}
-                title={UNLOCK_MENU}
+                title={iconsOnly ? undefined : UNLOCK_MENU}
+                {...(iconsOnly ? tipFor(UNLOCK_MENU) : {})}
                 aria-pressed="true"
                 data-action="menu-unlock"
                 onClick={() => onMenu('unlock')}
@@ -126,7 +145,8 @@ export function Nav({ current, onGo, menu, onMenu }: NavProps) {
                 variant="ghost"
                 className="menu-button"
                 aria-label={LOCK_MENU}
-                title={LOCK_MENU}
+                title={iconsOnly ? undefined : LOCK_MENU}
+                {...(iconsOnly ? tipFor(LOCK_MENU) : {})}
                 aria-pressed="false"
                 data-action="menu-lock"
                 onClick={() => onMenu('lock')}
@@ -156,9 +176,8 @@ export function Nav({ current, onGo, menu, onMenu }: NavProps) {
                     className="nav-item"
                     data-nav={page.id}
                     aria-current={page.id === current ? 'page' : undefined}
-                    // With the names out of sight, pointing at an icon says which page it is.
-                    title={iconsOnly ? page.label : undefined}
                     onClick={() => onGo(page.id)}
+                    {...(iconsOnly ? tipFor(page.label) : {})}
                   >
                     <Icon aria-hidden="true" />
                     <span className="nav-label">{page.label}</span>
@@ -169,6 +188,11 @@ export function Nav({ current, onGo, menu, onMenu }: NavProps) {
           })}
         </ul>
       </nav>
+      {tip && iconsOnly ? (
+        <div className="rail-tip" role="tooltip" data-testid="menu-tip" style={{ top: tip.top }}>
+          {tip.label}
+        </div>
+      ) : null}
     </div>
   );
 }
