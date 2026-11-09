@@ -32,7 +32,7 @@ The first time you open the app, the **Home** page shows a short checklist and e
 
 **Shortcut:** drag a file from your computer onto the page that uses it.
 
-Open **How to use** in the left menu for a step-by-step walk through a normal day, what the colours mean, and what to do when something goes wrong. Hard to read? Use **A+** at the top of the window, or pick **High contrast** in **Settings**.
+Open **How to use** in the left menu for a step-by-step walk through a normal day, what the colours mean, and what to do when something goes wrong. Hard to read? Use **A+** at the bottom of the left menu, or pick **High contrast** in **Settings**.
 
 ### Used the old Loadout Builder?
 
@@ -94,7 +94,7 @@ Turn on **Demo mode** in **Settings**. The app fills itself with made-up drivers
 
 ## Asking a question
 
-Click **Help** at the top of the window, then **Ask a question**. It opens the [help forum](https://github.com/JoMoCodes/Loadout-Builder/discussions) in your browser.
+Click **Help** at the bottom of the left menu, then **Ask a question**. It opens the [help forum](https://github.com/JoMoCodes/Loadout-Builder/discussions) in your browser.
 
 **Please read this first: the help forum is public. Anyone on the internet can read it.**
 
