@@ -18,16 +18,7 @@ import { Nav } from './shell/Nav';
 import { TopBar } from './shell/TopBar';
 import { OldDataDialog } from './shell/OldDataDialog';
 import { WhatsNewDialog } from './shell/WhatsNewDialog';
-import {
-  applyLook,
-  cacheLook,
-  readLastPage,
-  readMenuChoice,
-  writeLastPage,
-  writeMenuChoice,
-} from './shell/display';
-import { menuAfter } from './shell/menu';
-import type { MenuAction } from './shell/menu';
+import { applyLook, cacheLook, readLastPage, writeLastPage } from './shell/display';
 import { Button } from './ui/button';
 
 /**
@@ -70,15 +61,6 @@ export function App() {
   const [demoChecklistHidden, setDemoChecklistHidden] = useState(false);
   const [request, setRequest] = useState<PageRequest | null>(null);
   const takeRequest = useCallback(() => setRequest(null), []);
-  // The left menu's size (wide or icons) and lock, as it was left last time.
-  const [menu, setMenu] = useState(readMenuChoice);
-  const changeMenu = useCallback((action: MenuAction) => {
-    setMenu((now) => {
-      const next = menuAfter(now, action);
-      writeMenuChoice(next);
-      return next;
-    });
-  }, []);
 
   // A file dropped where nothing takes one does nothing (it would replace the app).
   useNoStrayDrops();
@@ -371,7 +353,7 @@ export function App() {
       data-ready={settings && version ? 'true' : 'false'}
       data-own-window={ownWindow ? 'true' : undefined}
     >
-      {ownWindow ? null : <Nav current={page} onGo={goTo} menu={menu} onMenu={changeMenu} />}
+      {ownWindow ? null : <Nav current={page} onGo={goTo} />}
       <div className="main-column">
         <TopBar
           fontScale={current.fontScale}

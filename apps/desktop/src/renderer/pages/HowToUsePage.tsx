@@ -950,12 +950,6 @@ export function HowToUsePage({
             window shows just that page. Every window shows the same data, so a change in one shows
             in the others straight away. Closing the main window closes them all.
           </p>
-          <p data-testid="help-menu-buttons">
-            Need more room? The two small buttons at the top of the left menu shrink it.{' '}
-            <strong>Hide the menu</strong> leaves just the icons; hover over one to see its name.
-            Unlock the menu and it slides open while your mouse is on it, then slides back. Lock it
-            again to keep it open.
-          </p>
         </>
       ),
     },

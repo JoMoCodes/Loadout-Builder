@@ -4,24 +4,16 @@ import {
   ClipboardList,
   House,
   LayoutDashboard,
-  Lock,
-  LockOpen,
   Mails,
-  PanelLeftClose,
-  PanelLeftOpen,
   Settings,
   Sparkles,
   Truck,
   Users,
   type LucideIcon,
 } from 'lucide-react';
-import { useCallback, useState, type FocusEvent, type MouseEvent } from 'react';
 import { OpenInNewWindow } from '../components/OpenInNewWindow';
 import { PAGES } from '../pages';
 import type { PageId } from '../pages/types';
-import { Button } from '../ui/button';
-import { menuView } from './menu';
-import type { MenuAction, MenuChoice } from './menu';
 
 const ICONS: Record<PageId, LucideIcon> = {
   home: House,
@@ -36,163 +28,48 @@ const ICONS: Record<PageId, LucideIcon> = {
   settings: Settings,
 };
 
-export const HIDE_MENU = 'Hide the menu';
-export const SHOW_MENU = 'Show the menu';
-export const LOCK_MENU = 'Lock the menu open';
-export const UNLOCK_MENU = 'Unlock the menu so it opens when you point at it';
-
 interface NavProps {
   current: PageId;
   onGo(pageId: PageId): void;
-  /** Wide or icons, locked or not (see menu.ts). */
-  menu: MenuChoice;
-  onMenu(action: MenuAction): void;
 }
 
 /**
  * The left menu. Plain buttons, so Tab moves between them and Enter opens one. A right-click
  * offers to open the page in a window of its own.
- *
- * Two icon buttons at the top shrink the menu to its icons (Hide) and pin it (Lock). Unlocked,
- * the icons open wide over the page while the pointer or the keyboard focus is on them.
  */
-export function Nav({ current, onGo, menu, onMenu }: NavProps) {
-  // Whether the pointer (or focus) is on an unlocked menu. Kept even while locked, so unlocking
-  // with the pointer already on the menu opens it at once.
-  const [peeking, setPeeking] = useState(false);
-  const view = menuView(menu, peeking);
-  const iconsOnly = view === 'icons';
-
-  // With the names out of sight, a label pops out beside the icon the pointer (or focus) is on,
-  // at once. It is drawn outside the menu, which clips anything wider than itself.
-  const [tip, setTip] = useState<{ label: string; top: number } | null>(null);
-  const showTip = (item: HTMLElement, label: string) => {
-    const box = item.closest('.sidebar-slot')?.getBoundingClientRect();
-    if (!box) return;
-    const own = item.getBoundingClientRect();
-    setTip({ label, top: own.top - box.top + own.height / 2 });
-  };
-  const tipFor = (label: string) => ({
-    onMouseEnter: (event: MouseEvent<HTMLElement>) => showTip(event.currentTarget, label),
-    onFocus: (event: FocusEvent<HTMLElement>) => showTip(event.currentTarget, label),
-    onMouseLeave: () => setTip(null),
-    onBlur: () => setTip(null),
-  });
-
-  const leave = useCallback((event: MouseEvent | FocusEvent) => {
-    // Focus moving from one button of the menu to another is not leaving.
-    const next = 'relatedTarget' in event ? event.relatedTarget : null;
-    if (next instanceof Node && event.currentTarget.contains(next)) return;
-    setPeeking(false);
-  }, []);
-
+export function Nav({ current, onGo }: NavProps) {
   return (
-    <div
-      className="sidebar-slot"
-      data-menu={view}
-      onMouseEnter={() => setPeeking(true)}
-      onMouseLeave={leave}
-      onFocus={() => setPeeking(true)}
-      onBlur={leave}
-    >
-      <nav className="sidebar" aria-label="Pages">
-        <div className="menu-head">
-          <div className="menu-buttons" role="group" aria-label="Menu size">
-            {view === 'icons' ? (
-              <Button
-                size="icon"
-                variant="ghost"
-                className="menu-button"
-                aria-label={SHOW_MENU}
-                title={iconsOnly ? undefined : SHOW_MENU}
-                {...(iconsOnly ? tipFor(SHOW_MENU) : {})}
-                data-action="menu-show"
-                onClick={() => onMenu('show')}
-              >
-                <PanelLeftOpen aria-hidden="true" />
-              </Button>
-            ) : (
-              <Button
-                size="icon"
-                variant="ghost"
-                className="menu-button"
-                aria-label={HIDE_MENU}
-                title={iconsOnly ? undefined : HIDE_MENU}
-                {...(iconsOnly ? tipFor(HIDE_MENU) : {})}
-                data-action="menu-hide"
-                onClick={() => onMenu('hide')}
-              >
-                <PanelLeftClose aria-hidden="true" />
-              </Button>
-            )}
-            {menu.locked ? (
-              <Button
-                size="icon"
-                variant="ghost"
-                className="menu-button"
-                aria-label={UNLOCK_MENU}
-                title={iconsOnly ? undefined : UNLOCK_MENU}
-                {...(iconsOnly ? tipFor(UNLOCK_MENU) : {})}
-                aria-pressed="true"
-                data-action="menu-unlock"
-                onClick={() => onMenu('unlock')}
-              >
-                <Lock aria-hidden="true" />
-              </Button>
-            ) : (
-              <Button
-                size="icon"
-                variant="ghost"
-                className="menu-button"
-                aria-label={LOCK_MENU}
-                title={iconsOnly ? undefined : LOCK_MENU}
-                {...(iconsOnly ? tipFor(LOCK_MENU) : {})}
-                aria-pressed="false"
-                data-action="menu-lock"
-                onClick={() => onMenu('lock')}
-              >
-                <LockOpen aria-hidden="true" />
-              </Button>
-            )}
-          </div>
-          <div className="brand">
-            <span className="brand-mark" aria-hidden="true">
-              LB
-            </span>
-            <span className="brand-words">
-              Loadout Builder
-              <span className="brand-sub">Daily roster and vans</span>
-            </span>
-          </div>
-        </div>
-        <ul className="nav-list">
-          {PAGES.map((page) => {
-            const Icon = ICONS[page.id];
-            return (
-              <li key={page.id}>
-                <OpenInNewWindow target={{ page: page.id }}>
-                  <button
-                    type="button"
-                    className="nav-item"
-                    data-nav={page.id}
-                    aria-current={page.id === current ? 'page' : undefined}
-                    onClick={() => onGo(page.id)}
-                    {...(iconsOnly ? tipFor(page.label) : {})}
-                  >
-                    <Icon aria-hidden="true" />
-                    <span className="nav-label">{page.label}</span>
-                  </button>
-                </OpenInNewWindow>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-      {tip && iconsOnly ? (
-        <div className="rail-tip" role="tooltip" data-testid="menu-tip" style={{ top: tip.top }}>
-          {tip.label}
-        </div>
-      ) : null}
-    </div>
+    <nav className="sidebar" aria-label="Pages">
+      <div className="brand">
+        <span className="brand-mark" aria-hidden="true">
+          LB
+        </span>
+        <span>
+          Loadout Builder
+          <span className="brand-sub">Daily roster and vans</span>
+        </span>
+      </div>
+      <ul className="nav-list">
+        {PAGES.map((page) => {
+          const Icon = ICONS[page.id];
+          return (
+            <li key={page.id}>
+              <OpenInNewWindow target={{ page: page.id }}>
+                <button
+                  type="button"
+                  className="nav-item"
+                  data-nav={page.id}
+                  aria-current={page.id === current ? 'page' : undefined}
+                  onClick={() => onGo(page.id)}
+                >
+                  <Icon aria-hidden="true" />
+                  {page.label}
+                </button>
+              </OpenInNewWindow>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
   );
 }
