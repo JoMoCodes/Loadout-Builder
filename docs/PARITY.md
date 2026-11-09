@@ -1201,7 +1201,7 @@ through it; the check names below are the ones it prints.
 - [x] The window opens at the size and place it was left at.
       Proved by the smoke test: "the window comes back at the size and place it was left at" and
       `apps/desktop/src/main/windowState.test.ts`.
-- [ ] A small note at the top of the window says when an update is being checked, downloaded or
+- [ ] A small note at the bottom of the left menu says when an update is being checked, downloaded or
       ready, with a **Restart to update** button.
       The words are checked by `apps/desktop/src/renderer/shell/shell.test.ts`: "update pill".
       Still to prove: a real update from a GitHub Release (phase 6 install test).

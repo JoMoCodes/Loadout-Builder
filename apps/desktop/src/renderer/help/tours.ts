@@ -36,7 +36,7 @@ export const TOURS: Record<string, Tour> = {
     label: 'Home',
     steps: [
       {
-        element: 'nav.sidebar',
+        element: '.menu-pages',
         title: 'The pages',
         text: 'Each page in this menu does one job. Most days you only need Load Out.',
         side: 'right',
@@ -51,13 +51,13 @@ export const TOURS: Record<string, Tour> = {
         element: '[data-testid="help-menu"]',
         title: 'Help is always here',
         text: 'Click Help to see this tour again, or to open How to use and its first-day checklist.',
-        side: 'bottom',
+        side: 'right',
       },
       {
         element: '.text-size',
         title: 'Text too small?',
         text: 'Use A- and A+ to make the text smaller or bigger.',
-        side: 'bottom',
+        side: 'right',
       },
     ],
   },

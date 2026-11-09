@@ -1,5 +1,6 @@
-// The Help button at the top of every page: the page's tour, How to use, the two checklists
-// when put away (the first-day one lives on How to use, the weekly one on Home), and the forum.
+// The Help button, at the bottom of the left menu (or in the bar across the top of a page-only
+// window): the page's tour, How to use, the two checklists when put away (the first-day one lives
+// on How to use, the weekly one on Home), and the forum.
 
 import {
   BookOpen,
@@ -28,6 +29,8 @@ interface HelpMenuProps {
   weeklyShown: boolean;
   onShowWeekly(): void;
   onAsk(): void;
+  /** Where the button is. In the left menu its list opens upwards, lined up with its left edge. */
+  place?: 'bar' | 'menu';
 }
 
 export function HelpMenu({
@@ -39,6 +42,7 @@ export function HelpMenu({
   weeklyShown,
   onShowWeekly,
   onAsk,
+  place = 'bar',
 }: HelpMenuProps) {
   const tour = tourName ? TOURS[tourName] : undefined;
   return (
@@ -49,7 +53,11 @@ export function HelpMenu({
           Help
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" aria-label="Help">
+      <DropdownMenuContent
+        side={place === 'menu' ? 'top' : 'bottom'}
+        align={place === 'menu' ? 'start' : 'end'}
+        aria-label="Help"
+      >
         <DropdownMenuItem
           disabled={!tour}
           onSelect={onTour}

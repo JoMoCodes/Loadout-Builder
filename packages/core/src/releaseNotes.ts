@@ -11,6 +11,17 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.15.0',
+    items: [
+      'The left menu has been tidied up, so there is less empty room in it.',
+      'How to use, Features log and Settings now sit at the bottom of the left menu, under a thin line. The pages you work in every day stay together at the top.',
+      'The Help button and the text size buttons (A- and A+) have moved to the bottom of the left menu. The bar that ran across the top of the window is gone, so every page gets a little more room.',
+      'The note about app updates, like "Up to date" or "Update ready", is now next to the Help button.',
+      'If the window is too short to fit every page, the pages scroll. The text size buttons and Help always stay in view.',
+      'A window opened with Open in new window has no left menu, so it still has Help and the text size buttons across its top.',
+    ],
+  },
+  {
     version: '2.14.2',
     items: [
       'On the snapshot pages in the report email, the coloured fill on the score gauge ends in a rounded tip at the score. Page 1 lost that rounded tip whenever the score was only a little way into its tier, so it ended square while page 2 was rounded. Both pages now match.',
