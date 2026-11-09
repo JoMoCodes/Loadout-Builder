@@ -11,6 +11,15 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.15.0',
+    items: [
+      'The left menu has two small buttons at the top, next to the app name. One hides the menu, one locks it.',
+      'Hide shrinks the menu down to just its icons, so the page gets more room. Hover over an icon to see which page it is. Click the button again to bring the page names back.',
+      'Unlock the menu and it stays small, but slides open over the page while your mouse is on it. Move away and it slides back. Lock it again to keep it open.',
+      'The app remembers how you left the menu for next time. It starts open and locked, the way it always was.',
+    ],
+  },
+  {
     version: '2.14.2',
     items: [
       'On the snapshot pages in the report email, the coloured fill on the score gauge ends in a rounded tip at the score. Page 1 lost that rounded tip whenever the score was only a little way into its tier, so it ended square while page 2 was rounded. Both pages now match.',

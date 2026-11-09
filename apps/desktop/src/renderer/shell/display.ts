@@ -8,9 +8,12 @@
 
 import { DEFAULT_SETTINGS, mergeSettings } from '../../shared/settings';
 import type { AppSettings, ThemeName } from '../../shared/settings';
+import { parseMenuChoice } from './menu';
+import type { MenuChoice } from './menu';
 
 const LOOK_KEY = 'loadout.look';
 const PAGE_KEY = 'loadout.page';
+const MENU_KEY = 'loadout.menu';
 
 function read(key: string): string | null {
   try {
@@ -63,4 +66,13 @@ export function readLastPage(): string | null {
 
 export function writeLastPage(pageId: string): void {
   write(PAGE_KEY, pageId);
+}
+
+/** How the left menu was left: wide or icons, locked or not. Only the main window has one. */
+export function readMenuChoice(): MenuChoice {
+  return parseMenuChoice(read(MENU_KEY));
+}
+
+export function writeMenuChoice(choice: MenuChoice): void {
+  write(MENU_KEY, JSON.stringify({ locked: choice.locked, wide: choice.wide }));
 }
