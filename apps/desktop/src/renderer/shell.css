@@ -20,11 +20,11 @@
 /* ---- Left menu ---- */
 
 /*
-  Top to bottom: the app's name, the everyday pages, then (pinned to the bottom) a small box with
-  what is saved, the pages about the app itself, and the text size and Help. The empty room in a
-  tall window falls between the everyday pages and the box. In a short window the box steps
-  aside and then the pages scroll, everyday ones first in view; the text size and Help never
-  move, so text made too big can always be made smaller again.
+  Top to bottom: the app's name, the everyday pages, then (pinned to the bottom) the pages about
+  the app itself, and the text size and Help. The empty room in a tall window falls between the
+  everyday pages and the bottom group. In a short window the pages scroll, everyday ones first
+  in view; the text size and Help never move, so text made too big can always be made smaller
+  again.
 */
 .sidebar {
   flex: 0 0 15rem;
@@ -36,8 +36,6 @@
   overflow: hidden;
   background: var(--surface);
   border-right: 1px solid var(--border);
-  /* Lets the box below ask how tall the menu is, in rem, so it follows the text size too. */
-  container: menu / size;
 }
 
 .brand {
@@ -95,52 +93,6 @@
   flex: 0 0 auto;
   padding-top: var(--space-3);
   border-top: 1px solid var(--border);
-}
-
-/* What is saved: three counts, quiet enough to sit beside the pages. */
-.menu-saved {
-  flex: 0 0 auto;
-  padding: var(--space-3);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--surface-sunken);
-  font-size: 0.929rem;
-}
-
-.menu-saved-title {
-  margin-bottom: var(--space-1);
-  font-weight: 600;
-}
-
-.menu-saved dl {
-  display: grid;
-  gap: 2px;
-  margin: 0;
-}
-
-.menu-saved dl > div {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-2);
-  color: var(--text-muted);
-}
-
-.menu-saved dd {
-  margin: 0;
-  color: var(--text);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-
-.menu-saved .problem {
-  margin: 0;
-}
-
-/* Too short for everything: the box goes first, since Home says the same. */
-@container menu (height < 50rem) {
-  .menu-saved {
-    display: none;
-  }
 }
 
 /* The text size on one line, then Help with the update note beside it. */

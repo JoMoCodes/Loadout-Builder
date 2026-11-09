@@ -1,9 +1,9 @@
-// The left menu, top to bottom: the everyday pages, then (pinned to the bottom) a small box with
-// what is saved, the pages about the app itself, and the text size and Help. The main window has
+// The left menu, top to bottom: the everyday pages, then (pinned to the bottom) the pages about
+// the app itself, and the text size and Help. The main window has
 // no bar across its top; a page-only window, which has no left menu, keeps one.
 
 import { expect, test, type Page } from '@playwright/test';
-import { callsTo, emit, installFakeBridge, onCall } from './support/fakeBridge';
+import { callsTo, emit, installFakeBridge } from './support/fakeBridge';
 
 async function open(page: Page, address = '/', settings = {}) {
   await installFakeBridge(page, { settings });
@@ -12,16 +12,6 @@ async function open(page: Page, address = '/', settings = {}) {
   });
   await page.goto(address);
   await expect(page.locator('[data-shell][data-ready="true"]')).toBeVisible();
-}
-
-/** Answers "what is saved?" with these counts, and tells the page to ask again. */
-async function saved(page: Page, value: Record<string, unknown>) {
-  await onCall(
-    page,
-    'data:get-source-info',
-    `() => ({ ok: true, value: ${JSON.stringify(value)} })`,
-  );
-  await emit(page, 'state:changed', { revision: 2 });
 }
 
 const menu = (page: Page) => page.locator('.sidebar');
@@ -51,17 +41,12 @@ test('the everyday pages are at the top, and the pages about the app are pinned 
     'features-log',
     'settings',
   ]);
-  // The room left over in a tall window is in the middle, between Scorecards and the small box.
-  // Under that, everything sits tight against the bottom of the window: the box, the pages
-  // about the app, then the text size and Help, with no room left under Settings.
+  // The room left over in a tall window is in the middle, between Scorecards and How to use.
+  // Under that, everything sits tight against the bottom of the window: the pages about the
+  // app, then the text size and Help, with no room left under Settings.
   const gap =
-    (await top(page, '[data-testid="menu-saved"]')) -
-    (await bottom(page, '[data-nav="scorecards"]'));
+    (await top(page, '[data-nav="how-to-use"]')) - (await bottom(page, '[data-nav="scorecards"]'));
   expect(gap).toBeGreaterThan(100);
-  expect(
-    (await top(page, '[data-nav="how-to-use"]')) -
-      (await bottom(page, '[data-testid="menu-saved"]')),
-  ).toBeLessThan(40);
   expect(
     (await top(page, '[data-testid="menu-tools"]')) - (await bottom(page, '[data-nav="settings"]')),
   ).toBeLessThan(20);
@@ -99,51 +84,14 @@ test('Help and the text size are at the bottom of the left menu, and there is no
   await expect(page.locator('[data-page="how-to-use"]')).toBeVisible();
 });
 
-test('a small box in the menu says what is saved, in counts', async ({ page }) => {
-  await open(page);
-  const box = page.getByTestId('menu-saved');
-  await expect(box).toBeVisible();
-  await expect(box).toContainText('Saved on this computer');
-  await saved(page, {
-    mode: 'real',
-    ok: true,
-    reason: null,
-    counts: { driver_rows: 41, associates: 63, vehicles: 38 },
-  });
-  await expect(box.locator('dl > div')).toHaveText([
-    'Drivers on the roster41',
-    'Drivers in your list63',
-    'Vans in your list38',
-  ]);
-  // It sits between the everyday pages and the pages about the app.
-  expect(await top(page, '[data-testid="menu-saved"]')).toBeGreaterThan(
-    await bottom(page, '[data-nav="scorecards"]'),
-  );
-  expect(await bottom(page, '[data-testid="menu-saved"]')).toBeLessThan(
-    await top(page, '[data-nav="how-to-use"]'),
-  );
-
-  // Saved data that would not open is said in plain words, with no counts.
-  await saved(page, { mode: 'real', ok: false, reason: 'open-failed', counts: {} });
-  await expect(box).toContainText('The saved data could not be opened.');
-  await expect(box.locator('dl')).toHaveCount(0);
-});
-
-test('in demo mode the box says the counts are of the demo data', async ({ page }) => {
-  await open(page, '/', { demoMode: true });
-  await expect(page.getByTestId('menu-saved')).toContainText('In the demo data');
-  await expect(page.getByTestId('menu-saved')).not.toContainText('Saved on this computer');
-});
-
 test('in a short window with big text, the text size and Help stay put and the pages scroll', async ({
   page,
 }) => {
   // The smallest the window goes, at the biggest text size.
   await page.setViewportSize({ width: 800, height: 600 });
   await open(page, '/', { fontScale: 1.5 });
-  // The box steps aside first. The text size and Help never move, so the text can be made
-  // smaller again; the everyday pages are the ones in view.
-  await expect(page.getByTestId('menu-saved')).toBeHidden();
+  // The text size and Help never move, so the text can be made smaller again; the everyday
+  // pages are the ones in view.
   for (const selector of [
     '[data-nav="home"]',
     '[data-nav="load-out"]',

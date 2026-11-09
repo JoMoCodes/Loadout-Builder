@@ -384,7 +384,6 @@ export function App() {
         <Nav
           current={page}
           onGo={goTo}
-          dataSource={dataSource}
           textSize={textSize}
           help={<HelpMenu {...helpMenu} place="menu" />}
         />
