@@ -11,7 +11,7 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
-    version: '2.15.0',
+    version: '2.15.1',
     items: [
       'On Route Sheets, a route file you bring in with Import a new file is now kept just for the route sheets. The Roster never sees it, and Clear Route Data on the Roster never touches it. Before, the two pages shared one file, so bringing one in here could quietly change the other.',
       "The Route data card on Route Sheets has new buttons: Clear imported file takes that file out again, and Use the imported file switches back to it after you used the Roster's data for a while. The card says which one is in use.",
@@ -23,6 +23,17 @@ export const RELEASE_NOTES: readonly ReleaseNote[] = [
       'The Associates page now says when your driver list is over a month old, the same way the Route Sheets page does.',
       'A route on the Routes file that has nobody on it yet is kept. The route sheets say "Routes file lists no driver for this route" instead of saying the route is not on the file.',
       'When a shared route lists its Transporter IDs with a blank in the middle, the names now line up with the right IDs.',
+    ],
+  },
+  {
+    version: '2.15.0',
+    items: [
+      'The left menu has been tidied up, so there is less empty room in it.',
+      'How to use, Features log and Settings now sit at the bottom of the left menu, under a thin line. The pages you work in every day stay together at the top.',
+      'The Help button and the text size buttons (A- and A+) have moved to the bottom of the left menu. The bar that ran across the top of the window is gone, so every page gets a little more room.',
+      'The note about app updates, like "Up to date" or "Update ready", is now next to the Help button.',
+      'If the window is too short to fit every page, the pages scroll. The text size buttons and Help always stay in view.',
+      'A window opened with Open in new window has no left menu, so it still has Help and the text size buttons across its top.',
     ],
   },
   {

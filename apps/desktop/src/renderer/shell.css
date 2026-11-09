@@ -19,13 +19,21 @@
 
 /* ---- Left menu ---- */
 
+/*
+  Top to bottom: the app's name, the everyday pages, then (pinned to the bottom) the pages about
+  the app itself, and the text size and Help. The empty room in a tall window falls between the
+  everyday pages and the bottom group. In a short window the pages scroll, everyday ones first
+  in view; the text size and Help never move, so text made too big can always be made smaller
+  again.
+*/
 .sidebar {
   flex: 0 0 15rem;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  padding: var(--space-4) var(--space-3);
-  overflow-y: auto;
+  min-height: 0;
+  padding: var(--space-4) var(--space-3) var(--space-3);
+  overflow: hidden;
   background: var(--surface);
   border-right: 1px solid var(--border);
 }
@@ -55,6 +63,86 @@
   font-size: 0.857rem;
   font-weight: 400;
   color: var(--text-muted);
+}
+
+.menu-pages {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-height: 0;
+  /* Room for the focus ring, which the scrolling would otherwise cut off at the edges. */
+  margin: -3px;
+  padding: 3px;
+  /* A window too short for every page scrolls them, with no bar drawn beside them. */
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.menu-pages::-webkit-scrollbar {
+  display: none;
+}
+
+/* The everyday pages keep their height; the room left over falls under them. */
+.nav-list.nav-main {
+  flex: 0 0 auto;
+  margin-bottom: auto;
+}
+
+.nav-utility {
+  flex: 0 0 auto;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+
+/* The text size on one line, then Help with the update note beside it. */
+.menu-tools {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+
+.menu-tools .text-size-label {
+  margin-right: auto;
+  white-space: nowrap;
+}
+
+/* The menu is narrow: the percentage between A- and A+ gives up its spare width. */
+.menu-tools .text-size [data-action='font-reset'] {
+  min-width: 2.9rem;
+  padding-inline: var(--space-1);
+}
+
+.menu-tools-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* A long update note ("Update ready" and its button) drops to a line of its own. */
+.menu-tools .update-area {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  min-width: 0;
+  max-width: 100%;
+  margin-right: 0;
+  margin-left: auto;
+}
+
+/* The longest notes are wider than the menu, so they run onto a second line, never cut short. */
+.menu-tools .update-pill {
+  min-width: 0;
+  border-radius: 0.8rem;
+  white-space: normal;
+}
+
+.menu-tools .update-pill > span {
+  overflow: visible;
+  white-space: normal;
 }
 
 .nav-list {
@@ -103,7 +191,7 @@ html[data-theme='high-contrast'] .nav-item[aria-current='page'] {
   outline: 1px solid var(--border-strong);
 }
 
-/* ---- Top bar and page frame ---- */
+/* ---- Page frame, and the bar across the top of a page-only window ---- */
 
 .main-column {
   flex: 1 1 auto;

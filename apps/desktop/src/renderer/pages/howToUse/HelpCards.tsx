@@ -66,8 +66,8 @@ export function HelpCard({ settings, changeSettings, help }: Props) {
         </Button>
       </div>
       <p className="hint">
-        You can always take a page&apos;s tour from <strong>Help</strong> at the top of the window.
-        The first-day checklist shows under these cards.
+        You can always take a page&apos;s tour from <strong>Help</strong> at the bottom of the left
+        menu. The first-day checklist shows under these cards.
       </p>
     </div>
   );
