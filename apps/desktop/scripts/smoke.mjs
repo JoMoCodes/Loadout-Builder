@@ -484,6 +484,57 @@ try {
     return `${perf.drivers} drivers, ${perf.weeks.length} weeks`;
   });
 
+  await check('the Dashboard can be rearranged, and the layout is kept', async () => {
+    // A tile of the person's own is worked out by the main process, through the real bridge.
+    const dash = await ask('performance:dashboard', {
+      range: null,
+      custom: [{ id: 'custom-1', number: 'overall', how: 'average', limit: 0 }],
+    });
+    assert(dash.ok && dash.value.custom?.[0]?.value > 0, 'an own tile was not worked out');
+    const refused = await ask('performance:dashboard', {
+      range: null,
+      custom: [{ id: 'custom-1', number: 'overall', how: 'median', limit: 0 }],
+    });
+    assert(!refused.ok && refused.reason === 'bad-input', 'an odd own tile was not refused');
+
+    const sections = () => settingsOnDisk().dashboard?.layouts?.[0]?.sections ?? [];
+    await goTo(page, 'dashboard');
+    await page.waitForSelector('[data-testid="dashboard-body"]', { timeout: 30_000 });
+    await page.click('[data-testid="dashboard-customize"]');
+    // Moved with its arrow button (the way that needs no mouse): Tiers to the very front.
+    await page.click('[data-testid="section-tile-tiers-earlier"]');
+    await until(() => sections()[0]?.id === 'tile-tiers', 'the moved section was not saved first');
+    // Dragged: ID expiry dropped on the left half of the first section. A real mouse drag cannot
+    // be driven in this window, so the same drag messages are sent by hand (the browser tests
+    // drag with the mouse).
+    await page.evaluate(() => {
+      const data = new DataTransfer();
+      const handle = document.querySelector('[data-testid="section-ids-handle"]');
+      const target = document.querySelector('[data-section="tile-tiers"]');
+      const box = target.getBoundingClientRect();
+      const at = { bubbles: true, cancelable: true, dataTransfer: data };
+      const where = { ...at, clientX: box.left + 5, clientY: box.top + 20 };
+      handle.dispatchEvent(new DragEvent('dragstart', at));
+      target.dispatchEvent(new DragEvent('dragover', where));
+      target.dispatchEvent(new DragEvent('drop', where));
+      handle.dispatchEvent(new DragEvent('dragend', at));
+    });
+    await until(() => sections()[0]?.id === 'ids', 'the dragged section was not saved first');
+    await page.click('[data-testid="section-trend-hide"]');
+    await until(
+      () => sections().length === 9 && !sections().some((section) => section.id === 'trend'),
+      'the hidden section was not saved as hidden',
+    );
+    await page.click('[data-testid="dashboard-reset"]');
+    await page.click('dialog[data-dialog="confirm"] [data-action="confirm"]');
+    await until(
+      () => sections().length === 10 && sections()[0]?.id === 'tile-fleet',
+      'Reset did not put the usual layout back',
+    );
+    await page.click('[data-testid="dashboard-customize-done"]');
+    return 'moved, dragged, hidden, reset';
+  });
+
   await check('demo mode holds the made-up route sheet day, ready to click through', async () => {
     // The Routes export and the route sheet PDF are read after demo mode opens, like the weekly data.
     const counts = await until(

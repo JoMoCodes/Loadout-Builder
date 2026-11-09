@@ -2,7 +2,23 @@
 // coaching reasons in plain words, and the "How is this worked out?" explanations. Plain
 // functions, so they can be tested on their own (words.test.ts).
 
-import type { PerfComplianceRow, PerfDashboardView, WeekRange } from '../../../shared/performance';
+import {
+  CUSTOM_HOW_NAMES,
+  REASON_KINDS,
+  SECTION_NAMES,
+  customNumber,
+  type DashboardSection,
+  type LayoutWeeks,
+  type ReasonKind,
+  type Target,
+} from '../../../shared/dashboardLayout';
+import type {
+  PerfComplianceRow,
+  PerfCustomResult,
+  PerfCustomSpec,
+  PerfDashboardView,
+  WeekRange,
+} from '../../../shared/performance';
 import type { WeekRangeChoice } from '../../../shared/performanceSettings';
 import type { Tone } from '../../ui/chip';
 
@@ -80,6 +96,24 @@ export function quickPickOf(
     );
   }
   return null;
+}
+
+/**
+ * The weeks a layout shows. A layout with its own weeks uses its quick pick (which moves along as
+ * new weeks come in) or its two weeks; otherwise it is the weeks the Scorecards page shows too.
+ */
+export function layoutRange(
+  weeks: readonly string[],
+  own: LayoutWeeks | undefined,
+  shared: WeekRangeChoice | null | undefined,
+): WeekRange | null {
+  if (!own || !own.own) return dashboardRange(weeks, shared);
+  if (own.pick) {
+    const pick = QUICK_PICKS.find((one) => one.id === own.pick);
+    if (pick && pick.weeks !== null) return quickRange(weeks, pick.weeks);
+    return dashboardRange(weeks, null);
+  }
+  return dashboardRange(weeks, { from: own.from, to: own.to });
 }
 
 /** How many weeks a range covers, counting only weeks brought in. */
@@ -177,6 +211,49 @@ export function reasonWords(reason: string): string {
   return reason;
 }
 
+/** Which rule a coaching reason comes from, read from its wording. */
+export function reasonKind(reason: string): ReasonKind | 'other' {
+  if (/^Currently Bronze\b/.test(reason)) return 'bronze';
+  if (/^Dropped from\b/.test(reason)) return 'dropped';
+  if (/^Score declined\b/.test(reason)) return 'falling';
+  if (/ consecutive weeks$/.test(reason)) return 'repeating';
+  return 'other';
+}
+
+/**
+ * The "Who needs a word" list as a layout wants it: only the reasons it has switched on (a driver
+ * with none left is dropped), High first, and only High when it says so. A driver is High when a
+ * reason left is Bronze or a tier drop.
+ */
+export function coachingFor<
+  T extends { severity: string; reasons: string[]; latestScore: number | null },
+>(flags: readonly T[], section: Pick<DashboardSection, 'reasons' | 'highOnly'>): T[] {
+  const on = new Set<string>(section.reasons ?? REASON_KINDS);
+  const all = REASON_KINDS.every((kind) => on.has(kind));
+  const kept: T[] = [];
+  for (const flag of flags) {
+    if (all) {
+      kept.push(flag);
+      continue;
+    }
+    const reasons = flag.reasons.filter((reason) => {
+      const kind = reasonKind(reason);
+      return kind === 'other' || on.has(kind);
+    });
+    if (reasons.length === 0) continue;
+    const high = reasons.some((reason) => {
+      const kind = reasonKind(reason);
+      return kind === 'bronze' || kind === 'dropped';
+    });
+    // A reason the app does not know keeps the severity the rules gave.
+    const known = reasons.every((reason) => reasonKind(reason) !== 'other');
+    kept.push({ ...flag, reasons, severity: high ? 'High' : known ? 'Watch' : flag.severity });
+  }
+  return kept
+    .filter((flag) => !section.highOnly || flag.severity === 'High')
+    .sort((a, b) => Number(b.severity === 'High') - Number(a.severity === 'High'));
+}
+
 /** "DCR is costing the most points (score 39, weight 10.5)", or null when none is known. */
 export function dragWords(flag: {
   topDragMetric: string | null;
@@ -222,10 +299,57 @@ export interface Explanation {
 }
 
 export type ExplainId =
-  'fleet' | 'tiers' | 'packages' | 'safety' | 'coaching' | 'ids' | 'movers' | 'trend';
+  | 'fleet'
+  | 'tiers'
+  | 'packages'
+  | 'safety'
+  | 'coaching'
+  | 'ids'
+  | 'movers'
+  | 'trend'
+  | 'reasons'
+  | 'watch';
 
-/** What each "How is this worked out?" button says. */
-export function explanation(id: ExplainId, view: PerfDashboardView): Explanation {
+/**
+ * What each "How is this worked out?" button says. Given the section, it also says what that
+ * section's own choices change (reasons left out, a target).
+ */
+export function explanation(
+  id: ExplainId,
+  view: PerfDashboardView,
+  section?: DashboardSection,
+): Explanation {
+  const base = usualExplanation(id, view);
+  if (!section) return base;
+  const more: string[] = [];
+  if (id === 'coaching') {
+    const off = REASON_KINDS.filter((kind) => !(section.reasons ?? REASON_KINDS).includes(kind));
+    const names: Record<ReasonKind, string> = {
+      bronze: 'drivers in Bronze',
+      dropped: 'tier drops',
+      falling: 'falling scores',
+      repeating: 'repeated failure reasons',
+    };
+    if (off.length > 0) {
+      more.push(`This layout leaves out: ${off.map((kind) => names[kind]).join(', ')}.`);
+    }
+    if (section.highOnly) more.push('This layout shows only the High drivers.');
+  }
+  if (id === 'ids' && section.expiredOnly) {
+    more.push('This layout shows only the IDs that have already expired.');
+  }
+  if (id === 'reasons' && section.sources && section.sources.length < 4) {
+    more.push(
+      section.sources.length === 0
+        ? 'This layout has every kind switched off.'
+        : `This layout shows only ${section.sources.join(', ')}.`,
+    );
+  }
+  if (section.target) more.push(targetRule(section.target, targetFormat(section)));
+  return more.length > 0 ? { ...base, paragraphs: [...base.paragraphs, ...more] } : base;
+}
+
+function usualExplanation(id: ExplainId, view: PerfDashboardView): Explanation {
   const latest = view.latestWeek ?? 'the newest week';
   const before = view.previousWeek;
   const range = rangeWords(view.range);
@@ -312,7 +436,154 @@ export function explanation(id: ExplainId, view: PerfDashboardView): Explanation
           'A reason is "growing" when it happened more in the second half of the weeks than in the first half, and "shrinking" when it happened less.',
         ],
       };
+    case 'reasons':
+      return {
+        title: 'Failure reasons',
+        paragraphs: [
+          `Each failure reason (POD, CDF, DSB and PSB) added up over ${range}, the biggest first.`,
+          'A reason is "growing" when it happened more in the second half of the weeks than in the first half, and "shrinking" when it happened less.',
+        ],
+      };
+    case 'watch':
+      return {
+        title: 'Watch list',
+        paragraphs: [
+          'The drivers you chose to keep an eye on. They stay here whatever their score is.',
+          `Each line shows the driver's tier and Overall Score in their newest week in ${range}, and the change from their week before.`,
+          'Click a driver anywhere on the Dashboard to add them or take them off. Every layout shares the same watch list.',
+        ],
+      };
   }
+}
+
+// ------------------------------------------------------------------------------ targets
+
+/** The tile's number against its target: met, missed, or null when there is nothing to judge. */
+export function targetState(
+  target: Target | null | undefined,
+  value: number | null | undefined,
+): 'met' | 'missed' | null {
+  if (!target || value === null || value === undefined || !Number.isFinite(value)) return null;
+  return (target.dir === 'min' ? value >= target.value : value <= target.value) ? 'met' : 'missed';
+}
+
+/** "On target: 90 or higher", "Below your target of 90", "Above your limit of 5". */
+export function targetWords(
+  target: Target,
+  state: 'met' | 'missed',
+  format: (value: number) => string,
+): string {
+  const n = format(target.value);
+  if (state === 'met') return `On target: ${n} or ${target.dir === 'min' ? 'higher' : 'lower'}`;
+  return target.dir === 'min' ? `Below your target of ${n}` : `Above your limit of ${n}`;
+}
+
+function targetRule(target: Target, format: (value: number) => string): string {
+  const n = format(target.value);
+  return target.dir === 'min'
+    ? `Your target: ${n} or higher. The tile turns red when the number is lower.`
+    : `Your target: ${n} or lower. The tile turns red when the number is higher.`;
+}
+
+/** How a tile's target number is written. */
+export function targetFormat(section: DashboardSection): (value: number) => string {
+  if (section.kind === 'custom') return customFormat(section);
+  if (section.kind === 'tile-fleet') return (value) => short(value, 1);
+  return count;
+}
+
+// ------------------------------------------------------------------------------ own tiles
+
+/** What the page asks the main process to work out for a person's own tile. */
+export function customSpec(section: DashboardSection): PerfCustomSpec {
+  return {
+    id: section.id,
+    number: customNumber(section.number).id,
+    how: section.how ?? 'average',
+    limit: section.limit ?? 0,
+  };
+}
+
+/** The tile's name: the one typed in, else worked out ("Average DCR score"). */
+export function customTitle(section: DashboardSection): string {
+  if (section.title) return section.title;
+  const number = customNumber(section.number);
+  const limit = short(section.limit ?? 0, 2);
+  switch (section.how ?? 'average') {
+    case 'average':
+      return `Average ${number.label}`;
+    case 'total':
+      return `Total ${number.label}`;
+    case 'below':
+      return `Drivers below ${limit}: ${number.label}`;
+    case 'above':
+      return `Drivers above ${limit}: ${number.label}`;
+  }
+}
+
+/** A section's name on the page. */
+export function sectionTitle(section: DashboardSection): string {
+  return section.kind === 'custom' ? customTitle(section) : SECTION_NAMES[section.kind];
+}
+
+/** How a person's own tile writes its number: an average with decimals, the rest whole. */
+export function customFormat(section: DashboardSection): (value: number) => string {
+  const decimals =
+    (section.how ?? 'average') === 'average' ? customNumber(section.number).decimals : 0;
+  return (value) =>
+    value.toLocaleString('en-US', {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    });
+}
+
+/** "How is this worked out?" for a person's own tile, written from its choices. */
+export function customExplanation(
+  section: DashboardSection,
+  result: PerfCustomResult | undefined,
+  view: PerfDashboardView,
+): Explanation {
+  const number = customNumber(section.number);
+  const latest = view.latestWeek ?? 'the newest week';
+  const limit = short(section.limit ?? 0, 2);
+  const how = section.how ?? 'average';
+  const first =
+    how === 'average'
+      ? `The average of every driver's ${number.each} in ${latest}.`
+      : how === 'total'
+        ? `Every driver's ${number.each} in ${latest}, added up.`
+        : `How many drivers had ${number.each} ${how === 'below' ? 'below' : 'above'} ${limit} in ${latest}. A driver right on ${limit} is not counted.`;
+  const paragraphs = [first];
+  if (number.id.startsWith('metric:')) {
+    paragraphs.push(
+      'This is the score the scorecard gives the metric, from 0 to 100. Higher is better.',
+    );
+  }
+  if (number.id.startsWith('fail:')) {
+    paragraphs.push('A failure is one line on the Failure reasons list for this kind.');
+  }
+  if (result) {
+    paragraphs.push(
+      result.drivers === 0
+        ? `No driver has this number in ${latest}.`
+        : `${plural(result.drivers, 'driver')} had this number in ${latest}.`,
+    );
+  }
+  paragraphs.push(
+    view.previousWeek
+      ? `The change compares it with ${view.previousWeek}, the week before.`
+      : 'There is no week before this one to compare it with.',
+    section.show === 'chart'
+      ? 'The chart shows the same number for each week you picked, oldest on the left.'
+      : 'The small line shows the same number for each week you picked, oldest on the left.',
+  );
+  if (section.target) paragraphs.push(targetRule(section.target, customFormat(section)));
+  return { title: customTitle(section), paragraphs };
+}
+
+/** What a person's own tile does, in a few words, for the list of choices. */
+export function customHowWords(section: DashboardSection): string {
+  return CUSTOM_HOW_NAMES[section.how ?? 'average'];
 }
 
 /** Plain words for whether a failure reason is growing. */

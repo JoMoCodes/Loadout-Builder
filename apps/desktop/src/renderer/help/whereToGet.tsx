@@ -326,6 +326,25 @@ export const WEEKLY_WHERE_TO_GET: Record<WeeklyStepId, Note> = {
       {
         text: (
           <>
+            Click <strong>Customize</strong> to make the page yours. Drag a section by its name to
+            move it, pick a size to make it wider or taller, or hide it.{' '}
+            <strong>Add a section</strong> brings one back, adds the <strong>Watch list</strong>, or
+            makes a tile of your own from any scorecard number.
+          </>
+        ),
+      },
+      {
+        text: (
+          <>
+            The <strong>Layout</strong> button keeps several arrangements, for example one for
+            Monday morning and one for a review. <strong>Reset to the usual layout</strong> puts
+            everything back.
+          </>
+        ),
+      },
+      {
+        text: (
+          <>
             Not sure what a number means? Click <strong>How is this worked out?</strong> next to it.
           </>
         ),

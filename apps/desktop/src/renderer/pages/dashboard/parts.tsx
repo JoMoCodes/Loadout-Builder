@@ -6,6 +6,8 @@ import {
   ArrowUp,
   Calculator,
   CircleHelp,
+  Eye,
+  EyeOff,
   FileText,
   Minus,
   UserRound,
@@ -42,11 +44,17 @@ export function WeekBar({
   range,
   picked,
   onRange,
+  onPick,
 }: {
   weeks: readonly string[];
   range: WeekRange | null;
   picked: QuickPickId | null;
   onRange: (range: WeekRangeChoice) => void;
+  /**
+   * Given when the layout keeps its own weeks: a quick pick is then remembered as the pick
+   * itself ("the last 4 weeks", whichever they are) instead of as two weeks.
+   */
+  onPick?: (pick: QuickPickId) => void;
 }) {
   const last = weeks[weeks.length - 1];
   const selectClass =
@@ -71,6 +79,7 @@ export function WeekBar({
             disabled={!last}
             data-testid={`dashboard-pick-${pick.id}`}
             onClick={() => {
+              if (onPick) return onPick(pick.id);
               const choice = quickChoice(weeks, pick.weeks);
               if (choice) onRange(choice);
             }}
@@ -140,6 +149,7 @@ export function Card({
   className,
   testId,
   titleId,
+  fixed = false,
 }: {
   title: string;
   aside?: ReactNode;
@@ -147,11 +157,14 @@ export function Card({
   className?: string;
   testId?: string;
   titleId?: string;
+  /** The section has a set height: the card fills it, and what does not fit scrolls. */
+  fixed?: boolean;
 }) {
   return (
     <section
       className={cn(
         'flex min-w-0 flex-col rounded-lg border border-line bg-surface px-4 py-3',
+        fixed && 'min-h-0 flex-1',
         className,
       )}
       aria-labelledby={titleId}
@@ -163,7 +176,19 @@ export function Card({
         </h2>
         {aside ? <div className="ml-auto flex items-center gap-2">{aside}</div> : null}
       </div>
-      {children}
+      {fixed ? (
+        // The lists reach a little past the card's padding, so the scrolling box does too.
+        <div
+          className="-mx-2 flex min-h-0 flex-1 flex-col overflow-y-auto px-2"
+          role="group"
+          aria-labelledby={titleId}
+          tabIndex={0}
+        >
+          {children}
+        </div>
+      ) : (
+        children
+      )}
     </section>
   );
 }
@@ -219,28 +244,41 @@ export function ExplainDialog({
   );
 }
 
-/** One of the four tiles along the top. */
+/** A tile: one number (or one small picture) with its name above it. */
 export function Tile({
   title,
   testId,
   children,
   onExplain,
   what,
+  target = null,
+  fixed = false,
 }: {
   title: string;
   testId: string;
   children: ReactNode;
   onExplain: () => void;
   what: string;
+  /** The number against the person's target: a missed one gives the tile a red edge. */
+  target?: 'met' | 'missed' | null;
+  /** The section has a set height: what does not fit scrolls. */
+  fixed?: boolean;
 }) {
   return (
     <section
-      className="flex min-w-0 flex-col gap-1 rounded-lg border border-line bg-surface px-4 pt-3 pb-2"
+      className={cn(
+        'flex min-w-0 flex-1 flex-col gap-1 rounded-lg border bg-surface px-4 pt-3 pb-2',
+        target === 'missed' ? 'border-bad shadow-[inset_0_0_0_1px_var(--bad)]' : 'border-line',
+        fixed && 'min-h-0',
+      )}
       aria-label={title}
       data-testid={testId}
+      data-target={target ?? undefined}
     >
       <h2 className="m-0 text-sm font-medium text-muted">{title}</h2>
-      <div className="flex min-h-0 flex-1 flex-col gap-1">{children}</div>
+      <div className={cn('flex min-h-0 flex-1 flex-col gap-1', fixed && 'overflow-y-auto')}>
+        {children}
+      </div>
       <div>
         <ExplainButton onClick={onExplain} testId={`${testId}-explain`} what={what} />
       </div>
@@ -288,11 +326,16 @@ export interface DriverMenuActions {
   openOnPerformance: (transporterId: string) => void;
   previewReport: (transporterId: string) => void;
   explainScore: (transporterId: string, name: string) => void;
+  /** The driver is on the watch list. */
+  watched: (transporterId: string) => boolean;
+  /** Puts the driver on the watch list, or takes them off. */
+  toggleWatch: (transporterId: string) => void;
 }
 
 /**
  * A driver's line. Clicking it (or Enter or Space on it) opens a small menu: open them on the
- * Scorecards page, preview their report, or explain their score. Esc closes the menu.
+ * Scorecards page, preview their report, explain their score, or put them on the watch list (or
+ * take them off). Esc closes the menu.
  */
 export function DriverRow({
   transporterId,
@@ -351,6 +394,18 @@ export function DriverRow({
         >
           <Calculator aria-hidden="true" />
           Explain this score
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onSelect={() => actions.toggleWatch(transporterId)}
+          data-testid="driver-menu-watch"
+        >
+          {actions.watched(transporterId) ? (
+            <EyeOff aria-hidden="true" />
+          ) : (
+            <Eye aria-hidden="true" />
+          )}
+          {actions.watched(transporterId) ? 'Take off the watch list' : 'Add to the watch list'}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

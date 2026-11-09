@@ -21,6 +21,7 @@ import {
 } from '@loadout/performance';
 import type {
   PerfComplianceRow,
+  PerfCustomSpec,
   PerfDashboardView,
   PerfDriverRow,
   PerfDriversView,
@@ -31,6 +32,7 @@ import type {
 } from '../../shared/performance';
 import { PERF_KINDS } from '../../shared/performance';
 import type { PerformanceSettings } from '../../shared/performanceSettings';
+import { customResults, watchRows } from './custom';
 
 /** The range asked for, or every scorecard week (first to last) when none was. Null: no weeks. */
 export function resolveRange(data: PerfData, range: WeekRange | null): WeekRange | null {
@@ -268,7 +270,31 @@ function packagesIn(data: PerfData, week: string | null): number {
     .reduce((sum, card) => sum + (card.packagesDelivered ?? 0), 0);
 }
 
+/** The person's own tiles and the watch list's drivers the page asked for with the Dashboard. */
+export interface DashboardExtras {
+  custom?: readonly PerfCustomSpec[];
+  watch?: readonly string[];
+}
+
+/** The Dashboard, with the answers for the person's own tiles and watch list when asked for. */
 export function dashboardView(
+  data: PerfData,
+  asked: WeekRange | null,
+  settings: PerformanceSettings,
+  asOf: string,
+  extras: DashboardExtras = {},
+): PerfDashboardView {
+  const view = usualDashboardView(data, asked, settings, asOf);
+  if (extras.custom && extras.custom.length > 0) {
+    view.custom = customResults(data, view.range, extras.custom);
+  }
+  if (extras.watch && extras.watch.length > 0) {
+    view.watch = watchRows(data, view.range, extras.watch);
+  }
+  return view;
+}
+
+function usualDashboardView(
   data: PerfData,
   asked: WeekRange | null,
   settings: PerformanceSettings,

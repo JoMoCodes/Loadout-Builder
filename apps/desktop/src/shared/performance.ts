@@ -318,6 +318,46 @@ export interface PerfDashboardView {
     complianceWindowDays: number;
     topN: number;
   };
+  /** The answers for the person's own tiles that were asked for, in the order asked. */
+  custom?: PerfCustomResult[];
+  /** The watch list's drivers that are on file, in the order asked. */
+  watch?: PerfWatchRow[];
+}
+
+/** One of the person's own tiles, as the page asks for it. */
+export interface PerfCustomSpec {
+  /** The tile's id on the layout; the answer carries it back. */
+  id: string;
+  /** Which number (dashboardLayout.ts, CUSTOM_NUMBERS): "overall", "metric:DCR", "fail:POD". */
+  number: string;
+  how: 'average' | 'total' | 'below' | 'above';
+  /** The number drivers are counted below or above. */
+  limit: number;
+}
+
+/** The answer for one of the person's own tiles. */
+export interface PerfCustomResult {
+  id: string;
+  /** In the newest week of the range. Null when no driver has the number that week. */
+  value: number | null;
+  /** The same in the week before, or null. */
+  before: number | null;
+  /** How many drivers had the number in the newest week. */
+  drivers: number;
+  /** The same for each week in the range that has the number, oldest first. */
+  series: Array<{ week: string; value: number }>;
+}
+
+/** One driver on the watch list. */
+export interface PerfWatchRow {
+  transporterId: string;
+  name: string;
+  /** Their newest scored week in the range, or null when they have none. */
+  latestWeek: string | null;
+  latestTier: string | null;
+  latestScore: number | null;
+  /** Their score in the scored week before that one, or null. */
+  previousScore: number | null;
 }
 
 /**

@@ -42,3 +42,35 @@ doing, and who needs a word?". Both answers must fit on one screen and take unde
   size buttons. Every number can be explained; nothing is on the page that cannot be acted on.
 - With no data yet, the page says so in one line and offers the button that fixes it (the Imports
   tab), instead of empty charts.
+
+## Making it your own
+
+Added later. The page above is now "the usual layout": what everyone starts with, and what
+**Reset to the usual layout** goes back to. From there the page is the person's to arrange.
+
+- **Sections.** Every part of the page is a section: each tile, who needs a word, ID expiry, most
+  improved, most declined, the trend, the failure reasons, the watch list, and tiles the person
+  builds. A layout is an ordered list of sections on twelve columns.
+- **Customize.** One button turns the page into its arranging mode. Each section gets a strip
+  with a handle to drag it, arrow buttons to move it without a mouse, a width (Small, Medium,
+  Half, Wide, Full), a height (Fit, Short, Medium, Tall), its own choices, and Hide. The right
+  edge can be dragged to change the width. Changes are saved as they are made. The sections are
+  switched off while arranging, so a drag never opens a driver's menu.
+- **A narrow window.** Widths are for a wide page. On a narrower one a section takes half or all
+  of the page; on a narrow one every section is as wide as the page. Nothing scrolls sideways.
+- **Each section's own choices.** Who needs a word: which reasons count, only High, how many
+  lines. ID expiry: only expired, how many lines. Failure reasons: which kinds. A tile with one
+  big number: a target, which gives the tile a red edge and says so when it is missed.
+- **Layouts.** Several named layouts are kept, with ready-made ones to start from. A layout can
+  keep its own weeks (a quick pick moves along as new weeks come in), so "Monday morning" can
+  open on last week while the Scorecards page stays on every week. A layout can be saved to a
+  file and brought in on another computer. The file names no driver.
+- **Watch list.** Drivers the person pins from any driver's menu, or picks from everyone on file.
+  One list, shared by every layout, kept beside the layouts and never in a layout file.
+- **Your own tile.** A scorecard number (the Overall Score, packages, one of the twelve metric
+  scores, or a kind of failure), then the average, the total, or how many drivers are below or
+  above a number. Shown as a big number with a small line, or as a chart by week. Its "How is
+  this worked out?" is written from the choices.
+
+Why it stays simple to read: the usual layout is unchanged, Reset is always one click away, and
+every number, built-in or built by the person, still has its explanation.

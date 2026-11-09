@@ -11,6 +11,24 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
+    version: '2.15.0',
+    items: [
+      'The Dashboard is now yours to arrange. Click Customize, next to the page title, to change it. Click Done when you are finished. Your changes are saved as you make them.',
+      'Move a section: drag it by its name, or use its two arrow buttons. The arrow buttons work with the keyboard alone.',
+      'Make a section wider or narrower: pick Small, Medium, Half, Wide or Full, or drag its right edge. You can also set how tall it is. A long list then scrolls inside its box.',
+      'Hide a section you do not use with the eye button. Add a section brings it back.',
+      'Each tile is its own section now. So are Most improved and Most declined. Show only the ones you want, in the order you want.',
+      'Some sections have their own choices, behind the sliders button. Who needs a word: pick which reasons put a driver on the list, show only the High drivers, and set how many lines show. ID expiry: show only IDs that have already expired. Failure reasons: pick POD, CDF, DSB or PSB.',
+      'Set a target for a tile, like "fleet average should be at least 90". When the number misses the target, the tile gets a red edge and says so.',
+      'New: the Watch list. Click any driver on the Dashboard and pick Add to the watch list. They stay on it whatever their score is. Choose drivers on the list picks from everyone on file.',
+      'New: tiles of your own. In Add a section, pick Your own tile. Choose a number from the scorecards, then the average, the total, or how many drivers are below or above a number. Show it as a big number or as a chart by week.',
+      'Keep more than one arrangement. The Layout button, next to the page title, makes a new layout, switches between them, renames and deletes them. There are ready-made ones to start from, like Monday morning and People first.',
+      'A layout can keep its own weeks. Tick "This layout keeps its own weeks" while customizing. The Dashboard can then open on the last 4 weeks while Scorecards stays on all of them.',
+      'Save a layout to a file from the Layout button, and bring it in on another computer. The file holds the arrangement only. It never holds drivers.',
+      'Changed your mind? Reset to the usual layout puts everything back the way it was. It asks first.',
+    ],
+  },
+  {
     version: '2.14.2',
     items: [
       'On the snapshot pages in the report email, the coloured fill on the score gauge ends in a rounded tip at the score. Page 1 lost that rounded tip whenever the score was only a little way into its tier, so it ended square while page 2 was rounded. Both pages now match.',
