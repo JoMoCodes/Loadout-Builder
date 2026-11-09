@@ -117,6 +117,7 @@ GitHub then checks for private data, tests the app, starts it once on Windows to
 Good to know:
 
 - Pushing to `main` **without** changing the version builds and tests the app but doesn't release anything.
+- A branch is built through its **pull request**, once per change. Pull requests check and start the app but skip making the `.exe` files, which are only made for `main` and releases. To get a branch's `.exe` files anyway, start the build by hand on the repository's **Actions** page.
 - Updates only work while this repository is **public**, because the app downloads updates without logging in.
 - Nothing builds or releases unless the **Privacy scan** job passes first.
 
