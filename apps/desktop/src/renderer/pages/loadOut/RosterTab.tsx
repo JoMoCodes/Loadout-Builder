@@ -374,7 +374,10 @@ export function RosterTab({
       `This takes ${route ? `the ${route.label} file` : 'the route data'} out of the app and ` +
         'blanks dispatch times, route codes, service types and PADs on the roster. Drivers and ' +
         'vans stay.' +
-        (withDwp ? '\n\nThe DWP sheet is kept. Use Clear DWP Data to take it off too.' : ''),
+        (withDwp ? '\n\nThe DWP sheet is kept. Use Clear DWP Data to take it off too.' : '') +
+        (now.routeSheetsRoute
+          ? '\n\nThe file brought in just for Route Sheets is kept. Clear it on the Route Sheets page.'
+          : ''),
       { danger: true },
     );
     if (!yes) return;

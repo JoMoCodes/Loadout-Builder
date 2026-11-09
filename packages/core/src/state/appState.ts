@@ -108,6 +108,15 @@ import { BUILT_IN_TYPES, type VanType, type VehicleType } from '../models/vehicl
 /** A route export's kinds, in tab order. */
 const ROUTE_KINDS: readonly string[] = ROUTE_SOURCES.map(([kind]) => kind);
 
+/**
+ * The storage key of the route file brought in just for Route Sheets. It is a route export of one
+ * of the kinds above, kept apart from the roster's, so neither side's import or clear touches
+ * the other's. Only one such file is kept at a time.
+ */
+export function routeSheetsStorageKey(kind: string): string {
+  return `route-sheets:${kind}`;
+}
+
 function nameKeyText(name: string): string {
   const [first, last] = nameKey(name);
   return `${first}\u0000${last}`;
@@ -130,6 +139,11 @@ export class AppState {
   routeData = new Map<string, RouteDataSet>(
     ROUTE_KINDS.map((kind) => [kind, createRouteDataSet({ kind })]),
   );
+  /**
+   * The route file brought in just for Route Sheets, or null when there is none. Nothing on the
+   * load-out side reads it: the roster's route data is `routeData`.
+   */
+  routeSheetsRoute: RouteDataSet | null = null;
   dwp: DwpDataSet = createDwpDataSet();
   vehicles: VehicleFleet = createVehicleFleet();
   vehicleOverrides = new Map<string, boolean>();
@@ -173,6 +187,7 @@ export class AppState {
     this.routeData = new Map(
       ROUTE_KINDS.map((kind) => [kind, routeDataFromStored(this.store.loadRouteData(kind))]),
     );
+    this.routeSheetsRoute = this.loadRouteSheetsRoute();
     this.dwp = dwpFromStored(this.store.loadDwp());
     this.vehicles = fleetFromStored(this.store.loadVehicles());
     this.vehicleOverrides = new Map(Object.entries(this.store.loadVehicleOverrides()));
@@ -297,6 +312,52 @@ export class AppState {
     this.routeData.set(kind, dataset);
     this.notify();
     return dataset;
+  }
+
+  // ---------------------------------------------- the route sheets' own route file
+
+  private loadRouteSheetsRoute(): RouteDataSet | null {
+    for (const kind of ROUTE_KINDS) {
+      const stored = this.store.loadRouteData(routeSheetsStorageKey(kind));
+      if (stored.rows.length > 0) return { ...routeDataFromStored(stored), kind };
+    }
+    return null;
+  }
+
+  private saveRouteSheetsRoute(dataset: RouteDataSet): void {
+    for (const kind of ROUTE_KINDS) this.store.clearRouteData(routeSheetsStorageKey(kind));
+    this.store.saveRouteData(
+      routeDataToStored({ ...dataset, kind: routeSheetsStorageKey(dataset.kind) }),
+    );
+  }
+
+  /**
+   * Keep a route export read by `importRouteExport` as the Route Sheets' own file. It replaces
+   * the one kept before, whatever its kind, and leaves the roster's route data alone.
+   */
+  importRouteSheetsRoute(dataset: RouteDataSet): RouteDataSet {
+    this.saveRouteSheetsRoute(dataset);
+    this.routeSheetsRoute = dataset;
+    this.notify();
+    return dataset;
+  }
+
+  /** Pin each dispatch time of the Route Sheets' own file to a PAD (the rule of `setPads`). */
+  setRouteSheetsPads(pads: ReadonlyMap<string, number> | Record<string, number>): void {
+    const dataset = this.routeSheetsRoute;
+    if (dataset === null) return;
+    const entries = pads instanceof Map ? [...pads] : Object.entries(pads);
+    dataset.pads = new Map(entries.filter(([, pad]) => pad));
+    for (const row of dataset.rows) row.pad = '';
+    this.saveRouteSheetsRoute(dataset);
+    this.notify();
+  }
+
+  /** Take the Route Sheets' own file out. The roster's route data is not touched. */
+  clearRouteSheetsRoute(): void {
+    for (const kind of ROUTE_KINDS) this.store.clearRouteData(routeSheetsStorageKey(kind));
+    this.routeSheetsRoute = null;
+    this.notify();
   }
 
   /** The day route data is read for: the load-out date, else today. */

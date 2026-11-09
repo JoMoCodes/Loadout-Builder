@@ -1,4 +1,4 @@
-// Demo mode's made-up route sheet day: the fixture Routes export goes onto the Route Data page,
+// Demo mode's made-up route sheet day: the fixture Routes export goes on as the Roster's route data,
 // the fixture driver list is brought in if the demo data has none, and the synthetic route sheet
 // PDF is read into a run. A trainee can then click through Distribute and Sheets. All of it goes
 // into the throwaway demo copy of the database; the person's real data is never touched.

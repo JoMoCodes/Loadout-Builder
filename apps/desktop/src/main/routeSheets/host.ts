@@ -153,6 +153,13 @@ export interface RouteSheetsIo {
 interface RouteSource {
   kind: RouteDataKindInUse;
   set: RouteDataSet;
+  /** The file brought in just for the route sheets, not the Roster's. */
+  own: boolean;
+}
+
+/** Does this route set have route codes the matcher can use (Routes always; the others with IDs)? */
+function usable(kind: string, set: RouteDataSet): boolean {
+  return set.rows.length > 0 && (kind === ROUTE_ROUTES || hasRouteDrivers(set));
 }
 
 const ORDER: readonly RouteDataKindInUse[] = [
@@ -281,25 +288,27 @@ export class RouteSheetsHost {
   // ---- the matcher's input, from the app's own data ------------------------------------------
 
   /**
-   * The route data the matcher reads: the file chosen on the page (the roster's by default), when
-   * it is loaded and carries Transporter IDs per route code. Otherwise the Routes export if it is
-   * loaded, else the Itineraries, else the Weekly Schedule, the same way. Null when none is.
+   * The route data the matcher reads. When the page chose the file brought in just for the route
+   * sheets, that file, as long as it is there and carries Transporter IDs per route code.
+   * Otherwise the Roster's: the file the roster took its routes from when it is loaded and usable,
+   * else the Routes export if it is loaded, else the Itineraries, else the Weekly Schedule, the
+   * same way. Null when none is.
    */
   routeSource(): RouteSource | null {
     const { state } = this.options;
     const choice = this.options.routeDataChoice?.() ?? 'roster';
-    const wanted = choice === 'roster' ? state.roster.routeSource : choice;
-    const chosen = ORDER.find((kind) => kind === wanted);
-    if (chosen) {
-      const set = state.routeSet(chosen);
-      if (set.rows.length > 0 && (chosen === ROUTE_ROUTES || hasRouteDrivers(set))) {
-        return { kind: chosen, set };
-      }
+    const own = state.routeSheetsRoute;
+    if (choice === 'own' && own !== null) {
+      const kind = ORDER.find((k) => k === own.kind);
+      if (kind && usable(kind, own)) return { kind, set: own, own: true };
+    }
+    const chosen = ORDER.find((kind) => kind === state.roster.routeSource);
+    if (chosen && usable(chosen, state.routeSet(chosen))) {
+      return { kind: chosen, set: state.routeSet(chosen), own: false };
     }
     for (const kind of ORDER) {
       const set = state.routeSet(kind);
-      if (set.rows.length === 0) continue;
-      if (kind === ROUTE_ROUTES || hasRouteDrivers(set)) return { kind, set };
+      if (usable(kind, set)) return { kind, set, own: false };
     }
     return null;
   }
@@ -400,6 +409,7 @@ export class RouteSheetsHost {
             label: routeDataLabel(source.set),
             // Only the file's name reaches the page; a stored path may use either slash.
             fileName: path.win32.basename(source.set.sourceFile),
+            own: source.own,
           }
         : null,
       driverList: {

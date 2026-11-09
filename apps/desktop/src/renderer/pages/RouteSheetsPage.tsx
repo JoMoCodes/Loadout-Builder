@@ -3,14 +3,17 @@
 // History (the saved runs). Ported from Route Sheet Distributor; the driver list, the Routes file
 // and the pads are the app's own (docs/RSD-MIGRATION-PLAN.md, section 3).
 
+import { dispatchTimes, routeDataDateLabel } from '@loadout/core';
 import { useCallback, useEffect, useState } from 'react';
 import type { RouteSheetsDistributionView, RouteSheetsStateView } from '../../shared/routeSheets';
+import type { RouteSetView } from '../../shared/snapshot';
 import { PAGE_TABS, isTabOf } from '../../shared/windows';
 import { FileDrop } from '../components/FileDrop';
 import { call, explain } from '../lib/channels';
 import { useAppSnapshot } from '../lib/useAppSnapshot';
 import type { RouteKindName } from '../../shared/channels/routeData';
-import { bringInFile, chooseFile, dropRefused, readNow } from './dataPages/bringIn';
+import { chooseFile, command, dropRefused, readNow } from './dataPages/bringIn';
+import { ConfirmDialog } from './dataPages/Modal';
 import { ProblemBanner, StatusLine, useMessages } from './dataPages/PageParts';
 import { TabPanel, Tabs } from './dataPages/Tabs';
 import { useDialogs } from './dataPages/useDialogs';
@@ -18,14 +21,20 @@ import { DistributeTab } from './routeSheets/DistributeTab';
 import { HistoryTab } from './routeSheets/HistoryTab';
 import { SheetsTab } from './routeSheets/SheetsTab';
 import { OldAppNote, TopStrip } from './routeSheets/TopStrip';
-import { assignPads, resolveShared } from './routeData/followUp';
-import { ROUTE_FILE_WORDS, RouteFileWindow, type FilePick } from './routeData/ImportWindows';
+import { RouteFileWindow, type FilePick } from './routeData/ImportWindows';
+import { PadDialog } from './routeData/PadDialog';
+import { padsMessage } from './routeData/routeRows';
 import type { PageProps } from './types';
 
 const TABS = PAGE_TABS['route-sheets'];
 
 /** The banner's title when the PDF did not come in (the button's own word). */
 const FAILED = 'Could not bring the PDF in';
+
+/** Only the file's name, never its folder (a stored path may use either slash). */
+function fileName(set: Pick<RouteSetView, 'sourceFile'>): string {
+  return set.sourceFile.split(/[\\/]/).pop() ?? set.sourceFile;
+}
 
 interface View {
   state: RouteSheetsStateView;
@@ -118,7 +127,50 @@ export function RouteSheetsPage({ settings, changeSettings, goTo, startTab }: Pa
     setStatus("Route sheets now match with the Roster's Route Data.");
   }
 
-  /** "Import a new file": a route file just for the route sheets, Routes up front. */
+  /** Matches with the file brought in here, kept from before. */
+  async function matchWithOwn() {
+    const own = snapshot?.routeSheetsRoute;
+    if (!own) return;
+    await changeSettings({ routeSheetsRouteData: 'own' });
+    setStatus(`Route sheets now match with the file you brought in here: ${fileName(own)}.`);
+  }
+
+  /**
+   * Puts the dispatch times of the file brought in here into PADs. The words it leaves say what
+   * happened, with `lead` in front (what the import just did). True when PADs were saved.
+   */
+  async function assignOwnPads(lead = ''): Promise<boolean> {
+    const fresh = await readNow();
+    const own = fresh?.routeSheetsRoute ?? null;
+    if (!own || own.rows.length === 0) {
+      setStatus('Import a new file on the Route data card first.');
+      return false;
+    }
+    const chosen = await ask<Record<string, number>>((done) => (
+      <PadDialog
+        sourceLabel={own.label}
+        dayLabel={routeDataDateLabel(own)}
+        times={dispatchTimes(own)}
+        current={own.pads}
+        onDone={done}
+      />
+    ));
+    if (chosen === null) {
+      setStatus(
+        `${lead}No PADs yet. Use Assign PADs on the Route data card when you're ready.`.trim(),
+      );
+      return false;
+    }
+    const done = await command(messages, 'routeSheets:set-route-pads', { pads: chosen });
+    if (!done.ok) return false;
+    setStatus(`${lead}${padsMessage(own.label, own, chosen)}`.trim());
+    return true;
+  }
+
+  /**
+   * "Import a new file": a route file just for the route sheets, Routes up front. It is kept
+   * apart from the Roster's route data, so neither side changes the other.
+   */
   async function importRouteFile() {
     if (busy) return;
     setBusy(true);
@@ -127,27 +179,57 @@ export function RouteSheetsPage({ settings, changeSettings, goTo, startTab }: Pa
         <RouteFileWindow
           page="route-sheets"
           title="Which file should the route sheets use?"
-          lead="Routes matches route sheets best."
+          lead="Routes matches route sheets best. The file is kept just for the route sheets: the Roster is not touched."
           onDone={done}
           onProblem={(words) => dropRefused(messages, words)}
         />
       ));
       if (pick === null) return;
-      const done = await bringInFile(pick.kind, messages, pick.token);
-      if (!done) return;
-      let fresh = await readNow();
-      if (fresh) {
-        await resolveShared(ask, messages, pick.kind, fresh, true);
-        fresh = (await readNow()) ?? fresh;
-        await assignPads(ask, messages, pick.kind, { afterImport: true, from: fresh });
-      }
-      await changeSettings({ routeSheetsRouteData: pick.kind });
-      setStatus(
-        `Route sheets now match with the new ${ROUTE_FILE_WORDS[pick.kind].name} file: ${done.rows} rows.`,
-      );
+      const path = pick.token ?? (await chooseFile(pick.kind, messages));
+      if (path === null) return;
+      const done = await command(messages, 'routeSheets:import-route-file', {
+        kind: pick.kind,
+        path,
+      });
+      if (!done.ok) return;
+      await changeSettings({ routeSheetsRouteData: 'own' });
+      await assignOwnPads(`Imported ${done.value.rows} rows just for the route sheets. `);
     } finally {
       setBusy(false);
     }
+  }
+
+  /** Takes the file brought in here out. The Roster's route data is not touched. */
+  async function clearOwnFile() {
+    const own = snapshot?.routeSheetsRoute;
+    if (!own) return;
+    const yes = await ask<boolean>((done) => (
+      <ConfirmDialog
+        title="Clear the imported file?"
+        body={
+          `This takes the ${own.label} file (${fileName(own)}) out of Route Sheets. ` +
+          "The Roster's Route Data is not touched.\n\n" +
+          "Route sheets will match with the Roster's Route Data again."
+        }
+        confirmLabel="Yes, clear it"
+        cancelLabel="No, keep it"
+        danger
+        onDone={done}
+      />
+    ));
+    if (!yes) return;
+    const done = await command(messages, 'routeSheets:clear-route-file');
+    if (!done.ok) return;
+    await changeSettings({ routeSheetsRouteData: 'roster' });
+    setStatus("Imported file cleared. Route sheets now match with the Roster's Route Data.");
+  }
+
+  /** Starts an empty run. The open one stays in History. */
+  async function newRun() {
+    const done = await command(messages, 'routeSheets:new-run');
+    if (!done.ok) return;
+    choose('distribute');
+    setStatus('Started a new run. Bring in the route sheet PDF to fill it.');
   }
 
   const showNote = view !== null && view.state.oldAppFolder && !settings.routeSheetsNoteSeen;
@@ -198,11 +280,16 @@ export function RouteSheetsPage({ settings, changeSettings, goTo, startTab }: Pa
               state={view.state}
               busy={busy}
               onBringIn={() => void bringIn()}
+              onNewRun={() => void newRun()}
               goTo={goTo}
               rosterKind={snapshot.roster.routeSource}
               choice={routeChoice}
+              ownFile={snapshot.routeSheetsRoute}
               onUseRoster={() => void matchWithRoster()}
+              onUseOwn={() => void matchWithOwn()}
               onImportRouteFile={() => void importRouteFile()}
+              onAssignPads={() => void assignOwnPads()}
+              onClearOwn={() => void clearOwnFile()}
             />
             <TabPanel name="route-sheets" id={tab}>
               {tab === 'distribute' ? (

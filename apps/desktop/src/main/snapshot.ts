@@ -22,6 +22,7 @@ import {
   type IsoDate,
   type Match,
   weekLabel,
+  routeDataLabel,
 } from '@loadout/core';
 import { EMPTY_PERF_SNAPSHOT } from '../shared/performance';
 import type { PerfSnapshot } from '../shared/performance';
@@ -147,6 +148,9 @@ export function buildSnapshot(state: AppState, options: SnapshotOptions): AppSna
       vehicles: { sourceFile: state.vehicles.sourceFile, importedAt: state.vehicles.importedAt },
     },
     routeSets,
+    routeSheetsRoute: state.routeSheetsRoute
+      ? { ...state.routeSheetsRoute, label: routeDataLabel(state.routeSheetsRoute) }
+      : null,
     dwp: {
       set: state.dwp,
       matchedCount: state.dwpMatchedCount(),

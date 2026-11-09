@@ -1,4 +1,6 @@
 import type { routeSheetsChannels } from '../../shared/channels/routeSheets';
+import { importRouteSheetsRouteFile } from '../importFiles';
+import { takeChosenFile } from './files';
 import type { HandlersFor } from './types';
 
 // Handlers for the Route Sheets page. One per channel declared in shared/channels/routeSheets.ts.
@@ -25,6 +27,17 @@ export const routeSheetsHandlers: HandlersFor<typeof routeSheetsChannels> = {
   },
   'routeSheets:delete-run': ({ id }, ctx) => {
     ctx.host.routeSheets.deleteRun(id);
+    return null;
+  },
+
+  'routeSheets:import-route-file': ({ kind, path }, ctx) =>
+    importRouteSheetsRouteFile(ctx.state, kind, takeChosenFile(ctx, kind, path), ctx.today()),
+  'routeSheets:set-route-pads': ({ pads }, ctx) => {
+    ctx.state.setRouteSheetsPads(pads);
+    return null;
+  },
+  'routeSheets:clear-route-file': (_input, ctx) => {
+    ctx.state.clearRouteSheetsRoute();
     return null;
   },
 

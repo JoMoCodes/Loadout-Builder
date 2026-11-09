@@ -118,6 +118,38 @@ test('an empty list says what to import, and offers both files', async ({ page }
   await expect(page.getByTestId('copy-phone')).toBeVisible();
 });
 
+test('says when the driver list is over a month old, and not before', async ({ page }) => {
+  // Dates travel into the stand-in as text, the way the page reads them back.
+  const old = new Date(Date.now() - 40 * 86_400_000).toISOString() as unknown as Date;
+  await openPage(page, 'associates', {
+    snapshot: {
+      ...LOADED(),
+      sources: {
+        associates: { sourceFile: 'C:\\Downloads\\AssociateData.csv', importedAt: old },
+        vehicles: { sourceFile: '', importedAt: null },
+      },
+    },
+  });
+  await expect(page.getByTestId('associates-old')).toContainText('Over a month old');
+  await expect(page.getByTestId('associates-old')).toContainText('Brought in 40 days ago.');
+  await expect(page.getByTestId('associates-old')).toContainText('Click Import Associates');
+
+  await openPage(page, 'associates', {
+    snapshot: {
+      ...LOADED(),
+      sources: {
+        associates: {
+          sourceFile: 'C:\\Downloads\\AssociateData.csv',
+          importedAt: new Date().toISOString() as unknown as Date,
+        },
+        vehicles: { sourceFile: '', importedAt: null },
+      },
+    },
+  });
+  await expect(page.getByTestId('associates-title')).toHaveText('Associates');
+  await expect(page.getByTestId('associates-old')).toHaveCount(0);
+});
+
 test('shows the old columns, the counts, and the ID state as a chip with words', async ({
   page,
 }) => {

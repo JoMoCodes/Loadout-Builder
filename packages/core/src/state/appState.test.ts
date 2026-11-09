@@ -485,6 +485,80 @@ describe('clearing route data off the roster', () => {
   });
 });
 
+describe('the route sheets’ own route file', () => {
+  function withOwnFile(): AppState {
+    const st = build();
+    Object.assign(st, { store: new Store(':memory:', { now: () => new Date(2000, 0, 1) }) });
+    // The roster's route data is in memory only here: save it, so a fresh open can compare.
+    for (const kind of st.loadedRouteSources()) st.importRouteData(kind, st.routeSet(kind));
+    st.importRouteSheetsRoute(
+      createRouteDataSet({
+        kind: 'itineraries',
+        sourceFile: 'C:/Downloads/Itineraries_XXX1.xlsx',
+        rows: [entry(IDS.carmen, 'Carmen Abernathy', 'CX901', '10:20am', 'Standard Parcel')],
+      }),
+    );
+    return st;
+  }
+
+  it('is kept apart from the roster’s route data, and comes back on the next open', () => {
+    const st = withOwnFile();
+    expect(st.routeSheetsRoute?.kind).toBe('itineraries');
+    // The roster's own Itineraries slot is as it was: the file went nowhere near it.
+    const rosterItineraries = st.routeSet('itineraries').rows.map((r) => r.routeCode);
+    expect(rosterItineraries).not.toContain('CX901');
+
+    st.setRouteSheetsPads({ '10:20am': 3 });
+    expect(st.routeSheetsRoute?.pads.get('10:20am')).toBe(3);
+
+    const again = new AppState(st.store);
+    again.loadAll();
+    expect(again.routeSheetsRoute?.kind).toBe('itineraries');
+    expect(again.routeSheetsRoute?.sourceFile).toBe('C:/Downloads/Itineraries_XXX1.xlsx');
+    expect(again.routeSheetsRoute?.rows.map((r) => r.routeCode)).toEqual(['CX901']);
+    expect(again.routeSheetsRoute?.pads.get('10:20am')).toBe(3);
+    expect(again.routeSet('itineraries').rows.map((r) => r.routeCode)).toEqual(rosterItineraries);
+  });
+
+  it('a new file replaces the old one whatever its kind, and clearing takes it out alone', () => {
+    const st = withOwnFile();
+    st.importRouteSheetsRoute(
+      createRouteDataSet({
+        kind: 'routes',
+        rows: [entry(IDS.carmen, 'Carmen Abernathy', 'CX902', '10:25am', 'Standard Parcel')],
+      }),
+    );
+    expect(st.routeSheetsRoute?.kind).toBe('routes');
+    const reopened = new AppState(st.store);
+    reopened.loadAll();
+    expect(reopened.routeSheetsRoute?.rows.map((r) => r.routeCode)).toEqual(['CX902']);
+
+    st.setPads('routes', { '10:20am': 1 });
+    st.applyRouteData('routes');
+    st.clearRouteSheetsRoute();
+    expect(st.routeSheetsRoute).toBeNull();
+    const cleared = new AppState(st.store);
+    cleared.loadAll();
+    expect(cleared.routeSheetsRoute).toBeNull();
+    // The roster and its route data are as they were.
+    expect(st.roster.rows.some((r) => r.routes)).toBe(true);
+    expect(st.routeSet('routes').rows.length).toBeGreaterThan(0);
+  });
+
+  it('Clear Route Data on the roster leaves the route sheets’ file alone', () => {
+    const st = withOwnFile();
+    st.setPads('routes', { '10:20am': 1 });
+    st.applyRouteData('routes');
+    st.clearRosterRouteData({ routes: true, dwp: true });
+    expect(st.loadedRouteSources()).toEqual([]);
+    expect(st.routeSheetsRoute?.rows.map((r) => r.routeCode)).toEqual(['CX901']);
+    const reopened = new AppState(st.store);
+    reopened.loadAll();
+    expect(reopened.routeSheetsRoute?.kind).toBe('itineraries');
+    expect(reopened.loadedRouteSources()).toEqual([]);
+  });
+});
+
 describe('saved data', () => {
   it('pins links and saves new associates and the roster when route data adds someone', () => {
     const store = new Store(':memory:', { now: () => new Date(2000, 0, 1) });

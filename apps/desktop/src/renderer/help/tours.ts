@@ -224,7 +224,7 @@ export const TOURS: Record<string, Tour> = {
       {
         element: `${ROUTE_SHEETS} [data-testid="route-sheets-top"]`,
         title: 'What the app reads',
-        text: 'These cards show the route data, driver list and email setup in use. They come from the Roster, Associates and Settings.',
+        text: 'These cards show the route data, driver list and email setup in use. Import a new file brings in a route file kept just for the route sheets.',
         side: 'bottom',
       },
       {

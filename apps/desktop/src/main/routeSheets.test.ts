@@ -14,6 +14,7 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { dispatchTimes } from '@loadout/core';
 import { fileURLToPath } from 'node:url';
 import { clockKey, type Decision, type Distribution } from '@loadout/route-sheets';
 import { RouteSheetsStore, type StoredRun } from '@loadout/storage';
@@ -290,6 +291,13 @@ async function bringIn(rig: Rig, kind: string, file: string) {
   return rig.call('files:import', { kind, path: file });
 }
 
+/** A route file brought in just for the route sheets (Import a new file on the Route data card). */
+async function ownFile(rig: Rig, kind: string, file: string) {
+  rig.picks.next = file;
+  await rig.ok('files:pick', { kind });
+  return rig.call('routeSheets:import-route-file', { kind, path: file });
+}
+
 /** The fixture day: the Routes export, the driver list and the synthetic route sheet PDF. */
 async function fixtureDay(rig: Rig): Promise<void> {
   expect((await bringIn(rig, 'routes', ROUTES_FILE)).ok).toBe(true);
@@ -436,6 +444,7 @@ describe('the join with the app’s own route data, driver list and pads', () =>
       kind: 'itineraries',
       label: 'Itineraries',
       fileName: path.basename(itineraries),
+      own: false,
     });
 
     await fixtureDay(rig);
@@ -444,17 +453,56 @@ describe('the join with the app’s own route data, driver list and pads', () =>
       kind: 'routes',
       label: 'Routes',
       fileName: path.basename(ROUTES_FILE),
+      own: false,
     });
     expect(state.run.routesFileName).toBe(path.basename(ROUTES_FILE));
-    // A file picked on the page wins over Routes; the Roster's (none here) falls back to Routes.
-    rig.setSettings({ routeSheetsRouteData: 'itineraries' });
-    expect((await rig.ok<RouteSheetsStateView>('routeSheets:state')).routeData?.kind).toBe(
-      'itineraries',
-    );
-    rig.setSettings({ routeSheetsRouteData: 'roster' });
+    // Picking "the imported file" with none brought in here yet still reads the Roster's.
+    rig.setSettings({ routeSheetsRouteData: 'own' });
     expect((await rig.ok<RouteSheetsStateView>('routeSheets:state')).routeData?.kind).toBe(
       'routes',
     );
+    // A file brought in just for the route sheets is kept apart from the Roster's route data, and
+    // wins once the page picks it.
+    expect((await ownFile(rig, 'itineraries', itineraries)).ok).toBe(true);
+    state = await rig.ok<RouteSheetsStateView>('routeSheets:state');
+    expect(state.routeData).toEqual({
+      kind: 'itineraries',
+      label: 'Itineraries',
+      fileName: path.basename(itineraries),
+      own: true,
+    });
+    let snap = await snapshot(rig);
+    expect(snap.routeSheetsRoute?.kind).toBe('itineraries');
+    expect(snap.routeSheetsRoute?.label).toBe('Itineraries');
+    // Its PADs are its own too.
+    const [firstTime] = dispatchTimes(snap.routeSheetsRoute!)[0]!;
+    await rig.ok('routeSheets:set-route-pads', { pads: { [firstTime]: 2 } });
+    snap = await snapshot(rig);
+    expect(snap.routeSheetsRoute?.pads.get(firstTime)).toBe(2);
+    expect(snap.routeSets.find((set) => set.kind === 'itineraries')?.pads.get(firstTime)).toBe(
+      undefined,
+    );
+    // Clearing the Roster's Itineraries leaves the route sheets' file where it is...
+    await rig.ok('routeData:clear', { kind: 'itineraries' });
+    expect((await rig.ok<RouteSheetsStateView>('routeSheets:state')).routeData?.own).toBe(true);
+    // ...and the Roster's choice reads the Roster's data again (none on the roster: Routes).
+    rig.setSettings({ routeSheetsRouteData: 'roster' });
+    expect((await rig.ok<RouteSheetsStateView>('routeSheets:state')).routeData).toMatchObject({
+      kind: 'routes',
+      own: false,
+    });
+    // Clearing the imported file takes it out, and nothing else.
+    rig.setSettings({ routeSheetsRouteData: 'own' });
+    await rig.ok('routeSheets:clear-route-file');
+    expect((await snapshot(rig)).routeSheetsRoute).toBeNull();
+    expect((await rig.ok<RouteSheetsStateView>('routeSheets:state')).routeData).toMatchObject({
+      kind: 'routes',
+      own: false,
+    });
+    expect(
+      (await snapshot(rig)).routeSets.find((set) => set.kind === 'routes')?.rows.length,
+    ).toBeGreaterThan(0);
+    rig.setSettings({ routeSheetsRouteData: 'roster' });
     // The driver list's age, for the "over a month old" reminder.
     expect(state.driverList.count).toBeGreaterThan(50);
     expect(state.driverList.fileName).toBe('AssociateData.csv');
@@ -536,6 +584,19 @@ describe('every route sheets channel, through the real handlers', () => {
     expect(existsSync(path.join(rig.base, 'data', 'route-sheets', `${RUN_ID}.pdf`))).toBe(true);
     // Nothing that names the file or a person goes to the log.
     expect(rig.logs.join('\n')).not.toMatch(/2026-09-01\.pdf|@example\.com/);
+
+    // A route file for the route sheets comes in the same careful way: only a picked or dropped
+    // file is read, and a file that is not a route export is refused in the reader's words.
+    expect(
+      await rig.call('routeSheets:import-route-file', {
+        kind: 'routes',
+        path: fixture('routes', 'Routes_XXX1_2026-09-25_09_54 (CDT).xlsx'),
+      }),
+    ).toEqual({ ok: false, reason: 'not-allowed' });
+    const notRoutes = await ownFile(rig, 'routes', PDF_FILE);
+    expect(notRoutes.ok).toBe(false);
+    expect(notRoutes.reason).toBe('refused');
+    expect((await snapshot(rig)).routeSheetsRoute).toBeNull();
   });
 
   it('reads the open run, History, and the old app’s folder; opens, starts and deletes runs', async () => {

@@ -74,6 +74,7 @@ function snapshotWith(rows: RosterRowView[], extra: Partial<AppSnapshot> = {}): 
     associates: [],
     vehicles: [],
     routeSets: [],
+    routeSheetsRoute: null,
     dwp: {
       set: { rows: [], day: null, sourceFile: '', importedAt: null },
       matchedCount: 0,

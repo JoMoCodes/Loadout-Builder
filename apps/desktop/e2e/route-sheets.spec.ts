@@ -223,7 +223,12 @@ function stateView(values: Json = {}): Json {
       runListing(RUN_ID, 'XXX1 · Tue, Sep 1, 2026 · CYCLE_1'),
       runListing(OLDER_RUN, 'XXX1 · Mon, Aug 31, 2026 · CYCLE_1', { pdfMissing: true }),
     ],
-    routeData: { kind: 'routes', label: 'Routes', fileName: 'Routes_XXX1_2026-09-01.xlsx' },
+    routeData: {
+      kind: 'routes',
+      label: 'Routes',
+      fileName: 'Routes_XXX1_2026-09-01.xlsx',
+      own: false,
+    },
     driverList: {
       count: 5,
       fileName: 'AssociateData.csv',
@@ -245,7 +250,50 @@ interface Open {
   state?: Json;
   dist?: Json;
   settings?: Json;
+  snapshot?: Json;
   tab?: string;
+}
+
+/** A route file brought in just for the route sheets, as the snapshot carries it (PADs as pairs). */
+function ownSet(values: Json = {}): Json {
+  return {
+    kind: 'itineraries',
+    label: 'Itineraries',
+    sourceFile: 'C:\\Downloads\\Itineraries_XXX1_2026-09-01.xlsx',
+    importedAt: '2026-09-01T12:00:00.000Z',
+    day: '2026-09-01',
+    sourceTotal: null,
+    pads: [],
+    rows: [
+      {
+        transporterId: CARMEN.id,
+        driverName: CARMEN.name,
+        routeCode: 'CX101',
+        dispatchTime: '10:20am',
+        serviceType: 'Standard Parcel',
+        routeDuration: '',
+        vin: '',
+        detail: '',
+        sharedDrivers: CARMEN.name,
+        sharedIds: CARMEN.id,
+        pad: '',
+      },
+      {
+        transporterId: COLTON.id,
+        driverName: COLTON.name,
+        routeCode: 'CX102',
+        dispatchTime: '10:25am',
+        serviceType: 'Standard Parcel',
+        routeDuration: '',
+        vin: '',
+        detail: '',
+        sharedDrivers: COLTON.name,
+        sharedIds: COLTON.id,
+        pad: '',
+      },
+    ],
+    ...values,
+  };
 }
 
 /**
@@ -265,6 +313,7 @@ async function openRouteSheets(page: Page, options: Open = {}) {
         associate(ZANE, { associate: { email: '', status: 'INACTIVE' } }),
         associate(ARCHER, { associate: { email: mail(5) } }),
       ] as never,
+      ...(options.snapshot as object),
     },
   });
   await page.addInitScript(
@@ -282,6 +331,10 @@ async function openRouteSheets(page: Page, options: Open = {}) {
       type Json = Record<string, unknown>;
       w.__rs = { state, dist, html };
       w.__copied = [];
+      // Maps do not travel through the test's messages: the imported file's PADs come as pairs.
+      const own = w.__fake.snapshot.routeSheetsRoute as { pads: unknown } | null | undefined;
+      if (own && !(own.pads instanceof Map))
+        own.pads = new Map(own.pads as Array<[string, number]>);
       Object.defineProperty(navigator, 'clipboard', {
         value: {
           write: async (items: ClipboardItem[]) => {
@@ -457,7 +510,7 @@ test("Use the Roster's Route Data matches with the file the roster took its rout
   page,
 }) => {
   await installFakeBridge(page, {
-    settings: { demoMode: false, routeSheetsRouteData: 'routes' },
+    settings: { demoMode: false, routeSheetsRouteData: 'own' },
     snapshot: {
       roster: { sourceFile: '', importedAt: null, routeSource: 'itineraries', rows: [] },
     },
@@ -478,7 +531,12 @@ test('the cards name the route data in use, an old driver list and a ready email
 }) => {
   await openRouteSheets(page, {
     state: {
-      routeData: { kind: 'itineraries', label: 'Itineraries', fileName: 'Itineraries_XXX1.xlsx' },
+      routeData: {
+        kind: 'itineraries',
+        label: 'Itineraries',
+        fileName: 'Itineraries_XXX1.xlsx',
+        own: false,
+      },
       driverList: {
         count: 5,
         fileName: 'AssociateData.csv',
@@ -496,6 +554,13 @@ test('the cards name the route data in use, an old driver list and a ready email
   await expect(page.getByTestId('route-sheets-route-data-words')).toHaveText(
     'Matching with the Itineraries export: Itineraries_XXX1.xlsx.',
   );
+  await expect(page.getByTestId('route-sheets-same-as-roster')).toHaveText(
+    "The Roster's Route Data",
+  );
+  // No file brought in here, so nothing to switch to, give PADs or clear.
+  await expect(page.getByTestId('route-sheets-use-own')).toHaveCount(0);
+  await expect(page.getByTestId('route-sheets-assign-pads')).toHaveCount(0);
+  await expect(page.getByTestId('route-sheets-clear-own')).toHaveCount(0);
   await expect(page.getByTestId('route-sheets-open-route-data')).toHaveCount(0);
   await expect(page.getByTestId('route-sheets-driver-count')).toHaveText(
     '5 drivers - AssociateData.csv',
@@ -508,7 +573,12 @@ test('the cards name the route data in use, an old driver list and a ready email
 
   await change(page, {
     state: {
-      routeData: { kind: 'schedule', label: 'Weekly Schedule', fileName: 'Week-36-Schedule.xlsx' },
+      routeData: {
+        kind: 'schedule',
+        label: 'Weekly Schedule',
+        fileName: 'Week-36-Schedule.xlsx',
+        own: false,
+      },
       driverList: {
         count: 5,
         fileName: 'AssociateData.csv',
@@ -521,6 +591,180 @@ test('the cards name the route data in use, an old driver list and a ready email
     'Matching with the Weekly Schedule: Week-36-Schedule.xlsx.',
   );
   await expect(page.getByTestId('route-sheets-driver-list-old')).toHaveCount(0);
+});
+
+test('the imported file is kept apart from the Roster: used, given PADs, and cleared', async ({
+  page,
+}) => {
+  await openRouteSheets(page, {
+    settings: { routeSheetsRouteData: 'own' },
+    snapshot: {
+      routeSheetsRoute: ownSet(),
+      roster: { sourceFile: '', importedAt: null, routeSource: 'routes', rows: [] },
+    },
+    state: {
+      routeData: {
+        kind: 'itineraries',
+        label: 'Itineraries',
+        fileName: 'Itineraries_XXX1_2026-09-01.xlsx',
+        own: true,
+      },
+    },
+  });
+  await expect(page.getByTestId('route-sheets-route-data-words')).toHaveText(
+    'Matching with the Itineraries export: Itineraries_XXX1_2026-09-01.xlsx.',
+  );
+  await expect(page.getByTestId('route-sheets-own-file')).toHaveText('Just for the route sheets');
+  await expect(page.getByTestId('route-sheets-use-own')).toHaveCount(0);
+  await expect(page.getByTestId('route-sheets-use-roster')).toBeEnabled();
+
+  // Assign PADs: the PAD window for the imported file, saved to the route sheets' own PADs.
+  await onCall(
+    page,
+    'routeSheets:set-route-pads',
+    `(input) => {
+      const own = window.__fake.snapshot.routeSheetsRoute;
+      own.pads = new Map(Object.entries(input.pads));
+      window.__rsBump();
+      return { ok: true, value: null };
+    }`,
+  );
+  await page.getByTestId('route-sheets-assign-pads').click();
+  const pads = page.locator('dialog[data-dialog="assign-pads"]');
+  await expect(pads).toBeVisible();
+  await expect(pads).toContainText('Itineraries');
+  await expect(pads).toContainText('2 dispatch times in this export');
+  await pads.locator('[data-testid="pad-10:20am-1"]').check();
+  await pads.locator('[data-testid="pad-10:25am-2"]').check();
+  await pads.getByRole('button', { name: 'Save' }).click();
+  expect(await callsTo(page, 'routeSheets:set-route-pads')).toEqual([
+    { pads: { '10:20am': 1, '10:25am': 2 } },
+  ]);
+  expect(await callsTo(page, 'routeData:set-pads')).toEqual([]);
+  await expect(status(page)).toContainText('PAD');
+
+  // Clear it: asks first, says the Roster is left alone, then goes back to the Roster's data.
+  await onCall(
+    page,
+    'routeSheets:clear-route-file',
+    `() => {
+      window.__fake.snapshot.routeSheetsRoute = null;
+      window.__rs.state.routeData = { kind: 'routes', label: 'Routes', fileName: 'Routes_XXX1.xlsx', own: false };
+      window.__rsBump();
+      return { ok: true, value: null };
+    }`,
+  );
+  await page.getByTestId('route-sheets-clear-own').click();
+  const ask = dialog(page, 'confirm');
+  await expect(ask).toContainText('Clear the imported file?');
+  await expect(ask).toContainText('Itineraries_XXX1_2026-09-01.xlsx');
+  await expect(ask).toContainText("The Roster's Route Data is not touched.");
+  await ask.getByRole('button', { name: 'No, keep it' }).click();
+  await expect(ask).toHaveCount(0);
+  expect(await callsTo(page, 'routeSheets:clear-route-file')).toEqual([]);
+  await page.getByTestId('route-sheets-clear-own').click();
+  await ask.getByRole('button', { name: 'Yes, clear it' }).click();
+  await expect.poll(() => callsTo(page, 'routeSheets:clear-route-file')).toHaveLength(1);
+  await expect
+    .poll(() => callsTo(page, 'settings:set'))
+    .toContainEqual({ routeSheetsRouteData: 'roster' });
+  await expect(status(page)).toHaveText(
+    "Imported file cleared. Route sheets now match with the Roster's Route Data.",
+  );
+  await expect(page.getByTestId('route-sheets-same-as-roster')).toBeVisible();
+  await expect(page.getByTestId('route-sheets-clear-own')).toHaveCount(0);
+  await expect(page.getByTestId('route-sheets-assign-pads')).toHaveCount(0);
+});
+
+test('an imported file that is kept but not in use can be picked again', async ({ page }) => {
+  await openRouteSheets(page, {
+    settings: { routeSheetsRouteData: 'roster' },
+    snapshot: { routeSheetsRoute: ownSet() },
+  });
+  await expect(page.getByTestId('route-sheets-same-as-roster')).toBeVisible();
+  await expect(page.getByTestId('route-sheets-own-file-waiting')).toHaveText(
+    'Your imported file (Itineraries) is kept, but not in use.',
+  );
+  await expect(page.getByTestId('route-sheets-clear-own')).toBeVisible();
+  await expect(page.getByTestId('route-sheets-assign-pads')).toHaveCount(0);
+  await page.getByTestId('route-sheets-use-own').click();
+  await expect
+    .poll(() => callsTo(page, 'settings:set'))
+    .toContainEqual({ routeSheetsRouteData: 'own' });
+  await expect(status(page)).toHaveText(
+    'Route sheets now match with the file you brought in here: Itineraries_XXX1_2026-09-01.xlsx.',
+  );
+});
+
+test('Import a new file reads it just for the route sheets, then asks for its PADs', async ({
+  page,
+}) => {
+  await openRouteSheets(page);
+  await onCall(
+    page,
+    'files:pick',
+    `() => ({ ok: true, value: { path: 'C:/Downloads/Routes_XXX1_2026-09-01.xlsx' } })`,
+  );
+  await onCall(
+    page,
+    'routeSheets:import-route-file',
+    `() => {
+      const own = ${JSON.stringify(ownSet({ kind: 'routes', label: 'Routes', sourceFile: 'C:/Downloads/Routes_XXX1_2026-09-01.xlsx' }))};
+      own.pads = new Map();
+      window.__fake.snapshot.routeSheetsRoute = own;
+      window.__rs.state.routeData = { kind: 'routes', label: 'Routes', fileName: 'Routes_XXX1_2026-09-01.xlsx', own: true };
+      window.__rsBump();
+      return { ok: true, value: { rows: 2 } };
+    }`,
+  );
+  await page.getByTestId('route-sheets-import-route-file').click();
+  const pick = page.locator('dialog[data-dialog="import-route-data"]');
+  await expect(pick).toContainText('The file is kept just for the route sheets');
+  await pick.getByRole('button', { name: 'Choose Routes file' }).click();
+  expect(await callsTo(page, 'files:pick')).toEqual([{ kind: 'routes' }]);
+  await expect
+    .poll(() => callsTo(page, 'routeSheets:import-route-file'))
+    .toEqual([{ kind: 'routes', path: 'C:/Downloads/Routes_XXX1_2026-09-01.xlsx' }]);
+  // Never the Roster's import.
+  expect(await callsTo(page, 'files:import')).toEqual([]);
+  await expect
+    .poll(() => callsTo(page, 'settings:set'))
+    .toContainEqual({ routeSheetsRouteData: 'own' });
+  // Then the PADs for its dispatch times; closing the window leaves them for later.
+  const pads = page.locator('dialog[data-dialog="assign-pads"]');
+  await expect(pads).toBeVisible();
+  await expect(pads).toContainText('Routes');
+  await pads.getByRole('button', { name: 'Cancel' }).click();
+  await expect(status(page)).toHaveText(
+    "Imported 2 rows just for the route sheets. No PADs yet. Use Assign PADs on the Route data card when you're ready.",
+  );
+  await expect(page.getByTestId('route-sheets-own-file')).toHaveText('Just for the route sheets');
+  await expect(page.getByTestId('route-sheets-assign-pads')).toBeVisible();
+});
+
+test('New run on the This run card starts fresh, and the ? buttons say where each file comes from', async ({
+  page,
+}) => {
+  await openRouteSheets(page);
+  await page.getByTestId('route-sheets-top-new-run').click();
+  await expect.poll(() => callsTo(page, 'routeSheets:new-run')).toHaveLength(1);
+  await expect(status(page)).toHaveText(
+    'Started a new run. Bring in the route sheet PDF to fill it.',
+  );
+  await expect(page.getByTestId('route-sheets-tab-distribute')).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+
+  await page.getByTestId('route-sheets-route-data-help').click();
+  const note = page.locator('dialog[data-dialog="where-to-get"]');
+  await expect(note).toContainText('Where to get the route data');
+  await note.getByRole('button', { name: 'Close' }).click();
+  await expect(note).toHaveCount(0);
+  await page.getByTestId('route-sheets-driver-list-help').click();
+  await expect(note).toContainText('Where to get the driver list');
+  await note.getByRole('button', { name: 'Close' }).click();
+  await expect(note).toHaveCount(0);
 });
 
 test('the note about the old app shows until Got it, which is remembered', async ({ page }) => {
