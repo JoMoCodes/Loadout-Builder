@@ -148,12 +148,21 @@ function personName(cell: CellValue | undefined): string {
   return squeeze(value(cell).replaceAll(',', ' '));
 }
 
-/** Split a pipe-joined cell - a route worked by more than one person. */
+/**
+ * Split a pipe-joined cell - a route worked by more than one person. A blank part in the middle
+ * keeps its place, so the IDs still line up with the names in the other column ("A||C" against
+ * "X|Y|Z" pairs C with Z); blank parts at the ends are dropped.
+ */
 function shared(cell: CellValue | undefined): string[] {
-  return value(cell)
-    .split('|')
-    .map(pyStrip)
-    .filter((part) => part);
+  const parts = value(cell).split('|').map(pyStrip);
+  while (parts.length > 0 && parts[0] === '') parts.shift();
+  while (parts.length > 0 && parts[parts.length - 1] === '') parts.pop();
+  return parts;
+}
+
+/** The first part that says something. */
+function first(parts: readonly string[]): string {
+  return parts.find((part) => part !== '') ?? '';
 }
 
 function asCount(cell: CellValue | undefined): number | null {
@@ -259,9 +268,12 @@ async function importTabular(path: string, kind: TabularKind): Promise<RouteData
     // A route worked by two people arrives pipe-joined in both columns.
     const ids = shared(cellOf(raw, mapping, 'transporterId'));
     const names = shared(cellOf(raw, mapping, 'driverName')).map(personName);
-    const transporterId = ids[0] ?? '';
-    const driverName = names[0] ?? '';
-    if (!transporterId && !driverName) continue; // blank spacer / footer row
+    const transporterId = first(ids);
+    const driverName = first(names);
+    const routeCode = value(cellOf(raw, mapping, 'routeCode'));
+    // A blank spacer or footer row. A route with a code but nobody on it yet is kept: the
+    // route sheets say "the Routes file lists no driver for this route" for it.
+    if (!transporterId && !driverName && !routeCode) continue;
     const detail = cellOf(raw, mapping, 'detail');
     const [serviceType, routeDuration] = splitServiceType(cellOf(raw, mapping, 'serviceType'));
     rows.push(
@@ -270,7 +282,7 @@ async function importTabular(path: string, kind: TabularKind): Promise<RouteData
         driverName,
         sharedDrivers: names.join('|'),
         sharedIds: ids.join('|'),
-        routeCode: value(cellOf(raw, mapping, 'routeCode')),
+        routeCode,
         dispatchTime: clockText(cellOf(raw, mapping, 'dispatchTime')),
         serviceType,
         routeDuration,

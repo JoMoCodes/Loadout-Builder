@@ -646,11 +646,17 @@ test('a file not brought in yet says so on its card, and the card starts Import 
 });
 
 test('Clear Route Data and Clear DWP Data ask first, then take the file off', async ({ page }) => {
-  await open(page);
+  await open(page, {
+    routeSheetsRoute: { kind: 'itineraries', label: 'Itineraries', rows: [], pads: [] },
+  });
   await onCall(page, 'loadOut:clear-route-data', `() => ({ ok: true, value: 3 })`);
   await page.getByRole('toolbar').getByRole('button', { name: 'Clear Route Data' }).click();
   await expect(page.getByTestId('confirm-dialog')).toContainText('Clear Route Data?');
   await expect(page.getByTestId('confirm-dialog')).toContainText('The DWP sheet is kept.');
+  // A file brought in just for Route Sheets is not this button's to clear.
+  await expect(page.getByTestId('confirm-dialog')).toContainText(
+    'The file brought in just for Route Sheets is kept.',
+  );
   await page.getByTestId('confirm-no').click();
   expect(await callsTo(page, 'loadOut:clear-route-data')).toEqual([]);
   await page.getByTestId('card-clear-route').click();

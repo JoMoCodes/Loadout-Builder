@@ -12,7 +12,7 @@ import { databaseLayoutStore } from '../../lib/gridLayoutStore';
 import { Button } from '../../ui/button';
 import { Chip } from '../../ui/chip';
 import { bringInFile, command, dropRefused, readNow } from '../dataPages/bringIn';
-import { baseName, sourceLine } from '../dataPages/format';
+import { baseName, daysSince, isOverAMonthOld, plural, sourceLine } from '../dataPages/format';
 import { ConfirmDialog } from '../dataPages/Modal';
 import {
   ButtonStrip,
@@ -243,7 +243,21 @@ export function AssociatesTab({
         }
         metric={empty ? '0 associates' : associateCountLine(snapshot)}
         details={empty ? [] : [qualificationLine(views), expiryLine(snapshot)]}
-      />
+      >
+        {!empty && isOverAMonthOld(snapshot.sources.associates.importedAt) ? (
+          <p
+            className="m-0 mt-1 flex flex-wrap items-center gap-2 text-sm text-warn"
+            data-testid="associates-old"
+          >
+            <Chip tone="warn">Over a month old</Chip>
+            <span>
+              Brought in {plural(daysSince(snapshot.sources.associates.importedAt), 'day')} ago.
+              Click Import Associates with the latest list, so new drivers, status changes and email
+              addresses are up to date.
+            </span>
+          </p>
+        ) : null}
+      </HeaderCard>
       <ButtonStrip label="Associate actions">
         <Button
           onClick={() => void importAssociates()}

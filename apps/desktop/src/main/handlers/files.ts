@@ -12,6 +12,21 @@ function read(ctx: HandlerContext, kind: FileKind, path: string) {
   return importFile(ctx.state, kind, path, ctx.today());
 }
 
+/**
+ * The place of a file the person chose in the file window, or dropped on a page: only those are
+ * ever read, and a page cannot name any other. A dropped file's token is good for one import.
+ */
+export function takeChosenFile(ctx: HandlerContext, kind: FileKind, path: string): string {
+  const dropped = ctx.dropped.get(path);
+  if (dropped !== undefined) {
+    ctx.dropped.delete(path);
+    if (dropped.kind !== kind) throw new ChannelRefusal('not-allowed');
+    return dropped.path;
+  }
+  if (!ctx.picked.has(path)) throw new ChannelRefusal('not-allowed');
+  return path;
+}
+
 export const filesHandlers: HandlersFor<typeof filesChannels> = {
   'files:pick': async ({ kind }, ctx) => {
     const path = await ctx.services.pickFile(kind);
@@ -21,18 +36,7 @@ export const filesHandlers: HandlersFor<typeof filesChannels> = {
     }
     return { path };
   },
-  'files:import': ({ kind, path }, ctx) => {
-    // Only a file the person chose in the file window, or dropped on the page, is read. A page
-    // cannot name any other. A dropped file's token is good for one import.
-    const dropped = ctx.dropped.get(path);
-    if (dropped !== undefined) {
-      ctx.dropped.delete(path);
-      if (dropped.kind !== kind) throw new ChannelRefusal('not-allowed');
-      return read(ctx, kind, dropped.path);
-    }
-    if (!ctx.picked.has(path)) throw new ChannelRefusal('not-allowed');
-    return read(ctx, kind, path);
-  },
+  'files:import': ({ kind, path }, ctx) => read(ctx, kind, takeChosenFile(ctx, kind, path)),
   'files:dropped': ({ page, kind, path }, ctx) => {
     const check = checkDroppedFile(page, kind, path);
     if (!check.ok) {

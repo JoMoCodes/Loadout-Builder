@@ -49,9 +49,10 @@ export const FONT_SCALE_DEFAULT = 1;
 
 /**
  * Which route data the route sheets are matched with: the roster's (whichever file Import Route
- * Data put on the roster), or one route file brought in on the Route Sheets page.
+ * Data put on the roster), or the route file brought in on the Route Sheets page, which is kept
+ * apart from the roster's ('own'). An older setting naming a kind of file reads as the default.
  */
-export const ROUTE_SHEETS_ROUTE_DATA = ['roster', 'routes', 'itineraries', 'schedule'] as const;
+export const ROUTE_SHEETS_ROUTE_DATA = ['roster', 'own'] as const;
 export type RouteSheetsRouteData = (typeof ROUTE_SHEETS_ROUTE_DATA)[number];
 
 /** Which vans drivers already have Assign Vans keeps: given by hand, and from the load-out sheet. */

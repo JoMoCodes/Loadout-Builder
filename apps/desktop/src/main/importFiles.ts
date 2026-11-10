@@ -136,6 +136,27 @@ export async function importFile(
 }
 
 /**
+ * A route file brought in just for the route sheets. It is read like any route export, for the
+ * load-out day, but kept as the Route Sheets' own file: the roster's route data is not touched.
+ */
+export async function importRouteSheetsRouteFile(
+  state: AppState,
+  kind: 'routes' | 'itineraries' | 'schedule',
+  path: string,
+  today: IsoDate,
+): Promise<{ rows: number }> {
+  try {
+    const dataset = await importRouteExport(kind, path, state.routeDay(today));
+    return { rows: state.importRouteSheetsRoute(dataset).rows.length };
+  } catch (error) {
+    if (error instanceof RouteDataImportError) {
+      throw new ChannelRefusal('refused', error.message);
+    }
+    throw error;
+  }
+}
+
+/**
  * A route sheet PDF, read into the run for its day. Refusals come back in the old app's words
  * ("No route sheets were found in ...").
  */

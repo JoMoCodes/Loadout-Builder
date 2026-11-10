@@ -180,6 +180,11 @@ export interface AppSnapshot {
   /** Where the associate list and the fleet came from. */
   sources: { associates: SourceInfo; vehicles: SourceInfo };
   routeSets: RouteSetView[];
+  /**
+   * The route file brought in just for Route Sheets, or null when there is none. The roster
+   * never reads it, and Clear Route Data on the Roster never touches it.
+   */
+  routeSheetsRoute: RouteSetView | null;
   dwp: DwpView;
   previousRoster: Roster;
   /** Transporter IDs approved for Last Mile Rentals. */
