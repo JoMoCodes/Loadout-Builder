@@ -11,7 +11,7 @@ export interface ReleaseNote {
 
 export const RELEASE_NOTES: readonly ReleaseNote[] = [
   {
-    version: '2.15.0',
+    version: '2.16.0',
     items: [
       'The Dashboard is now yours to arrange. Click Customize, next to the page title, to change it. Click Done when you are finished. Your changes are saved as you make them.',
       'Move a section: drag it by its name, or use its two arrow buttons. The arrow buttons work with the keyboard alone.',
@@ -26,6 +26,17 @@ export const RELEASE_NOTES: readonly ReleaseNote[] = [
       'A layout can keep its own weeks. Tick "This layout keeps its own weeks" while customizing. The Dashboard can then open on the last 4 weeks while Scorecards stays on all of them.',
       'Save a layout to a file from the Layout button, and bring it in on another computer. The file holds the arrangement only. It never holds drivers.',
       'Changed your mind? Reset to the usual layout puts everything back the way it was. It asks first.',
+    ],
+  },
+  {
+    version: '2.15.0',
+    items: [
+      'The left menu has been tidied up, so there is less empty room in it.',
+      'How to use, Features log and Settings now sit at the bottom of the left menu, under a thin line. The pages you work in every day stay together at the top.',
+      'The Help button and the text size buttons (A- and A+) have moved to the bottom of the left menu. The bar that ran across the top of the window is gone, so every page gets a little more room.',
+      'The note about app updates, like "Up to date" or "Update ready", is now next to the Help button.',
+      'If the window is too short to fit every page, the pages scroll. The text size buttons and Help always stay in view.',
+      'A window opened with Open in new window has no left menu, so it still has Help and the text size buttons across its top.',
     ],
   },
   {

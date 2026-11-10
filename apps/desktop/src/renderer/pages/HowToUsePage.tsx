@@ -449,8 +449,8 @@ export function HowToUsePage({
       body: (
         <ul>
           <li>
-            Use <strong>A-</strong> and <strong>A+</strong> at the top of the window to make the
-            text smaller or bigger. The middle button puts it back to normal.
+            Use <strong>A-</strong> and <strong>A+</strong> at the bottom of the left menu to make
+            the text smaller or bigger. The middle button puts it back to normal.
           </li>
           <li>
             Open {go('settings', 'Settings')} to pick Light, Dark or High contrast. High contrast is
@@ -990,8 +990,8 @@ export function HowToUsePage({
             </li>
             <li>
               Each page has a short <strong>tour</strong> that shows its buttons. It runs the first
-              time you open the page. Click <strong>Help</strong> at the top of the window, then{' '}
-              <strong>Take the tour of this page</strong>, to see it again.
+              time you open the page. Click <strong>Help</strong> at the bottom of the left menu,
+              then <strong>Take the tour of this page</strong>, to see it again.
             </li>
             <li>
               You can turn the tours off at the top of this page, under <strong>Help</strong>.

@@ -16,6 +16,7 @@ import type { HelpApi, PageId, PageRequest } from './pages/types';
 import { useNoStrayDrops } from './components/FileDrop';
 import { Nav } from './shell/Nav';
 import { TopBar } from './shell/TopBar';
+import { TextSize } from './shell/controls';
 import { OldDataDialog } from './shell/OldDataDialog';
 import { WhatsNewDialog } from './shell/WhatsNewDialog';
 import { applyLook, cacheLook, readLastPage, writeLastPage } from './shell/display';
@@ -346,6 +347,32 @@ export function App() {
     );
   }, [goTo]);
 
+  // Help and the text size: at the bottom of the left menu, or in a page-only window's top bar.
+  const helpMenu = {
+    tourName: tours.tourName,
+    onTour: () => tours.takeTour(),
+    onHowToUse: () => goTo('how-to-use'),
+    checklistShown,
+    onShowChecklist: () => {
+      help.showChecklist();
+      goTo('how-to-use');
+    },
+    weeklyShown: help.weeklyShown,
+    onShowWeekly: () => {
+      help.showWeekly();
+      goTo('home');
+    },
+    onAsk: askAQuestion,
+  };
+  const textSize = (
+    <TextSize
+      fontScale={current.fontScale}
+      onSmaller={() => void changeSettings({ fontScale: stepFontScale(current.fontScale, -1) })}
+      onBigger={() => void changeSettings({ fontScale: stepFontScale(current.fontScale, 1) })}
+      onReset={() => void changeSettings({ fontScale: DEFAULT_SETTINGS.fontScale })}
+    />
+  );
+
   return (
     <div
       className="shell"
@@ -353,31 +380,21 @@ export function App() {
       data-ready={settings && version ? 'true' : 'false'}
       data-own-window={ownWindow ? 'true' : undefined}
     >
-      {ownWindow ? null : <Nav current={page} onGo={goTo} />}
+      {ownWindow ? null : (
+        <Nav
+          current={page}
+          onGo={goTo}
+          textSize={textSize}
+          help={<HelpMenu {...helpMenu} place="menu" />}
+        />
+      )}
       <div className="main-column">
-        <TopBar
-          fontScale={current.fontScale}
-          onSmaller={() => void changeSettings({ fontScale: stepFontScale(current.fontScale, -1) })}
-          onBigger={() => void changeSettings({ fontScale: stepFontScale(current.fontScale, 1) })}
-          onReset={() => void changeSettings({ fontScale: DEFAULT_SETTINGS.fontScale })}
-        >
-          <HelpMenu
-            tourName={tours.tourName}
-            onTour={() => tours.takeTour()}
-            onHowToUse={() => goTo('how-to-use')}
-            checklistShown={checklistShown}
-            onShowChecklist={() => {
-              help.showChecklist();
-              goTo('how-to-use');
-            }}
-            weeklyShown={help.weeklyShown}
-            onShowWeekly={() => {
-              help.showWeekly();
-              goTo('home');
-            }}
-            onAsk={askAQuestion}
-          />
-        </TopBar>
+        {ownWindow ? (
+          <TopBar>
+            <HelpMenu {...helpMenu} />
+            {textSize}
+          </TopBar>
+        ) : null}
         {current.demoMode ? (
           <div className="demo-banner" role="status" data-testid="demo-banner">
             <FlaskConical aria-hidden="true" className="size-[1.1em]" />

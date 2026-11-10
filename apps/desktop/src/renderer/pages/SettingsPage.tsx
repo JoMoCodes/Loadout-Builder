@@ -74,7 +74,7 @@ export function SettingsPage({ version, settings, changeSettings }: PageProps) {
             Back to normal
           </Button>
         </div>
-        <p className="hint">You can also use A- and A+ at the top of the window.</p>
+        <p className="hint">You can also use A- and A+ at the bottom of the left menu.</p>
       </div>
 
       <div className="settings-group card" data-setting="data-folder">
