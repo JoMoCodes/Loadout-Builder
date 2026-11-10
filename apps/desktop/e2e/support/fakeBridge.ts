@@ -83,6 +83,7 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
           vehicles: { sourceFile: '', importedAt: null },
         },
         routeSets: [],
+        routeSheetsRoute: null,
         dwp: {
           set: { rows: [], day: null, sourceFile: '', importedAt: null },
           matchedCount: 0,

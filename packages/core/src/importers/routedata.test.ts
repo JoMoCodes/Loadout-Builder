@@ -1101,6 +1101,20 @@ const SCENARIOS: Array<[Scenario, Record<string, unknown>]> = [
           sharedIds: 'T009',
           pad: '',
         },
+        // 'NA' and 'none' are placeholders, so CX9 has nobody on it; the route is kept all the same.
+        {
+          transporterId: '',
+          driverName: '',
+          routeCode: 'CX9',
+          dispatchTime: 'z',
+          serviceType: 'y',
+          routeDuration: '',
+          vin: '',
+          detail: 'x',
+          sharedDrivers: '',
+          sharedIds: '',
+          pad: '',
+        },
         {
           transporterId: 'T010',
           driverName: 'Yara Beaumont',
@@ -2517,6 +2531,78 @@ const SCENARIOS: Array<[Scenario, Record<string, unknown>]> = [
     },
     {
       error: 'Nobody is rostered on Tue, 04/Aug in this schedule.',
+    },
+  ],
+  [
+    {
+      name: 'a route with nobody on it yet, and a blank in the middle of a shared list',
+      importer: 'routes',
+      file: 'Routes_XXX1_2026-08-05_15_15 (CDT).xlsx',
+      sheets: [
+        {
+          name: 'Sheet1',
+          rows: [
+            [
+              'Route code',
+              'DSP',
+              'Transporter Id',
+              'Driver name',
+              'Route progress',
+              'Delivery Service Type',
+              'Route Duration',
+              'Planned Departure Time',
+            ],
+            // No driver yet: the row is kept, with its route code, time and service.
+            ['CX21', 'Team', null, null, 'NOT_STARTED', 'Standard Parcel', 1, '10:20am'],
+            // The middle ID is blank, so the third name belongs to the third ID, not the second.
+            [
+              'CX22',
+              'Team',
+              'T201||T203',
+              'Carmen Abernathy|Nadine Abernathy|Nolan Abernathy',
+              'ON_TIME',
+              'Standard Parcel',
+              1,
+              '10:25am',
+            ],
+            // Nothing at all: a spacer row, left out.
+            [null, null, null, null, null, null, null, null],
+          ],
+        },
+      ],
+    },
+    {
+      kind: 'routes',
+      day: '2026-08-05',
+      sourceTotal: null,
+      rows: [
+        {
+          transporterId: '',
+          driverName: '',
+          routeCode: 'CX21',
+          dispatchTime: '10:20am',
+          serviceType: 'Standard Parcel',
+          routeDuration: '',
+          vin: '',
+          detail: 'NOT_STARTED',
+          sharedDrivers: '',
+          sharedIds: '',
+          pad: '',
+        },
+        {
+          transporterId: 'T201',
+          driverName: 'Carmen Abernathy',
+          routeCode: 'CX22',
+          dispatchTime: '10:25am',
+          serviceType: 'Standard Parcel',
+          routeDuration: '',
+          vin: '',
+          detail: 'ON_TIME',
+          sharedDrivers: 'Carmen Abernathy|Nadine Abernathy|Nolan Abernathy',
+          sharedIds: 'T201||T203',
+          pad: '',
+        },
+      ],
     },
   ],
 ];

@@ -585,7 +585,10 @@ export function HowToUsePage({
               Check the <strong>Route data</strong> card. Click{' '}
               <strong>Use the Roster&apos;s Route Data</strong> to use the file you brought in on{' '}
               {go('load-out', 'Load Out')}, or <strong>Import a new file</strong> (Routes works
-              best). Each route gets the PAD you gave its dispatch time.
+              best). A file you import here is kept just for the route sheets: the Roster never sees
+              it, and Clear Route Data on the Roster never touches it.{' '}
+              <strong>Clear imported file</strong> takes it out, and the route sheets go back to the
+              Roster&apos;s Route Data. Each route gets the PAD you gave its dispatch time.
             </li>
             <li>
               Open {go('route-sheets', 'Route Sheets')}. Click{' '}
@@ -593,9 +596,9 @@ export function HowToUsePage({
               anywhere on the page.
             </li>
             <li>
-              Is a time on the PDF missing from the Routes file? The page shows{' '}
-              <strong>Pad for each wave</strong>. Type the PAD next to each of those times. It goes
-              on every route sheet for that wave.
+              Does a time on the PDF have no PAD yet, or is it missing from the Routes file? The
+              page shows <strong>Pad for each wave</strong>. Type the PAD next to each of those
+              times. It goes on every route sheet for that wave.
             </li>
             <li>Look at the coloured counts at the top. Green is good. Amber and red need you.</li>
             <li>
@@ -719,10 +722,11 @@ export function HowToUsePage({
           <p>
             The <strong>History</strong> tab keeps each day&apos;s route sheets, with your choices
             and what was sent. Click <strong>Open</strong> to go back to a day, or{' '}
-            <strong>New run</strong> to start fresh. Click <strong>Delete</strong> to remove a day.
-            The app asks first. The app clears days older than 30 days by itself. There is no output
-            folder any more: <strong>Export all</strong> asks where to save. If something goes
-            wrong, see &quot;If something goes wrong&quot; below.
+            <strong>New run</strong> (also on the <strong>This run</strong> card at the top) to
+            start fresh. Click <strong>Delete</strong> to remove a day. The app asks first. The app
+            clears days older than 30 days by itself. There is no output folder any more:{' '}
+            <strong>Export all</strong> asks where to save. If something goes wrong, see &quot;If
+            something goes wrong&quot; below.
           </p>
         </>
       ),

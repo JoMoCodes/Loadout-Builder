@@ -23,15 +23,16 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
       export, the synthetic PDF and the fixture driver list give the parity harness’s
       distribution', `apps/desktop/src/main/routeSheets.test.ts`; 'the driver list read by the app gives the old reader’s list',
       `packages/route-sheets/src/join/join.test.ts`).
-- [ ] The "driver list is over a month old" reminder (amber, one calendar month after the import),
+- [x] The "driver list is over a month old" reminder (amber, one calendar month after the import),
       on the Associates page and the Route Sheets page's driver-list card. Rule: `addMonth`.
       Test: 'Associate Data: due for a new import one calendar month after it was imported'
-      (`packages/route-sheets/src/runs/rules.test.ts`, the rule). The Route Sheets page's card is
-      done: 'the cards name the route data in use, an old driver list and a ready email setup'
+      (`packages/route-sheets/src/runs/rules.test.ts`, the rule). The Route Sheets page's card:
+      'the cards name the route data in use, an old driver list and a ready email setup'
       (`apps/desktop/e2e/route-sheets.spec.ts`) and 'says the driver list is over a month old once
-      its due time has come' (`apps/desktop/src/renderer/pages/routeSheets/words.test.ts`).
-      **Needs Jonathan:** the Associates page does not show the reminder yet. The brief for the
-      teaching phase did not allow changes to that page, so it is left undone until you say yes.
+      its due time has come' (`apps/desktop/src/renderer/pages/routeSheets/words.test.ts`). The
+      Associates page: 'says when the driver list is over a month old, and not before'
+      (`apps/desktop/e2e/associates.spec.ts`; the rule 'says a list is over a month old one
+      calendar month after it came in', `apps/desktop/src/renderer/pages/dataPages/format.test.ts`).
 - [x] **Changed (item 2).** The Routes export is not imported here. Matching reads the Route Data
       page's loaded Routes export, with every pipe-joined Transporter ID and name on a shared
       route; a title row above the header is skipped by the Route Data reader. Test: phase 2 host
@@ -61,15 +62,25 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
       not on the Routes file". Test: phase 2 host test ('says which route data it reads, and asks
       for the Routes export when none is loaded', `apps/desktop/src/main/routeSheets.test.ts`).
 
-- [ ] **Known difference, Needs Jonathan.** A Routes export row with a route code but no driver
-      is dropped by the Route Data page's reader. So for such a route the matcher says "Route is
-      in the PDF but not on the routes file" where the old app said "Routes file lists no driver
-      for this route", and such a route with no page is not listed under "On the Routes file but
-      missing from the PDF".
-- [ ] **Known difference, Needs Jonathan.** The Route Data page's reader drops blank parts in a
-      pipe-joined ID list and turns commas in names into spaces. So an ID list like "A||C" pairs
-      IDs and names differently, and the Name check warning's text can differ. Matching by ID is
-      unaffected.
+- [x] A Routes export row with a route code but no driver is kept by the app's route reader, so
+      the matcher says "Routes file lists no driver for this route" as the old app did, and such
+      a route with no page is listed under "On the Routes file but missing from the PDF". Test:
+      'a route with nobody on it yet, and a blank in the middle of a shared list'
+      (`packages/core/src/importers/routedata.test.ts`).
+- [x] A blank part in the middle of a pipe-joined ID list keeps its place, so "A||C" pairs the
+      third ID with the third name as the old app did (blank parts at the ends are dropped). Same
+      test. **Deliberately kept:** the reader still turns commas in names into spaces
+      (Itineraries write "Last,First"), so the Name check warning's words can differ from the old
+      app's for such a name. Matching by ID is unaffected.
+- [x] **Changed (added 2.15.0).** A route file brought in on the Route Sheets page ("Import a new
+      file") is kept apart from the Roster's route data. The Roster never reads
+      it, Clear Route Data on the Roster never touches it, and "Clear imported file" on the Route
+      data card takes it out alone. Tests: 'the route sheets’ own route file'
+      (`packages/core/src/state/appState.test.ts`), 'says which route data it reads, and asks for
+      the Routes export when none is loaded' (`apps/desktop/src/main/routeSheets.test.ts`), 'the
+      imported file is kept apart from the Roster: used, given PADs, and cleared' and 'Import a
+      new file reads it just for the route sheets, then asks for its PADs'
+      (`apps/desktop/e2e/route-sheets.spec.ts`).
 
 ## 2. The number check
 
@@ -90,11 +101,13 @@ route sheets and must show no difference (`scripts/parity/rsd/`).
       'drivers with no email address are counted on Distribute',
       `apps/desktop/e2e/route-sheets.spec.ts`; smoke 'Route Sheets: the page shows the counts,
       the sheets and the run in History').
-- [x] **Changed (item 3).** "Pad for each wave" is replaced by the pads the Route Data page knows,
-      matched by clock value; the box stays only for a wave time that matches no dispatch time.
-      Rule: 'Distribute: lists each wave time in clock order with its route count and pad'
-      (`waves`, `wavePadFor`); the join in phase 2; the page in phase 3 ('the pad box shows only
-      for a wave the route data does not know', `apps/desktop/e2e/route-sheets.spec.ts`).
+- [x] **Changed (item 3).** "Pad for each wave" is replaced by the pads the route data knows,
+      matched by clock value; the box stays for a wave time the route data gives no pad (a time it
+      does not know, or one with no PAD yet; widened from "no dispatch time" in 2.15.0). Rule:
+      'Distribute: lists each wave time in clock order with its route count and pad' (`waves`,
+      `wavePadFor`); the join ('a typed pad fills in for a wave the route data knows but has no pad
+      for', `packages/route-sheets/src/join/join.test.ts`); the page ('the pad box shows only for a
+      wave the route data gives no pad', `apps/desktop/e2e/route-sheets.spec.ts`).
 - [x] Ready to send. Test: 'Distribute: exact single match is ready; everything else needs a
       person to decide'; parity.
 - [x] A route listing two or more drivers waits for a choice; the green Suggested tag (only

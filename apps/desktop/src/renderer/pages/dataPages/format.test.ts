@@ -7,6 +7,9 @@ import {
   ownershipLabel,
   plural,
   sourceLine,
+  daysSince,
+  isOverAMonthOld,
+  monthAfter,
 } from './format';
 
 describe('words the data pages share', () => {
@@ -21,6 +24,16 @@ describe('words the data pages share', () => {
     expect(baseName('/home/someone/VehiclesData.xlsx')).toBe('VehiclesData.xlsx');
     expect(baseName('plain.csv')).toBe('plain.csv');
     expect(baseName('')).toBe('');
+  });
+
+  it('says a list is over a month old one calendar month after it came in', () => {
+    const jan31 = new Date(2026, 0, 31, 9, 0);
+    expect(monthAfter(jan31)).toEqual(new Date(2026, 1, 28, 9, 0));
+    expect(isOverAMonthOld(jan31, new Date(2026, 1, 27, 23, 59))).toBe(false);
+    expect(isOverAMonthOld(jan31, new Date(2026, 1, 28, 9, 0))).toBe(true);
+    expect(isOverAMonthOld(null)).toBe(false);
+    expect(daysSince(jan31, new Date(2026, 2, 2, 9, 0))).toBe(30);
+    expect(daysSince(jan31, new Date(2026, 0, 1))).toBe(0);
   });
 
   it('writes the import time like the old header', () => {

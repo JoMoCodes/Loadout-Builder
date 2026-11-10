@@ -158,24 +158,18 @@ function routeDataPad(waveTime: string, set: RouteSetLike): string | null {
 }
 
 /**
- * The wave times on the route sheets that match no dispatch time in the route data (by clock
- * value). Only these get the old "Pad for each wave" box.
+ * The wave times on the route sheets that get no pad from the route data: a time the route data
+ * does not know, or one it knows but has no PAD for. These get the "Pad for each wave" box on
+ * Distribute, where a pad can be typed for the route sheets.
  */
-export function unmatchedWaves(
-  waveTimes: readonly string[],
-  set: Pick<RouteSetLike, 'rows'> | null,
-): string[] {
-  const known = new Set((set?.rows ?? []).map((row) => clockKey(row.dispatchTime)));
-  return waveTimes.filter((wave) => {
-    const key = clockKey(wave);
-    return key === null || !known.has(key);
-  });
+export function unpaddedWaves(waveTimes: readonly string[], set: RouteSetLike | null): string[] {
+  return waveTimes.filter((wave) => set === null || routeDataPad(wave, set) === null);
 }
 
 /**
  * The pad for each wave time on the route sheets: the route data's pad for the dispatch time with
- * the same clock value. A typed pad counts only for a wave that matches no dispatch time in the
- * route data (section 3, item 3). Waves with no pad are left out.
+ * the same clock value (section 3, item 3), else the one typed for that wave on Distribute. Waves
+ * with no pad either way are left out.
  */
 export function wavePadsFromRouteSet(
   waveTimes: readonly string[],
@@ -183,10 +177,9 @@ export function wavePadsFromRouteSet(
   typedPads: Readonly<Record<string, string>> = {},
 ): WavePads {
   const out: WavePads = {};
-  const typedWaves = new Set(unmatchedWaves(waveTimes, set));
   for (const wave of waveTimes) {
     const fromData = set ? routeDataPad(wave, set) : null;
-    const pad = fromData ?? (typedWaves.has(wave) ? typedPads[wave] || null : null);
+    const pad = fromData ?? typedPads[wave] ?? null;
     if (pad) out[wave] = pad;
   }
   return out;

@@ -9,6 +9,7 @@
 
 import type { Decision } from '@loadout/route-sheets';
 import { arrayOf, boolean, filled, nothing, nullable, oneOf, optional, shape, text } from './check';
+import { ROUTE_KINDS } from './routeData';
 import { as, defineCommand, defineQuery } from './define';
 import type {
   EmailRoutesResult,
@@ -53,6 +54,20 @@ export const routeSheetsChannels = [
   defineCommand('routeSheets:new-run', { input: nothing, result: as<null>() }),
   /** Removes a saved run and its PDF. Asking first is the page's job. */
   defineCommand('routeSheets:delete-run', { input: shape({ id: runId }), result: as<null>() }),
+
+  // ---- the route sheets' own route file ------------------------------------------------------
+
+  /**
+   * Reads a route file (one `files:pick` or `files:dropped` gave) as the route sheets' own route
+   * data, kept apart from the Roster's. It replaces the one brought in before. Answers how many
+   * rows came in. The page then sets the route data choice to 'own'.
+   */
+  defineCommand('routeSheets:import-route-file', {
+    input: shape({ kind: oneOf(ROUTE_KINDS), path: filled(1024) }),
+    result: as<{ rows: number }>(),
+  }),
+  /** Takes the route sheets' own route file out. The Roster's route data is not touched. */
+  defineCommand('routeSheets:clear-route-file', { input: nothing, result: as<null>() }),
 
   // ---- choices -----------------------------------------------------------------------------
 

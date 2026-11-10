@@ -123,6 +123,7 @@ function snapshotWith(values: Partial<AppSnapshot>): AppSnapshot {
     associates: [],
     vehicles: [],
     routeSets: [],
+    routeSheetsRoute: null,
     dwp: { set: createDwpDataSet(), matchedCount: 0, dayStatus: 'unknown' },
     lmrApproved: [],
     affinity: {},

@@ -17,8 +17,10 @@ export function baseName(path: string): string {
 const two = (value: number) => String(value).padStart(2, '0');
 
 /** "imported Sep 11, 2026 at 05:37 PM", like the old page's header, or '' when never. */
-export function importedLabel(when: Date | null | undefined): string {
-  if (!when) return '';
+export function importedLabel(given: Date | string | null | undefined): string {
+  // A time that travelled as text (the browser tests' stand-in) is read as a date too.
+  const when = given instanceof Date ? given : given ? new Date(given) : null;
+  if (!when || Number.isNaN(when.getTime())) return '';
   const hour = when.getHours() % 12 || 12;
   const half = when.getHours() < 12 ? 'AM' : 'PM';
   return (
@@ -27,8 +29,47 @@ export function importedLabel(when: Date | null | undefined): string {
   );
 }
 
+/**
+ * One calendar month after a time, the day of the month kept where the next month has it (Jan 31
+ * -> Feb 28). The rule the route sheets use for "the driver list is over a month old".
+ */
+export function monthAfter(when: Date): Date {
+  const due = new Date(when.getTime());
+  const day = due.getDate();
+  due.setDate(1);
+  due.setMonth(due.getMonth() + 1);
+  due.setDate(Math.min(day, new Date(due.getFullYear(), due.getMonth() + 1, 0).getDate()));
+  return due;
+}
+
+/** A time as a Date, whether it came as one or as text; null when it is neither. */
+function asDate(when: Date | string | null | undefined): Date | null {
+  if (!when) return null;
+  const date = when instanceof Date ? when : new Date(when);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+/** True once a list brought in at `importedAt` is due for a newer copy (a month on). */
+export function isOverAMonthOld(
+  importedAt: Date | string | null | undefined,
+  now = new Date(),
+): boolean {
+  const at = asDate(importedAt);
+  return at !== null && now.getTime() >= monthAfter(at).getTime();
+}
+
+/** Whole days since a time, never below 0. */
+export function daysSince(when: Date | string | null | undefined, now = new Date()): number {
+  const at = asDate(when);
+  if (at === null) return 0;
+  return Math.max(0, Math.floor((now.getTime() - at.getTime()) / 86_400_000));
+}
+
 /** "Some file.xlsx  -  imported Sep 11, 2026 at 05:37 PM". */
-export function sourceLine(sourceFile: string, importedAt: Date | null | undefined): string {
+export function sourceLine(
+  sourceFile: string,
+  importedAt: Date | string | null | undefined,
+): string {
   const bits: string[] = [];
   if (sourceFile) bits.push(baseName(sourceFile));
   const when = importedLabel(importedAt);

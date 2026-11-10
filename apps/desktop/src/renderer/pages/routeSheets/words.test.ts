@@ -18,14 +18,24 @@ describe('the Route Sheets page’s words', () => {
     expect(routeDataWords(null)).toMatch(
       /^No route data yet\. Use the Roster's Route Data, or import a new file/,
     );
-    expect(routeDataWords({ kind: 'routes', label: 'Routes', fileName: 'Routes_XXX1.xlsx' })).toBe(
-      'Matching with the Routes export: Routes_XXX1.xlsx.',
-    );
     expect(
-      routeDataWords({ kind: 'itineraries', label: 'Itineraries', fileName: 'Itin.xlsx' }),
+      routeDataWords({ kind: 'routes', label: 'Routes', fileName: 'Routes_XXX1.xlsx', own: false }),
+    ).toBe('Matching with the Routes export: Routes_XXX1.xlsx.');
+    expect(
+      routeDataWords({
+        kind: 'itineraries',
+        label: 'Itineraries',
+        fileName: 'Itin.xlsx',
+        own: false,
+      }),
     ).toBe('Matching with the Itineraries export: Itin.xlsx.');
     expect(
-      routeDataWords({ kind: 'schedule', label: 'Weekly Schedule', fileName: 'Week-38.xlsx' }),
+      routeDataWords({
+        kind: 'schedule',
+        label: 'Weekly Schedule',
+        fileName: 'Week-38.xlsx',
+        own: false,
+      }),
     ).toBe('Matching with the Weekly Schedule: Week-38.xlsx.');
   });
 

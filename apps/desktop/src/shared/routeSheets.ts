@@ -89,8 +89,11 @@ export interface RouteSheetsRunListing {
 export interface RouteSheetsStateView {
   run: RouteSheetsRunView;
   runs: RouteSheetsRunListing[];
-  /** The route export the matcher reads, or null when none with route codes is loaded. */
-  routeData: { kind: RouteDataKindInUse; label: string; fileName: string } | null;
+  /**
+   * The route export the matcher reads, or null when none with route codes is loaded. `own` is
+   * true when it is the file brought in just for the route sheets, false when it is the Roster's.
+   */
+  routeData: { kind: RouteDataKindInUse; label: string; fileName: string; own: boolean } | null;
   /** The Associates page's driver list. */
   driverList: {
     count: number;

@@ -290,6 +290,13 @@ async function bringIn(rig: Rig, kind: string, file: string) {
   return rig.call('files:import', { kind, path: file });
 }
 
+/** A route file brought in just for the route sheets (Import a new file on the Route data card). */
+async function ownFile(rig: Rig, kind: string, file: string) {
+  rig.picks.next = file;
+  await rig.ok('files:pick', { kind });
+  return rig.call('routeSheets:import-route-file', { kind, path: file });
+}
+
 /** The fixture day: the Routes export, the driver list and the synthetic route sheet PDF. */
 async function fixtureDay(rig: Rig): Promise<void> {
   expect((await bringIn(rig, 'routes', ROUTES_FILE)).ok).toBe(true);
@@ -389,8 +396,9 @@ describe('the join with the app’s own route data, driver list and pads', () =>
     await decideFromInputs(rig);
     const decided = await rig.ok<RouteSheetsDistributionView>('routeSheets:distribution');
     expect(matcherPart(decided)).toEqual(expected('distribution.json'));
-    // Every wave on the PDF has a dispatch time in the route data, so no pad box is needed.
-    expect(decided.typedPadWaves).toEqual([]);
+    // The 2:30 pm wave has a dispatch time in the route data but no PAD, so it alone gets the
+    // "Pad for each wave" box.
+    expect(decided.typedPadWaves).toEqual(['02:30 PM']);
     expect(decided.unsent).toEqual(
       decided.routes
         .filter((r) => r.state === 'ready' && r.recipients.every((p) => p.email))
@@ -436,6 +444,7 @@ describe('the join with the app’s own route data, driver list and pads', () =>
       kind: 'itineraries',
       label: 'Itineraries',
       fileName: path.basename(itineraries),
+      own: false,
     });
 
     await fixtureDay(rig);
@@ -444,17 +453,48 @@ describe('the join with the app’s own route data, driver list and pads', () =>
       kind: 'routes',
       label: 'Routes',
       fileName: path.basename(ROUTES_FILE),
+      own: false,
     });
     expect(state.run.routesFileName).toBe(path.basename(ROUTES_FILE));
-    // A file picked on the page wins over Routes; the Roster's (none here) falls back to Routes.
-    rig.setSettings({ routeSheetsRouteData: 'itineraries' });
-    expect((await rig.ok<RouteSheetsStateView>('routeSheets:state')).routeData?.kind).toBe(
-      'itineraries',
-    );
-    rig.setSettings({ routeSheetsRouteData: 'roster' });
+    // Picking "the imported file" with none brought in here yet still reads the Roster's.
+    rig.setSettings({ routeSheetsRouteData: 'own' });
     expect((await rig.ok<RouteSheetsStateView>('routeSheets:state')).routeData?.kind).toBe(
       'routes',
     );
+    // A file brought in just for the route sheets is kept apart from the Roster's route data, and
+    // wins once the page picks it.
+    expect((await ownFile(rig, 'itineraries', itineraries)).ok).toBe(true);
+    state = await rig.ok<RouteSheetsStateView>('routeSheets:state');
+    expect(state.routeData).toEqual({
+      kind: 'itineraries',
+      label: 'Itineraries',
+      fileName: path.basename(itineraries),
+      own: true,
+    });
+    const snap = await snapshot(rig);
+    expect(snap.routeSheetsRoute?.kind).toBe('itineraries');
+    expect(snap.routeSheetsRoute?.label).toBe('Itineraries');
+    // Clearing the Roster's Itineraries leaves the route sheets' file where it is...
+    await rig.ok('routeData:clear', { kind: 'itineraries' });
+    expect((await rig.ok<RouteSheetsStateView>('routeSheets:state')).routeData?.own).toBe(true);
+    // ...and the Roster's choice reads the Roster's data again (none on the roster: Routes).
+    rig.setSettings({ routeSheetsRouteData: 'roster' });
+    expect((await rig.ok<RouteSheetsStateView>('routeSheets:state')).routeData).toMatchObject({
+      kind: 'routes',
+      own: false,
+    });
+    // Clearing the imported file takes it out, and nothing else.
+    rig.setSettings({ routeSheetsRouteData: 'own' });
+    await rig.ok('routeSheets:clear-route-file');
+    expect((await snapshot(rig)).routeSheetsRoute).toBeNull();
+    expect((await rig.ok<RouteSheetsStateView>('routeSheets:state')).routeData).toMatchObject({
+      kind: 'routes',
+      own: false,
+    });
+    expect(
+      (await snapshot(rig)).routeSets.find((set) => set.kind === 'routes')?.rows.length,
+    ).toBeGreaterThan(0);
+    rig.setSettings({ routeSheetsRouteData: 'roster' });
     // The driver list's age, for the "over a month old" reminder.
     expect(state.driverList.count).toBeGreaterThan(50);
     expect(state.driverList.fileName).toBe('AssociateData.csv');
@@ -536,6 +576,19 @@ describe('every route sheets channel, through the real handlers', () => {
     expect(existsSync(path.join(rig.base, 'data', 'route-sheets', `${RUN_ID}.pdf`))).toBe(true);
     // Nothing that names the file or a person goes to the log.
     expect(rig.logs.join('\n')).not.toMatch(/2026-09-01\.pdf|@example\.com/);
+
+    // A route file for the route sheets comes in the same careful way: only a picked or dropped
+    // file is read, and a file that is not a route export is refused in the reader's words.
+    expect(
+      await rig.call('routeSheets:import-route-file', {
+        kind: 'routes',
+        path: fixture('routes', 'Routes_XXX1_2026-09-25_09_54 (CDT).xlsx'),
+      }),
+    ).toEqual({ ok: false, reason: 'not-allowed' });
+    const notRoutes = await ownFile(rig, 'routes', PDF_FILE);
+    expect(notRoutes.ok).toBe(false);
+    expect(notRoutes.reason).toBe('refused');
+    expect((await snapshot(rig)).routeSheetsRoute).toBeNull();
   });
 
   it('reads the open run, History, and the old app’s folder; opens, starts and deletes runs', async () => {
@@ -701,35 +754,30 @@ describe('every route sheets channel, through the real handlers', () => {
       reason: 'bad-input',
     });
 
-    // A wave the route data knows gets its pad from the Route Data page only, even with none
-    // there yet: the 2:30 pm wave has a dispatch time but no pad, and no box.
+    // The 2:30 pm wave has a dispatch time in the route data but no PAD there, so it gets a
+    // box and a typed pad is used; trimmed, and cleared with a blank.
     const fromRouteData = {
       ok: false,
       reason: 'refused',
-      message: 'That wave already gets its pad from the route file on Load Out.',
+      message: 'That wave already has its pad from the route data.',
     };
-    expect(await rig.call('routeSheets:set-wave-pad', { waveTime: '02:30 PM', pad: '4' })).toEqual(
-      fromRouteData,
-    );
-    // Take that dispatch time off the route data: now the wave matches none, and a typed pad is
-    // used; trimmed, and cleared with a blank.
-    for (const row of rig.host.state.routeSet('routes').rows) {
-      if (row.routeCode === 'AX13') row.dispatchTime = '';
-    }
     expect(await rig.ok('routeSheets:set-wave-pad', { waveTime: '02:30 PM', pad: '  4 ' })).toBe(
       '4',
     );
     dist = await rig.ok<RouteSheetsDistributionView>('routeSheets:distribution');
-    expect(dist.typedPadWaves).toEqual(['02:30 PM']);
+    // No PADs set on the route data yet, so every wave has a box.
+    expect(dist.typedPadWaves).toEqual(['10:20 AM', '10:25 AM', '02:30 PM']);
     expect(dist.waves.find((w) => w.waveTime === '02:30 PM')!.pad).toBe('4');
     expect(
       (await rig.ok<RouteSheetsPreview>('routeSheets:preview', { routeCode: 'AX13' })).subject,
     ).toMatch(/Pad 4$/);
     await padsFromInputs(rig);
+    // With PADs on the route data, only the 2:30 pm wave (no PAD there) keeps its box.
     expect(await rig.call('routeSheets:set-wave-pad', { waveTime: '10:20 AM', pad: '9' })).toEqual(
       fromRouteData,
     );
     dist = await rig.ok<RouteSheetsDistributionView>('routeSheets:distribution');
+    expect(dist.typedPadWaves).toEqual(['02:30 PM']);
     expect(dist.waves.map((w) => w.pad)).toEqual(['1', '2', '4']);
     expect(
       await rig.ok('routeSheets:set-wave-pad', { waveTime: '02:30 PM', pad: '   ' }),
