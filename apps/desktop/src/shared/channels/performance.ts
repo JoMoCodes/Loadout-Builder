@@ -32,6 +32,7 @@ import {
   filled,
   nothing,
   nullable,
+  number,
   oneOf,
   optional,
   shape,
@@ -54,6 +55,14 @@ const range = shape({ from: week, to: week });
 const transporterId = filled(20);
 const ids = arrayOf(transporterId, 2000);
 const kind = oneOf(PERF_KINDS);
+
+/** One of the person's own Dashboard tiles: which number, and what to do with it. */
+const customSpec = shape({
+  id: filled(40),
+  number: filled(60),
+  how: oneOf(['average', 'total', 'below', 'above'] as const),
+  limit: number,
+});
 
 /** Where an import reads from: the remembered folder (or file), or a dropped one's token. */
 const source = shape({ kind, token: optional(filled(300)) });
@@ -79,7 +88,12 @@ export const performanceChannels = [
   defineQuery('performance:import-cards', { input: nothing, result: as<PerfImportCard[]>() }),
   /** The Dashboard for the week range. */
   defineQuery('performance:dashboard', {
-    input: shape({ range: nullable(range) }),
+    input: shape({
+      range: nullable(range),
+      /** The person's own tiles to work out, and the watch list's drivers. */
+      custom: optional(arrayOf(customSpec, 40)),
+      watch: optional(arrayOf(transporterId, 60)),
+    }),
     result: as<PerfDashboardView>(),
   }),
   /**

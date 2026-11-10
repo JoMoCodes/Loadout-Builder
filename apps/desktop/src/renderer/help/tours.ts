@@ -474,19 +474,19 @@ export const TOURS: Record<string, Tour> = {
       {
         element: `${DASHBOARD} [data-testid="dashboard-coaching"]`,
         title: 'Who needs a word',
-        text: 'Drivers to coach, with the reasons. Click a driver to open them on the Scorecards page or preview their report.',
+        text: 'Drivers to coach, with the reasons. Click a driver to open them on the Scorecards page or preview their report. ID expiry lists IDs that run out soon.',
         side: 'right',
-      },
-      {
-        element: `${DASHBOARD} [data-testid="dashboard-compliance"]`,
-        title: 'IDs that run out soon',
-        text: 'Drivers whose ID has run out, or runs out soon. Tell them before it does.',
-        side: 'left',
       },
       {
         element: `${DASHBOARD} [data-testid="dashboard-coaching-explain"]`,
         title: 'Where a number comes from',
         text: 'Click How is this worked out? next to any number to see the rule behind it.',
+        side: 'bottom',
+      },
+      {
+        element: `${DASHBOARD} [data-testid="dashboard-customize"]`,
+        title: 'Make it yours',
+        text: 'Click Customize to move, resize, hide or add sections. The Layout button next to it keeps several arrangements, so you can switch between them.',
         side: 'bottom',
       },
       {

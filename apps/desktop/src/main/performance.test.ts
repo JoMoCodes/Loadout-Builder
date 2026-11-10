@@ -707,6 +707,41 @@ describe('with every fixture brought in', () => {
     rig.setSettings({ performance: { topN: 5 } });
   });
 
+  it("works out a person's own tiles and the watch list when the Dashboard asks for them", async () => {
+    const plain = await rig.ok<PerfDashboardView>('performance:dashboard', { range: null });
+    expect(plain.custom).toBeUndefined();
+    expect(plain.watch).toBeUndefined();
+    const watched = plain.coaching[0]!.transporterId;
+    const view = await rig.ok<PerfDashboardView>('performance:dashboard', {
+      range: null,
+      custom: [
+        { id: 'custom-1', number: 'overall', how: 'average', limit: 0 },
+        { id: 'custom-2', number: 'packages', how: 'total', limit: 0 },
+        { id: 'custom-3', number: 'overall', how: 'below', limit: 1000 },
+      ],
+      watch: [watched],
+    });
+    // The same numbers the usual tiles show, reached the build-your-own way.
+    expect(view.custom!.map((one) => one.id)).toEqual(['custom-1', 'custom-2', 'custom-3']);
+    expect(view.custom![0]!.value).toBeCloseTo(plain.fleetAverage!, 9);
+    expect(view.custom![0]!.before).toBeCloseTo(plain.fleetAverageBefore!, 9);
+    expect(view.custom![0]!.series.map((point) => point.week)).toEqual(
+      plain.trend.map((point) => point.week),
+    );
+    expect(view.custom![1]!.value).toBe(plain.packagesDelivered);
+    expect(view.custom![1]!.before).toBe(plain.packagesDeliveredBefore);
+    // Every scored driver is below 1000.
+    expect(view.custom![2]!.value).toBe(view.custom![0]!.drivers);
+    expect(view.watch).toHaveLength(1);
+    expect(view.watch![0]!.latestScore).toBe(plain.coaching[0]!.latestScore);
+    // An own tile that is not shaped right is refused, not guessed at.
+    const reply = await rig.call('performance:dashboard', {
+      range: null,
+      custom: [{ id: 'custom-1', number: 'overall', how: 'median', limit: 0 }],
+    });
+    expect(reply).toMatchObject({ ok: false, reason: 'bad-input' });
+  });
+
   it('says the newest week alone has no week before it inside the range, but still compares', async () => {
     const view = await rig.ok<PerfDashboardView>('performance:dashboard', {
       range: { from: '2026-W40', to: '2026-W40' },

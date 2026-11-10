@@ -48,7 +48,7 @@ The first time you open the app, it looks for your old roster data. If it finds 
 
 1. **Once:** on the **Performance** page, open the **Imports** tab and choose the folder for each kind of export. There is a card for each of the ten.
 2. **Every week:** save the new files into their folders, then click **Sync now**. The app also does this by itself each time it opens.
-3. **Look at the Dashboard.** It shows the scores, the tiers, who needs a word, and whose ID runs out soon.
+3. **Look at the Dashboard.** It shows the scores, the tiers, who needs a word, and whose ID runs out soon. Click **Customize** to move, resize, hide or add sections, and use the **Layout** button to keep more than one arrangement.
 4. **Make and email the reports.** On the **Drivers** tab, tick the drivers and click **Generate for selected** or **Email selected**. The app shows who gets what before it sends anything.
 
 **Where the files come from:** all ten are downloaded from Amazon's websites for delivery partners, once a week. Each card on the **Imports** tab says which file it wants, and so does **How to use**.

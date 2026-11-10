@@ -54,8 +54,8 @@ export const performanceHandlers: HandlersFor<typeof performanceChannels> = {
     const service = ctx.services.performance;
     return importCardsView(dataOf(ctx), (kind) => service.cardFolder(kind), service.lastImportAt());
   },
-  'performance:dashboard': ({ range }, ctx) =>
-    dashboardView(dataOf(ctx), checkRange(range), settingsOf(ctx), ctx.today()),
+  'performance:dashboard': ({ range, custom, watch }, ctx) =>
+    dashboardView(dataOf(ctx), checkRange(range), settingsOf(ctx), ctx.today(), { custom, watch }),
   'performance:report-html': ({ transporterId, range, colours }, ctx) => {
     void ctx.host.perf;
     const current = settingsOf(ctx);

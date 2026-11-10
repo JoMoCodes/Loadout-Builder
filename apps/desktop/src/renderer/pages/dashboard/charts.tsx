@@ -47,7 +47,7 @@ function useRem(): number {
 
 // ------------------------------------------------------------------------------ sparkline
 
-/** A tiny line of the fleet average, week by week. */
+/** A tiny line of a number, week by week. */
 export function Sparkline({
   points,
   label,
@@ -173,6 +173,27 @@ export function scoreTicks(
   return { low, high: high === low ? low + step : high, ticks };
 }
 
+/** Tick marks for any number that is not a score: about four round numbers covering the values. */
+export function freeTicks(
+  min: number,
+  max: number,
+): { low: number; high: number; ticks: number[] } {
+  if (!Number.isFinite(min) || !Number.isFinite(max)) return { low: 0, high: 1, ticks: [0, 1] };
+  if (max === min) {
+    const pad = Math.max(1, Math.abs(max) * 0.1);
+    min -= min >= 0 && min - pad < 0 ? min : pad;
+    max += pad;
+  }
+  const rough = (max - min) / 4;
+  const power = Math.pow(10, Math.floor(Math.log10(rough)));
+  const step = ([1, 2, 5, 10].find((m) => m * power >= rough) ?? 10) * power;
+  const low = Math.floor(min / step) * step;
+  const high = Math.ceil(max / step) * step;
+  const ticks: number[] = [];
+  for (let t = low; t <= high + step / 1e6; t += step) ticks.push(Number(t.toPrecision(12)));
+  return { low, high: high === low ? low + step : high, ticks };
+}
+
 /** Week labels that fit: every n-th, always the last. */
 function shownLabels(count: number, room: number, labelWidth: number): Set<number> {
   const every = Math.max(1, Math.ceil((count * labelWidth) / Math.max(room, 1)));
@@ -181,20 +202,43 @@ function shownLabels(count: number, room: number, labelWidth: number): Set<numbe
   return shown;
 }
 
-/** The fleet average Overall Score, week by week, with the axes labelled. */
+/**
+ * A number week by week, with the axes labelled. As it is, the fleet average Overall Score; a
+ * person's own tile gives its own way of writing the number, and `free` when it is not a score.
+ */
 export function TrendChart({
   points,
   label,
+  free = false,
+  format = score,
+  fill = false,
+  testId = 'dashboard-trend-chart',
 }: {
   points: ReadonlyArray<{ week: string; avg: number }>;
   label: string;
+  /** Not a score from 0 to 100: the axis fits whatever the numbers are. */
+  free?: boolean;
+  format?: (value: number) => string;
+  /** Fill the height of the section it is in, instead of its usual height. */
+  fill?: boolean;
+  testId?: string;
 }) {
   const [ref, { width, height }] = useSize<HTMLDivElement>();
   const rem = useRem();
   const [hover, setHover] = useState<number | null>(null);
   const values = points.map((p) => p.avg);
-  const { low, high, ticks } = scoreTicks(Math.min(...values), Math.max(...values));
-  const left = 2.6 * rem;
+  const { low, high, ticks } = (free ? freeTicks : scoreTicks)(
+    Math.min(...values),
+    Math.max(...values),
+  );
+  const tickText = (t: number) =>
+    free
+      ? t.toLocaleString('en-US', { maximumFractionDigits: 2 })
+      : Number.isInteger(t)
+        ? String(t)
+        : t.toFixed(1);
+  const longest = Math.max(...ticks.map((t) => tickText(t).length));
+  const left = Math.max(2.6, 0.62 * longest + 1.2) * rem;
   const right = 1.2 * rem;
   const top = 0.8 * rem;
   const bottom = 2 * rem;
@@ -222,10 +266,10 @@ export function TrendChart({
   return (
     <div
       ref={ref}
-      className="relative h-[14rem] w-full"
+      className={cn('relative w-full', fill ? 'min-h-[7rem] flex-1' : 'h-[14rem]')}
       role="img"
       aria-label={label}
-      data-testid="dashboard-trend-chart"
+      data-testid={testId}
     >
       {width > 0 && points.length > 0 ? (
         <svg width={width} height={height} aria-hidden="true" className="block text-[0.786rem]">
@@ -248,7 +292,7 @@ export function TrendChart({
                 fill="var(--text-muted)"
                 className="tabular-nums"
               >
-                {Number.isInteger(t) ? t : t.toFixed(1)}
+                {tickText(t)}
               </text>
             </g>
           ))}
@@ -325,7 +369,7 @@ export function TrendChart({
           data-testid="dashboard-trend-tip"
         >
           <span className="text-muted">{hovered.week}</span>{' '}
-          <span className="font-semibold tabular-nums">{score(hovered.avg)}</span>
+          <span className="font-semibold tabular-nums">{format(hovered.avg)}</span>
         </div>
       ) : null}
     </div>

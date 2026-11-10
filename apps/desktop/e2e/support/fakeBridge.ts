@@ -13,6 +13,7 @@
 import type { Page } from '@playwright/test';
 import { CHANNELS } from '../../src/shared/channels';
 import { DEFAULT_EMAIL, DEFAULT_PERFORMANCE } from '../../src/shared/performanceSettings';
+import { DEFAULT_DASHBOARD } from '../../src/shared/dashboardLayout';
 import { DEFAULT_ROUTE_SHEETS_EMAIL, type AppSettings } from '../../src/shared/settings';
 import type { AppSnapshot } from '../../src/shared/snapshot';
 import { snapshotTypes } from './vanType';
@@ -44,6 +45,7 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
       performance,
       email,
       routeSheetsEmail,
+      dashboard,
       vehicleTypes,
     }) => {
       const settings: Record<string, unknown> = {
@@ -68,6 +70,7 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
         routeSheetsEmail,
         rememberKeepVans: true,
         keepVans: null,
+        dashboard,
         ...given.settings,
       };
       const snapshot: Record<string, unknown> = {
@@ -309,6 +312,7 @@ export async function installFakeBridge(page: Page, options: FakeBridgeOptions =
       performance: DEFAULT_PERFORMANCE,
       email: DEFAULT_EMAIL,
       routeSheetsEmail: DEFAULT_ROUTE_SHEETS_EMAIL,
+      dashboard: DEFAULT_DASHBOARD,
       vehicleTypes: snapshotTypes(),
     },
   );

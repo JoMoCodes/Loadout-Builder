@@ -8,6 +8,8 @@ import {
   mergePerformance,
 } from './performanceSettings';
 import type { EmailSettings, PerformanceSettings } from './performanceSettings';
+import { DEFAULT_DASHBOARD, mergeDashboard } from './dashboardLayout';
+import type { DashboardSettings } from './dashboardLayout';
 
 /**
  * The wording of the route sheet emails (Route Sheets page, Sheets tab, Settings): the subject
@@ -103,12 +105,16 @@ export interface AppSettings {
   keepVans: KeepVansChoice | null;
   /** The route data Route Sheets matches with. */
   routeSheetsRouteData: RouteSheetsRouteData;
+  /** The Dashboard's layouts, which one is in use, and the watch list. */
+  dashboard: DashboardSettings;
 }
 
 /** What a screen may ask to change. Anything left out stays as it was. */
 export type SettingsPatch = Partial<
-  Omit<AppSettings, 'performance' | 'email' | 'routeSheetsEmail'>
+  Omit<AppSettings, 'performance' | 'email' | 'routeSheetsEmail' | 'dashboard'>
 > & {
+  /** Each part given (the layouts, the one in use, the watch list) is replaced whole. */
+  dashboard?: Partial<DashboardSettings>;
   /** Only the fields given change; the rest of the performance choices stay. */
   performance?: DeepPartial<PerformanceSettings>;
   /** Only the fields given change. (An older `performance.email` patch is read as this.) */
@@ -145,6 +151,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   rememberKeepVans: true,
   keepVans: null,
   routeSheetsRouteData: 'roster',
+  dashboard: DEFAULT_DASHBOARD,
 };
 
 /** A tour's name: lower case words with dashes. */
@@ -238,6 +245,14 @@ export function sanitizePatch(raw: unknown): SettingsPatch {
   ) {
     patch.routeSheetsEmail = input.routeSheetsEmail as SettingsPatch['routeSheetsEmail'];
   }
+  // Checked part by part when it is merged (mergeDashboard).
+  if (
+    typeof input.dashboard === 'object' &&
+    input.dashboard !== null &&
+    !Array.isArray(input.dashboard)
+  ) {
+    patch.dashboard = input.dashboard as SettingsPatch['dashboard'];
+  }
   return patch;
 }
 
@@ -259,7 +274,7 @@ export function mergeRouteSheetsEmail(
 }
 
 export function mergeSettings(current: AppSettings, raw: unknown): AppSettings {
-  const { performance, email, routeSheetsEmail, ...rest } = sanitizePatch(raw);
+  const { performance, email, routeSheetsEmail, dashboard, ...rest } = sanitizePatch(raw);
   const base = { ...current, ...rest };
   // Older settings files have no performance part; it starts from the defaults.
   const perf = mergePerformance(current.performance ?? DEFAULT_PERFORMANCE, performance);
@@ -280,5 +295,7 @@ export function mergeSettings(current: AppSettings, raw: unknown): AppSettings {
     email: now,
     performance: { ...perf, email: { ...now } },
     routeSheetsEmail: wording,
+    // Older settings files have no dashboard part; it starts as the usual layout.
+    dashboard: mergeDashboard(current.dashboard, dashboard),
   };
 }

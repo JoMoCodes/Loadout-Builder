@@ -789,6 +789,13 @@ export function HowToUsePage({
               <strong>How is this worked out?</strong> to see the rule behind a number.
             </li>
             <li>
+              The Dashboard is yours to arrange. Click <strong>Customize</strong> to move, resize,
+              hide or add sections, and to set a target for a tile. Click a driver and choose{' '}
+              <strong>Add to the watch list</strong> to keep an eye on them. The{' '}
+              <strong>Layout</strong> button keeps several arrangements, and{' '}
+              <strong>Reset to the usual layout</strong> puts everything back.
+            </li>
+            <li>
               To check a driver, open the <strong>Performance</strong> tab. Pick the weeks at the
               top. Double-click a driver to open their report. Click a red safety number to see the
               events. Next to the weeks, <strong>What changed since last week</strong> counts who
